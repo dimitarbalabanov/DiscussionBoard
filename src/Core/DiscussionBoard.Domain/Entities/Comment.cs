@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DiscussionBoard.Domain.Entities
+﻿namespace DiscussionBoard.Domain.Entities
 {
-    class Comment
+    public class Comment
     {
+        public int Id { get; set; }
+
+        public string Content { get; set; }
+
+        public string CreatorId { get; set; }
+        public virtual ApplicationUser Creator { get; set; }
+
+        public int PostId { get; set; }
+        public virtual Post Post { get; set; }
     }
 }
