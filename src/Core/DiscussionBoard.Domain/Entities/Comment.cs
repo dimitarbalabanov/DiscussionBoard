@@ -1,9 +1,9 @@
-﻿namespace DiscussionBoard.Domain.Entities
-{
-    public class Comment
-    {
-        public int Id { get; set; }
+﻿using DiscussionBoard.Domain.Common;
 
+namespace DiscussionBoard.Domain.Entities
+{
+    public class Comment : BaseModel<int>
+    {
         public string Content { get; set; }
 
         public string CreatorId { get; set; }

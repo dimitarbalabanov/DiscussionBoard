@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using DiscussionBoard.Domain.Common;
 using Microsoft.AspNetCore.Identity;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IAuditInfo
     {
         public ApplicationUser()
         {
@@ -12,6 +13,10 @@ namespace DiscussionBoard.Domain.Entities
             Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
         }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
 
         public string Bio { get; set; }
 

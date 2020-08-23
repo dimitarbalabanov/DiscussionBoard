@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using DiscussionBoard.Domain.Common;
+using System.Collections.Generic;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class Post
+    public class Post : BaseModel<int>
     {
         public Post()
         {
             Comments = new HashSet<Comment>();
         }
-
-        public int Id { get; set; }
 
         public string Title { get; set; }
 
