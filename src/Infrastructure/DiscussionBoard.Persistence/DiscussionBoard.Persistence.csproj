@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\DiscussionBoard.Application\DiscussionBoard.Application.csproj" />
     <ProjectReference Include="..\..\Core\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj" />
   </ItemGroup>
 

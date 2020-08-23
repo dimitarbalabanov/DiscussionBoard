@@ -1,7 +1,9 @@
-﻿using DiscussionBoard.Domain.Entities;
+﻿using DiscussionBoard.Domain.Common;
+using DiscussionBoard.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,52 +23,45 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
-        public override int SaveChanges() => SaveChanges(true);
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        public override int SaveChanges()
         {
             ApplyAuditInfoRules();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+            return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
-            SaveChangesAsync(true, cancellationToken);
-
-        public override Task<int> SaveChangesAsync(
-            bool acceptAllChangesOnSuccess,
-            CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ApplyAuditInfoRules();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            return base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
         private void ApplyAuditInfoRules()
         {
-            //var changedEntries = this.ChangeTracker
-            //    .Entries()
-            //    .Where(e =>
-            //        e.Entity is IAuditInfo &&
-            //        (e.State == EntityState.Added || e.State == EntityState.Modified));
+            var changedEntries = ChangeTracker
+                .Entries()
+                .Where(e =>
+                    e.Entity is IAuditInfo &&
+                    (e.State == EntityState.Added || e.State == EntityState.Modified));
 
-            //foreach (var entry in changedEntries)
-            //{
-            //    var entity = (IAuditInfo)entry.Entity;
-            //    if (entry.State == EntityState.Added && entity.CreatedOn == default(DateTime))
-            //    {
-            //        entity.CreatedOn = DateTime.UtcNow;
-            //    }
-            //    else
-            //    {
-            //        entity.ModifiedOn = DateTime.UtcNow;
-            //    }
-            //}
+            foreach (var entry in changedEntries)
+            {
+                var entity = (IAuditInfo)entry.Entity;
+                if (entry.State == EntityState.Added && entity.CreatedOn == default)
+                {
+                    entity.CreatedOn = DateTime.UtcNow;
+                }
+                else
+                {
+                    entity.ModifiedOn = DateTime.UtcNow;
+                }
+            }
         }
     }
 }
