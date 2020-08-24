@@ -14,12 +14,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{6061AE1C-8B1E-4EE4-A1B6-A3C8853A3389}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscussionBoard.Web", "src\Presentation\DiscussionBoard.Web\DiscussionBoard.Web.csproj", "{EECD0E8C-8C89-41B2-B613-33D5C969E1AF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B9AA0563-EE5B-4914-9B39-D49864CC8076} = {B9AA0563-EE5B-4914-9B39-D49864CC8076}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscussionBoard.Domain", "src\Core\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj", "{217B85CF-004B-4993-A586-02D1C469D6FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscussionBoard.Domain", "src\Core\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj", "{217B85CF-004B-4993-A586-02D1C469D6FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscussionBoard.Application", "src\Core\DiscussionBoard.Application\DiscussionBoard.Application.csproj", "{2B2A26A0-9AC9-4A81-A145-FC5FEB9B7BDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscussionBoard.Application", "src\Core\DiscussionBoard.Application\DiscussionBoard.Application.csproj", "{2B2A26A0-9AC9-4A81-A145-FC5FEB9B7BDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscussionBoard.Persistence", "src\Infrastructure\DiscussionBoard.Persistence\DiscussionBoard.Persistence.csproj", "{B9AA0563-EE5B-4914-9B39-D49864CC8076}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscussionBoard.Persistence", "src\Infrastructure\DiscussionBoard.Persistence\DiscussionBoard.Persistence.csproj", "{B9AA0563-EE5B-4914-9B39-D49864CC8076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
