@@ -23,6 +23,7 @@ namespace DiscussionBoard.Web
             services.AddPersistence(Configuration);
 
             services.AddControllersWithViews();
+            
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -50,6 +51,9 @@ namespace DiscussionBoard.Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
