@@ -5,7 +5,11 @@ function App() {
   let [state, setState] = useState("");
 
     useEffect(() => {
-        fetch('api/sample')
+        fetch('api/sample', {
+            headers: {
+                'Authorization': 'Bearer ',
+            }
+        })
             .then(response => response.json())
             .then(data => setState(data))
             .catch(error=> console.log(error));

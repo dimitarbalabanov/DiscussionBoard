@@ -1,5 +1,6 @@
 ﻿using DiscussionBoard.Application.DTOs.Identity;
 using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Domain;
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
 using Microsoft.AspNetCore.Identity;
@@ -17,23 +18,21 @@ namespace DiscussionBoard.Persistence.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, JwtSettings jwtSettings)
+        public IdentityService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<AuthenticationResponse> LoginAsync(LoginRequest request)
+        public async Task<AuthenticationResult> LoginAsync(LoginRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return new AuthenticationResponse
+                return new AuthenticationResult
                 {
                     Errors = new[] { "User does not exist" }
                 };
@@ -43,7 +42,7 @@ namespace DiscussionBoard.Persistence.Services
 
             if (!userHasValidPassword)
             {
-                return new AuthenticationResponse
+                return new AuthenticationResult
                 {
                     Errors = new[] { "User/password combination is invalid" }
                 };
@@ -52,31 +51,37 @@ namespace DiscussionBoard.Persistence.Services
             return await GenerateAuthenticationResultForUserAsync(user);
         }
 
-        public async Task<AuthenticationResponse> RegisterAsync(RegisterRequest request)
+        public async Task<AuthenticationResult> RegisterAsync(RegisterRequest request)
         {
-            var existingUser = await _userManager.FindByEmailAsync(request.Email);
-
-            if (existingUser != null)
+            var sameEmailUser = await _userManager.FindByEmailAsync(request.Email);
+            if (sameEmailUser != null)
             {
-                return new AuthenticationResponse
+                return new AuthenticationResult
                 {
                     Errors = new[] { "User with this email address already exists" }
                 };
             }
 
-            var newUserId = Guid.NewGuid();
+            var sameUsernameUser = await _userManager.FindByNameAsync(request.UserName);
+            if (sameUsernameUser != null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User with this username already exists" }
+                };
+            }
+
             var newUser = new ApplicationUser
             {
-                Id = newUserId.ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 UserName = request.UserName
             };
 
             var createdUser = await _userManager.CreateAsync(newUser, request.Password);
-
             if (!createdUser.Succeeded)
             {
-                return new AuthenticationResponse
+                return new AuthenticationResult
                 {
                     Errors = createdUser.Errors.Select(x => x.Description)
                 };
@@ -85,11 +90,8 @@ namespace DiscussionBoard.Persistence.Services
             return await GenerateAuthenticationResultForUserAsync(newUser);
         }
 
-        private async Task<AuthenticationResponse> GenerateAuthenticationResultForUserAsync(ApplicationUser user)
+        private async Task<AuthenticationResult> GenerateAuthenticationResultForUserAsync(ApplicationUser user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
@@ -102,21 +104,11 @@ namespace DiscussionBoard.Persistence.Services
             claims.AddRange(userClaims);
 
             var userRoles = await _userManager.GetRolesAsync(user);
-            foreach (var userRole in userRoles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, userRole));
-                var role = await _roleManager.FindByNameAsync(userRole);
-                if (role == null) continue;
-                var roleClaims = await _roleManager.GetClaimsAsync(role);
+            var roleClaims = userRoles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+            claims.AddRange(roleClaims);
 
-                foreach (var roleClaim in roleClaims)
-                {
-                    if (claims.Contains(roleClaim))
-                        continue;
-
-                    claims.Add(roleClaim);
-                }
-            }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -128,7 +120,7 @@ namespace DiscussionBoard.Persistence.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new AuthenticationResponse
+            return new AuthenticationResult
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),

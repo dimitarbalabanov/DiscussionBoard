@@ -19,13 +19,45 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
         {
-            return Ok(await _identityService.LoginAsync(request));
+            var authResponse = await _identityService.LoginAsync(request);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthenticationFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthenticationSuccessResponse
+            {
+                Token = authResponse.Token
+            });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
-            return Ok(await _identityService.RegisterAsync(request));
+            // validation check
+            // return BadRequest(new AuthenticationFailedResponse
+            // {
+            //     Errors = 
+            // });
+
+            var authResponse = await _identityService.RegisterAsync(request);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthenticationFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthenticationSuccessResponse
+            {
+                Token = authResponse.Token
+            });
         }
     }
 }

@@ -1,4 +1,6 @@
+using DiscussionBoard.Application.Interfaces;
 using DiscussionBoard.Persistence;
+using DiscussionBoard.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -22,8 +24,9 @@ namespace DiscussionBoard.Web
         {
             services.AddPersistence(Configuration);
 
+            services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+
             services.AddControllersWithViews();
-            
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

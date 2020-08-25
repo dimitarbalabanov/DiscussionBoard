@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Persistence;
+﻿using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,17 @@ namespace DiscussionBoard.Web.Controllers
 
     public class Sample : ControllerBase
     {
+        private readonly IAuthenticatedUserService _authUserService;
+
+        public Sample(IAuthenticatedUserService authUserService)
+        {
+            _authUserService = authUserService;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(JsonConvert.SerializeObject("reached protected resourse"));
+            return Ok(JsonConvert.SerializeObject(_authUserService.UserId));
         }
     }
 }
