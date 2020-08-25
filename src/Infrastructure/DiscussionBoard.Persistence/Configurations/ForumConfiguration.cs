@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DiscussionBoard.Persistence.Configurations
 {
-    class ForumConfiguration : IEntityTypeConfiguration<Forum>
+    public class ForumConfiguration : IEntityTypeConfiguration<Forum>
     {
         public void Configure(EntityTypeBuilder<Forum> forum)
         {

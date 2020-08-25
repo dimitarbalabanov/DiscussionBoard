@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DiscussionBoard.Persistence.Configurations
 {
-    class CommentConfiguration : IEntityTypeConfiguration<Comment>
+    public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         public void Configure(EntityTypeBuilder<Comment> comment)
         {
@@ -22,6 +22,11 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasOne(x => x.Post)
                 .WithMany(x => x.Comments)
                 .HasForeignKey(x => x.PostId);
+
+            comment
+                .HasMany(x => x.Votes)
+                .WithOne(x => x.Comment)
+                .HasForeignKey(x => x.CommentId);
         }
     }
 }

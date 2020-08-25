@@ -24,6 +24,8 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
+        public DbSet<Vote> Votes { get; set; }
+
         public override int SaveChanges()
         {
             ApplyAuditInfoRules();

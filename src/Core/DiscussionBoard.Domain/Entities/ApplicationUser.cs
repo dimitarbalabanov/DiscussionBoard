@@ -12,6 +12,7 @@ namespace DiscussionBoard.Domain.Entities
             Id = Guid.NewGuid().ToString();
             Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
+            Votes = new HashSet<Vote>();
         }
 
         public DateTime CreatedOn { get; set; }
@@ -25,5 +26,7 @@ namespace DiscussionBoard.Domain.Entities
         public virtual ICollection<Post> Posts { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

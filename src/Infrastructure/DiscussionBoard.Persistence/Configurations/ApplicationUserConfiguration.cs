@@ -18,11 +18,16 @@ namespace DiscussionBoard.Persistence.Configurations
 
             applicationUser
                 .HasMany(x => x.Posts)
-                .WithOne()
+                .WithOne(x => x.Creator)
                 .HasForeignKey(x => x.CreatorId);
 
             applicationUser
                 .HasMany(x => x.Comments)
+                .WithOne(x => x.Creator)
+                .HasForeignKey(x => x.CreatorId);
+
+            applicationUser
+                .HasMany(x => x.Votes)
                 .WithOne()
                 .HasForeignKey(x => x.CreatorId);
         }

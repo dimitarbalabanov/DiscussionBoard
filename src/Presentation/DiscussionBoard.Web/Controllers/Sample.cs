@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DiscussionBoard.Domain.Entities;
+using DiscussionBoard.Persistence;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace DiscussionBoard.Web.Controllers
 {
@@ -7,10 +11,26 @@ namespace DiscussionBoard.Web.Controllers
     [Route("api/[controller]")]
     public class Sample : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
+        private readonly ApplicationDbContext _context;
+
+        public Sample(ApplicationDbContext context)
         {
-            return Ok(JsonConvert.SerializeObject("bla bla"));
+            _context = context;
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] JsonElement input)
+        {
+            var asdf = System.Text.Json.JsonSerializer.Serialize(input);
+            var forum = new Forum
+            {
+                Title = "asdf",
+                Description = "asdf"
+            };
+
+            _context.Forums.Add(forum);
+            _context.SaveChanges();
+            return Ok(JsonConvert.SerializeObject(forum));
         }
     }
 }
