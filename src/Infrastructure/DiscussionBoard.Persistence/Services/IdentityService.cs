@@ -83,7 +83,7 @@ namespace DiscussionBoard.Persistence.Services
             {
                 return new AuthenticationResult
                 {
-                    Errors = createdUser.Errors.Select(x => x.Description)
+                    Errors = createdUser.Errors.Select(e => e.Description)
                 };
             }
 
@@ -104,7 +104,7 @@ namespace DiscussionBoard.Persistence.Services
             claims.AddRange(userClaims);
 
             var userRoles = await _userManager.GetRolesAsync(user);
-            var roleClaims = userRoles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+            var roleClaims = userRoles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
             claims.AddRange(roleClaims);
 
             var tokenHandler = new JwtSecurityTokenHandler();

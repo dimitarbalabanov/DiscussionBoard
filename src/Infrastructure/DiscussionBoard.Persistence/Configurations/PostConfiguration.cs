@@ -9,29 +9,29 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Post> post)
         {
             post
-               .Property(x => x.Title)
+               .Property(p => p.Title)
                .IsRequired()
                .HasMaxLength(200);
 
             post
-               .Property(x => x.Content)
+               .Property(p => p.Content)
                .IsRequired()
                .HasMaxLength(2500);
 
             post
-                .HasOne(x => x.Creator)
-                .WithMany(x => x.Posts)
-                .HasForeignKey(x => x.CreatorId);
+                .HasOne(p => p.Creator)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.CreatorId);
 
             post
-                .HasOne(x => x.Forum)
-                .WithMany(x => x.Posts)
-                .HasForeignKey(x => x.ForumId);
+                .HasOne(p => p.Forum)
+                .WithMany(f => f.Posts)
+                .HasForeignKey(p => p.ForumId);
 
             post
-                .HasMany(x => x.Comments)
-                .WithOne(x => x.Post)
-                .HasForeignKey(x => x.PostId);
+                .HasMany(p => p.Comments)
+                .WithOne(c => c.Post)
+                .HasForeignKey(c => c.PostId);
         }
     }
 }

@@ -35,16 +35,16 @@ namespace DiscussionBoard.Persistence
 
             services.AddTransient<IIdentityService, IdentityService>();
 
-            services.AddAuthentication(x =>
+            services.AddAuthentication(o =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(x =>
+                .AddJwtBearer(o =>
                 {
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),

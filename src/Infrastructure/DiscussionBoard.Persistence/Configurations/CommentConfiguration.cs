@@ -9,24 +9,24 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Comment> comment)
         {
             comment
-               .Property(x => x.Content)
+               .Property(c => c.Content)
                .IsRequired()
                .HasMaxLength(2000);
 
             comment
-                .HasOne(x => x.Creator)
-                .WithMany(x => x.Comments)
-                .HasForeignKey(x => x.CreatorId);
+                .HasOne(c => c.Creator)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.CreatorId);
 
             comment
-                .HasOne(x => x.Post)
-                .WithMany(x => x.Comments)
-                .HasForeignKey(x => x.PostId);
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId);
 
             comment
-                .HasMany(x => x.Votes)
-                .WithOne(x => x.Comment)
-                .HasForeignKey(x => x.CommentId);
+                .HasMany(c => c.Votes)
+                .WithOne(v => v.Comment)
+                .HasForeignKey(v => v.CommentId);
         }
     }
 }

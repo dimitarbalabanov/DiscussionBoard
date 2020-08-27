@@ -6,30 +6,30 @@ namespace DiscussionBoard.Persistence.Configurations
 {
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUser> applicationUser)
+        public void Configure(EntityTypeBuilder<ApplicationUser> user)
         {
-            applicationUser
-                .Property(x => x.Bio)
+            user
+                .Property(u => u.Bio)
                 .HasMaxLength(200);
 
-            applicationUser
-                .Property(x => x.AvatarUrl)
+            user
+                .Property(u => u.AvatarUrl)
                 .HasMaxLength(200);
 
-            applicationUser
-                .HasMany(x => x.Posts)
-                .WithOne(x => x.Creator)
-                .HasForeignKey(x => x.CreatorId);
+            user
+                .HasMany(u => u.Posts)
+                .WithOne(p => p.Creator)
+                .HasForeignKey(p => p.CreatorId);
 
-            applicationUser
-                .HasMany(x => x.Comments)
-                .WithOne(x => x.Creator)
-                .HasForeignKey(x => x.CreatorId);
+            user
+                .HasMany(u => u.Comments)
+                .WithOne(c => c.Creator)
+                .HasForeignKey(c => c.CreatorId);
 
-            applicationUser
-                .HasMany(x => x.Votes)
-                .WithOne()
-                .HasForeignKey(x => x.CreatorId);
+            user
+                .HasMany(u => u.Votes)
+                .WithOne(v => v.Creator)
+                .HasForeignKey(v => v.CreatorId);
         }
     }
 }

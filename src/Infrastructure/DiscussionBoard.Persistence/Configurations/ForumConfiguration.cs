@@ -9,19 +9,19 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Forum> forum)
         {
             forum
-               .Property(x => x.Title)
+               .Property(f => f.Title)
                .IsRequired()
                .HasMaxLength(200);
 
             forum
-               .Property(x => x.Description)
+               .Property(f => f.Description)
                .IsRequired()
                .HasMaxLength(800);
 
             forum
-                .HasMany(x => x.Posts)
-                .WithOne(x => x.Forum)
-                .HasForeignKey(x => x.ForumId);
+                .HasMany(f => f.Posts)
+                .WithOne(p => p.Forum)
+                .HasForeignKey(p => p.ForumId);
         }
     }
 }

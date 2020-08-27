@@ -9,18 +9,18 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Vote> vote)
         {
             vote
-                .Property(x => x.Type)
+                .Property(v => v.Type)
                 .IsRequired();
 
             vote
-                .HasOne(x => x.Comment)
-                .WithMany(x => x.Votes)
-                .HasForeignKey(x => x.CommentId);
+                .HasOne(v => v.Comment)
+                .WithMany(c => c.Votes)
+                .HasForeignKey(v => v.CommentId);
 
             vote
-                .HasOne(x => x.Creator)
-                .WithMany(x => x.Votes)
-                .HasForeignKey(x => x.CreatorId);
+                .HasOne(v => v.Creator)
+                .WithMany(u => u.Votes)
+                .HasForeignKey(v => v.CreatorId);
         }
     }
 }
