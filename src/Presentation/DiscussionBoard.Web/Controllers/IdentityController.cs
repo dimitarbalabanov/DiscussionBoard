@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class IdentityController : ControllerBase
     {
         private readonly IIdentityService _identityService;

@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
 using DiscussionBoard.Persistence.Repositories;
+using DiscussionBoard.Persistence.Seeding;
 using DiscussionBoard.Persistence.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -24,10 +25,19 @@ namespace DiscussionBoard.Persistence
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<IDbContextSeeder, ApplicationDbContextSeeder>();
+
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(jwtSettings), jwtSettings);

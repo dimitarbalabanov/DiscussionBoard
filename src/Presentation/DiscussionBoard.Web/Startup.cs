@@ -36,6 +36,14 @@ namespace DiscussionBoard.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+                var seeder = serviceScope.ServiceProvider.GetRequiredService<IDbContextSeeder>();
+                seeder.SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            }
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

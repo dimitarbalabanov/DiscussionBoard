@@ -1,7 +1,6 @@
 ﻿using DiscussionBoard.Application.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Persistence.Seeding
@@ -24,6 +23,7 @@ namespace DiscussionBoard.Persistence.Seeding
                           {
                               new RolesSeeder(),
                               new AdministratorSeeder(),
+                              new ForumsSeeder()
                           };
 
             foreach (var seeder in seeders)

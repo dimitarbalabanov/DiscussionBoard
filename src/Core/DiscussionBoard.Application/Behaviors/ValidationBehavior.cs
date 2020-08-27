@@ -22,7 +22,7 @@ namespace DiscussionBoard.Application.Behaviours
             var context = new ValidationContext<TRequest>(request);
             var failures = _validators
                 .Select(v => v.Validate(context))
-                .SelectMany(result => result.Errors)
+                .SelectMany(r => r.Errors)
                 .Where(f => f != null)
                 .ToList();
 
