@@ -9,6 +9,6 @@
         //public string CreatorId { get; set; }
         //public virtual ApplicationUser Creator { get; set; }
 
-        public int CommentsCount { get; set; }
+        //public int CommentsCount { get; set; }
     }
 }

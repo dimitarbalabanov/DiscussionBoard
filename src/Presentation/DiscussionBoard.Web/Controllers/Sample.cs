@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Interfaces;
-using DiscussionBoard.Persistence;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

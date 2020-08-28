@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Application.Common.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

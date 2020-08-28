@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Interfaces;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

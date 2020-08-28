@@ -1,5 +1,5 @@
 using DiscussionBoard.Application;
-using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Persistence;
 using DiscussionBoard.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +25,7 @@ namespace DiscussionBoard.Web
             services.AddPersistence(Configuration);
             services.AddApplication();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
             services.AddSpaStaticFiles(configuration =>

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace DiscussionBoard.Application.Interfaces
+namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IDbContextSeeder
     {

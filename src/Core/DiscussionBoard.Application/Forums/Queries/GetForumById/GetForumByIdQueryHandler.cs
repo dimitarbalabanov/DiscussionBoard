@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using DiscussionBoard.Application.Forums.Queries.GetAllForums;
-using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,12 +22,12 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 
         public async Task<GetForumByIdVm> Handle(GetForumByIdQuery request, CancellationToken cancellationToken)
         {
-            var forum = await _forumsRepository
+            var vm = await _forumsRepository
                 .AllAsNoTracking()
-                .Include(f => f.Posts)
-                .SingleOrDefaultAsync(f => f.Id == request.Id);
+                .Where(f => f.Id == request.Id)
+                .ProjectTo<GetForumByIdVm>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
 
-            var vm = _mapper.Map<GetForumByIdVm>(forum);
             return vm;
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace DiscussionBoard.Application.Interfaces
+﻿namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IAuthenticatedUserService
     {

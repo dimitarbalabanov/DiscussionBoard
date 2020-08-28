@@ -1,5 +1,5 @@
 ﻿using DiscussionBoard.Application.DTOs.Identity;
-using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain;
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DiscussionBoard.Application.Exceptions
+namespace DiscussionBoard.Application.Common.Exceptions
 {
     public class ValidationException : Exception
     {

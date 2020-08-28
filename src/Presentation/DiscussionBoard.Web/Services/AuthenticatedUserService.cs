@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Interfaces;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

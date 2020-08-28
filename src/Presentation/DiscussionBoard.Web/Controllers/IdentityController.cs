@@ -1,5 +1,5 @@
 ﻿using DiscussionBoard.Application.DTOs.Identity;
-using DiscussionBoard.Application.Interfaces;
+using DiscussionBoard.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

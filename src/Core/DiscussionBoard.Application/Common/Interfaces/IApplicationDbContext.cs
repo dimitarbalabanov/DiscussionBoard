@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DiscussionBoard.Application.Interfaces
+namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {

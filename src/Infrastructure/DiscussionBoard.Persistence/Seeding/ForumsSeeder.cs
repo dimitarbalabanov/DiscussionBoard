@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Interfaces;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using System;
 using System.Linq;

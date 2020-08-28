@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DiscussionBoard.Application.Interfaces
+namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable
         where TEntity : class

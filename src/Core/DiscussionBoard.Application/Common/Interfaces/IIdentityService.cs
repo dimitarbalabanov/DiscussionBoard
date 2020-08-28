@@ -2,7 +2,7 @@
 using DiscussionBoard.Domain;
 using System.Threading.Tasks;
 
-namespace DiscussionBoard.Application.Interfaces
+namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IIdentityService
     {

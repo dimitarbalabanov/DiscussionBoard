@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Interfaces;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Common;
 using DiscussionBoard.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
