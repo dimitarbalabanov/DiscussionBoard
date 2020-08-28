@@ -1,5 +1,7 @@
 ﻿using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Application.Posts.Commands.CreatePost;
+using DiscussionBoard.Application.Posts.Commands.DeletePost;
+using DiscussionBoard.Application.Posts.Commands.UpdatePost;
 using DiscussionBoard.Application.Posts.Queries.GetPostById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +18,6 @@ namespace DiscussionBoard.Web.Controllers
         {
             _authUserService = authUserService;
         }
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll()
-        //{
-            
-        //}
 
         [AllowAnonymous]
         [HttpGet("{id}")]
@@ -39,15 +36,18 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]string command)
+        public async Task<IActionResult> Update(int id, [FromBody]UpdatePostCommand command)
         {
-            return null;
+            command.Id = id;
+            await Mediator.Send(command);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return null;
+            await Mediator.Send(new DeletePostCommand { Id = id });
+            return NoContent();
         }
     }
 }

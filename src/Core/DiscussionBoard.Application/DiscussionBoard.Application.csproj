@@ -17,4 +17,8 @@
     <ProjectReference Include="..\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Comments\Queries\" />
+  </ItemGroup>
+
 </Project>

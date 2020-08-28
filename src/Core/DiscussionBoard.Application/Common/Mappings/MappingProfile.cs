@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DiscussionBoard.Application.Comments.Commands.CreateComment;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
 using DiscussionBoard.Application.Posts.Commands.CreatePost;
@@ -18,6 +19,8 @@ namespace DiscussionBoard.Application.Common.Mappings
             CreateMap<Comment, CommentDto>();
 
             CreateMap<CreatePostCommand, Post>();
+
+            CreateMap<CreateCommentCommand, Comment>();
         }
     }
 }
