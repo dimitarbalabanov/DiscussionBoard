@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Comments\Queries\" />
+    <Folder Include="Votes\Queries\" />
   </ItemGroup>
 
 </Project>
