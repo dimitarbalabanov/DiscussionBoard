@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FORUMS_URL } from './api-routes';
+import { FORUMS_URL } from './apiRoutes';
 
 export const getForumById = (forumId) => {
   return axios.get(FORUMS_URL + forumId);

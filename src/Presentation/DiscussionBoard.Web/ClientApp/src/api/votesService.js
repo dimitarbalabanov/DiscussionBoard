@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { VOTES_URL } from './api-routes';
+import { VOTES_URL } from './apiRoutes';
 
 export const createVote = (data) => {
   return axios.post(VOTES_URL, data);

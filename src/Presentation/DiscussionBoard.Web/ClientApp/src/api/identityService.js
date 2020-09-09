@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   IDENTITY_LOGIN_URL,
   IDENTITY_REGISTER_URL
-} from './api-routes';
+} from './apiRoutes';
 
 export const login = (data) => {
   return axios.post(IDENTITY_LOGIN_URL, data);

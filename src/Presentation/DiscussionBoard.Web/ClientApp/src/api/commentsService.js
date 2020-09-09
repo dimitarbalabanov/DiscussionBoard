@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { COMMENTS_URL } from './api-routes';
+import { COMMENTS_URL } from './apiRoutes';
 
 export const createComment = (data) => {
   return axios.post(COMMENTS_URL, data);

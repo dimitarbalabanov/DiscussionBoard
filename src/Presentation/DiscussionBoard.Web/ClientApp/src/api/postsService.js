@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { POSTS_URL } from './api-routes';
+import { POSTS_URL } from './apiRoutes';
 
 export const getPostById = (postId) => {
   return axios.get(POSTS_URL + postId);
