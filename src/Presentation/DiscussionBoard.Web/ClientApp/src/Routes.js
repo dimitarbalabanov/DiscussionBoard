@@ -2,7 +2,8 @@ import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
 import  RouteWithLayout  from './components/RouteWithLayout';
-import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import Main from './layouts/Main/Main'; 
+import {Minimal as MinimalLayout } from './layouts';
 
 import Login from './containers/Auth/Login';
 import Register from './containers/Auth/Register';
@@ -16,19 +17,19 @@ const Routes = () => {
       <RouteWithLayout
         component={Home}
         exact
-        layout={MainLayout}
+        layout={Main}
         path="/"
       />
       <RouteWithLayout
         component={Register}
         exact
-        layout={MinimalLayout}
+        layout={Main}
         path="/register"
       />
       <RouteWithLayout
         component={Login}
         exact
-        layout={MinimalLayout}
+        layout={Main}
         path="/login"
       />
       <RouteWithLayout

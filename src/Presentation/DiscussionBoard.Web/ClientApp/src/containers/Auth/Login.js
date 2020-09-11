@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -22,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = () => {
+const Login = props => {
   const classes = useStyles();
 
   return (
@@ -46,7 +49,8 @@ const Login = () => {
               email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
+            onSubmit={values => {
+              props.onAuth(values.email, values.password);
               //<Redirect to='/home' />
               //navigate('/app/dashboard', { replace: true });
             }}
@@ -149,4 +153,21 @@ const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+    //isAuthenticated: state.auth.token !== null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
