@@ -64,11 +64,11 @@ const Sidebar = props => {
       href: '/register',
       icon: <LockOpenIcon />
     },
-    // {
-    //   title: 'Typography',
-    //   href: '/typography',
-    //   icon: <TextFieldsIcon />
-    // },
+    {
+      title: 'Logout',
+      href: '/logout',
+      icon: <TextFieldsIcon />
+    },
     // {
     //   title: 'Icons',
     //   href: '/icons',

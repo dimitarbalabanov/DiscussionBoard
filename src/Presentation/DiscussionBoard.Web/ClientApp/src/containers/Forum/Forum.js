@@ -5,13 +5,13 @@ import {
   Container,
   Grid,
   CircularProgress,
+  Typography,
   makeStyles
 } from '@material-ui/core';
 
 import Page from '../../components/Page';
 
-import SearchToolbar from '../../components/SearchToolbar';
-import ForumCard from '../../components/ForumCard';
+import PostCard from '../../components/PostCard';
 import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,43 +21,53 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  forumCard: {
+  postCard: {
     height: '100%'
   }
 }));
 
-const Home = props => {
+const Forum = props => {
   const classes = useStyles();
 
-  const { onFetchForums } = props;
+  const { onFetchForum } = props;
+  const { forumId } = props.match.params;
 
   useEffect(() => {
-    onFetchForums();
-  }, [onFetchForums]);
+    onFetchForum(forumId);
+  }, [onFetchForum, forumId]);
 
-  let forums = (
+  let forum = (
     <Box textAlign="center">
       <CircularProgress size={150} />
     </Box>
   );
 
-  if (!props.loading) {
-    forums = (
+  if (!props.loading && props.forum) {
+    console.log(props.forum)
+    forum = (
       <Box mt={3}>
+        <Typography
+          align="center"
+          color="textPrimary"
+          gutterBottom
+          variant="h4"
+        >
+          {props.forum.title}
+        </Typography>
         <Grid
           container
           spacing={3}
           justify="center"
         >
-          {props.forums.map((forum) => (
+          {props.forum.posts.map((post) => (
             <Grid
               item
-              key={forum.id}
+              key={post.id}
               xs={8}
             >
-              <ForumCard
-                className={classes.forumCard}
-                forum={forum}
+              <PostCard
+                className={classes.postCard}
+                post={post}
               />
             </Grid>
           ))}
@@ -69,11 +79,10 @@ const Home = props => {
   return (
     <Page
       className={classes.root}
-      title="Discussion Board"
+      title="Forum"
     >
       <Container maxWidth={false}>
-        {/* <SearchToolbar /> */}
-        {forums}
+        {forum}
       </Container>
     </Page>
   );
@@ -81,19 +90,19 @@ const Home = props => {
 
 const mapStateToProps = state => {
   return {
-    forums: state.home.forums,
-    loading: state.home.loading,
-    error: state.home.error
+    forum: state.forum.forum,
+    loading: state.forum.loading,
+    error: state.forum.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForums: () => dispatch(actions.fetchForums())
+    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Forum);

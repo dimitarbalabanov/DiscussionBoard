@@ -57,8 +57,8 @@ export const auth = (email, password) => {
               dispatch(authSuccess(response.data.token));
               //dispatch(checkAuthTimeout(response.data.expiresIn));
           })
-          .catch(err => {
-              dispatch(authFail(err.response.data.error));
+          .catch(error => {
+              dispatch(authFail(error.message));
           });
     };
 };
