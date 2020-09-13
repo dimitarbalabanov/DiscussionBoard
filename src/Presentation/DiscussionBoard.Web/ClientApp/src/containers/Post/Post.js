@@ -10,9 +10,8 @@ import {
 } from '@material-ui/core';
 
 import Page from '../../components/Page';
-import CreatePostModal from '../../components/CreatePostModal';
 
-import PostCard from '../../components/PostCard';
+import CommentCard from '../../components/CommentCard';
 import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,56 +21,60 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  postCard: {
+  commentCard: {
     height: '100%'
   }
 }));
 
-const Forum = props => {
+const Post = props => {
   const classes = useStyles();
 
-  const { onFetchForum } = props;
-  const { forumId } = props.match.params;
+  const { onFetchPost } = props;
+  const { postId } = props.match.params;
 
   useEffect(() => {
-    onFetchForum(forumId);
-  }, [onFetchForum, forumId]);
+    onFetchPost(postId);
+  }, [onFetchPost, postId]);
 
-  let forum = (
+  let post = (
     <Box textAlign="center">
       <CircularProgress size={150} />
     </Box>
   );
 
-  if (!props.loading && props.forum) {
-    console.log(props.forum)
-    forum = (
+  if (!props.loading && props.post) {
+    console.log(props.post)
+    post = (
       <Box mt={3}>
-        <Box mt={3}>
-          <CreatePostModal />
-        </Box>
         <Typography
           align="center"
           color="textPrimary"
           gutterBottom
           variant="h4"
         >
-          {props.forum.title}
+          {props.post.title}
+        </Typography>
+        <Typography
+          align="center"
+          color="textPrimary"
+          variant="body1"
+        >
+          {props.post.content}
         </Typography>
         <Grid
           container
           spacing={3}
           justify="center"
         >
-          {props.forum.posts.map((post) => (
+          {props.post.comments.map((comment) => (
             <Grid
               item
-              key={post.id}
+              key={comment.id}
               xs={8}
             >
-              <PostCard
-                className={classes.postCard}
-                post={post}
+              <CommentCard
+                className={classes.commentCard}
+                comment={comment}
               />
             </Grid>
           ))}
@@ -83,10 +86,10 @@ const Forum = props => {
   return (
     <Page
       className={classes.root}
-      title="Forum"
+      title="Post"
     >
       <Container maxWidth={false}>
-        {forum}
+        {post}
       </Container>
     </Page>
   );
@@ -94,19 +97,19 @@ const Forum = props => {
 
 const mapStateToProps = state => {
   return {
-    forum: state.forum.forum,
-    loading: state.forum.loading,
-    error: state.forum.error
+    post: state.post.post,
+    loading: state.post.loading,
+    error: state.post.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId))
+    onFetchPost: (postId) => dispatch(actions.fetchPostById(postId))
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Forum);
+)(Post);

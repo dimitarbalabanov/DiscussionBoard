@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const PostCard = ({ className, post, ...rest }) => {
+const CommentCard = ({ className, comment, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -55,9 +54,8 @@ const PostCard = ({ className, post, ...rest }) => {
           gutterBottom
           variant="h4"
         >
-          {post.title}
+          {comment.content}
         </Typography>
-        <Link to={`/posts/${post.id}`}>VISIT</Link>
         {/* <Typography
           align="center"
           color="textPrimary"
@@ -114,9 +112,9 @@ const PostCard = ({ className, post, ...rest }) => {
   );
 };
 
-PostCard.propTypes = {
+CommentCard.propTypes = {
   className: PropTypes.string,
   post: PropTypes.object.isRequired
 };
 
-export default PostCard;
+export default CommentCard;

@@ -11,3 +11,7 @@ export {
 export {
   fetchForumById
 } from './forum';
+
+export {
+  fetchPostById
+} from './post';

@@ -10,6 +10,7 @@ import Register from './containers/Auth/Register';
 import Logout from './containers/Auth/Logout';
 import Home from './containers/Home/Home';
 import Forum from './containers/Forum/Forum';
+import Post from './containers/Post/Post';
 
 import NotFound from './components/NotFound/NotFound';
 
@@ -26,6 +27,11 @@ const Routes = () => {
         component={Forum}
         layout={Main}
         path="/forums/:forumId"
+      />
+      <RouteWithLayout
+        component={Post}
+        layout={Main}
+        path="/posts/:postId"
       />
       <RouteWithLayout
         component={Register}
