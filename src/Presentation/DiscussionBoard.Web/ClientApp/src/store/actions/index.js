@@ -5,11 +5,16 @@ export {
 } from './auth';
 
 export {
+  register
+} from './register';
+
+export {
   fetchForums
 } from './home';
 
 export {
-  fetchForumById
+  fetchForumById,
+  createPost
 } from './forum';
 
 export {

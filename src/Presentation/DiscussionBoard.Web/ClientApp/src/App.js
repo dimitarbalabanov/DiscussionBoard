@@ -8,6 +8,7 @@ import GlobalStyles from './components/GlobalStyles';
 //import 'react-perfect-scrollbar/dist/css/styles.css';
 import theme from './theme/theme';
 import Routes from './Routes';
+import Main from './layouts/Main/Main';
 
 
 
@@ -22,17 +23,20 @@ const App = props => {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
           <BrowserRouter>
-            <Routes />
+            <Main isAuth={props.isAuthenticated} username={props.username}>
+              <Routes />
+            </Main>
           </BrowserRouter>
       </ThemeProvider>
   );
 };
 
-// const mapStateToProps = state => {
-//   return {
-//     isAuthenticated: state.auth.token !== null
-//   };
-// };
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.auth.token !== null,
+    username: state.auth.username
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -42,7 +46,6 @@ const mapDispatchToProps = dispatch => {
 
 export default 
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
-  )(App)
-;
+  )(App);

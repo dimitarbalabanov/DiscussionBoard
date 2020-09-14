@@ -1,4 +1,4 @@
-import { login } from "../../api/identityService";
+import { loginApi } from "../../api/identityService";
 import * as actionTypes from './actionTypes';
 
 export const authStart = () => {
@@ -7,11 +7,11 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (token, username) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        idToken: token,
-        userId: userId
+        token: token,
+        username: username
     };
 };
 
@@ -25,7 +25,7 @@ export const authFail = (error) => {
 export const logout = () => {
     localStorage.removeItem('token');
     //localStorage.removeItem('expirationDate');
-    //localStorage.removeItem('userId');
+    localStorage.removeItem('username');
     return {
         type: actionTypes.AUTH_LOGOUT
     };
@@ -47,14 +47,15 @@ export const auth = (email, password) => {
             password: password,
         };
 
-        login(authData)
+        loginApi(authData)
           .then(response => {
               //const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
               console.log(response)
               localStorage.setItem('token', response.data.token);
+              localStorage.setItem('username', response.data.username);
               //localStorage.setItem('expirationDate', expirationDate);
               //localStorage.setItem('userId', response.data.localId);
-              dispatch(authSuccess(response.data.token));
+              dispatch(authSuccess(response.data.token, response.data.username));
               //dispatch(checkAuthTimeout(response.data.expiresIn));
           })
           .catch(error => {

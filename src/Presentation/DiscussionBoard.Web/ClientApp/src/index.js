@@ -8,6 +8,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
 import authReducer from './store/reducers/auth';
+import registerReducer from './store/reducers/register';
 import homeReducer from './store/reducers/home';
 import forumReducer from './store/reducers/forum';
 import postReducer from './store/reducers/post';
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     auth: authReducer,
     home: homeReducer,
     forum: forumReducer,
-    post: postReducer
+    post: postReducer,
+    register: registerReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

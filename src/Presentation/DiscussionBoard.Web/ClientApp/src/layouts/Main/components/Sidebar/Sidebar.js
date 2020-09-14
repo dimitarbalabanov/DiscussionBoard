@@ -47,12 +47,14 @@ const Sidebar = props => {
     {
       title: 'Home',
       href: '/',
-      icon: <DashboardIcon />
+      icon: <DashboardIcon />,
+      render: true
     },
     {
       title: 'Login',
       href: '/login',
-      icon: <PeopleIcon />
+      icon: <PeopleIcon />,
+      render: !props.isAuth
     },
     // {
     //   title: 'Products',
@@ -62,12 +64,14 @@ const Sidebar = props => {
     {
       title: 'Register',
       href: '/register',
-      icon: <LockOpenIcon />
+      icon: <LockOpenIcon />,
+      render: !props.isAuth
     },
     {
       title: 'Logout',
       href: '/logout',
-      icon: <TextFieldsIcon />
+      icon: <TextFieldsIcon />,
+      render: props.isAuth
     },
     // {
     //   title: 'Icons',
@@ -98,11 +102,12 @@ const Sidebar = props => {
         {...rest}
         className={clsx(classes.root, className)}
       >
-        <Profile />
+        <Profile username={props.username}/>
         <Divider className={classes.divider} />
         <SidebarNav
           className={classes.nav}
           pages={pages}
+          isAuth={props.isAuth}
         />
       </div>
     </Drawer>

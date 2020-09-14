@@ -8,6 +8,8 @@ namespace DiscussionBoard.Domain
 
         public bool Success { get; set; }
 
+        public string Username { get; set; }
+
         public IEnumerable<string> Errors { get; set; }
     }
 }

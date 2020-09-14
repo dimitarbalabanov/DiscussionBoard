@@ -10,9 +10,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Box from '@material-ui/core/Box';
+import { PinDropSharp } from '@material-ui/icons';
+import { Redirect } from 'react-router-dom';
 
 
-const CreatePostModal = () => {
+const CreatePostModal = props => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -41,8 +43,13 @@ const CreatePostModal = () => {
               content: Yup.string().max(255).required('content is required')
             })}
             onSubmit={values => {
-              console.log(values);
-              //props.onAuth(values.title, values.content);
+              const post = {
+                title: values.title,
+                content: values.content,
+                forumId: props.forumId
+              };
+
+              props.onCreatePost(post);
             }}
           >
             {({

@@ -124,6 +124,7 @@ namespace DiscussionBoard.Persistence.Services
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
+                Username = user.UserName
             };
         }
     }

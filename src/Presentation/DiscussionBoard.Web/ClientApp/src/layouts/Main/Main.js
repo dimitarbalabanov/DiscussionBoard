@@ -57,6 +57,8 @@ const Main = props => {
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
+        isAuth={props.isAuth}
+        username={props.username}
       />
       <main className={classes.content}>
         {children}

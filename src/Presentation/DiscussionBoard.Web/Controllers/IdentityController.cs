@@ -31,7 +31,8 @@ namespace DiscussionBoard.Web.Controllers
 
             return Ok(new AuthenticationSuccessResponse
             {
-                Token = authResponse.Token
+                Token = authResponse.Token,
+                Username = authResponse.Username
             });
         }
 

@@ -48,7 +48,7 @@ const Forum = props => {
     forum = (
       <Box mt={3}>
         <Box mt={3}>
-          <CreatePostModal />
+          <CreatePostModal forumId={forumId} postId={props.newPostId} loading={props.newPostLoading} error={props.newPostError} onCreatePost={props.onCreatePost} />
         </Box>
         <Typography
           align="center"
@@ -96,13 +96,17 @@ const mapStateToProps = state => {
   return {
     forum: state.forum.forum,
     loading: state.forum.loading,
-    error: state.forum.error
+    error: state.forum.error,
+    newPostId: state.forum.newPostId,
+    newPostLoading: state.forum.newPostLoading,
+    newPostError: state.forum.newPostError
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId))
+    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
+    onCreatePost: (post) => dispatch(actions.createPost(post))
   };
 };
 
