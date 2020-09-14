@@ -10,14 +10,12 @@ import theme from './theme/theme';
 import Routes from './Routes';
 import Main from './layouts/Main/Main';
 
-
-
 const App = props => {
   const { onTryAutoSignup } = props;
 
-  // useEffect(() => {
-  //   onTryAutoSignup();
-  // }, [onTryAutoSignup]);
+  useEffect(() => {
+    onTryAutoSignup();
+  }, [onTryAutoSignup]);
 
   return (
       <ThemeProvider theme={theme}>

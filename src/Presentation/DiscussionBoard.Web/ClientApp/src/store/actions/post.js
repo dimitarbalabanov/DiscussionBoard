@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import { getPostById } from '../../api/postsService';
+import { createComment as apiCreateComment} from '../../api/commentsService';
 
 export const fetchPostByIdSuccess = ( post ) => {
     return {
@@ -32,4 +33,37 @@ export const fetchPostById = (postId) => {
                 dispatch(fetchPostByIdFail(err));
             } );
     };
+};
+
+export const createCommentStart = () => {
+  return {
+    type: actionTypes.CREATE_COMMENT_START
+  };
+};
+
+export const createCommentFail = (error) => {
+  return {
+    type: actionTypes.CREATE_COMMENT_FAIL,
+    newCommentError: error
+  };
+};
+
+export const createCommentSuccess = (newCommentId) => {
+  return {
+    type: actionTypes.CREATE_COMMENT_SUCCESS,
+    newCommentId: newCommentId
+  };
+};
+
+export const createComment = (newComment) => {
+  return dispatch => {
+    dispatch(createCommentStart());
+    apiCreateComment(newComment)
+      .then(res =>
+        {
+          dispatch(createCommentSuccess(res.data));
+          dispatch(fetchPostById(res.data));
+        })
+      .catch(error => dispatch(createCommentFail(error)));
+  };
 };

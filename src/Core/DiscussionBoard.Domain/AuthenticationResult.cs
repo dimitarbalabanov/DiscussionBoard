@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DiscussionBoard.Domain
 {
@@ -9,6 +10,8 @@ namespace DiscussionBoard.Domain
         public bool Success { get; set; }
 
         public string Username { get; set; }
+
+        public DateTime ExpiresAt { get; set; }
 
         public IEnumerable<string> Errors { get; set; }
     }

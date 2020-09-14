@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import Page from '../../components/Page';
+import CreateCommentModal from '../../components/CreateCommentModal';
 
 import CommentCard from '../../components/CommentCard';
 import * as actions from '../../store/actions';
@@ -46,6 +47,9 @@ const Post = props => {
     console.log(props.post)
     post = (
       <Box mt={3}>
+        <Box mt={3}>
+          <CreateCommentModal postId={postId} loading={props.newCommentLoading} error={props.newCommentError} onCreateComment={props.onCreateComment} />
+        </Box>
         <Typography
           align="center"
           color="textPrimary"
@@ -99,13 +103,17 @@ const mapStateToProps = state => {
   return {
     post: state.post.post,
     loading: state.post.loading,
-    error: state.post.error
+    error: state.post.error,
+    newCommentId: state.post.newCommentId,
+    newCommentLoading: state.post.newCommentLoading,
+    newCommentError: state.post.newCommentError
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchPost: (postId) => dispatch(actions.fetchPostById(postId))
+    onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+    onCreateComment: (comment) => dispatch(actions.createComment(comment))
   };
 };
 

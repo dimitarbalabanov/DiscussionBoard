@@ -55,7 +55,11 @@ export const createPost = (newPost) => {
   return dispatch => {
     dispatch(createPostStart());
     apiCreatePost(newPost)
-      .then(res => dispatch(createPostSuccess(res.data)))
+      .then(res =>
+        {
+          dispatch(createPostSuccess(res.data));
+          dispatch(fetchForumById(res.data));
+        })
       .catch(error => dispatch(createPostFail(error)));
   };
 };

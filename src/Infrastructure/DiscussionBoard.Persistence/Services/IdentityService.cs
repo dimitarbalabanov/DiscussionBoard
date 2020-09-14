@@ -109,11 +109,11 @@ namespace DiscussionBoard.Persistence.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-
+            var expiration = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                Expires = expiration,
                 SigningCredentials =
                     new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -124,6 +124,7 @@ namespace DiscussionBoard.Persistence.Services
             {
                 Success = true,
                 Token = tokenHandler.WriteToken(token),
+                ExpiresAt = expiration,
                 Username = user.UserName
             };
         }

@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
     register: registerReducer
 });
 
-const store = createStore(rootReducer, composeEnhancers(
+export const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(thunk)
 ));
 

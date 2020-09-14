@@ -4,6 +4,7 @@ import updateObject from '../../utils/updateObject';
 const initialState = {
     token: null,
     username: null,
+    expiresAt: null,
     error: null,
     loading: false
 };
@@ -16,6 +17,7 @@ const authSuccess = (state, action) => {
     return updateObject( state, { 
         token: action.token,
         username: action.username,
+        expiresAt: action.expiresAt,
         error: null,
         loading: false
      } );
@@ -29,7 +31,7 @@ const authFail = (state, action) => {
 };
 
 const authLogout = (state, action) => {
-    return updateObject(state, { token: null, username: null });
+    return updateObject(state, { token: null, username: null, expiresAt: null });
 };
 
 const reducer = ( state = initialState, action ) => {

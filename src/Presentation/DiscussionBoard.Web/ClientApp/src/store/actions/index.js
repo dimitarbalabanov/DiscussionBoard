@@ -18,5 +18,6 @@ export {
 } from './forum';
 
 export {
-  fetchPostById
+  fetchPostById,
+  createComment
 } from './post';

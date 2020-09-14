@@ -24,7 +24,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             await _postsRepository.AddAsync(post);
             await _postsRepository.SaveChangesAsync();
 
-            return post.Id;
+            return post.ForumId;
         }
     }
 }

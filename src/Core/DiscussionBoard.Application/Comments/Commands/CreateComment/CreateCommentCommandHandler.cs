@@ -24,7 +24,7 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
             await _commentsRepository.AddAsync(comment);
             await _commentsRepository.SaveChangesAsync();
 
-            return comment.Id;
+            return comment.PostId;
         }
     }
 }
