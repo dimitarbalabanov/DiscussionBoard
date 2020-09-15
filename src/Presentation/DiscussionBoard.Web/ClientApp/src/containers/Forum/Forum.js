@@ -6,14 +6,14 @@ import {
   Grid,
   CircularProgress,
   Typography,
+  Button,
   makeStyles
 } from '@material-ui/core';
+import Page from '../../components/Common/Page';
 
-import Page from '../../components/Page';
-import CreatePostModal from '../../components/CreatePostModal';
-
-import PostCard from '../../components/PostCard';
+import PostCard from '../../components/Post/PostCard';
 import * as actions from '../../store/actions';
+import CreatePost from '../../components/Post/CreatePost';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,14 +47,13 @@ const Forum = props => {
     console.log(props.forum)
     forum = (
       <Box mt={3}>
-        <Box mt={3}>
-          <CreatePostModal forumId={forumId} postId={props.newPostId} loading={props.newPostLoading} error={props.newPostError} onCreatePost={props.onCreatePost} />
-        </Box>
+
+        <CreatePost forumId={forumId} postId={props.newPostId} loading={props.newPostLoading} error={props.newPostError} onCreatePost={props.onCreatePost} />
         <Typography
           align="center"
           color="textPrimary"
           gutterBottom
-          variant="h4"
+          variant="h1"
         >
           {props.forum.title}
         </Typography>

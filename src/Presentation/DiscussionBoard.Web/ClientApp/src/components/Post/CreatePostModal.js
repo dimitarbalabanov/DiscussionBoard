@@ -30,7 +30,11 @@ const CreatePostModal = props => {
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Create Post
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog 
+        fullWidth
+        maxWidth="md"
+        open={open}
+        onClose={handleClose}>
         <DialogTitle>Create Post</DialogTitle>
         <DialogContent>
           <Formik
@@ -71,7 +75,7 @@ const CreatePostModal = props => {
                   name="title"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="title"
+                  type="text"
                   value={values.title}
                   variant="outlined"
                 />
@@ -84,9 +88,11 @@ const CreatePostModal = props => {
                   name="content"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="content"
+                  type="text"
                   value={values.content}
                   variant="outlined"
+                  multiline
+                  rows={4}
                 />
                 <Box my={2}>
                   <DialogActions>

@@ -16,15 +16,12 @@ const useStyles = makeStyles(theme => ({
       paddingTop: 64
     }
   },
-  shiftContent: {
-    paddingLeft: 240
-  },
   content: {
     height: '100%'
   }
 }));
 
-const Main = props => {
+const Layout = props => {
   const { children } = props;
   
   const classes = useStyles();
@@ -43,20 +40,16 @@ const Main = props => {
     setOpenSidebar(false);
   };
 
-  const shouldOpenSidebar = isDesktop ? true : openSidebar;
+  const shouldOpenSidebar = isDesktop ? false : openSidebar;
 
   return (
-    <div
-      className={clsx({
-        [classes.root]: true,
-        [classes.shiftContent]: isDesktop
-      })}
-    >
-      <Topbar onSidebarOpen={handleSidebarOpen} />
+    <div className={clsx({[classes.root]: true})}>
+      <Topbar onSidebarOpen={handleSidebarOpen}  isAuth={props.isAuth}
+        username={props.username} />
       <Sidebar
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
-        variant={isDesktop ? 'persistent' : 'temporary'}
+        variant='temporary'
         isAuth={props.isAuth}
         username={props.username}
       />
@@ -68,8 +61,8 @@ const Main = props => {
   );
 };
 
-Main.propTypes = {
+Layout.propTypes = {
   children: PropTypes.node
 };
 
-export default Main;
+export default Layout;

@@ -8,10 +8,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-import Page from '../../components/Page';
+import Page from '../../components/Common/Page';
 
-import SearchToolbar from '../../components/SearchToolbar';
-import ForumCard from '../../components/ForumCard';
+import ForumCard from '../../components/Forum/ForumCard';
 import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({

@@ -17,7 +17,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../components/Page';
+import Page from '../../components/Common/Page';
 
 const useStyles = makeStyles((theme) => ({
   root: {

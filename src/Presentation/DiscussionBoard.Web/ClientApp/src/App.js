@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 
 import { ThemeProvider } from '@material-ui/core';
-import GlobalStyles from './components/GlobalStyles';
+import GlobalStyles from './components/Common/GlobalStyles';
 //import 'react-perfect-scrollbar/dist/css/styles.css';
 import theme from './theme/theme';
 import Routes from './Routes';
-import Main from './layouts/Main/Main';
+import Layout from './layout/Layout';
 
 const App = props => {
   const { onTryAutoSignup } = props;
@@ -21,9 +21,9 @@ const App = props => {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
           <BrowserRouter>
-            <Main isAuth={props.isAuthenticated} username={props.username}>
+            <Layout isAuth={props.isAuthenticated} username={props.username}>
               <Routes />
-            </Main>
+            </Layout>
           </BrowserRouter>
       </ThemeProvider>
   );

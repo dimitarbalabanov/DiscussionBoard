@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.20.0",
     "clsx": "^1.1.1",
+    "draft-js": "^0.11.7",
     "formik": "^2.1.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

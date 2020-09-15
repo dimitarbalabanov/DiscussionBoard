@@ -9,10 +9,10 @@ import {
   makeStyles
 } from '@material-ui/core';
 
-import Page from '../../components/Page';
-import CreateCommentModal from '../../components/CreateCommentModal';
+import Page from '../../components/Common/Page';
+import CreateCommentModal from '../../components/Comment/CreateCommentModal';
 
-import CommentCard from '../../components/CommentCard';
+import CommentCard from '../../components/Comment/CommentCard';
 import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
