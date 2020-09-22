@@ -37,6 +37,15 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
                 };
             }
 
+            var passwordsMatch = string.Equals(request.Password, request.ConfirmPassword);
+            if (!passwordsMatch)
+            {
+                return new RegisterResponse
+                {
+                    Errors = new[] { "Password and Confirm Password do not match" }
+                };
+            }
+
             var newUser = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),

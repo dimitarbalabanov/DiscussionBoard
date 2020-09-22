@@ -6,7 +6,9 @@ import {
   Grid,
   CircularProgress,
   Typography,
-  makeStyles
+  makeStyles,
+  Card,
+  CardContent
 } from '@material-ui/core';
 
 import Page from '../../components/Common/Page';
@@ -50,21 +52,33 @@ const Post = props => {
         <Box mt={3}>
           <CreateCommentModal postId={postId} loading={props.newCommentLoading} error={props.newCommentError} onCreateComment={props.onCreateComment} />
         </Box>
-        <Typography
-          align="center"
-          color="textPrimary"
-          gutterBottom
-          variant="h4"
-        >
-          {props.post.title}
-        </Typography>
-        <Typography
-          align="center"
-          color="textPrimary"
-          variant="body1"
-        >
-          {props.post.content}
-        </Typography>
+        <Box my={3}>
+          <Grid
+            container
+            spacing={3}
+            justify="center"
+          >
+            <Card>
+              <CardContent>
+                <Typography
+                  align="center"
+                  color="textPrimary"
+                  gutterBottom
+                  variant="h4"
+                >
+                  {props.post.title}
+                </Typography>
+                <Typography
+                align="center"
+                color="textPrimary"
+                variant="body1"
+                >
+                  {props.post.content}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+      </Box>
         <Grid
           container
           spacing={3}

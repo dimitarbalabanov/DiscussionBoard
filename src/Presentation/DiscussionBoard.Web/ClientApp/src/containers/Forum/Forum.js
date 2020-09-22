@@ -7,7 +7,9 @@ import {
   CircularProgress,
   Typography,
   Button,
-  makeStyles
+  Card,
+  CardContent,
+  makeStyles,
 } from '@material-ui/core';
 import Page from '../../components/Common/Page';
 
@@ -47,9 +49,12 @@ const Forum = props => {
     console.log(props.forum)
     forum = (
       <Box mt={3}>
-
         <CreatePost forumId={forumId} postId={props.newPostId} loading={props.newPostLoading} error={props.newPostError} onCreatePost={props.onCreatePost} />
-        <Typography
+        <Box m={3}>
+        <Grid container justify="center">
+        <Card>
+          <CardContent>
+          <Typography
           align="center"
           color="textPrimary"
           gutterBottom
@@ -57,6 +62,10 @@ const Forum = props => {
         >
           {props.forum.title}
         </Typography>
+          </CardContent>
+        </Card>
+        </Grid>
+        </Box>
         <Grid
           container
           spacing={3}

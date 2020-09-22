@@ -6,6 +6,7 @@ using DiscussionBoard.Application.Posts.Commands.CreatePost;
 using DiscussionBoard.Application.Posts.Queries.GetPostById;
 using DiscussionBoard.Application.Votes.Commands.CreateVote;
 using DiscussionBoard.Domain.Entities;
+using System.Linq;
 
 namespace DiscussionBoard.Application.Common.Mappings
 {
@@ -17,7 +18,8 @@ namespace DiscussionBoard.Application.Common.Mappings
             CreateMap<Post, PostDto>();
             CreateMap<Forum, GetForumByIdVm>();
             CreateMap<Post, GetPostByIdVm>();
-            CreateMap<Comment, CommentDto>();
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));
 
             CreateMap<CreatePostCommand, Post>();
 

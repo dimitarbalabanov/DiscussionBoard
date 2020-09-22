@@ -40,8 +40,8 @@ const CreatePost = props => {
       content: 'Enter content'
     }}
     validationSchema={Yup.object().shape({
-      title: Yup.string().max(255).required('title is required'),
-      content: Yup.string().max(255).required('content is required')
+      title: Yup.string().min(3).max(200).required('title is required'),
+      content: Yup.string().min(30).max(2500).required('content is required')
     })}
     onSubmit={values => {
       const post = {
