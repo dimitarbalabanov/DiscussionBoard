@@ -1,8 +1,6 @@
-﻿using DiscussionBoard.Application.DTOs.Identity;
-using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Domain;
-using DiscussionBoard.Domain.Entities;
+﻿using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,28 +9,29 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace DiscussionBoard.Persistence.Services
+namespace DiscussionBoard.Application.Identity.Commands.Login
 {
-    public class IdentityService : IIdentityService
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings)
+        public LoginCommandHandler(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
         }
 
-        public async Task<AuthenticationResult> LoginAsync(LoginRequest request)
+        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return new AuthenticationResult
+                return new LoginResponse
                 {
                     Errors = new[] { "User does not exist" }
                 };
@@ -42,55 +41,24 @@ namespace DiscussionBoard.Persistence.Services
 
             if (!userHasValidPassword)
             {
-                return new AuthenticationResult
+                return new LoginResponse
                 {
                     Errors = new[] { "User/password combination is invalid" }
                 };
             }
 
-            return await GenerateAuthenticationResultForUserAsync(user);
-        }
+            var (token, expiration) = await GenerateJwtToken(user);
 
-        public async Task<AuthenticationResult> RegisterAsync(RegisterRequest request)
-        {
-            var sameEmailUser = await _userManager.FindByEmailAsync(request.Email);
-            if (sameEmailUser != null)
+            return new LoginResponse
             {
-                return new AuthenticationResult
-                {
-                    Errors = new[] { "User with this email address already exists" }
-                };
-            }
-
-            var sameUsernameUser = await _userManager.FindByNameAsync(request.UserName);
-            if (sameUsernameUser != null)
-            {
-                return new AuthenticationResult
-                {
-                    Errors = new[] { "User with this username already exists" }
-                };
-            }
-
-            var newUser = new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                Email = request.Email,
-                UserName = request.UserName
+                Success = true,
+                Token = token,
+                ExpiresAt = expiration,
+                Username = user.UserName
             };
-
-            var createdUser = await _userManager.CreateAsync(newUser, request.Password);
-            if (!createdUser.Succeeded)
-            {
-                return new AuthenticationResult
-                {
-                    Errors = createdUser.Errors.Select(e => e.Description)
-                };
-            }
-
-            return await GenerateAuthenticationResultForUserAsync(newUser);
         }
 
-        private async Task<AuthenticationResult> GenerateAuthenticationResultForUserAsync(ApplicationUser user)
+        private async Task<(string, DateTime)> GenerateJwtToken(ApplicationUser user)
         {
             var claims = new List<Claim>
             {
@@ -120,13 +88,7 @@ namespace DiscussionBoard.Persistence.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new AuthenticationResult
-            {
-                Success = true,
-                Token = tokenHandler.WriteToken(token),
-                ExpiresAt = expiration,
-                Username = user.UserName
-            };
+            return (tokenHandler.WriteToken(token), expiration);
         }
     }
 }

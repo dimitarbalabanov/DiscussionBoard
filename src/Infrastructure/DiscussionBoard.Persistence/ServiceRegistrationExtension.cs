@@ -3,7 +3,6 @@ using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
 using DiscussionBoard.Persistence.Repositories;
 using DiscussionBoard.Persistence.Seeding;
-using DiscussionBoard.Persistence.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,8 +41,6 @@ namespace DiscussionBoard.Persistence
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(jwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
-
-            services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddAuthentication(o =>
             {

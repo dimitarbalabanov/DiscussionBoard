@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.DTOs.Identity
 {
-    public class AuthenticationFailedResponse
+    public class LoginFailedResponse
     {
         public IEnumerable<string> Errors { get; set; }
     }

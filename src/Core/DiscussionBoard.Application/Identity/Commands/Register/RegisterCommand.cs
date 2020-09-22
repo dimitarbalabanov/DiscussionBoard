@@ -1,6 +1,8 @@
-﻿namespace DiscussionBoard.Application.DTOs.Identity
+﻿using MediatR;
+
+namespace DiscussionBoard.Application.Identity.Commands.Register
 {
-    public class RegisterRequest
+    public class RegisterCommand : IRequest<RegisterResponse>
     {
         public string Email { get; set; }
 

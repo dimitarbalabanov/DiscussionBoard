@@ -1,64 +1,56 @@
 ﻿using DiscussionBoard.Application.DTOs.Identity;
-using DiscussionBoard.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using DiscussionBoard.Application.Identity.Commands.Login;
+using DiscussionBoard.Application.Identity.Commands.Register;
 
 namespace DiscussionBoard.Web.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class IdentityController : ControllerBase
+    public class IdentityController : BaseController
     {
-        private readonly IIdentityService _identityService;
-
-        public IdentityController(IIdentityService identityService)
-        {
-            _identityService = identityService;
-        }
-
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            var authResponse = await _identityService.LoginAsync(request);
+            var response = await Mediator.Send(command);
 
-            if (!authResponse.Success)
+            if (!response.Success)
             {
-                return BadRequest(new AuthenticationFailedResponse
+                return BadRequest(new LoginFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    Errors = response.Errors
                 });
             }
 
-            return Ok(new AuthenticationSuccessResponse
+            return Ok(new LoginSuccessResponse
             {
-                Token = authResponse.Token,
-                Username = authResponse.Username,
-                ExpiresAt = authResponse.ExpiresAt
+                Token = response.Token,
+                Username = response.Username,
+                ExpiresAt = response.ExpiresAt
             });
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
             // validation check
-            // return BadRequest(new AuthenticationFailedResponse
+            // return BadRequest(new RegisterFailedResponse
             // {
-            //     Errors = 
+            //     Errors = response.Errors
             // });
 
-            var authResponse = await _identityService.RegisterAsync(request);
+            var response = await Mediator.Send(command);
 
-            if (!authResponse.Success)
+            if (!response.Success)
             {
-                return BadRequest(new AuthenticationFailedResponse
+                return BadRequest(new RegisterFailedResponse
                 {
-                    Errors = authResponse.Errors
+                    Errors = response.Errors
                 });
             }
 
-            return Ok(new AuthenticationSuccessResponse
+            return Ok(new RegisterSuccessResponse
             {
-                Token = authResponse.Token
+                Success = response.Success
             });
         }
     }

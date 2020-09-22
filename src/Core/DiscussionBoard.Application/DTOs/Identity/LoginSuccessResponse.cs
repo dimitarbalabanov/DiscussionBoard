@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.DTOs.Identity
 {
-    public class AuthenticationSuccessResponse
+    public class LoginSuccessResponse
     {
         public string Token { get; set; }
 
