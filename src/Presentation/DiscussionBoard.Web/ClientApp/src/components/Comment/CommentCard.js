@@ -37,17 +37,6 @@ const CommentCard = ({ className, comment, ...rest }) => {
       {...rest}
     >
       <CardContent>
-        {/* <Box
-          display="flex"
-          justifyContent="center"
-          mb={3}
-        >
-          <Avatar
-            alt="forum"
-            src={forum.media}
-            variant="square"
-          />
-        </Box> */}
         <Typography
           align="center"
           color="textPrimary"
@@ -63,6 +52,23 @@ const CommentCard = ({ className, comment, ...rest }) => {
         >
           {post.description}
         </Typography> */}
+        <Box
+          display="flex"
+          justifyContent="center"
+          mb={3}
+        >
+          <Avatar
+            alt="forum"
+            variant="square"
+          />
+          <Typography
+          align="center"
+          color="textPrimary"
+          variant="body1"
+        >
+          {comment.creatorUserName}
+        </Typography>
+        </Box>
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
@@ -85,10 +91,12 @@ const CommentCard = ({ className, comment, ...rest }) => {
               display="inline"
               variant="body2"
             >
-              Updated 2hr ago
+              {comment.votesScore}
+              {' '}
+              Score
             </Typography>
           </Grid>
-          <Grid
+          {/* <Grid
             className={classes.statsItem}
             item
           >
@@ -105,7 +113,7 @@ const CommentCard = ({ className, comment, ...rest }) => {
               {' '}
               Posts
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Card>

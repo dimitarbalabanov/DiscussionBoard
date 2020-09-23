@@ -6,12 +6,19 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
 {
     public class CreateVoteCommandValidator : AbstractValidator<CreateVoteCommand>
     {
-        private const string ERROR_MSG = "Invalid {PropertyName}";
+        private const string ErrorMsg = "Invalid {PropertyName}";
+
         public CreateVoteCommandValidator()
         {
             RuleFor(v => v.Type)
                 .Must(type => Enum.TryParse(type, true, out VoteType result) && Enum.IsDefined(typeof(VoteType), result))
-                .WithMessage(ERROR_MSG);
+                .WithMessage(ErrorMsg);
+
+            RuleFor(v => v.CreatorId)
+                .NotEmpty();
+
+            RuleFor(v => v.CommentId)
+                .NotEmpty();
         }
     }
 }

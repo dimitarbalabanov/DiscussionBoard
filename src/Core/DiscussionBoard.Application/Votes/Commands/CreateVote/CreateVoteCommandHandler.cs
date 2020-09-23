@@ -2,6 +2,9 @@
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,11 +23,25 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
 
         public async Task<int> Handle(CreateVoteCommand request, CancellationToken cancellationToken)
         {
+            var exists = await _votesRepository
+                .All()
+                .SingleOrDefaultAsync(v => v.CommentId == request.CommentId && v.CreatorId == request.CreatorId) != null;
+
+            if (exists)
+            {
+                throw new Exception("Already voted");
+            }
+
             var vote = _mapper.Map<Vote>(request);
             await _votesRepository.AddAsync(vote);
             await _votesRepository.SaveChangesAsync();
 
-            return vote.Id;
+            var score = await _votesRepository
+                .AllAsNoTracking()
+                .Where(v => v.CommentId == request.CommentId)
+                .SumAsync(v => (int)v.Type);
+
+            return score;
         }
     }
 }

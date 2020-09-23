@@ -8,7 +8,9 @@ import {
   Typography,
   makeStyles,
   Card,
-  CardContent
+  CardContent,
+  Divider,
+  Avatar
 } from '@material-ui/core';
 
 import Page from '../../components/Common/Page';
@@ -58,6 +60,10 @@ const Post = props => {
             spacing={3}
             justify="center"
           >
+            <Grid
+              item
+              xs={8}
+            >
             <Card>
               <CardContent>
                 <Typography
@@ -68,6 +74,8 @@ const Post = props => {
                 >
                   {props.post.title}
                 </Typography>
+                <Box flexGrow={1} />
+                <Divider />
                 <Typography
                 align="center"
                 color="textPrimary"
@@ -75,8 +83,26 @@ const Post = props => {
                 >
                   {props.post.content}
                 </Typography>
+                <Box
+          display="flex"
+          justifyContent="center"
+          mb={3}
+        >
+          <Avatar
+            alt="forum"
+            variant="square"
+          />
+          <Typography
+          align="center"
+          color="textPrimary"
+          variant="body1"
+        >
+          {props.post.creatorUserName}
+        </Typography>
+        </Box>
               </CardContent>
             </Card>
+            </Grid>
           </Grid>
       </Box>
         <Grid

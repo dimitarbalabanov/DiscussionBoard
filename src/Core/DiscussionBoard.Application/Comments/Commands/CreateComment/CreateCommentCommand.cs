@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.Comments.Commands.CreateComment
 {
-    public class CreateCommentCommand : IRequest<int>
+    public class CreateCommentCommand : IRequest<CreateCommentCommandResponse>
     {
         public string Content { get; set; }
 

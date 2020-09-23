@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Link } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,9 +24,8 @@ const Footer = props => {
       <Typography variant="body1">
         &copy;{' '}
         <Link
-          component="a"
-          href="https://devias.io/"
-          target="_blank"
+          component={RouterLink}
+          to={"/"}
         >
           Discussion Board
         </Link>

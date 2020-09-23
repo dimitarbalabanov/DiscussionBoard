@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
+  CardActionArea,
   Divider,
   Grid,
   Typography,
   makeStyles
 } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import CommentIcon from '@material-ui/icons/Comment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,69 +33,41 @@ const ForumCard = ({ className, forum, ...rest }) => {
   const classes = useStyles();
 
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
-      <CardContent>
-        {/* <Box
-          display="flex"
-          justifyContent="center"
-          mb={3}
+    <CardActionArea>
+      <Link to={`/forums/${forum.id}`}>
+        <Card
+          className={clsx(classes.root, className)}
+          {...rest}
         >
-          <Avatar
-            alt="forum"
-            src={forum.media}
-            variant="square"
-          />
-        </Box> */}
-        <Typography
-          align="center"
-          color="textPrimary"
-          gutterBottom
-          variant="h4"
-        >
-          {forum.title}
-        </Typography>
-        <Typography
-          align="center"
-          color="textPrimary"
-          variant="body1"
-        >
-          {forum.description}
-        </Typography>
-        <Link to={`/forums/${forum.id}`}>VISIT</Link>
-      </CardContent>
-      <Box flexGrow={1} />
-      <Divider />
-      <Box p={2}>
-        <Grid
-          container
-          justify="space-between"
-          spacing={2}
-        >
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <AccessTimeIcon
-              className={classes.statsIcon}
-              color="action"
-            />
+          <CardContent>
             <Typography
-              color="textSecondary"
-              display="inline"
-              variant="body2"
+              align="center"
+              color="textPrimary"
+              gutterBottom
+              variant="h2"
             >
-              Updated 2hr ago
+              {forum.title}
             </Typography>
-            
-          </Grid>
+            <Typography
+              align="center"
+              color="textPrimary"
+              variant="body1"
+            >
+              {forum.description}
+            </Typography>
+          </CardContent>
+          <Box flexGrow={1} />
+          <Divider />
+          <Box p={2}>
+          <Grid
+          container
+          spacing={2}
+          >
           <Grid
             className={classes.statsItem}
             item
           >
-            <GetAppIcon
+            <ChatBubbleIcon
               className={classes.statsIcon}
               color="action"
             />
@@ -105,13 +77,33 @@ const ForumCard = ({ className, forum, ...rest }) => {
               variant="body2"
             >
               {forum.postsCount}
-              {' '}
-              Posts
+                  {' '}
+                  Posts
             </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </Card>
+                  </Grid>
+                  <Grid
+                    className={classes.statsItem}
+                    item
+                  >
+                  <CommentIcon
+                    className={classes.statsIcon}
+                    color="action"
+                  />
+                <Typography
+                  color="textSecondary"
+                  display="inline"
+                  variant="body2"
+                >
+                  {forum.commentsCount}
+                  {' '}
+                  Comments
+                  </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        </Card>
+      </Link>
+    </CardActionArea>
   );
 };
 

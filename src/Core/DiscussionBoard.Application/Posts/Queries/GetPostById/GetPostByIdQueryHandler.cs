@@ -28,6 +28,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
                 .Where(p => p.Id == request.Id)
                 .ProjectTo<GetPostByIdVm>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+            if (vm == null)
+            {
+                throw new System.Exception("Not Found");
+            }
 
             return vm;
         }

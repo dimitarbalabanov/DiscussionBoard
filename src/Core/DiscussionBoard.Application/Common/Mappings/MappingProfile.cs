@@ -14,16 +14,20 @@ namespace DiscussionBoard.Application.Common.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Forum, ForumDto>();
-            CreateMap<Post, PostDto>();
+            CreateMap<Forum, ForumDto>()
+                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
+            CreateMap<Post, PostDto>()
+                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
             CreateMap<Forum, GetForumByIdVm>();
             CreateMap<Post, GetPostByIdVm>();
             CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));
 
             CreateMap<CreatePostCommand, Post>();
+            CreateMap<Post, CreatePostCommandResponse>();
 
             CreateMap<CreateCommentCommand, Comment>();
+            CreateMap<Comment, CreateCommentCommandResponse>();
 
             CreateMap<CreateVoteCommand, Vote>();
         }

@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
-    public class CreatePostCommand : IRequest<int>
+    public class CreatePostCommand : IRequest<CreatePostCommandResponse>
     {
         public string Title { get; set; }
 

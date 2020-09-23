@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,16 @@ namespace DiscussionBoard.Application.Comments.Commands.DeleteComment
             var comment = await _commentsRepository
                 .All()
                 .SingleOrDefaultAsync(c => c.Id == request.Id);
+
+            if (comment == null)
+            {
+                throw new Exception("Not Found");
+            }
+
+            if (comment.CreatorId != request.CreatorId)
+            {
+                throw new Exception("Unauthorized");
+            }
 
             _commentsRepository.Delete(comment);
             await _commentsRepository.SaveChangesAsync();

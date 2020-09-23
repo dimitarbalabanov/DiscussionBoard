@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,16 @@ namespace DiscussionBoard.Application.Votes.Commands.DeleteVote
             var vote = await _votesRepository
                 .All()
                 .SingleOrDefaultAsync(v => v.Id == request.Id);
+
+            if (vote == null)
+            {
+                throw new Exception("Not Found");
+            }
+
+            if (vote.CreatorId != request.CreatorId)
+            {
+                throw new Exception("Unauthorized");
+            }
 
             _votesRepository.Delete(vote);
             await _votesRepository.SaveChangesAsync();

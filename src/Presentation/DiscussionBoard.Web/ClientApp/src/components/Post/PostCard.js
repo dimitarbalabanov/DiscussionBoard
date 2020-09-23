@@ -10,8 +10,10 @@ import {
   Divider,
   Grid,
   Typography,
+  CardActionArea,
   makeStyles
 } from '@material-ui/core';
+import CommentIcon from '@material-ui/icons/Comment';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
@@ -33,22 +35,14 @@ const PostCard = ({ className, post, ...rest }) => {
   const classes = useStyles();
 
   return (
+    <CardActionArea>
+      <Link to={`/posts/${post.id}`}>
     <Card
       className={clsx(classes.root, className)}
       {...rest}
     >
       <CardContent>
-        {/* <Box
-          display="flex"
-          justifyContent="center"
-          mb={3}
-        >
-          <Avatar
-            alt="forum"
-            src={forum.media}
-            variant="square"
-          />
-        </Box> */}
+        
         <Typography
           align="center"
           color="textPrimary"
@@ -57,14 +51,23 @@ const PostCard = ({ className, post, ...rest }) => {
         >
           {post.title}
         </Typography>
-        <Link to={`/posts/${post.id}`}>VISIT</Link>
-        {/* <Typography
+        <Box
+          display="flex"
+          justifyContent="center"
+          mb={3}
+        >
+          <Avatar
+            alt="forum"
+            variant="square"
+          />
+          <Typography
           align="center"
           color="textPrimary"
           variant="body1"
         >
-          {post.description}
-        </Typography> */}
+          {post.creatorUserName}
+        </Typography>
+        </Box>
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
@@ -87,10 +90,12 @@ const PostCard = ({ className, post, ...rest }) => {
               display="inline"
               variant="body2"
             >
-              Updated 2hr ago
+              {post.commentsCount}
+              {' '}
+              Comments
             </Typography>
           </Grid>
-          <Grid
+          {/* <Grid
             className={classes.statsItem}
             item
           >
@@ -107,10 +112,12 @@ const PostCard = ({ className, post, ...rest }) => {
               {' '}
               Posts
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Card>
+    </Link>
+    </CardActionArea>
   );
 };
 

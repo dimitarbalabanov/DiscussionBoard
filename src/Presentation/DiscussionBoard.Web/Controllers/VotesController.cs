@@ -36,6 +36,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateVoteCommand command)
         {
+            command.CreatorId = _authUserService.UserId;
             command.Id = id;
             await Mediator.Send(command);
             return NoContent();
@@ -44,7 +45,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await Mediator.Send(new DeleteVoteCommand { Id = id });
+            await Mediator.Send(new DeleteVoteCommand { Id = id, CreatorId = _authUserService.UserId });
             return NoContent();
         }
     }

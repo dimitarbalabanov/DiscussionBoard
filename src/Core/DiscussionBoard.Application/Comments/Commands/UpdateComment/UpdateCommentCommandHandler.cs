@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,8 +23,17 @@ namespace DiscussionBoard.Application.Comments.Commands.UpdateComment
                 .All()
                 .SingleOrDefaultAsync(c => c.Id == request.Id);
 
-            comment.Content = request.Content;
+            if (comment == null)
+            {
+                throw new Exception("Not Found");
+            }
 
+            if (comment.CreatorId != request.CreatorId)
+            {
+                throw new Exception("Unauthorized");
+            }
+
+            comment.Content = request.Content;
             await _commentsRepository.SaveChangesAsync();
 
             return Unit.Value;

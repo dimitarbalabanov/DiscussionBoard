@@ -4,17 +4,11 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Badge, Hidden, IconButton, List, ListItem, Button, colors } from '@material-ui/core';
+import Logo from '../../../components/Logo/Logo';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
-import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 const useStyles = makeStyles(theme => ({
@@ -113,11 +107,7 @@ const Topbar = props => {
     >
       <Toolbar>
         <RouterLink to="/">
-          <HomeIcon />
-          {/* <img
-            alt="Logo"
-            src="/images/logos/logo--white.svg"
-          /> */}
+          <Logo />
         </RouterLink>
         <div className={classes.flexGrow} />
         <Hidden mdDown>

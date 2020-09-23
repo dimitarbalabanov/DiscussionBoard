@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Comments.Commands.CreateComment
 {
-    public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, int>
+    public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CreateCommentCommandResponse>
     {
         private readonly IRepository<Comment> _commentsRepository;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+        public async Task<CreateCommentCommandResponse> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
             var comment = _mapper.Map<Comment>(request);
             await _commentsRepository.AddAsync(comment);
             await _commentsRepository.SaveChangesAsync();
 
-            return comment.PostId;
+            return _mapper.Map<CreateCommentCommandResponse>(comment);
         }
     }
 }

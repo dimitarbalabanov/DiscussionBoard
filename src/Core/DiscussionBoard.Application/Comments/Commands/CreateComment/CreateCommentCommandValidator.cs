@@ -9,8 +9,14 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
         {
             RuleFor(p => p.Content)
                .NotEmpty()
-               .Length(CONTENT_MIN_LENGTH, CONTENT_MAX_LENGTH)
-               .WithMessage(string.Format(CONTENT_ERROR_MSG, CONTENT_MIN_LENGTH, CONTENT_MAX_LENGTH));
+               .Length(ContentMinLength, ContentMaxLength)
+               .WithMessage(string.Format(ErrorMsg, ContentMinLength, ContentMaxLength));
+
+            RuleFor(p => p.CreatorId)
+                .NotEmpty();
+
+            RuleFor(p => p.PostId)
+                .NotEmpty();
         }
     }
 }

@@ -7,5 +7,7 @@ namespace DiscussionBoard.Application.Votes.Commands.UpdateVote
         public int Id { get; set; }
 
         public string Type { get; set; }
+
+        public string CreatorId { get; set; }
     }
 }

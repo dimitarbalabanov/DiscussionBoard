@@ -31,13 +31,14 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> Create([FromBody]CreatePostCommand command)
         {
             command.CreatorId = _authUserService.UserId;
-            var id = await Mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { id }, id);
+            var response = await Mediator.Send(command);
+            return CreatedAtAction(nameof(Get), new { response.PostId }, response);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody]UpdatePostCommand command)
         {
+            command.CreatorId = _authUserService.UserId;
             command.Id = id;
             await Mediator.Send(command);
             return NoContent();
@@ -46,7 +47,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await Mediator.Send(new DeletePostCommand { Id = id });
+            await Mediator.Send(new DeletePostCommand { Id = id, CreatorId = _authUserService.UserId });
             return NoContent();
         }
     }

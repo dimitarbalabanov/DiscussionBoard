@@ -6,9 +6,10 @@
 
         public string Title { get; set; }
 
-        //public string CreatorId { get; set; }
-        //public virtual ApplicationUser Creator { get; set; }
+        public string CreatorUserName { get; set; }
 
-        //public int CommentsCount { get; set; }
+        public string CreatorAvatarUrl { get; set; }
+
+        public int CommentsCount { get; set; }
     }
 }

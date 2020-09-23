@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
-    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
+    public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandResponse>
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+        public async Task<CreatePostCommandResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
             var post = _mapper.Map<Post>(request);
             await _postsRepository.AddAsync(post);
             await _postsRepository.SaveChangesAsync();
 
-            return post.ForumId;
+            return _mapper.Map<CreatePostCommandResponse>(post);
         }
     }
 }

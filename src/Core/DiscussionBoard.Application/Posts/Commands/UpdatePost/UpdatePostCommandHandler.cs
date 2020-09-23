@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,6 +22,16 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
             var post = await _postsRepository
                 .All()
                 .SingleOrDefaultAsync(p => p.Id == request.Id);
+
+            if (post == null)
+            {
+                throw new Exception("Not Found");
+            }
+
+            if (post.CreatorId != request.CreatorId)
+            {
+                throw new Exception("Unauthorized");
+            }
 
             post.Title = request.Title;
             post.Content = request.Content;

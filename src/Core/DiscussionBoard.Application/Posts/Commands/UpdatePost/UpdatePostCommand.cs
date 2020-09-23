@@ -9,5 +9,7 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
         public string Title { get; set; }
 
         public string Content { get; set; }
+
+        public string CreatorId { get; set; }
     }
 }

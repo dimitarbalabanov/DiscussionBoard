@@ -24,6 +24,16 @@ namespace DiscussionBoard.Application.Votes.Commands.UpdateVote
                 .All()
                 .SingleOrDefaultAsync(v => v.Id == request.Id);
 
+            if (vote == null)
+            {
+                throw new Exception("Not Found");
+            }
+
+            if (vote.CreatorId != request.CreatorId)
+            {
+                throw new Exception("Unauthorized");
+            }
+
             vote.Type = Enum.Parse<VoteType>(request.Type, true);
 
             await _votesRepository.SaveChangesAsync();

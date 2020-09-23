@@ -10,8 +10,9 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public string Content { get; set; }
 
-        //public string CreatorId { get; set; }
-        //public virtual ApplicationUser Creator { get; set; }
+        public string CreatorUserName { get; set; }
+
+        public string CreatorAvatarUrl { get; set; }
 
         public IEnumerable<CommentDto> Comments { get; set; }
     }
