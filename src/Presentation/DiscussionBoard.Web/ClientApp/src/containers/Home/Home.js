@@ -10,7 +10,7 @@ import {
 
 import Page from '../../components/Common/Page';
 
-import ForumCard from '../../components/Forum/ForumCard';
+import ForumCard from './ForumCard/ForumCard';
 import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  forumCard: {
-    height: '100%'
-  }
+  // forumCard: {
+  //   height: '100%'
+  // }
 }));
 
 const Home = props => {
   const classes = useStyles();
-
+  console.log(props)
   const { onFetchForums } = props;
 
   useEffect(() => {
@@ -42,36 +42,21 @@ const Home = props => {
 
   if (!props.loading) {
     forums = (
-      <Box mt={3}>
-        <Grid
-          container
-          spacing={3}
-          justify="center"
-        >
+      // <Box mt={3}>
+        <Grid container spacing={4} justify="center" >
           {props.forums.map((forum) => (
-            <Grid
-              item
-              key={forum.id}
-              xs={8}
-            >
-              <ForumCard
-                className={classes.forumCard}
-                forum={forum}
-              />
-            </Grid>
+            // <Grid item key={forum.id} xs={8}>
+              <ForumCard key={forum.id} className={classes.forumCard} forum={forum} />
+            // </Grid>
           ))}
         </Grid>
-      </Box>
+      // </Box>
     );
   }
 
   return (
-    <Page
-      className={classes.root}
-      title="Discussion Board"
-    >
+    <Page className={classes.root} title="Discussion Board">
       <Container maxWidth={false}>
-        {/* <SearchToolbar /> */}
         {forums}
       </Container>
     </Page>

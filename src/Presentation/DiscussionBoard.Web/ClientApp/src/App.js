@@ -5,10 +5,9 @@ import * as actions from './store/actions/index';
 
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from './components/Common/GlobalStyles';
-//import 'react-perfect-scrollbar/dist/css/styles.css';
 import theme from './theme/theme';
 import Routes from './Routes';
-import Layout from './layout/Layout';
+import Layout from './Layout/Layout';
 
 const App = props => {
   const { onTryAutoSignup } = props;
@@ -21,9 +20,7 @@ const App = props => {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
           <BrowserRouter>
-            <Layout isAuth={props.isAuthenticated} username={props.username}>
-              <Routes />
-            </Layout>
+              <Routes isAuth={props.isAuthenticated} username={props.username}/>
           </BrowserRouter>
       </ThemeProvider>
   );

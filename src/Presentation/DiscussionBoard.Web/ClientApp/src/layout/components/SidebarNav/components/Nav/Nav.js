@@ -47,7 +47,7 @@ const CustomRouterLink = forwardRef((props, ref) => (
   </div>
 ));
 
-const SidebarNav = props => {
+const Nav = props => {
   const { pages, className, ...rest } = props;
 
   const classes = useStyles();
@@ -78,9 +78,9 @@ const SidebarNav = props => {
   );
 };
 
-SidebarNav.propTypes = {
+Nav.propTypes = {
   className: PropTypes.string,
   pages: PropTypes.array.isRequired
 };
 
-export default SidebarNav;
+export default Nav;

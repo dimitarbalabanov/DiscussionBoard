@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Forum = props => {
   const classes = useStyles();
+  console.log(props)
 
   const { onFetchForum } = props;
   const { forumId } = props.match.params;
@@ -93,9 +94,9 @@ const Forum = props => {
       className={classes.root}
       title="Forum"
     >
-      <Container maxWidth={false}>
+      {/* <Container maxWidth={false}> */}
         {forum}
-      </Container>
+      {/* </Container> */}
     </Page>
   );
 };

@@ -15,7 +15,7 @@ import {
 
 import Page from '../../components/Common/Page';
 import CreateCommentModal from '../../components/Comment/CreateCommentModal';
-
+import RightSideBar from '../../components/RightSideBar/RightSideBar';
 import CommentCard from '../../components/Comment/CommentCard';
 import * as actions from '../../store/actions';
 
@@ -27,13 +27,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3)
   },
   commentCard: {
-    height: '100%'
-  }
+    //height: '100%'
+  },
+
 }));
 
 const Post = props => {
   const classes = useStyles();
-
+  console.log(props)
   const { onFetchPost } = props;
   const { postId } = props.match.params;
 
@@ -132,8 +133,17 @@ const Post = props => {
       className={classes.root}
       title="Post"
     >
-      <Container maxWidth={false}>
-        {post}
+      <Container maxWidth="lg">
+      <main>
+      <Box justifyContent="center">
+          <Grid container spacing={4}>
+            {post}
+          </Grid>
+          <Grid container spacing={5} className={classes.mainGrid}>
+            <RightSideBar />
+          </Grid>
+          </Box>
+        </main>
       </Container>
     </Page>
   );

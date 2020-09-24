@@ -13,7 +13,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import Profile from './components/Profile/Profile'
-import SidebarNav from './components/SidebarNav/SidebarNav'
+import Nav from './components/Nav/Nav'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Sidebar = props => {
+const SidebarNav = props => {
   const { open, variant, onClose, className, ...rest } = props;
 
   const classes = useStyles();
@@ -104,7 +104,7 @@ const Sidebar = props => {
       >
         <Profile username={props.username}/>
         <Divider className={classes.divider} />
-        <SidebarNav
+        <Nav
           className={classes.nav}
           pages={pages}
           isAuth={props.isAuth}
@@ -114,11 +114,11 @@ const Sidebar = props => {
   );
 };
 
-Sidebar.propTypes = {
+SidebarNav.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired
 };
 
-export default Sidebar;
+export default SidebarNav;

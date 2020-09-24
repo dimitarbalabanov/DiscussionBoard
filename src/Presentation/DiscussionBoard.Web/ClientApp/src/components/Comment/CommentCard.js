@@ -12,7 +12,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,13 +44,6 @@ const CommentCard = ({ className, comment, ...rest }) => {
         >
           {comment.content}
         </Typography>
-        {/* <Typography
-          align="center"
-          color="textPrimary"
-          variant="body1"
-        >
-          {post.description}
-        </Typography> */}
         <Box
           display="flex"
           justifyContent="center"
