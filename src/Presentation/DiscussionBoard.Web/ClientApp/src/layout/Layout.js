@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Topbar from './components/Topbar/Topbar';
+import Header from './components/Header/Header';
 import DrawerBar from './components/DrawerBar/DrawerBar';
 import Footer from './components/Footer/Footer';
 
@@ -37,7 +38,7 @@ const Layout = props => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Topbar onSidebarOpen={handleDrawerNavOpen} isAuth={props.isAuth} username={props.username} />
+        <Header onSidebarOpen={handleDrawerNavOpen} isAuth={props.isAuth} username={props.username} />
         <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} variant='temporary' isAuth={props.isAuth} username={props.username}/>
         <main>  
           {children}

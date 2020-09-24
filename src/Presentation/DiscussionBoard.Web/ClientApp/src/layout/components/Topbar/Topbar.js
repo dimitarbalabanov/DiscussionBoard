@@ -15,10 +15,7 @@ const useStyles = makeStyles(theme => ({
   flexGrow: {
     flexGrow: 1
   },
-  nav: {
-    display: 'flex',
-    flexDirection: 'row'
-  }
+  
 }));
 
 const Topbar = props => {

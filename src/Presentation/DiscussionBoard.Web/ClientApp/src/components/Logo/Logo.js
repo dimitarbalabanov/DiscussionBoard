@@ -6,8 +6,8 @@ const Logo = () => {
       <img 
       style={{marginTop: "3px"}}
       src={logo}
-      width="60"
-      alt="DiscBoard" />
+      width="150"
+      alt="Discussion Board" />
   );
 };
 
