@@ -1,12 +1,12 @@
 import React from 'react';
-import logo from '../../images/logo.png'; 
+import logo from '../../assets/images/logo.png'; 
 
 const Logo = () => {
   return (
       <img 
       style={{marginTop: "3px"}}
       src={logo}
-      width="150"
+      width="60"
       alt="DiscBoard" />
   );
 };

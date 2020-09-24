@@ -1,46 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
-import { Typography, Link, Container, CssBaseline } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(4),
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles((theme) => ({
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    // marginTop: theme.spacing(8),
+    padding: theme.spacing(6, 0),
   },
-  color: {
-    backgroundColor: theme.palette.primary
-  }
 }));
 
 const Footer = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
+  const { description, title } = props;
 
-  return (<React.Fragment>
-    <CssBaseline />
-      <Container maxWidth="lg" className={clsx(classes.root, className)}>
-        <Typography variant="body1" align="center">
-          &copy;{' '}
-          <Link component={RouterLink}
-            to={"/"}
-          >
-            Discussion Board
-          </Link>
-          . 2020
+  return (
+    <footer className={classes.footer}>
+      <Container maxWidth="lg">
+        <Typography variant="h6" align="center" gutterBottom>
+          {title}
         </Typography>
-        <Typography variant="caption" align="center" component="p">
-          Created with love for the people who love to engage in discussions.
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          {description}
         </Typography>
+        <Copyright />
       </Container>
-      </React.Fragment>
+    </footer>
   );
-};
+}
 
 Footer.propTypes = {
-  className: PropTypes.string
+  description: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default Footer;

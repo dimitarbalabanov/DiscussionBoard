@@ -1,83 +1,39 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import {
-  Box,
-  Container,
-  Grid,
-  CircularProgress,
-  makeStyles
-} from '@material-ui/core';
-
-import Page from '../../components/Common/Page';
-
-import ForumCard from './ForumCard/ForumCard';
-import * as actions from '../../store/actions';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Welcome from './components/Welcome/Welcome';
+import ForumCard from './components/ForumCard/ForumCard';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+  mainGrid: {
+    marginTop: theme.spacing(3),
   },
-  // forumCard: {
-  //   height: '100%'
-  // }
 }));
+
 
 const Home = props => {
   const classes = useStyles();
-  console.log(props)
-  const { onFetchForums } = props;
+  
+  const mainFeaturedPost = {
+    title: 'Title of a longer featured blog post',
+    description:
+      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
+    image: 'https://source.unsplash.com/random',
+    imgText: 'main image description',
+    linkText: 'Continue reading…',
+  };
 
-  useEffect(() => {
-    onFetchForums();
-  }, [onFetchForums]);
-
-  let forums = (
-    <Box textAlign="center">
-      <CircularProgress size={150} />
-    </Box>
-  );
-
-  if (!props.loading) {
-    forums = (
-      // <Box mt={3}>
-        <Grid container spacing={4} justify="center" >
-          {props.forums.map((forum) => (
-            // <Grid item key={forum.id} xs={8}>
-              <ForumCard key={forum.id} className={classes.forumCard} forum={forum} />
-            // </Grid>
-          ))}
-        </Grid>
-      // </Box>
-    );
-  }
-
+  const { forums } = props;
   return (
-    <Page className={classes.root} title="Discussion Board">
-      <Container maxWidth={false}>
-        {forums}
-      </Container>
-    </Page>
+    <React.Fragment>
+      <Welcome post={mainFeaturedPost} />
+      <Grid container spacing={4}>
+        {forums.map((forum) => (
+          <ForumCard key={forum.title} forum={forum} />
+        ))}
+      </Grid>
+    </React.Fragment>
   );
-};
+}
 
-const mapStateToProps = state => {
-  return {
-    forums: state.home.forums,
-    loading: state.home.loading,
-    error: state.home.error
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchForums: () => dispatch(actions.fetchForums())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default Home;

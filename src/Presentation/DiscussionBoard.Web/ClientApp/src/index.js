@@ -2,11 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
-
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
-
 import authReducer from './store/reducers/auth';
 import registerReducer from './store/reducers/register';
 import homeReducer from './store/reducers/home';

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, withRouter } from 'react-router-dom';
+import { BrowserRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
-
 import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from './components/Common/GlobalStyles';
 import theme from './theme/theme';
@@ -20,7 +19,9 @@ const App = props => {
       <ThemeProvider theme={theme}>
         <GlobalStyles />
           <BrowserRouter>
-              <Routes isAuth={props.isAuthenticated} username={props.username}/>
+            <Layout isAuth={props.isAuthenticated} username={props.username}>
+              <Routes/>
+            </Layout>
           </BrowserRouter>
       </ThemeProvider>
   );

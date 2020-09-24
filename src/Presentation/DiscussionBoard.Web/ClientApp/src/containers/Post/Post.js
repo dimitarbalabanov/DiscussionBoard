@@ -1,173 +1,64 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import {
-  Box,
-  Container,
-  Grid,
-  CircularProgress,
-  Typography,
-  makeStyles,
-  Card,
-  CardContent,
-  Divider,
-  Avatar
-} from '@material-ui/core';
-
-import Page from '../../components/Common/Page';
-import CreateCommentModal from '../../components/Comment/CreateCommentModal';
-import RightSideBar from '../../components/RightSideBar/RightSideBar';
-import CommentCard from '../../components/Comment/CommentCard';
-import * as actions from '../../store/actions';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import PostSidebar from './components/PostSidebar/PostSidebar'
+import PostHeading from './components/PostHeading/PostHeading'
+import CommentCard from './components/CommentCard/CommentCard'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  },
-  commentCard: {
-    //height: '100%'
-  },
-
+  mainGrid: {
+    marginTop: theme.spacing(3),
+  }
 }));
 
-const Post = props => {
+const sidebar = {
+  title: 'About',
+  description:
+    'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
+  archives: [
+    { title: 'March 2020', url: '#' },
+    { title: 'February 2020', url: '#' },
+    { title: 'January 2020', url: '#' },
+    { title: 'November 1999', url: '#' },
+    { title: 'October 1999', url: '#' },
+    { title: 'September 1999', url: '#' },
+    { title: 'August 1999', url: '#' },
+    { title: 'July 1999', url: '#' },
+    { title: 'June 1999', url: '#' },
+    { title: 'May 1999', url: '#' },
+    { title: 'April 1999', url: '#' },
+  ],
+  social: [
+    { name: 'GitHub', icon: GitHubIcon },
+    { name: 'Twitter', icon: TwitterIcon },
+    { name: 'Facebook', icon: FacebookIcon },
+  ],
+};
+
+const Post = () => {
+
   const classes = useStyles();
-  console.log(props)
-  const { onFetchPost } = props;
-  const { postId } = props.match.params;
-
-  useEffect(() => {
-    onFetchPost(postId);
-  }, [onFetchPost, postId]);
-
-  let post = (
-    <Box textAlign="center">
-      <CircularProgress size={150} />
-    </Box>
-  );
-
-  if (!props.loading && props.post) {
-    console.log(props.post)
-    post = (
-      <Box mt={3}>
-        <Box mt={3}>
-          <CreateCommentModal postId={postId} loading={props.newCommentLoading} error={props.newCommentError} onCreateComment={props.onCreateComment} />
-        </Box>
-        <Box my={3}>
-          <Grid
-            container
-            spacing={3}
-            justify="center"
-          >
-            <Grid
-              item
-              xs={8}
-            >
-            <Card>
-              <CardContent>
-                <Typography
-                  align="center"
-                  color="textPrimary"
-                  gutterBottom
-                  variant="h4"
-                >
-                  {props.post.title}
-                </Typography>
-                <Box flexGrow={1} />
-                <Divider />
-                <Typography
-                align="center"
-                color="textPrimary"
-                variant="body1"
-                >
-                  {props.post.content}
-                </Typography>
-                <Box
-          display="flex"
-          justifyContent="center"
-          mb={3}
-        >
-          <Avatar
-            alt="forum"
-            variant="square"
-          />
-          <Typography
-          align="center"
-          color="textPrimary"
-          variant="body1"
-        >
-          {props.post.creatorUserName}
-        </Typography>
-        </Box>
-              </CardContent>
-            </Card>
-            </Grid>
-          </Grid>
-      </Box>
-        <Grid
-          container
-          spacing={3}
-          justify="center"
-        >
-          {props.post.comments.map((comment) => (
-            <Grid
-              item
-              key={comment.id}
-              xs={8}
-            >
-              <CommentCard
-                className={classes.commentCard}
-                comment={comment}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  }
 
   return (
-    <Page
-      className={classes.root}
-      title="Post"
-    >
-      <Container maxWidth="lg">
-      <main>
-      <Box justifyContent="center">
-          <Grid container spacing={4}>
-            {post}
-          </Grid>
-          <Grid container spacing={5} className={classes.mainGrid}>
-            <RightSideBar />
-          </Grid>
-          </Box>
-        </main>
-      </Container>
-    </Page>
+    <Grid container spacing={5} className={classes.mainGrid}>
+      <Grid item xs={12} md={8}>
+        <PostHeading post={mainFeaturedPost} />
+        <Divider />
+        {comments.map((comment) => (
+          <CommentCard key={comment.title} comment={comment} />
+        ))}
+      </Grid>
+      <PostSidebar
+      title={sidebar.title}
+      description={sidebar.description}
+      archives={sidebar.archives}
+      social={sidebar.social}
+      />
+    </Grid>
   );
-};
+}
 
-const mapStateToProps = state => {
-  return {
-    post: state.post.post,
-    loading: state.post.loading,
-    error: state.post.error,
-    newCommentId: state.post.newCommentId,
-    newCommentLoading: state.post.newCommentLoading,
-    newCommentError: state.post.newCommentError
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
-    onCreateComment: (comment) => dispatch(actions.createComment(comment))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Post);
+export default Post;
