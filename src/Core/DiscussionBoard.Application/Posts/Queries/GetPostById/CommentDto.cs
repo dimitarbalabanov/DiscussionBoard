@@ -1,4 +1,6 @@
-﻿namespace DiscussionBoard.Application.Posts.Queries.GetPostById
+﻿using System;
+
+namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
     public class CommentDto
     {
@@ -9,6 +11,10 @@
         public string CreatorUserName { get; set; }
 
         public string CreatorAvatarUrl { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
 
         public int VotesScore { get; set; }
 

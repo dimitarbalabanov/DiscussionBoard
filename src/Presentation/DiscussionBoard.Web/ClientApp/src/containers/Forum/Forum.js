@@ -1,66 +1,104 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import ForumSidebar from './components/ForumSidebar/ForumSidebar'
-import ForumHeading from './components/ForumHeading/ForumHeading'
-import PostCard from './components/PostCard/PostCard'
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core';
+import Spinner from '../../components/Spinner/Spinner';
+import Page from '../../components/Common/Page';
+import ForumSidebar from './components/ForumSidebar/ForumSidebar';
+import ForumHeading from './components/ForumHeading/ForumHeading';
+import PostCard from './components/PostCard/PostCard';
+import CreatePost from './components/CreatePost/CreatePost';
+import * as actions from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
+  },
+  button: {
+    marginBottom: theme.spacing(3)
   }
 }));
 
-const sidebar = {
-  title: 'About',
-  description:
-    'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-  archives: [
-    { title: 'March 2020', url: '#' },
-    { title: 'February 2020', url: '#' },
-    { title: 'January 2020', url: '#' },
-    { title: 'November 1999', url: '#' },
-    { title: 'October 1999', url: '#' },
-    { title: 'September 1999', url: '#' },
-    { title: 'August 1999', url: '#' },
-    { title: 'July 1999', url: '#' },
-    { title: 'June 1999', url: '#' },
-    { title: 'May 1999', url: '#' },
-    { title: 'April 1999', url: '#' },
-  ],
-  social: [
-    { name: 'GitHub', icon: GitHubIcon },
-    { name: 'Twitter', icon: TwitterIcon },
-    { name: 'Facebook', icon: FacebookIcon },
-  ],
-};
-
-const Forum = () => {
-
+const Forum = props => {
   const classes = useStyles();
 
-  return (
-    <Grid container spacing={5} className={classes.mainGrid}>
-      <Grid item xs={12} md={8}>
-        <Heading post={mainFeaturedPost} />
+  const [toggle, setToggle] = useState(false);
+
+  const { forumId } = props.match.params;
+
+  const { 
+    forum, 
+    loading, 
+    error,
+    newPostId,
+    newPostLoading,
+    newPostError,
+    onCreatePost,
+    onFetchForum
+  } = props;
+  
+  useEffect(() => {
+    onFetchForum(forumId);
+  }, [onFetchForum, forumId]);
+
+  let forumDiv = <Spinner />
+
+  if (!loading && forum) {
+    forumDiv = (
+      <React.Fragment>
+        <ForumHeading forum={forum} />
+        <Button variant="outlined" color="primary" onClick={() => setToggle(!toggle)} className={classes.button}>
+          Add a post
+        </Button>
+        {toggle ? <CreatePost 
+            forumId={forumId} 
+            postId={newPostId} 
+            loading={newPostLoading} 
+            error={newPostError} 
+            onCreatePost={onCreatePost}
+          /> : null}
         <Grid container spacing={4}>
-          {posts.map((post) => (
-            <PostCard key={post.title} post={post} />
+          {forum.posts.map((post) => (
+            <PostCard key={post.id} post={post} />
           ))}
         </Grid>
-      </Grid>
-      <ForumSidebar
-      title={sidebar.title}
-      description={sidebar.description}
-      archives={sidebar.archives}
-      social={sidebar.social}
-      />
-    </Grid>
+      </React.Fragment>
+    );
+  }
 
+  return (
+    <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
+      <Grid container spacing={5} className={classes.mainGrid}>
+        <Grid item xs={12} md={9}>
+          
+          { forumDiv }
+        </Grid>
+        <ForumSidebar />
+      </Grid>
+    </Page>
   );
 }
 
-export default Forum;
+const mapStateToProps = state => {
+  return {
+    forum: state.forum.forum,
+    loading: state.forum.loading,
+    error: state.forum.error,
+    newPostId: state.forum.newPostId,
+    newPostLoading: state.forum.newPostLoading,
+    newPostError: state.forum.newPostError
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
+    onCreatePost: (post) => dispatch(actions.createPost(post))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Forum);

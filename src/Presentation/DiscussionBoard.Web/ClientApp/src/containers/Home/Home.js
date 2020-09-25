@@ -1,4 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions';
+
+import Page from '../../components/Common/Page';
+import Spinner from '../../components/Spinner/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Welcome from './components/Welcome/Welcome';
@@ -10,30 +15,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const Home = props => {
   const classes = useStyles();
-  
-  const mainFeaturedPost = {
-    title: 'Title of a longer featured blog post',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    linkText: 'Continue reading…',
-  };
 
-  const { forums } = props;
-  return (
-    <React.Fragment>
-      <Welcome post={mainFeaturedPost} />
+  const { 
+    forums,
+    loading,
+    onFetchForums
+   } = props;
+
+  useEffect(() => {
+    onFetchForums();
+  }, [onFetchForums]);
+
+  let forumsDiv = <Spinner />;
+
+  if (!loading) {
+    forumsDiv = (
       <Grid container spacing={4}>
         {forums.map((forum) => (
-          <ForumCard key={forum.title} forum={forum} />
+          <ForumCard key={forum.id} forum={forum} />
         ))}
       </Grid>
-    </React.Fragment>
+    );
+  }
+
+  return (
+    <Page className={classes.root} title="Discussion Board">
+      <Welcome />
+      {forumsDiv}
+    </Page>
   );
 }
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    forums: state.home.forums,
+    loading: state.home.loading,
+    error: state.home.error
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFetchForums: () => dispatch(actions.fetchForums())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

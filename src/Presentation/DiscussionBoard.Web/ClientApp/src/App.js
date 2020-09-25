@@ -6,7 +6,7 @@ import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from './components/Common/GlobalStyles';
 import theme from './theme/theme';
 import Routes from './Routes';
-import Layout from './Layout/Layout';
+import Layout from './layout/Layout';
 
 const App = props => {
   const { onTryAutoSignup } = props;

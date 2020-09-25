@@ -6,8 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Hidden from '@material-ui/core/Hidden';
 import { Link } from 'react-router-dom';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';

@@ -58,6 +58,7 @@ const Navigation = props => {
     {
       title: 'Home',
       href: '/',
+      exact: true,
       icon: <DashboardIcon />,
       render: true
     },
@@ -90,6 +91,7 @@ const Navigation = props => {
                 className={classes.button}
                 component={CustomRouterLink}
                 to={page.href}
+                exact={page.exact}
               >
               <div className={classes.icon}>{page.icon}</div>
                 {page.title}

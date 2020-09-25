@@ -7,10 +7,11 @@ import Login from './OldContainers/Auth/Login';
 import Register from './OldContainers/Auth/Register';
 import Logout from './OldContainers/Auth/Logout';
 
-import Home from './OldContainers/Home/Home';
-import Forum from './OldContainers/Forum/Forum';
+import Home from './containers/Home/Home';
+//import Home from './OldContainers/Home/Home';
+//import Forum from './OldContainers/Forum/Forum';
+import Forum from './containers/Forum/Forum';
 import Post from './OldContainers/Post/Post';
-
 
 const Routes = () => {
   return (

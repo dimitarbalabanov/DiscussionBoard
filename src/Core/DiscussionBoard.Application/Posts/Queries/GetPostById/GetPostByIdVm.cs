@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
@@ -13,6 +14,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
         public string CreatorUserName { get; set; }
 
         public string CreatorAvatarUrl { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
 
         public IEnumerable<CommentDto> Comments { get; set; }
     }

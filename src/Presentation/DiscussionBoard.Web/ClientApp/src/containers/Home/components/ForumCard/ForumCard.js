@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,10 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Hidden from '@material-ui/core/Hidden';
+import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+import CommentIcon from '@material-ui/icons/Comment';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
   },
@@ -19,43 +20,61 @@ const useStyles = makeStyles({
   cardMedia: {
     width: 160,
   },
-});
+  statsItem: {
+    alignItems: 'center',
+    display: 'flex'
+  },
+  statsIcon: {
+    marginRight: theme.spacing(1)
+  }
+}));
 
 const ForumCard = (props) => {
   const classes = useStyles();
-  const { post } = props;
+  const { forum } = props;
 
   return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="#">
-        <Card className={classes.card}>
-          <div className={classes.cardDetails}>
-            <CardContent>
-              <Typography component="h2" variant="h5">
-                {post.title}
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                {post.date}
-              </Typography>
-              <Typography variant="subtitle1" paragraph>
-                {post.description}
-              </Typography>
-              <Typography variant="subtitle1" color="primary">
-                Continue reading...
-              </Typography>
-            </CardContent>
-          </div>
-          <Hidden xsDown>
-            <CardMedia className={classes.cardMedia} image={post.image} title={post.imageTitle} />
-          </Hidden>
-        </Card>
+      <CardActionArea>
+        <Link to={`/forums/${forum.id}`}>
+          <Card className={classes.card}>
+            <div className={classes.cardDetails}>
+              <CardContent>
+                <Typography component="h2" variant="h5">
+                  {forum.title}
+                </Typography>
+                {/* <Typography variant="subtitle1" color="textSecondary">
+                  {forum.date}
+                </Typography> */}
+                <Typography variant="subtitle1" paragraph>
+                  {forum.description}
+                </Typography>
+                {/* <Typography variant="subtitle1" color="primary">
+                  Continue reading...
+                </Typography> */}
+                <Grid className={classes.statsItem} item >
+                  <ChatBubbleIcon className={classes.statsIcon} color="action" />
+                    <Typography color="textSecondary" display="inline" variant="body2" >
+                      {forum.postsCount} {' '} Posts
+                    </Typography>
+                </Grid>
+                <Grid className={classes.statsItem} item >
+                  <CommentIcon className={classes.statsIcon} color="action" />
+                    <Typography color="textSecondary" display="inline" variant="body2" >
+                      {forum.commentsCount} {' '} Comments
+                    </Typography>
+                </Grid>
+              </CardContent>
+            </div>
+          </Card>
+        </Link>
       </CardActionArea>
     </Grid>
   );
 }
 
 ForumCard.propTypes = {
-  post: PropTypes.object,
+  forum: PropTypes.object,
 };
 
 export default ForumCard;
