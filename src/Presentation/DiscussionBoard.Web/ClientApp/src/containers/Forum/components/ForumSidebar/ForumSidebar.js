@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
 
 const sidebar = {
   recent: [
-    { id: "1", title: 'First post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
-    { id: "2", title: 'Second post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
-    { id: "3", title: 'Third post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
-    { id: "4", title: 'Forth post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
+    { title: 'First post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
+    { title: 'Second post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
+    { title: 'Third post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
+    { title: 'Forth post', description: 'Etiam porta sem malesuada magna mollis euismod.' },
   ],
   forums: [
     { title: 'Music', url: '#' },
@@ -64,7 +64,7 @@ const ForumSidebar = props => {
         Social
       </Typography>
       {social.map((network) => (
-        <Link display="block" variant="body1" href="#" key={network}>
+        <Link display="block" variant="body1" href="#" key={network.name}>
           <Grid container direction="row" spacing={1} alignItems="center">
             <Grid item>
               <network.icon />
@@ -75,8 +75,8 @@ const ForumSidebar = props => {
       ))}
 
       {recent.map((r) => (
-        <React.Fragment>
-          <Paper elevation={0} className={classes.sidebarAboutBox} key={r.id}>
+        <React.Fragment key={r.title}>
+          <Paper elevation={0} className={classes.sidebarAboutBox}>
            <Typography variant="h6" gutterBottom>
              {r.title}
            </Typography>

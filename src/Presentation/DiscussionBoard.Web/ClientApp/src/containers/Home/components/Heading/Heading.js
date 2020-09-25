@@ -18,18 +18,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Welcome = () => {
+const Heading = () => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.mainFeaturedPost}>
       <Grid container className={classes.mainFeaturedPostContent}>
         <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-          Welcome to Discussion Board!
+          DISCUSSION BOARD
         </Typography>
       </Grid>
     </Paper>
   );
 }
 
-export default Welcome;
+export default Heading;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import * as actions from '../../../store/actions';
 
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -8,16 +8,14 @@ import { Formik } from 'formik';
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  FormHelperText,
   CircularProgress,
   Link,
   TextField,
   Typography,
   makeStyles
 } from '@material-ui/core';
-import Page from '../../components/Common/Page';
+import Page from '../../../components/Page/Page';
 
 const useStyles = makeStyles((theme) => ({
   root: {

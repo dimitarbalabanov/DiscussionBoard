@@ -19,28 +19,29 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-const CreatePost = props => {
+const CreateComment = props => {
 
   const classes = useStyles();
-  
+  const {
+    postId,
+    onCreateComment
+  } = props;
+
   let form = ( 
     <Formik
       initialValues={{
-        title: 'Enter title',
         content: 'Enter content'
       }}
       validationSchema={Yup.object().shape({
-        title: Yup.string().min(3).max(200).required('title is required'),
-        content: Yup.string().min(30).max(2500).required('content is required')
+        content: Yup.string().max(255).required('content is required')
       })}
       onSubmit={values => {
-        const post = {
-          title: values.title,
+        const comment = {
           content: values.content,
-          forumId: props.forumId
+          postId: postId
         };
-        props.onCreatePost(post);
+
+        onCreateComment(comment);
       }}
     >
       {({
@@ -55,22 +56,9 @@ const CreatePost = props => {
         <form onSubmit={handleSubmit} >
           <Box mb={3}>
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              Create Post
+              Create Comment
             </Typography>
           </Box>
-          <TextField
-            error={Boolean(touched.title && errors.title)}
-            fullWidth
-            helperText={touched.title && errors.title}
-            label="Title"
-            margin="normal"
-            name="title"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            type="text"
-            value={values.title}
-            variant="outlined"
-          />
           <TextField
             error={Boolean(touched.content && errors.content)}
             fullWidth
@@ -80,7 +68,7 @@ const CreatePost = props => {
             name="content"
             onBlur={handleBlur}
             onChange={handleChange}
-            type="text"
+            type="content"
             value={values.content}
             variant="outlined"
             multiline
@@ -119,4 +107,4 @@ const CreatePost = props => {
   );
 };
 
-export default CreatePost;
+export default CreateComment;

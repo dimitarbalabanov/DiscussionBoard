@@ -103,8 +103,7 @@ const Navigation = props => {
 };
 
 Navigation.propTypes = {
-  className: PropTypes.string,
-  pages: PropTypes.array.isRequired
+  className: PropTypes.string
 };
 
 export default Navigation;

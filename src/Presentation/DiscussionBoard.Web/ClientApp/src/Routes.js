@@ -2,16 +2,12 @@ import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import NotFound from './components/NotFound/NotFound';
-
-import Login from './OldContainers/Auth/Login';
-import Register from './OldContainers/Auth/Register';
-import Logout from './OldContainers/Auth/Logout';
-
+import Login from './containers/Auth/Login/Login';
+import Register from './containers/Auth/Register/Register';
+import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
-//import Home from './OldContainers/Home/Home';
-//import Forum from './OldContainers/Forum/Forum';
 import Forum from './containers/Forum/Forum';
-import Post from './OldContainers/Post/Post';
+import Post from './containers/Post/Post';
 
 const Routes = () => {
   return (

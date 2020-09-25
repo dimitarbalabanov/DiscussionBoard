@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 
-import Page from '../../components/Common/Page';
+import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Welcome from './components/Welcome/Welcome';
+import Heading from './components/Heading/Heading';
 import ForumCard from './components/ForumCard/ForumCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,7 @@ const Home = props => {
 
   return (
     <Page className={classes.root} title="Discussion Board">
-      <Welcome />
+      <Heading />
       {forumsDiv}
     </Page>
   );

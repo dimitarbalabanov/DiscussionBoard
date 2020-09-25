@@ -3,7 +3,7 @@ import { BrowserRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 import { ThemeProvider } from '@material-ui/core';
-import GlobalStyles from './components/Common/GlobalStyles';
+import GlobalStyles from './components/GlobalStyles/GlobalStyles';
 import theme from './theme/theme';
 import Routes from './Routes';
 import Layout from './layout/Layout';
