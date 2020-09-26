@@ -42,8 +42,8 @@ const Layout = props => {
         <main>  
           {props.children}
         </main>
+        <Footer />
       </Container>
-      <Footer title="Footer" description="Something here to give the footer a purpose!" />
     </React.Fragment>
   );
 }

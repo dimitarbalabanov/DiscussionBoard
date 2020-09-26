@@ -3,7 +3,8 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 
 import NotFound from './components/NotFound/NotFound';
 ///import Tabs from './components/Tab/TabsMaan';
-import Tabs from './components/Tab/SimpleTab';
+//import Tabs from './components/Tab/SimpleTab';
+import Auth from './containers/TabAuth/Auth';
 import Login from './containers/Auth/Login/Login';
 import Register from './containers/Auth/Register/Register';
 import Logout from './containers/Auth/Logout/Logout';
@@ -21,7 +22,7 @@ const Routes = () => {
       <Route exact path="/register" component={Register}/>
       <Route exact path="/logout" component={Logout}/>
       <Route exact path="/not-found" component={NotFound}/>
-      <Route exact path="/tab" component={Tabs}/>
+      <Route exact path="/auth" component={Auth}/>
       <Redirect to="/not-found" />
     </Switch>
   );

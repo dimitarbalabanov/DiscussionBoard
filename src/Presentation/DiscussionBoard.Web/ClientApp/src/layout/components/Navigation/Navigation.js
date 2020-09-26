@@ -87,6 +87,12 @@ const Navigation = props => {
       href: '/profile',
       icon: <PersonIcon />,
       render: isAuth
+    },
+    {
+      title: 'Authentication',
+      href: '/auth',
+      icon: <PersonIcon />,
+      render: true
     }
   ];
 
