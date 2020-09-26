@@ -9,6 +9,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import PersonIcon from '@material-ui/icons/Person';
+import { Person } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,7 +52,7 @@ const CustomRouterLink = forwardRef((props, ref) => (
 ));
 
 const Navigation = props => {
-  const { className, ...rest } = props;
+  const { className, isAuth, username } = props;
 
   const classes = useStyles();
 
@@ -66,24 +68,30 @@ const Navigation = props => {
       title: 'Login',
       href: '/login',
       icon: <PeopleIcon />,
-      render: !props.isAuth
+      render: !isAuth
     },
     {
       title: 'Register',
       href: '/register',
       icon: <LockOpenIcon />,
-      render: !props.isAuth
+      render: !isAuth
     },
     {
       title: 'Logout',
       href: '/logout',
       icon: <TextFieldsIcon />,
-      render: props.isAuth
+      render: isAuth
+    },
+    {
+      title: username,
+      href: '/profile',
+      icon: <PersonIcon />,
+      render: isAuth
     }
   ];
 
   return (
-    <List {...rest} className={clsx(classes.root, className)}>
+    <List className={clsx(classes.root, className)}>  
       {pages.map(page => page.render
           ? <ListItem className={classes.item} disableGutters key={page.title}>
               <Button

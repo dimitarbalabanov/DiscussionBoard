@@ -16,9 +16,6 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
                 .NotEmpty()
                 .Length(TitleMinLength, TitleMaxLength)
                 .WithMessage("{PropertyName}" + string.Format(ErrorMsg, TitleMinLength, TitleMaxLength));
-
-            RuleFor(p => p.CreatorId)
-                .NotEmpty();
         }
     }
 }

@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const { isAuth, onSidebarOpen } = props;
+  const { isAuth, username, onSidebarOpen } = props;
 
   return (
     <React.Fragment>
@@ -46,7 +46,7 @@ export default function Header(props) {
           <Logo />
         </RouterLink>
         <Hidden mdDown>
-          <Navigation className={classes.nav} isAuth={isAuth}/>
+          <Navigation className={classes.nav} isAuth={isAuth} username={username}/>
         </Hidden>
         <Hidden lgUp>
           <IconButton color="inherit" onClick={onSidebarOpen} >

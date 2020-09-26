@@ -16,9 +16,13 @@ namespace DiscussionBoard.Application.Common.Mappings
         {
             CreateMap<Forum, ForumDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
+
+            CreateMap<Forum, GetForumByIdVm>()
+                .ForMember(dest => dest.Posts, src => src.Ignore())
+                .ForMember(dest => dest.PostsCount, src => src.Ignore());
             CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
-            CreateMap<Forum, GetForumByIdVm>();
+
             CreateMap<Post, GetPostByIdVm>();
             CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));

@@ -8,9 +8,6 @@ namespace DiscussionBoard.Application.Comments.Commands.DeleteComment
         {
             RuleFor(c => c.Id)
                 .NotEmpty();
-
-            RuleFor(c => c.CreatorId)
-                .NotEmpty();
         }
     }
 }

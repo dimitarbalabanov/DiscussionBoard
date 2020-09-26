@@ -1,18 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { register } from '../../../store/actions';
-import { Link as RouterLink, Redirect } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
-import Page from '../../../components/Page/Page';
-import Spinner from '../../../components/Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,25 +18,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Register = props => {
+const RegisterForm = props => {
   const classes = useStyles();
 
-  const {
-    loading,
-    error,
-    isAuthenticated,
-    onRegister
-  } = props;
+  // const {
+  //   loading,
+  //   error,
+  //   isAuthenticated,
+  //   onRegister
+  // } = props;
 
-  if (isAuthenticated) {
-    return <Redirect to='/' />;
-  }
-
-  let form = <Spinner />
-
-  if (!loading && !error) {
-    form = (
-      <Formik
+  return (
+    <Formik
         initialValues={{
           email: '',
           username: '',
@@ -56,7 +44,7 @@ const Register = props => {
           })
         }
         onSubmit={values => {
-          onRegister(values.email, values.password, values.confirmPassword, values.username);
+          //onRegister(values.email, values.password, values.confirmPassword, values.username);
         }}
       >
         {({
@@ -154,51 +142,7 @@ const Register = props => {
           </form>
         )}
       </Formik>
-    );
-  }
-  
-  let errorMessage = null;
-  if (error) {
-    errorMessage = error.map(e =>
-      <Box mt={3} mb={1}>
-        <Typography align="center" color="error" variant="h3">
-          {e}
-        </Typography>
-      </Box>
-    );
-  }
-
-  return (
-    <Page className={classes.root} title="Register">
-      <Box
-        display="flex"
-        flexDirection="column"
-        height="100%"
-        justifyContent="center"
-      >
-        <Container maxWidth="sm">
-          {form}
-          {errorMessage}
-        </Container>
-      </Box>
-    </Page>
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    loading: state.register.loading,
-    error: state.register.error,
-    isAuthenticated: state.auth.token !== null
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onRegister: (email, password, confirmPassword, username) => dispatch(register(email, password, confirmPassword, username))
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Register);
+export default RegisterForm;

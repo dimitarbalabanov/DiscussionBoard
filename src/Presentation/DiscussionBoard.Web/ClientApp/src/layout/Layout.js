@@ -38,7 +38,7 @@ const Layout = props => {
       <CssBaseline />
       <Container maxWidth="lg">
         <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
-        <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} variant='temporary' isAuth={isAuth} username={username}/>
+        <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
         <main>  
           {props.children}
         </main>

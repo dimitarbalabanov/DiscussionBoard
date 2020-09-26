@@ -14,11 +14,8 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
             RuleFor(p => p.Content)
                 .NotEmpty()
-                .Length(TitleMinLength, TitleMaxLength)
-                .WithMessage("{PropertyName}" + string.Format(ErrorMsg, TitleMinLength, TitleMaxLength));
-
-            RuleFor(p => p.CreatorId)
-                .NotEmpty();
+                .Length(ContentMinLength, ContentMaxLength)
+                .WithMessage("{PropertyName}" + string.Format(ErrorMsg, ContentMinLength, ContentMaxLength));
 
             RuleFor(p => p.ForumId)
                 .NotEmpty();

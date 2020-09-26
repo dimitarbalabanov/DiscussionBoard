@@ -27,8 +27,8 @@ const CreatePost = props => {
   let form = ( 
     <Formik
       initialValues={{
-        title: 'Enter title',
-        content: 'Enter content'
+        title: '',
+        content: ''
       }}
       validationSchema={Yup.object().shape({
         title: Yup.string().min(3).max(200).required('title is required'),
@@ -112,9 +112,11 @@ const CreatePost = props => {
 
   return (
     <Paper>
+      <Box justifyContent="center">
       <Grid item xs={12} md={6} className={classes.root}>
         {form}
       </Grid>
+      </Box>
     </Paper>
   );
 };

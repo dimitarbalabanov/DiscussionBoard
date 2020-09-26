@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import NotFound from './components/NotFound/NotFound';
+///import Tabs from './components/Tab/TabsMaan';
+import Tabs from './components/Tab/SimpleTab';
 import Login from './containers/Auth/Login/Login';
 import Register from './containers/Auth/Register/Register';
 import Logout from './containers/Auth/Logout/Logout';
@@ -15,10 +17,11 @@ const Routes = () => {
       <Route exact path="/" component={Home}/>
       <Route exact path="/forums/:forumId" component={Forum}/>
       <Route exact path="/posts/:postId" component={Post}/>
-      <Route exact path="/register" component={Register}/>
       <Route exact path="/login" component={Login}/>
-      <Route exact path="/not-found" component={NotFound}/>
+      <Route exact path="/register" component={Register}/>
       <Route exact path="/logout" component={Logout}/>
+      <Route exact path="/not-found" component={NotFound}/>
+      <Route exact path="/tab" component={Tabs}/>
       <Redirect to="/not-found" />
     </Switch>
   );

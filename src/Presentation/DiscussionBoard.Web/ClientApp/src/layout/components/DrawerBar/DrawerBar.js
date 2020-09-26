@@ -2,7 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Typography from '@material-ui/core/Typography';
 
 import Navigation from '../Navigation/Navigation';
 
@@ -30,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DrawerBar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const { open, onClose, className, isAuth, username } = props;
 
   const classes = useStyles();
 
@@ -40,12 +42,15 @@ const DrawerBar = props => {
       classes={{ paper: classes.drawer }}
       onClose={onClose}
       open={open}
-      variant={variant}
+      variant='temporary'
     >
-      <div {...rest} className={clsx(classes.root, className)}>
+      <div className={clsx(classes.root, className)}>
         {/* <Profile username={props.username}/> */}
+        <Typography variant="h6" align="center" gutterBottom>
+          {username}
+        </Typography>
         <Divider className={classes.divider} />
-        <Navigation className={classes.nav} isAuth={props.isAuth} />
+        <Navigation className={classes.nav} isAuth={isAuth} />
       </div>
     </Drawer>
   );
@@ -55,7 +60,6 @@ DrawerBar.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired
 };
 
 export default DrawerBar;

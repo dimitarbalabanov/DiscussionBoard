@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Spinner from '../../components/Spinner/Spinner';
-import ToggleButton from '../../components/ToggleButton/ToggleButton';
+import ToggleShowButton from '../../components/ToggleShowButton/ToggleShowButton';
 import PostSidebar from './components/PostSidebar/PostSidebar';
 import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
@@ -53,7 +53,7 @@ const Post = (props) => {
     postDiv = 
       <React.Fragment>
         <PostHeading post={post} />
-        <ToggleButton 
+        <ToggleShowButton 
           title={"Add a comment"}
           component={CreateComment}
           postId={postId} 

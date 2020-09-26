@@ -12,9 +12,6 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
                .Length(ContentMinLength, ContentMaxLength)
                .WithMessage(string.Format(ErrorMsg, ContentMinLength, ContentMaxLength));
 
-            RuleFor(p => p.CreatorId)
-                .NotEmpty();
-
             RuleFor(p => p.PostId)
                 .NotEmpty();
         }

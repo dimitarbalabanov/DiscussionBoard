@@ -9,9 +9,6 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
         {
             RuleFor(p => p.Id)
                 .NotEmpty();
-
-            RuleFor(p => p.CreatorId)
-                .NotEmpty();
         }
     }
 }

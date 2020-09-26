@@ -21,12 +21,13 @@ export const registerFail = (error) => {
   };
 };
 
-export const register = (email, password, username) => {
+export const register = (email, password, confirmPassword, username) => {
   return dispatch => {
     dispatch(registerStart());
     const registerData = {
       email: email,
       password: password,
+      confirmPassword: confirmPassword,
       username: username
     };
 
@@ -35,8 +36,7 @@ export const register = (email, password, username) => {
        dispatch(registerSuccess());
        dispatch(auth(email, password));
       })
-      .catch(error => 
-        {
+      .catch(error => {
           dispatch(registerFail(error.response.data.errors))
         });
   }

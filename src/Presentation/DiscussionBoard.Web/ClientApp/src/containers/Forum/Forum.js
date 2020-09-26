@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Spinner from '../../components/Spinner/Spinner';
-import ToggleButton from '../../components/ToggleButton/ToggleButton';
+import ToggleShowButton from '../../components/ToggleShowButton/ToggleShowButton';
 import Page from '../../components/Page/Page';
 import ForumSidebar from './components/ForumSidebar/ForumSidebar';
 import ForumHeading from './components/ForumHeading/ForumHeading';
 import PostCard from './components/PostCard/PostCard';
 import CreatePost from './components/CreatePost/CreatePost';
-import * as actions from '../../store/actions';
+import { fetchForumById, createPost } from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -30,7 +30,8 @@ const Forum = props => {
     newPostLoading,
     newPostError,
     onCreatePost,
-    onFetchForum
+    onFetchForum,
+    isAuth
   } = props;
   
   useEffect(() => {
@@ -43,15 +44,19 @@ const Forum = props => {
     forumDiv = (
       <React.Fragment>
         <ForumHeading forum={forum} />
-        <ToggleButton 
-          title={"Add a post"} 
-          component={CreatePost} 
-          forumId={forumId} 
-          postId={newPostId} 
-          loading={newPostLoading} 
-          error={newPostError} 
-          onCreatePost={onCreatePost}
-        />
+        { isAuth 
+          ? <ToggleShowButton 
+              title={"Add a post"} 
+              component={CreatePost} 
+              forumId={forumId} 
+              postId={newPostId} 
+              loading={newPostLoading} 
+              error={newPostError} 
+              onCreatePost={onCreatePost}
+              />
+          : null
+      }
+
         <Grid container spacing={4}>
           {forum.posts.map((post) => (
             <PostCard key={post.id} post={post} />
@@ -80,14 +85,15 @@ const mapStateToProps = state => {
     error: state.forum.error,
     newPostId: state.forum.newPostId,
     newPostLoading: state.forum.newPostLoading,
-    newPostError: state.forum.newPostError
+    newPostError: state.forum.newPostError,
+    isAuth: state.auth.token !== null
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
-    onCreatePost: (post) => dispatch(actions.createPost(post))
+    onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
+    onCreatePost: (post) => dispatch(createPost(post))
   };
 };
 

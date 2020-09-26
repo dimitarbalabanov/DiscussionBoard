@@ -56,9 +56,9 @@ const PostCard = props => {
                 <Typography variant="subtitle1" color="textSecondary">
                   {createdOn}
                 </Typography>
-                <Typography variant="subtitle1" paragraph>
-                  Short content...
-                </Typography>
+                {/* <Typography variant="subtitle1" paragraph>
+                  Something
+                </Typography> */}
                 <Grid className={classes.statsItem} item >
                   <CommentIcon className={classes.statsIcon} color="action" />
                   <Typography color="textSecondary" display="inline" variant="body2" >

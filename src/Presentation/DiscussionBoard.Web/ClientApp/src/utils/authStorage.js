@@ -35,7 +35,7 @@ export const  setAuthorization = (username, token, expiresAt) => {
 }
 
 export const removeAuthorization = () => {
-  removeItem(CONST.USERNAME_KEY);
-  removeItem(CONST.TOKEN_KEY);
-  removeItem(CONST.EXPIRES_AT_KEY);
+  localStorage.removeItem(CONST.USERNAME_KEY);
+  localStorage.removeItem(CONST.TOKEN_KEY);
+  localStorage.removeItem(CONST.EXPIRES_AT_KEY);
 }
