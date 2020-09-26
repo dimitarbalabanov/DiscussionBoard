@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter} from 'react-router-dom';
+import { BrowserRouter as Router} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 import { ThemeProvider } from '@material-ui/core';
@@ -9,7 +9,11 @@ import Routes from './Routes';
 import Layout from './layout/Layout';
 
 const App = props => {
-  const { onTryAutoSignup } = props;
+  const {
+    isAuthenticated,
+    username,
+    onTryAutoSignup
+  } = props;
 
   useEffect(() => {
     onTryAutoSignup();
@@ -18,11 +22,11 @@ const App = props => {
   return (
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-          <BrowserRouter>
-            <Layout isAuth={props.isAuthenticated} username={props.username}>
+          <Router>
+            <Layout isAuth={isAuthenticated} username={username}>
               <Routes/>
             </Layout>
-          </BrowserRouter>
+          </Router>
       </ThemeProvider>
   );
 };

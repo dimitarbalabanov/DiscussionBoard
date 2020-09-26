@@ -8,10 +8,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ToggleButton = props => {
+const ToggleShowButton = props => {
   const classes = useStyles();
 
-  const [toggle, setToggle] = useState(false);
+  const [show, setShow] = useState(false);
 
   const { 
     title,
@@ -21,12 +21,17 @@ const ToggleButton = props => {
   
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={() => setToggle(!toggle)} className={classes.button}>
+      <Button 
+      variant="outlined" 
+      color="primary" 
+      onClick={() => setShow(!show)} 
+      className={classes.button}
+      >
         {title}
       </Button>
-      {toggle ? <Component {...rest}/> : null}
+      {show ? <Component {...rest}/> : null}
     </React.Fragment>
   );
 }
 
-export default ToggleButton;
+export default ToggleShowButton;

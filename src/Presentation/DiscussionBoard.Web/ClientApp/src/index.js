@@ -11,18 +11,20 @@ import homeReducer from './store/reducers/home';
 import forumReducer from './store/reducers/forum';
 import postReducer from './store/reducers/post';
 
-const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' 
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
+  : null || compose;
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    home: homeReducer,
-    forum: forumReducer,
-    post: postReducer,
-    register: registerReducer
+  auth: authReducer,
+  home: homeReducer,
+  forum: forumReducer,
+  post: postReducer,
+  register: registerReducer
 });
 
 export const store = createStore(rootReducer, composeEnhancers(
-    applyMiddleware(thunk)
+  applyMiddleware(thunk)
 ));
 
 const app = (

@@ -1,10 +1,16 @@
-import * as actionTypes from '../actions/actionTypes';
-import updateObject from '../../utils/updateObject';
+import {
+  FETCH_POST_START,
+  FETCH_POST_SUCCESS,
+  FETCH_POST_FAIL,
+  CREATE_COMMENT_START,
+  CREATE_COMMENT_SUCCESS,
+  CREATE_COMMENT_FAIL
+} from '../actions/actionTypes';
 
 const initialPostState = {
-    post: null,
-    loading: false,
-    error: null
+  post: null,
+  loading: false,
+  error: null
 };
 
 const initialCreateCommentState = {
@@ -18,46 +24,64 @@ const initialState = {
   ...initialCreateCommentState
 };
 
-const fetchPostByIdStart = ( state, action ) => {
-    return updateObject( state, { error: null, loading: true } );
+const fetchPostByIdStart = (state, action) => {
+  return { 
+    ...state,
+    error: null,
+    loading: true 
+  };
 };
 
-const fetchPostByIdSuccess = ( state, action ) => {
-    return updateObject( state, {
-        post: action.post,
-        loading: false,
-        error: null
-    } );
+const fetchPostByIdSuccess = (state, action) => {
+  return { 
+    ...state,
+    post: action.post,
+    loading: false,
+    error: null
+  };
 };
 
-const fetchPostByIdFail = ( state, action ) => {
-    return updateObject( state, { loading: false, error: action.error } );
+const fetchPostByIdFail = (state, action) => {
+  return {
+    ...state, 
+    error: action.error,
+    loading: false
+  };
 };
 
 const createCommentStart = (state, action) => {
-  return updateObject(state, { newCommentError: null, newCommentLoading: true });
+  return { 
+    ...state,
+    newCommentError: null,
+    newCommentLoading: true 
+  };
 };
 
 const createCommentSuccess = (state, action) => {
-  return updateObject(state, {
+  return { 
+    ...state,
     newCommentId: action.newCommentId,
     newCommentLoading: false,
-    newCommentError: null
-  });
+    newCommentError: null 
+  };
 };
 
 const createCommentFail = (state, action) => {
-  return updateObject(state, { newCommentError: action.newCommentError, newCommentLoading: false });
+  return { 
+    ...state,
+    newCommentError: action.newCommentError,
+    newCommentLoading: false,
+  };
 };
 
-const reducer = ( state = initialState, action ) => {
-    switch ( action.type ) {
-        case actionTypes.FETCH_POST_START: return fetchPostByIdStart( state, action );
-        case actionTypes.FETCH_POST_SUCCESS: return fetchPostByIdSuccess( state, action );
-        case actionTypes.FETCH_POST_FAIL: return fetchPostByIdFail( state, action );
-        case actionTypes.CREATE_COMMENT_START: return createCommentStart(state, action);
-        case actionTypes.CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
-        case actionTypes.CREATE_COMMENT_FAIL: return createCommentFail(state, action);
+const reducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FETCH_POST_START: return fetchPostByIdStart(state, action);
+        case FETCH_POST_SUCCESS: return fetchPostByIdSuccess(state, action);
+        case FETCH_POST_FAIL: return fetchPostByIdFail(state, action);
+        case CREATE_COMMENT_START: return createCommentStart(state, action);
+        case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
+        case CREATE_COMMENT_FAIL: return createCommentFail(state, action);
         default: return state;
     }
 };
