@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 import { getPostById } from '../../api/postsService';
 import { createComment as apiCreateComment} from '../../api/commentsService';
+import { createVote as apiCreateVote} from '../../api/votesService';
 
 export const fetchPostByIdSuccess = ( post ) => {
     return {
@@ -48,10 +49,10 @@ export const createCommentFail = (error) => {
   };
 };
 
-export const createCommentSuccess = (newCommentId) => {
+export const createCommentSuccess = (newComment) => {
   return {
     type: actionTypes.CREATE_COMMENT_SUCCESS,
-    newCommentId: newCommentId
+    newComment: newComment
   };
 };
 
@@ -60,10 +61,41 @@ export const createComment = (newComment) => {
     dispatch(createCommentStart());
     apiCreateComment(newComment)
       .then(res =>
-        {
-          dispatch(createCommentSuccess(res.data));
-          dispatch(fetchPostById(res.data));
-        })
+      {
+        console.log(res.data)
+        dispatch(createCommentSuccess(res.data));
+      })
       .catch(error => dispatch(createCommentFail(error)));
+  };
+};
+
+
+export const createVoteStart = () => {
+  return {
+    type: actionTypes.CREATE_VOTE_START
+  };
+};
+
+export const createVoteFail = (error) => {
+  return {
+    type: actionTypes.CREATE_VOTE_FAIL,
+    newVoteError: error
+  };
+};
+
+export const createVoteSuccess = (newScore, commentId) => {
+  return {
+    type: actionTypes.CREATE_VOTE_SUCCESS,
+    newScore: newScore,
+    commentId: commentId
+  };
+};
+
+export const createVote = (newVote) => {
+  return dispatch => {
+    dispatch(createVoteStart());
+    apiCreateVote(newVote)
+      .then(res => dispatch(createVoteSuccess(res.data, newVote.commentId)))
+      .catch(error => dispatch(createVoteFail(error)));
   };
 };

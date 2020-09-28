@@ -8,7 +8,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CommentIcon from '@material-ui/icons/Comment';
 
-
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
     position: 'relative',

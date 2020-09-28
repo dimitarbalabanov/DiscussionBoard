@@ -4,7 +4,10 @@ import {
   FETCH_POST_FAIL,
   CREATE_COMMENT_START,
   CREATE_COMMENT_SUCCESS,
-  CREATE_COMMENT_FAIL
+  CREATE_COMMENT_FAIL,
+  CREATE_VOTE_START,
+  CREATE_VOTE_SUCCESS,
+  CREATE_VOTE_FAIL
 } from '../actions/actionTypes';
 
 const initialPostState = {
@@ -16,12 +19,21 @@ const initialPostState = {
 const initialCreateCommentState = {
   newCommentId: null,
   newCommentLoading: false,
-  newCommentError: null
+  newCommentError: null,
+  isNewComment: false
+}
+
+const initialCreateVoteState = {
+  newVoteId: null,
+  newVoteLoading: false,
+  newVoteError: null,
+  newCommentScore: null
 }
 
 const initialState = {
   ...initialPostState,
-  ...initialCreateCommentState
+  ...initialCreateCommentState,
+  ...initialCreateVoteState
 };
 
 const fetchPostByIdStart = (state, action) => {
@@ -53,16 +65,21 @@ const createCommentStart = (state, action) => {
   return { 
     ...state,
     newCommentError: null,
-    newCommentLoading: true 
+    newCommentLoading: true ,
+    isNewComment: false
   };
 };
 
 const createCommentSuccess = (state, action) => {
   return { 
     ...state,
-    newCommentId: action.newCommentId,
+    post: {
+      ...state.post,
+      comments: [...state.post.comments, action.newComment]
+    },
     newCommentLoading: false,
-    newCommentError: null 
+    newCommentError: null,
+    isNewComment: true
   };
 };
 
@@ -71,6 +88,35 @@ const createCommentFail = (state, action) => {
     ...state,
     newCommentError: action.newCommentError,
     newCommentLoading: false,
+    isNewComment: false
+  };
+};
+
+const createVoteStart = (state, action) => {
+  return { 
+    ...state,
+    newVoteError: null,
+    newVoteLoading: true 
+  };
+};
+
+const createVoteSuccess = (state, action) => {
+  return { 
+    ...state,
+    post: {
+      ...state.post,
+      comments: state.post.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore})
+    },  
+    newVoteLoading: false,
+    newVoteError: null
+  };
+};
+
+const createVoteFail = (state, action) => {
+  return { 
+    ...state,
+    newVoteError: action.newVoteError,
+    newVoteLoading: false,
   };
 };
 
@@ -82,6 +128,9 @@ const reducer = (state = initialState, action) => {
         case CREATE_COMMENT_START: return createCommentStart(state, action);
         case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
         case CREATE_COMMENT_FAIL: return createCommentFail(state, action);
+        case CREATE_VOTE_START: return createVoteStart(state, action);
+        case CREATE_VOTE_SUCCESS: return createVoteSuccess(state, action);
+        case CREATE_VOTE_FAIL: return createVoteFail(state, action);
         default: return state;
     }
 };

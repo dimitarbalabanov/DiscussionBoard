@@ -6,7 +6,8 @@ import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Heading from './components/Heading/Heading';
+//import Heading from './components/Heading/Heading';
+import AlternateHeading from './components/Heading/AlternateHeading';
 import ForumCard from './components/ForumCard/ForumCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,7 @@ const Home = props => {
 
   return (
     <Page className={classes.root} title="Discussion Board">
-      <Heading />
+      <AlternateHeading />
       {forumsDiv}
     </Page>
   );

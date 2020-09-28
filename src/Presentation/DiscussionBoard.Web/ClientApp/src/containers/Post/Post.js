@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
-
   const classes = useStyles();
 
   const { postId } = props.match.params;
@@ -40,7 +39,12 @@ const Post = (props) => {
     newCommentLoading,
     newCommentError,
     onCreateComment,
-    onFetchPost
+    onFetchPost,
+    newVoteLoading,
+    newVoteError,
+    //newCommentScore,
+    onCreateVote,
+    //isNewComment
   } = props;
 
   useEffect(() => {
@@ -64,7 +68,13 @@ const Post = (props) => {
         />
         <Divider />
         {post.comments.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} />
+          <CommentCard
+            key={comment.id}
+            comment={comment} 
+            loading={newVoteLoading} 
+            error={newVoteError} 
+            onCreateVote={onCreateVote}
+          />
         ))}
       </React.Fragment>
   }
@@ -86,16 +96,21 @@ const mapStateToProps = state => {
     post: state.post.post,
     loading: state.post.loading,
     error: state.post.error,
+    isNewComment: state.post.isNewComment,
     newCommentId: state.post.newCommentId,
     newCommentLoading: state.post.newCommentLoading,
-    newCommentError: state.post.newCommentError
+    newCommentError: state.post.newCommentError,
+    newVoteLoading: state.post.newVoteLoading,
+    newVoteError: state.post.newVoteError,
+    newCommentScore: state.post.newCommentScore
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
-    onCreateComment: (comment) => dispatch(actions.createComment(comment))
+    onCreateComment: (comment) => dispatch(actions.createComment(comment)),
+    onCreateVote: (vote) => dispatch(actions.createVote(vote))
   };
 };
 

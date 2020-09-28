@@ -10,7 +10,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
-import { Person } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {},

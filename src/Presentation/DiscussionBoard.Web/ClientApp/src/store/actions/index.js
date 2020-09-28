@@ -19,5 +19,6 @@ export {
 
 export {
   fetchPostById,
-  createComment
+  createComment,
+  createVote
 } from './post';

@@ -7,19 +7,19 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
+//import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-  }
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     backgroundColor: theme.palette.background.dark,
+//     height: '100%',
+//     paddingBottom: theme.spacing(3),
+//     paddingTop: theme.spacing(3)
+//   }
+// }));
 
 const RegisterForm = props => {
-  const classes = useStyles();
+  //const classes = useStyles();
 
   // const {
   //   loading,

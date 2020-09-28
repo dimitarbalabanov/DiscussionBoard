@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import ScoreIcon from '@material-ui/icons/Score';
+import Voting from '../Voting/Voting';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -33,12 +34,12 @@ const useStyles = makeStyles((theme) => ({
 const CommentCard = props => {
   const classes = useStyles();
   const { 
-    //id,
+    id,
     content,
     creatorUserName,
     createdOn,
     votesScore
-   } = props.comment;
+  } = props.comment;
 
   return (
     <Grid item xs={12} className={classes.pad}>
@@ -60,6 +61,13 @@ const CommentCard = props => {
               <Typography color="textSecondary" display="inline" variant="body2" >
                 {votesScore} {' '} Score
               </Typography>
+              <Voting
+                onCreateVote={props.onCreateVote}
+                commentId={id}
+                //loading={loading} 
+                //error={error} 
+                //onCreateVote={onCreateVote}
+              />
             </Grid>
           </CardContent>
         </div>

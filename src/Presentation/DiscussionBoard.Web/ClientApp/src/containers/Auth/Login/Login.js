@@ -50,7 +50,8 @@ const Login = props => {
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={values => {
+        onSubmit={(values, {resetForm} ) => {
+          resetForm({values:''});
           onAuth(values.email, values.password);
         }}
       >

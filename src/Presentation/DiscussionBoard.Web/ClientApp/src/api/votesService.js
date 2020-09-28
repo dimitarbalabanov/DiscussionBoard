@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { VOTES_URL } from './apiRoutes';
+import { axiosConfig } from '../utils/axiosConfig';
 
 export const createVote = (data) => {
-  return axios.post(VOTES_URL, data);
+  return axios.post(VOTES_URL, data, axiosConfig());
 };
 
 export const editVoteById = (voteId, data) => {
