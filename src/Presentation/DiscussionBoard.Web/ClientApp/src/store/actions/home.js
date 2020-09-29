@@ -29,7 +29,7 @@ export const fetchForums = () => {
                 dispatch(fetchForumsSuccess(res.data.forums))
              )
             .catch( err => {
-                dispatch(fetchForumsFail(err));
+                dispatch(fetchForumsFail(err.message));
             } );
     };
 };

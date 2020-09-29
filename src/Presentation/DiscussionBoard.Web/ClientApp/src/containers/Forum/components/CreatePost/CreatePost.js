@@ -40,6 +40,10 @@ const CreatePost = props => {
           content: values.content,
           forumId: props.forumId
         };
+        values = {
+          content: ''
+        };
+        props.handleClose();
         props.onCreatePost(post);
       }}
     >

@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 //import Heading from './components/Heading/Heading';
 import AlternateHeading from './components/Heading/AlternateHeading';
 import ForumCard from './components/ForumCard/ForumCard';
+import StatusSnackbar from '../../components/Snackbar/StatusSnackbar';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -22,11 +23,13 @@ const Home = props => {
   const { 
     forums,
     loading,
+    error,
     onFetchForums
    } = props;
 
   useEffect(() => {
     onFetchForums();
+    console.log(error)
   }, [onFetchForums]);
 
   let forumsDiv = <Spinner />;
@@ -43,6 +46,7 @@ const Home = props => {
 
   return (
     <Page className={classes.root} title="Discussion Board">
+      { error ? <StatusSnackbar message={error} type={"error"}/> : null }
       <AlternateHeading />
       {forumsDiv}
     </Page>

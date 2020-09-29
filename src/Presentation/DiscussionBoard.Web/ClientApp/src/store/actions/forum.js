@@ -44,10 +44,16 @@ export const createPostFail = (error) => {
   };
 };
 
-export const createPostSuccess = (newPostId) => {
+export const createPostSuccess = (newPost) => {
   return {
     type: actionTypes.CREATE_POST_SUCCESS,
-    newPostId: newPostId
+    newPost: newPost
+  };
+};
+
+export const createPostReset = () => {
+  return {
+    type: actionTypes.CREATE_POST_RESET
   };
 };
 
@@ -55,11 +61,11 @@ export const createPost = (newPost) => {
   return dispatch => {
     dispatch(createPostStart());
     apiCreatePost(newPost)
-      .then(res =>
-        {
-          dispatch(createPostSuccess(res.data));
-          dispatch(fetchForumById(res.data.forumId));
-        })
-      .catch(error => dispatch(createPostFail(error)));
+      .then(res => {
+        dispatch(createPostSuccess(res.data));
+      })
+      .catch(error => {
+        dispatch(createPostFail(error.message));
+      });
   };
 };

@@ -32,7 +32,7 @@ namespace DiscussionBoard.Web.Controllers
         {
             command.CreatorId = _authUserService.UserId;
             var response = await Mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { response.PostId }, response);
+            return CreatedAtAction(nameof(Get), new { response.Id }, response);
         }
 
         [HttpPut("{id}")]

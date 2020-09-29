@@ -14,7 +14,8 @@ export {
 
 export {
   fetchForumById,
-  createPost
+  createPost,
+  createPostReset
 } from './forum';
 
 export {

@@ -9,7 +9,8 @@ import ForumSidebar from './components/ForumSidebar/ForumSidebar';
 import ForumHeading from './components/ForumHeading/ForumHeading';
 import PostCard from './components/PostCard/PostCard';
 import CreatePost from './components/CreatePost/CreatePost';
-import { fetchForumById, createPost } from '../../store/actions';
+import { fetchForumById, createPost, createPostReset } from '../../store/actions';
+import StatusSnackbar from '../../components/Snackbar/StatusSnackbar';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -25,12 +26,13 @@ const Forum = props => {
   const { 
     forum, 
     loading, 
-    //error,
-    newPostId,
+    error,
     newPostLoading,
     newPostError,
     onCreatePost,
     onFetchForum,
+    newPostSuccess,
+    onCreatePostReset,
     isAuth
   } = props;
   
@@ -44,19 +46,14 @@ const Forum = props => {
     forumDiv = (
       <React.Fragment>
         <ForumHeading forum={forum} />
-        { isAuth 
-          ? <ToggleShowButton 
+         <ToggleShowButton 
               title={"Add a post"} 
               component={CreatePost} 
               forumId={forumId} 
-              postId={newPostId} 
               loading={newPostLoading} 
               error={newPostError} 
               onCreatePost={onCreatePost}
               />
-          : null
-      }
-
         <Grid container spacing={4}>
           {forum.posts.map((post) => (
             <PostCard key={post.id} post={post} />
@@ -70,6 +67,8 @@ const Forum = props => {
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
       <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
+          { newPostError ? <StatusSnackbar message={newPostError} type={"error"} reset={onCreatePostReset}/> : null }
+          { newPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null }
           { forumDiv }
         </Grid>
         <ForumSidebar />
@@ -86,6 +85,7 @@ const mapStateToProps = state => {
     newPostId: state.forum.newPostId,
     newPostLoading: state.forum.newPostLoading,
     newPostError: state.forum.newPostError,
+    newPostSuccess: state.forum.newPostSuccess,
     isAuth: state.auth.token !== null
   };
 };
@@ -93,7 +93,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onCreatePost: (post) => dispatch(createPost(post))
+    onCreatePost: (post) => dispatch(createPost(post)),
+    onCreatePostReset: () => dispatch(createPostReset())
   };
 };
 

@@ -5,6 +5,7 @@ import {
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAIL,
+  CREATE_POST_RESET,
 } from '../actions/actionTypes';
 
 const initialForumState = {
@@ -14,9 +15,9 @@ const initialForumState = {
 };
 
 const initialCreatePostState = {
-  newPostId: null,
   newPostLoading: false,
-  newPostError: null
+  newPostError: null,
+  newPostSuccess: false
 }
 
 const initialState = {
@@ -53,16 +54,21 @@ const createPostStart = (state, action) => {
   return {
     ...state,
     newPostError: null,
-    newPostLoading: true 
+    newPostLoading: true,
+    newPostSuccess: false
   };
 };
 
 const createPostSuccess = (state, action) => {
   return {
     ...state,
-    newPostId: action.newPostId,
+    forum: {
+      ...state.forum,
+      posts: [action.newPost, ...state.forum.posts]
+    },
     newPostLoading: false,
-    newPostError: null
+    newPostError: null,
+    newPostSuccess: true
   };
 };
 
@@ -70,7 +76,17 @@ const createPostFail = (state, action) => {
   return {
     ...state,
     newPostError: action.newPostError,
-    newPostLoading: false
+    newPostLoading: false,
+    newPostSuccess: false
+  };
+};
+
+const createPostReset = (state, action) => {
+  return {
+    ...state,
+    newPostError: null,
+    newPostLoading: false,
+    newPostSuccess: false
   };
 };
 
@@ -82,6 +98,7 @@ const reducer = (state = initialState, action) => {
         case CREATE_POST_START: return createPostStart(state, action);
         case CREATE_POST_SUCCESS: return createPostSuccess(state, action);
         case CREATE_POST_FAIL: return createPostFail(state, action);
+        case CREATE_POST_RESET: return createPostReset(state, action);
         default: return state;
     }
 };
