@@ -2,6 +2,10 @@ import {
   FETCH_POST_START,
   FETCH_POST_SUCCESS,
   FETCH_POST_FAIL,
+  UPDATE_POST_START,
+  UPDATE_POST_SUCCESS,
+  UPDATE_POST_FAIL,
+  UPDATE_POST_RESET,
   CREATE_COMMENT_START,
   CREATE_COMMENT_SUCCESS,
   CREATE_COMMENT_FAIL,
@@ -25,11 +29,11 @@ const initialPostState = {
   postError: null
 };
 
-// const initialUpdatePostState = {
-//   updatePostLoading: false,
-//   updatePostError: null,
-//   updatePostSuccess: false
-// };
+const initialUpdatePostState = {
+  updatePostLoading: false,
+  updatePostError: null,
+  updatePostSuccess: false
+};
 
 const initialDeletePostState = {
   deletePostLoading: false,
@@ -58,10 +62,11 @@ const initialCreateVoteState = {
 
 const initialState = {
   ...initialPostState,
+  ...initialUpdatePostState,
+  ...initialDeletePostState,
   ...initialCreateCommentState,
   ...initialDeleteCommentState,
-  ...initialCreateVoteState,
-  ...initialDeletePostState
+  ...initialCreateVoteState
 };
 
 const fetchPostByIdStart = (state, action) => {
@@ -86,6 +91,45 @@ const fetchPostByIdFail = (state, action) => {
     ...state, 
     postLoading: false,
     postError: action.error
+  };
+};
+
+const updatePostStart = (state, action) => {
+  return { 
+    ...state,
+    updatePostSuccess: false,
+    updatePostError: null,
+    updatePostLoading: true
+  };
+};
+
+const updatePostSuccess = (state, action) => {
+  return { 
+    ...state,
+    post: {
+      ...state.post,
+      title: action.updatedData.title,
+      content: action.updatedData.content
+    },
+    updatePostSuccess: true,
+    updatePostLoading: false,
+    updatePostError: null
+  };
+};
+
+const updatePostFail = (state, action) => {
+  return {
+    ...state, 
+    updatePostSuccess: false,
+    updatePostLoading: false,
+    updatePostError: action.error
+  };
+};
+
+const updatePostReset = (state, action) => {
+  return {
+    ...state, 
+    ...initialUpdatePostState
   };
 };
 
@@ -249,6 +293,10 @@ const reducer = (state = initialState, action) => {
         case DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
         case DELETE_POST_FAIL: return deletePostFail(state, action);
         case DELETE_POST_RESET: return deletePostReset(state, action);
+        case UPDATE_POST_START: return updatePostStart(state, action);
+        case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
+        case UPDATE_POST_FAIL: return updatePostFail(state, action);
+        case UPDATE_POST_RESET: return updatePostReset(state, action);
         default: return state;
     }
 };

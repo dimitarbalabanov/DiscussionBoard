@@ -10,7 +10,7 @@ export const createPost = (data) => {
   return axios.post(POSTS_URL, data, axiosConfig());
 };
 
-export const editPostById = (postId, data) => {
+export const updatePostById = (postId, data) => {
   return axios.put(POSTS_URL + postId, data, axiosConfig());
 };
 

@@ -20,6 +20,8 @@ export {
 
 export {
   fetchPostById,
+  updatePost,
+  updatePostReset,
   deletePost,
   deletePostReset,
   createComment,

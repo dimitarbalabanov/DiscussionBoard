@@ -12,6 +12,7 @@ import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
 import CreateComment from './components/CreateComment/CreateComment';
 import Snackbar from '../../components/Snackbar/Snackbar';
+import UpdatePost from './components/UpdatePost/UpdatePost';
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
@@ -36,6 +37,12 @@ const Post = (props) => {
     postLoading,
     postError,
     onFetchPost,
+
+    updatePostLoading,
+    updatePostError,
+    updatePostSuccess,
+    onUpdatePost,
+    onUpdatePostReset,
 
     deletePostLoading,
     deletePostError,
@@ -70,14 +77,14 @@ const Post = (props) => {
   if (!postLoading && post) {
     postDiv = 
       <React.Fragment>
-        <PostHeading 
-          post={post}
-          deletePostLoading={deletePostLoading}
-          deletePostError={deletePostError}
-          deletePostSuccess={deletePostSuccess}
-          onDeletePost={onDeletePost}
-          onDeletePostReset={onDeletePostReset}
-        />
+           <PostHeading 
+              post={post}
+              deletePostLoading={deletePostLoading}
+              deletePostError={deletePostError}
+              deletePostSuccess={deletePostSuccess}
+              onDeletePost={onDeletePost}
+              onDeletePostReset={onDeletePostReset}
+            />
         <ToggleShowButton 
           title={"Add a comment"}
           component={CreateComment}
@@ -89,6 +96,12 @@ const Post = (props) => {
           onCreateCommentReset={onCreateCommentReset}
         />
         {createCommentLoading ? <Spinner /> : null }
+        <UpdatePost
+          postId={postId}
+          currentTitle={post.title}
+          currentContent={post.content}
+          onUpdatePost={onUpdatePost}
+        />
         <Divider />
         {post.comments.map((comment) => (
           <CommentCard
@@ -112,8 +125,10 @@ const Post = (props) => {
       <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
           {postDiv}
-            {createCommentError ? <Snackbar message={createCommentError.message} type={"error"} reset={onCreateCommentReset}/> : null}
-            {createCommentSuccess ? <Snackbar message="Successfully created a comment" type={"success"} reset={onCreateCommentReset}/> : null}
+          {createCommentError ? <Snackbar message={createCommentError.message} type={"error"} reset={onCreateCommentReset}/> : null}
+          {createCommentSuccess ? <Snackbar message="Successfully created a comment" type={"success"} reset={onCreateCommentReset}/> : null}
+          {updatePostError ? <Snackbar message={updatePostError.message} type={"error"} reset={onUpdatePostReset}/> : null}
+          {updatePostSuccess ? <Snackbar message="Successfully updated the post" type={"success"} reset={onUpdatePostReset}/> : null}
         </Grid>
         <PostSidebar />
       </Grid>
@@ -126,6 +141,9 @@ const mapStateToProps = state => {
     post: state.post.post,
     postLoading: state.post.postLoading,
     postError: state.post.postError,
+    updatePostLoading: state.post.updatePostLoading,
+    updatePostError: state.post.updatePostError,
+    updatePostSuccess: state.post.updatePostSuccess,
     deletePostLoading: state.post.deletePostLoading,
     deletePostError: state.post.deletePostError,
     deletePostSuccess: state.post.deletePostSuccess,
@@ -153,7 +171,10 @@ const mapDispatchToProps = dispatch => {
     onDeleteCommentReset: () => dispatch(actions.deleteCommentReset()),
 
     onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
-    onDeletePostReset: () => dispatch(actions.deletePostReset())
+    onDeletePostReset: () => dispatch(actions.deletePostReset()),
+
+    onUpdatePost: (postId, content) => dispatch(actions.updatePost(postId, content)),
+    onUpdatePostReset: () => dispatch(actions.updatePostReset()),
   };
 };
 

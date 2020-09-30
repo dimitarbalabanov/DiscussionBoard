@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { getPostById, deletePostById } from '../../api/postsService';
+import { getPostById, deletePostById, updatePostById } from '../../api/postsService';
 import { createComment as apiCreateComment, deleteCommentById} from '../../api/commentsService';
 import { createVote as apiCreateVote} from '../../api/votesService';
 
@@ -31,6 +31,46 @@ export const fetchPostById = (postId) => {
       .catch(err => dispatch(fetchPostByIdFail(err)));
   };
 };
+
+export const updatePostStart = () => {
+  return {
+    type: actionTypes.UPDATE_POST_START
+  };
+};
+
+export const updatePostFail = (error) => {
+  return {
+    type: actionTypes.UPDATE_POST_FAIL,
+    error: error
+  };
+};
+
+export const updatePostSuccess = (updatedData) => {
+  return {
+    type: actionTypes.UPDATE_POST_SUCCESS,
+    updatedData: updatedData
+  };
+};
+
+export const updatePostReset = () => {
+  return {
+    type: actionTypes.UPDATE_POST_RESET
+  };
+};
+
+export const updatePost = (postId, updatedData) => {
+  return dispatch => {
+    dispatch(updatePostStart());
+    updatePostById(postId, updatedData)
+      .then(res =>
+      {
+        console.log(res.data)
+        dispatch(updatePostSuccess(updatedData));
+      })
+      .catch(err => dispatch(updatePostFail(err)));
+  };
+};
+
 
 export const deletePostSuccess = () => {
   return {
