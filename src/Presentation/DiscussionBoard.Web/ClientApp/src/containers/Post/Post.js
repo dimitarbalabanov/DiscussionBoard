@@ -11,7 +11,7 @@ import PostSidebar from './components/PostSidebar/PostSidebar';
 import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
 import CreateComment from './components/CreateComment/CreateComment';
-
+import Snackbar from '../../components/Snackbar/Snackbar';
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
@@ -33,17 +33,31 @@ const Post = (props) => {
 
   const { 
     post,
-    loading,
-    //error,
-    newCommentId,
-    newCommentLoading,
-    newCommentError,
-    onCreateComment,
+    postLoading,
+    postError,
     onFetchPost,
+
+    deletePostLoading,
+    deletePostError,
+    deletePostSuccess,
+    onDeletePost,
+    onDeletePostReset,
+
+    createCommentSuccess,
+    createCommentLoading,
+    createCommentError,
+    onCreateComment,
+    onCreateCommentReset,
+
     newVoteLoading,
     newVoteError,
     //newCommentScore,
     onCreateVote,
+    onDeleteComment,
+    onDeleteCommentReset,
+    deleteCommentError,
+    deleteCommentLoading,
+    deleteCommentSuccess,
     //isNewComment
   } = props;
 
@@ -53,19 +67,28 @@ const Post = (props) => {
 
   let postDiv = <Spinner />
 
-  if (!loading && post) {
+  if (!postLoading && post) {
     postDiv = 
       <React.Fragment>
-        <PostHeading post={post} />
+        <PostHeading 
+          post={post}
+          deletePostLoading={deletePostLoading}
+          deletePostError={deletePostError}
+          deletePostSuccess={deletePostSuccess}
+          onDeletePost={onDeletePost}
+          onDeletePostReset={onDeletePostReset}
+        />
         <ToggleShowButton 
           title={"Add a comment"}
           component={CreateComment}
           postId={postId} 
-          newCommentId={newCommentId} 
-          loading={newCommentLoading} 
-          error={newCommentError} 
+          createCommentLoading={createCommentLoading} 
+          createCommentError={createCommentError}
+          createCommentSuccess={createCommentSuccess}
           onCreateComment={onCreateComment}
+          onCreateCommentReset={onCreateCommentReset}
         />
+        {createCommentLoading ? <Spinner /> : null }
         <Divider />
         {post.comments.map((comment) => (
           <CommentCard
@@ -74,6 +97,11 @@ const Post = (props) => {
             loading={newVoteLoading} 
             error={newVoteError} 
             onCreateVote={onCreateVote}
+            onDeleteComment={onDeleteComment}
+            onDeleteCommentReset={onDeleteCommentReset}
+            deleteCommentError={deleteCommentError}
+            deleteCommentLoading={deleteCommentLoading}
+            deleteCommentSuccess={deleteCommentSuccess}
           />
         ))}
       </React.Fragment>
@@ -84,6 +112,8 @@ const Post = (props) => {
       <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
           {postDiv}
+            {createCommentError ? <Snackbar message={createCommentError.message} type={"error"} reset={onCreateCommentReset}/> : null}
+            {createCommentSuccess ? <Snackbar message="Successfully created a comment" type={"success"} reset={onCreateCommentReset}/> : null}
         </Grid>
         <PostSidebar />
       </Grid>
@@ -94,23 +124,36 @@ const Post = (props) => {
 const mapStateToProps = state => {
   return {
     post: state.post.post,
-    loading: state.post.loading,
-    error: state.post.error,
-    isNewComment: state.post.isNewComment,
-    newCommentId: state.post.newCommentId,
-    newCommentLoading: state.post.newCommentLoading,
-    newCommentError: state.post.newCommentError,
+    postLoading: state.post.postLoading,
+    postError: state.post.postError,
+    deletePostLoading: state.post.deletePostLoading,
+    deletePostError: state.post.deletePostError,
+    deletePostSuccess: state.post.deletePostSuccess,
+    createCommentLoading: state.post.createCommentLoading,
+    createCommentError: state.post.createCommentError,
+    createCommentSuccess: state.post.createCommentSuccess,
     newVoteLoading: state.post.newVoteLoading,
     newVoteError: state.post.newVoteError,
-    newCommentScore: state.post.newCommentScore
+    deleteCommentLoading: state.post.deleteCommentLoading,
+    deleteCommentError: state.post.deleteCommentError,
+    deleteCommentSuccess: state.post.deleteCommentSuccess,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+
     onCreateComment: (comment) => dispatch(actions.createComment(comment)),
-    onCreateVote: (vote) => dispatch(actions.createVote(vote))
+    onCreateCommentReset: () => dispatch(actions.createCommentReset()),
+
+    onCreateVote: (vote) => dispatch(actions.createVote(vote)),
+
+    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
+    onDeleteCommentReset: () => dispatch(actions.deleteCommentReset()),
+
+    onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
+    onDeletePostReset: () => dispatch(actions.deletePostReset())
   };
 };
 

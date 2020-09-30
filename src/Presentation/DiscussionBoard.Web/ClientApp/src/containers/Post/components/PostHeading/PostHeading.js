@@ -7,6 +7,12 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CommentIcon from '@material-ui/icons/Comment';
+import { Redirect } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import ConfirmDialog from '../../../../components/ConfirmDialog/ConfirmDialog';
+import Snackbar from '../../../../components/Snackbar/Snackbar';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   mainFeaturedPost: {
@@ -38,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
   statsIcon: {
     marginRight: theme.spacing(1)
+  },
+  button: {
+    margin: theme.spacing(1),
   }
 }));
 
@@ -45,13 +54,27 @@ const PostHeading = (props) => {
   const classes = useStyles();
   
   const {
-    //id,
+    id,
     title,
     content,
     creatorUserName,
     createdOn,
-    comments
+    comments,
+    forumId
   } = props.post;
+
+  const {
+    deletePostLoading,
+    deletePostError,
+    deletePostSuccess,
+    onDeletePost,
+    onDeletePostReset,
+  } = props;
+
+  if (deletePostSuccess) {
+    onDeletePostReset();
+    return <Redirect to={`/forums/${forumId}`}/>
+  }
 
   return (
     <Card className={classes.card}>
@@ -73,6 +96,8 @@ const PostHeading = (props) => {
               {comments.length} {' '} Comments
             </Typography>
           </Grid>
+            {deletePostLoading ? <CircularProgress /> : <ConfirmDialog id={id} onDelete={onDeletePost} /> }
+            {deletePostError ? <Snackbar message={deletePostError.message} type={"error"} reset={onDeletePostReset}/> : null}
         </CardContent>
       </div>
     </Card>

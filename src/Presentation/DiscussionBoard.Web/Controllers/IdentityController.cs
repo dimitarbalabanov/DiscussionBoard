@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DiscussionBoard.Application.Identity.Commands.Login;
 using DiscussionBoard.Application.Identity.Commands.Register;
+using System.Threading;
 
 namespace DiscussionBoard.Web.Controllers
 {
@@ -11,6 +12,8 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
+            Thread.Sleep(300);
+
             var response = await Mediator.Send(command);
 
             if (!response.Success)
@@ -37,6 +40,7 @@ namespace DiscussionBoard.Web.Controllers
             // {
             //     Errors = response.Errors
             // });
+            Thread.Sleep(300);
 
             var response = await Mediator.Send(command);
 

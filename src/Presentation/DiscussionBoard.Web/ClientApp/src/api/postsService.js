@@ -11,9 +11,9 @@ export const createPost = (data) => {
 };
 
 export const editPostById = (postId, data) => {
-  return axios.put(POSTS_URL + postId, data);
+  return axios.put(POSTS_URL + postId, data, axiosConfig());
 };
 
-export const deletePostById = (postId, data) => {
-  return axios.delete(POSTS_URL + postId, data);
+export const deletePostById = (postId) => {
+  return axios.delete(POSTS_URL + postId, axiosConfig());
 };

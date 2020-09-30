@@ -10,6 +10,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
+import AuthModal from '../../../containers/TabAuth/AuthModal'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -111,6 +112,20 @@ const Navigation = props => {
               </Button>
             </ListItem>  
           : null)}
+
+        <ListItem className={classes.item} disableGutters>
+              {/* <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={page.href}
+                exact={page.exact}
+              >
+              <div className={classes.icon}>{page.icon}</div>
+                {page.title}
+              </Button> */}
+              <AuthModal />
+            </ListItem>  
     </List>
   );
 };

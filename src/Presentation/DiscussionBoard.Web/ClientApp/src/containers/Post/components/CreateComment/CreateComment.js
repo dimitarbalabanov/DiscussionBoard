@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core';
+import Spinner from '../../../../components/Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,15 +21,20 @@ const CreateComment = props => {
 
   const classes = useStyles();
   const {
-    postId,
     handleClose,
-    onCreateComment
+    
+    postId,
+    createCommentLoading,
+    createCommentError,
+    createCommentSuccess,
+    onCreateComment,
+    onCreateCommentReset
   } = props;
 
   let form = ( 
     <Formik
       initialValues={{
-        content: 'Enter content'
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu'
       }}
       validationSchema={Yup.object().shape({
         content: Yup.string().max(255).required('content is required')
@@ -92,14 +98,7 @@ const CreateComment = props => {
       )}
     </Formik>
   );
-
-  // if (props.loading) {
-  //   );
-  // }
-
-  // if (props.error) {
-  // }
-
+  
   return (
     <Paper>
       <Grid item xs={12} md={6} className={classes.root}>

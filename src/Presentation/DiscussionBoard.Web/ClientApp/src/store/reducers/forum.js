@@ -10,14 +10,15 @@ import {
 
 const initialForumState = {
   forum: null,
-  loading: false,
-  error: null
+  forumLoading: false,
+  forumError: null
 };
 
 const initialCreatePostState = {
-  newPostLoading: false,
-  newPostError: null,
-  newPostSuccess: false
+  createPostSuccess: false,
+  createPostLoading: false,
+  createPostError: null,
+  newPostId: null
 }
 
 const initialState = {
@@ -28,8 +29,8 @@ const initialState = {
 const fetchForumByIdStart = (state, action) => {
   return { 
     ...state,
-    error: null,
-    loading: true 
+    forumLoading: true,
+    forumError: null
   };
 };
 
@@ -37,25 +38,25 @@ const fetchForumByIdSuccess = (state, action) => {
   return {
     ...state, 
     forum: action.forum,
-    loading: false,
-    error: null
+    forumLoading: false,
+    forumError: null
   };
 };
 
 const fetchForumByIdFail = (state, action) => {
   return  {
     ...state,
-    loading: false,
-    error: action.error 
+    forumLoading: false,
+    forumError: action.error 
   };
 };
 
 const createPostStart = (state, action) => {
   return {
     ...state,
-    newPostError: null,
-    newPostLoading: true,
-    newPostSuccess: false
+    createPostSuccess: false,
+    createPostLoading: true,
+    createPostError: null
   };
 };
 
@@ -66,27 +67,26 @@ const createPostSuccess = (state, action) => {
       ...state.forum,
       posts: [action.newPost, ...state.forum.posts]
     },
-    newPostLoading: false,
-    newPostError: null,
-    newPostSuccess: true
+    newPostId: action.newPost.id,
+    createPostSuccess: true,
+    createPostLoading: false,
+    createPostError: null
   };
 };
 
 const createPostFail = (state, action) => {
   return {
     ...state,
-    newPostError: action.newPostError,
-    newPostLoading: false,
-    newPostSuccess: false
+    createPostError: action.error,
+    createPostLoading: false,
+    createPostSuccess: false
   };
 };
 
 const createPostReset = (state, action) => {
   return {
     ...state,
-    newPostError: null,
-    newPostLoading: false,
-    newPostSuccess: false
+    ...initialCreatePostState
   };
 };
 

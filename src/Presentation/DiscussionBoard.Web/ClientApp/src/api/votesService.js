@@ -7,9 +7,9 @@ export const createVote = (data) => {
 };
 
 export const editVoteById = (voteId, data) => {
-  return axios.put(VOTES_URL + voteId, data);
+  return axios.put(VOTES_URL + voteId, data, axiosConfig());
 };
 
 export const deleteVoteById = (voteId, data) => {
-  return axios.delete(VOTES_URL + voteId, data);
+  return axios.delete(VOTES_URL + voteId, data, axiosConfig());
 };

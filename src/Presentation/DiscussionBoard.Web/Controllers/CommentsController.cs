@@ -4,6 +4,7 @@ using DiscussionBoard.Application.Comments.Commands.UpdateComment;
 using DiscussionBoard.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
@@ -28,6 +29,8 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCommentCommand command)
         {
+            Thread.Sleep(300);
+
             command.CreatorId = _authUserService.UserId;
             var id = await Mediator.Send(command);
             return CreatedAtAction(nameof(Get), new { id }, id);
@@ -36,6 +39,8 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCommentCommand command)
         {
+            Thread.Sleep(300);
+
             command.CreatorId = _authUserService.UserId;
             command.Id = id;
             await Mediator.Send(command);
@@ -45,6 +50,8 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            Thread.Sleep(300);
+
             await Mediator.Send(new DeleteCommentCommand { Id = id, CreatorId = _authUserService.UserId });
             return NoContent();
         }

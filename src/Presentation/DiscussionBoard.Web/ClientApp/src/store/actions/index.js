@@ -20,6 +20,16 @@ export {
 
 export {
   fetchPostById,
+  deletePost,
+  deletePostReset,
   createComment,
-  createVote
+  createCommentReset,
+  deleteComment,
+  deleteCommentReset,
+  createVote,
 } from './post';
+
+export {
+  showSnackbar,
+  hideSnackbar
+} from './snackbar';

@@ -21,12 +21,12 @@ import Typography from '@material-ui/core/Typography';
 const LoginForm = props => {
   //const classes = useStyles();
 
-  // const {
-  //   loading,
-  //   error,
-  //   onAuth,
-  //   isAuthenticated
-  // } = props;
+  const {
+    //loading,
+    //error,
+    onAuth,
+    //isAuthenticated
+  } = props;
 
   return (
     <Formik
@@ -39,7 +39,7 @@ const LoginForm = props => {
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={values => {
-          //onAuth(values.email, values.password);
+          onAuth(values.email, values.password);
         }}
       >
         {({

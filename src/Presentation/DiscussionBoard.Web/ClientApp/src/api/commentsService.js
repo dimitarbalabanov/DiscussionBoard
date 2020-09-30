@@ -7,9 +7,9 @@ export const createComment = (data) => {
 };
 
 export const editCommentById = (commentId, data) => {
-  return axios.put(COMMENTS_URL + commentId, data);
+  return axios.put(COMMENTS_URL + commentId, data, axiosConfig());
 };
 
-export const deleteCommentById = (commentId, data) => {
-  return axios.delete(COMMENTS_URL + commentId, data);
+export const deleteCommentById = (commentId) => {
+  return axios.delete(COMMENTS_URL + commentId, axiosConfig());
 };

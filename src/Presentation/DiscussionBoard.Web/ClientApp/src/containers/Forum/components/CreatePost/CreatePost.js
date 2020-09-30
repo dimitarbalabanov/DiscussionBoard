@@ -24,15 +24,20 @@ const CreatePost = props => {
 
   const classes = useStyles();
   
+  const {
+    handleClose,
+    onCreatePost
+  } = props;
+  
   let form = ( 
     <Formik
       initialValues={{
-        title: '',
-        content: ''
+        title: 'Neque porro quisquam est qui dolorem',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu interdum. Aliquam in massa dui. Etiam sed sodales mi, eget iaculis erat. Etiam luctus id purus quis euismod. In porta a ex eget tristique.'
       }}
       validationSchema={Yup.object().shape({
-        title: Yup.string().min(3).max(200).required('title is required'),
-        content: Yup.string().min(30).max(2500).required('content is required')
+        title: Yup.string().min(3).max(200).required('Title is required'),
+        content: Yup.string().min(30).max(2500).required('Content is required')
       })}
       onSubmit={values => {
         const post = {

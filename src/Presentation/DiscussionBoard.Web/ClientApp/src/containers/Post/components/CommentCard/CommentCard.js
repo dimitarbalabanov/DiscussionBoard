@@ -8,6 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import ScoreIcon from '@material-ui/icons/Score';
 import Voting from '../Voting/Voting';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import Snackbar from '../../../../components/Snackbar/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -41,6 +45,14 @@ const CommentCard = props => {
     votesScore
   } = props.comment;
 
+  const {
+    deleteCommentLoading,
+    deleteCommentError,
+    deleteCommentSuccess,
+    onDeleteCommentReset,
+    onDeleteComment
+  } = props;
+
   return (
     <Grid item xs={12} className={classes.pad}>
       <Card className={classes.card}>
@@ -68,6 +80,19 @@ const CommentCard = props => {
                 //error={error} 
                 //onCreateVote={onCreateVote}
               />
+              {deleteCommentLoading 
+                ? <CircularProgress />
+                : <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  startIcon={<DeleteIcon />}
+                  onClick={() => onDeleteComment(id)}
+                >
+                  Delete
+                </Button> }
+                { deleteCommentError ? <Snackbar message={deleteCommentError} type={"error"} reset={onDeleteCommentReset} /> : null}
+                { deleteCommentSuccess ? <Snackbar message="Successfully deleted the comment." type={"info"} reset={onDeleteCommentReset} /> : null}
             </Grid>
           </CardContent>
         </div>

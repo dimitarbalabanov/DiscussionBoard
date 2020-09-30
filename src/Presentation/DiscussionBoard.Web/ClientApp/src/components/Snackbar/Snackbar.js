@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
+import MaterialSnackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StatusSnackbar = props => {
+const Snackbar = props => {
   const [open, setOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
@@ -24,22 +24,23 @@ const StatusSnackbar = props => {
   const classes = useStyles();
 
   const {
+    //show,
     type,
     message,
     reset
+    //hideSnackbar
   } = props;
 
   return (
-      <Snackbar 
+      <MaterialSnackbar 
         className={classes.root}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
         }}
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
-        message={props.error}
         action={
           <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
             <CloseIcon fontSize="small" />
@@ -49,8 +50,24 @@ const StatusSnackbar = props => {
         <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={type}>
           {message}
         </MuiAlert>
-      </Snackbar>
+      </MaterialSnackbar>
   );
 }
 
-export default StatusSnackbar;
+// const mapStateToProps = state => {
+//   return {
+//     show: state.snackbar.show,
+//     type: state.snackbar.type,
+//     message: state.snackbar.message
+//   };
+// };
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onHideSnackbar: () => dispatch(actions.hideSnackbar()),
+//     onCreateComment: (comment) => dispatch(actions.createComment(comment)),
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Snackbar);
+export default Snackbar;

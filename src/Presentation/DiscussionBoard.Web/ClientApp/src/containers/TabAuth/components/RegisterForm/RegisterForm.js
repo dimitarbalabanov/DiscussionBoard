@@ -21,12 +21,12 @@ import Typography from '@material-ui/core/Typography';
 const RegisterForm = props => {
   //const classes = useStyles();
 
-  // const {
-  //   loading,
-  //   error,
-  //   isAuthenticated,
-  //   onRegister
-  // } = props;
+  const {
+    // loading,
+    // error,
+    // isAuthenticated,
+    onRegister
+  } = props;
 
   return (
     <Formik
@@ -44,7 +44,7 @@ const RegisterForm = props => {
           })
         }
         onSubmit={values => {
-          //onRegister(values.email, values.password, values.confirmPassword, values.username);
+          onRegister(values.email, values.password, values.confirmPassword, values.username);
         }}
       >
         {({

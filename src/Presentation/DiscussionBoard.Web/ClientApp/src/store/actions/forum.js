@@ -1,25 +1,26 @@
 import * as actionTypes from './actionTypes';
 import { getForumById } from '../../api/forumsService';
+import { showSnackbar } from './snackbar';
 import { createPost as apiCreatePost } from '../../api/postsService';
 
-export const fetchForumByIdSuccess = ( forum ) => {
-    return {
-        type: actionTypes.FETCH_FORUM_SUCCESS,
-        forum: forum
-    };
+export const fetchForumByIdSuccess = (forum) => {
+  return {
+    type: actionTypes.FETCH_FORUM_SUCCESS,
+    forum: forum
+  };
 };
 
-export const fetchForumByIdFail = ( error ) => {
-    return {
-        type: actionTypes.FETCH_FORUM_FAIL,
-        error: error
-    };
+export const fetchForumByIdFail = (error) => {
+  return {
+    type: actionTypes.FETCH_FORUM_FAIL,
+    error: error
+  };
 };
 
 export const fetchForumByIdStart = () => {
-    return {
-        type: actionTypes.FETCH_FORUM_START
-    };
+  return {
+    type: actionTypes.FETCH_FORUM_START
+  };
 };
 
 export const fetchForumById = (forumId) => {
@@ -27,7 +28,10 @@ export const fetchForumById = (forumId) => {
     dispatch(fetchForumByIdStart());
     getForumById(forumId)
       .then(res => dispatch(fetchForumByIdSuccess(res.data)))
-      .catch(err => dispatch(fetchForumByIdFail(err)));
+      .catch(err => { 
+        dispatch(fetchForumByIdFail(err));
+        //dispatch(showSnackbar("error", err.message));
+      });
     };
 };
 
@@ -40,7 +44,7 @@ export const createPostStart = () => {
 export const createPostFail = (error) => {
   return {
     type: actionTypes.CREATE_POST_FAIL,
-    newPostError: error
+    error: error
   };
 };
 
@@ -63,9 +67,11 @@ export const createPost = (newPost) => {
     apiCreatePost(newPost)
       .then(res => {
         dispatch(createPostSuccess(res.data));
+        //dispatch(showSnackbar("success", "Successfully created a post."));
       })
-      .catch(error => {
-        dispatch(createPostFail(error.message));
+      .catch(err => {
+        dispatch(createPostFail(err.message));
+        //dispatch(showSnackbar("error", error.message));
       });
   };
 };

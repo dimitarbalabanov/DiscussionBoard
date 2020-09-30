@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Spinner from '../../components/Spinner/Spinner';
@@ -10,7 +11,7 @@ import ForumHeading from './components/ForumHeading/ForumHeading';
 import PostCard from './components/PostCard/PostCard';
 import CreatePost from './components/CreatePost/CreatePost';
 import { fetchForumById, createPost, createPostReset } from '../../store/actions';
-import StatusSnackbar from '../../components/Snackbar/StatusSnackbar';
+import StatusSnackbar from '../../components/Snackbar/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -25,14 +26,15 @@ const Forum = props => {
 
   const { 
     forum, 
-    loading, 
-    error,
-    newPostLoading,
-    newPostError,
-    onCreatePost,
+    forumLoading, 
+    forumError,
+    createPostSuccess,
+    createPostLoading,
+    createPostError,
     onFetchForum,
-    newPostSuccess,
+    onCreatePost,
     onCreatePostReset,
+    newPostId,
     isAuth
   } = props;
   
@@ -40,20 +42,24 @@ const Forum = props => {
     onFetchForum(forumId);
   }, [onFetchForum, forumId]);
 
+  if(createPostSuccess) {
+    onCreatePostReset();
+    return <Redirect to={`/posts/${newPostId}`} />
+  }
+
   let forumDiv = <Spinner />
 
-  if (!loading && forum) {
+  if (!forumLoading && forum) {
     forumDiv = (
       <React.Fragment>
+        <ToggleShowButton 
+            title={"Add a post"} 
+            component={CreatePost} 
+            forumId={forumId} 
+            loading={createPostLoading} 
+            onCreatePost={onCreatePost}
+        />
         <ForumHeading forum={forum} />
-         <ToggleShowButton 
-              title={"Add a post"} 
-              component={CreatePost} 
-              forumId={forumId} 
-              loading={newPostLoading} 
-              error={newPostError} 
-              onCreatePost={onCreatePost}
-              />
         <Grid container spacing={4}>
           {forum.posts.map((post) => (
             <PostCard key={post.id} post={post} />
@@ -67,8 +73,9 @@ const Forum = props => {
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
       <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
-          { newPostError ? <StatusSnackbar message={newPostError} type={"error"} reset={onCreatePostReset}/> : null }
-          { newPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null }
+          { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
+          { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null }
+          {/* { createPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null } */}
           { forumDiv }
         </Grid>
         <ForumSidebar />
@@ -80,13 +87,15 @@ const Forum = props => {
 const mapStateToProps = state => {
   return {
     forum: state.forum.forum,
-    loading: state.forum.loading,
-    error: state.forum.error,
+    forumLoading: state.forum.forumLoading,
+    forumLoading: state.forum.forumLoading,
+    createPostLoading: state.forum.createPostLoading,
+    createPostError: state.forum.createPostError,
+    createPostSuccess: state.forum.createPostSuccess,
     newPostId: state.forum.newPostId,
-    newPostLoading: state.forum.newPostLoading,
-    newPostError: state.forum.newPostError,
-    newPostSuccess: state.forum.newPostSuccess,
-    isAuth: state.auth.token !== null
+    isAuth: state.auth.token !== null,
+    //showSnackbar: state.snackbar.show,
+    //type: state.snackbar.type
   };
 };
 
