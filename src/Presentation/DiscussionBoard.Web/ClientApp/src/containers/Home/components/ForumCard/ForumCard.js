@@ -34,24 +34,18 @@ const ForumCard = (props) => {
   const { forum } = props;
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={6} md={4}>
       <CardActionArea>
         <Link to={`/forums/${forum.id}`}>
           <Card className={classes.card}>
             <div className={classes.cardDetails}>
               <CardContent>
-                <Typography component="h2" variant="h5">
+                <Typography component="h2" variant="h3">
                   {forum.title}
                 </Typography>
-                {/* <Typography variant="subtitle1" color="textSecondary">
-                  {forum.date}
-                </Typography> */}
                 <Typography variant="subtitle1" paragraph>
                   {forum.description}
                 </Typography>
-                {/* <Typography variant="subtitle1" color="primary">
-                  Continue reading...
-                </Typography> */}
                 <Grid className={classes.statsItem} item >
                   <ChatBubbleIcon className={classes.statsIcon} color="action" />
                     <Typography color="textSecondary" display="inline" variant="body2" >

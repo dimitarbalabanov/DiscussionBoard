@@ -35,10 +35,10 @@ const Post = (props) => {
   const { 
     post,
     postLoading,
-    postError,
+    //postError,
     onFetchPost,
 
-    updatePostLoading,
+    //updatePostLoading,
     updatePostError,
     updatePostSuccess,
     onUpdatePost,
@@ -96,12 +96,12 @@ const Post = (props) => {
           onCreateCommentReset={onCreateCommentReset}
         />
         {createCommentLoading ? <Spinner /> : null }
-        <UpdatePost
+        {/* <UpdatePost
           postId={postId}
           currentTitle={post.title}
           currentContent={post.content}
           onUpdatePost={onUpdatePost}
-        />
+        /> */}
         <Divider />
         {post.comments.map((comment) => (
           <CommentCard
@@ -115,6 +115,8 @@ const Post = (props) => {
             deleteCommentError={deleteCommentError}
             deleteCommentLoading={deleteCommentLoading}
             deleteCommentSuccess={deleteCommentSuccess}
+
+            createVoteLoading={newVoteLoading}
           />
         ))}
       </React.Fragment>

@@ -24,19 +24,16 @@ const SearchToolbar = ({ className, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <Box mt={3} width="25%">
+      {/* <Box mt={3} width="25%">
         <Card>
           <CardContent>
-            <Box maxWidth={500}>
+            <Box maxWidth={500}> */}
               <TextField
                 fullWidth
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
+                      <SvgIcon fontSize="small" color="action">
                         <Search />
                       </SvgIcon>
                     </InputAdornment>
@@ -45,10 +42,10 @@ const SearchToolbar = ({ className, ...rest }) => {
                 placeholder="Search in forums"
                 variant="outlined"
               />
-            </Box>
+            {/* </Box>
           </CardContent>
         </Card>
-      </Box>
+      </Box> */}
     </div>
   );
 };

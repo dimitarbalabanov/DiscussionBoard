@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import TabPanel from './components/TabPanel/TabPanel';
 import LoginFrom from './components/LoginForm/LoginForm';
 import RegisterForm from './components/RegisterForm/RegisterForm';
+import { colors } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+  },
+  button: {
+    color: colors.blueGrey[800],
+    padding: '10px 8px',
+    justifyContent: 'flex-start',
+    textTransform: 'none',
+    letterSpacing: 0,
+    width: '100%',
+    fontWeight: theme.typography.fontWeightMedium
   },
 }));
 
@@ -56,8 +66,8 @@ const AuthModal = props => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
+      <Button className={classes.button} onClick={handleClickOpen}>
+        Sign in/up
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>

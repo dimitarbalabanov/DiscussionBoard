@@ -2,6 +2,7 @@
 using DiscussionBoard.Application.Posts.Commands.CreatePost;
 using DiscussionBoard.Application.Posts.Commands.DeletePost;
 using DiscussionBoard.Application.Posts.Commands.UpdatePost;
+using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
 using DiscussionBoard.Application.Posts.Queries.GetPostById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,15 @@ namespace DiscussionBoard.Web.Controllers
             Thread.Sleep(300);
 
             var vm = await Mediator.Send(new GetPostByIdQuery { Id = id });
+            return Ok(vm);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            Thread.Sleep(300);
+            var vm = await Mediator.Send(new GetAllPostsQuery());
             return Ok(vm);
         }
 

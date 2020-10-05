@@ -9,7 +9,8 @@ export {
 } from './register';
 
 export {
-  fetchForums
+  fetchForums,
+  fetchPosts
 } from './home';
 
 export {

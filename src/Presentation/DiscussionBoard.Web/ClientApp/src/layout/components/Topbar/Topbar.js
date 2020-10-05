@@ -7,6 +7,8 @@ import { AppBar, Toolbar, Hidden, IconButton } from '@material-ui/core';
 import Logo from '../../../components/Logo/Logo';
 import MenuIcon from '@material-ui/icons/Menu';
 import Navigation from '../Navigation/Navigation';
+import Search from '../../../components/SearchToolbar/SearchToolbar';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,8 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
   flexGrow: {
     flexGrow: 1
-  },
-  
+  }
 }));
 
 const Topbar = props => {

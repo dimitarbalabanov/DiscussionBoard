@@ -3,6 +3,7 @@ using DiscussionBoard.Application.Comments.Commands.CreateComment;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
 using DiscussionBoard.Application.Posts.Commands.CreatePost;
+using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
 using DiscussionBoard.Application.Posts.Queries.GetPostById;
 using DiscussionBoard.Application.Votes.Commands.CreateVote;
 using DiscussionBoard.Domain.Entities;
@@ -21,6 +22,9 @@ namespace DiscussionBoard.Application.Common.Mappings
                 .ForMember(dest => dest.Posts, src => src.Ignore())
                 .ForMember(dest => dest.PostsCount, src => src.Ignore());
             CreateMap<Post, PostDto>()
+                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
+
+            CreateMap<Post, GetAllPostsPostDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
 
             CreateMap<Post, GetPostByIdVm>();

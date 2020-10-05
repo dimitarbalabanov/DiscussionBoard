@@ -7,19 +7,17 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-//import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     backgroundColor: theme.palette.background.dark,
-//     height: '100%',
-//     paddingBottom: theme.spacing(3),
-//     paddingTop: theme.spacing(3)
-//   }
-// }));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginLeft: theme.spacing(6),
+    marginRight: theme.spacing(6)
+  }
+}));
 
 const LoginForm = props => {
-  //const classes = useStyles();
+  const classes = useStyles();
 
   const {
     //loading,
@@ -51,7 +49,7 @@ const LoginForm = props => {
           touched,
           values
           }) => (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={classes.root}>
               <Box mb={3}>
                 <Typography color="textPrimary" variant="h2">
                   Sign in
@@ -86,7 +84,7 @@ const LoginForm = props => {
                 value={values.password}
                 variant="outlined"
               />
-              <Box my={2}>
+              <Box mt={22} mb={2}>
                 <Button
                   color="primary"
                   disabled={isSubmitting}

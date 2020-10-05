@@ -1,19 +1,25 @@
-import axios from 'axios';
+//import axios from 'axios';
+import myAxios from './axiosInstance';
 import { POSTS_URL } from './apiRoutes';
-import { axiosConfig } from '../utils/axiosConfig';
+//import { axiosConfig } from '../utils/axiosConfig';
 
 export const getPostById = (postId) => {
-  return axios.get(POSTS_URL + postId);
+  return myAxios.get(POSTS_URL + postId);
+};
+
+export const getAllPosts = () => {
+  return myAxios.get(POSTS_URL);
 };
 
 export const createPost = (data) => {
-  return axios.post(POSTS_URL, data, axiosConfig());
+  return myAxios.post(POSTS_URL, data);
+  //return axios.post(POSTS_URL, data, axiosConfig());
 };
 
 export const updatePostById = (postId, data) => {
-  return axios.put(POSTS_URL + postId, data, axiosConfig());
+  return myAxios.put(POSTS_URL + postId, data);
 };
 
 export const deletePostById = (postId) => {
-  return axios.delete(POSTS_URL + postId, axiosConfig());
+  return myAxios.delete(POSTS_URL + postId);
 };

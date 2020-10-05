@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core';
-import Spinner from '../../../../components/Spinner/Spinner';
+//import Spinner from '../../../../components/Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,11 +24,11 @@ const CreateComment = props => {
     handleClose,
     
     postId,
-    createCommentLoading,
-    createCommentError,
-    createCommentSuccess,
+    //createCommentLoading,
+    //createCommentError,
+    //createCommentSuccess,
     onCreateComment,
-    onCreateCommentReset
+    //onCreateCommentReset
   } = props;
 
   let form = ( 

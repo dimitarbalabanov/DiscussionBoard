@@ -50,7 +50,8 @@ const CommentCard = props => {
     deleteCommentError,
     deleteCommentSuccess,
     onDeleteCommentReset,
-    onDeleteComment
+    onDeleteComment,
+    createVoteLoading
   } = props;
 
   return (
@@ -71,7 +72,7 @@ const CommentCard = props => {
             <Grid className={classes.statsItem} item >
               <ScoreIcon className={classes.statsIcon} color="action" />
               <Typography color="textSecondary" display="inline" variant="body2" >
-                {votesScore} {' '} Score
+               {createVoteLoading ? <CircularProgress /> : <div>{votesScore} {' '} Score</div> }
               </Typography>
               <Voting
                 onCreateVote={props.onCreateVote}

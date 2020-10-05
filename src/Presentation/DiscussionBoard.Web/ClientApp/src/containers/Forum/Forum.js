@@ -35,7 +35,7 @@ const Forum = props => {
     onCreatePost,
     onCreatePostReset,
     newPostId,
-    isAuth
+    //isAuth
   } = props;
   
   useEffect(() => {
@@ -88,7 +88,7 @@ const mapStateToProps = state => {
   return {
     forum: state.forum.forum,
     forumLoading: state.forum.forumLoading,
-    forumLoading: state.forum.forumLoading,
+    forumError: state.forum.forumError,
     createPostLoading: state.forum.createPostLoading,
     createPostError: state.forum.createPostError,
     createPostSuccess: state.forum.createPostSuccess,

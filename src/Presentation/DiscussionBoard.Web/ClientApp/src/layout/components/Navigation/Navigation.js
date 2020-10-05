@@ -97,7 +97,7 @@ const Navigation = props => {
   ];
 
   return (
-    <List className={clsx(classes.root, className)}>  
+    <List className={clsx(classes.root, className)}>
       {pages.map(page => page.render
           ? <ListItem className={classes.item} disableGutters key={page.title}>
               <Button
@@ -113,7 +113,7 @@ const Navigation = props => {
             </ListItem>  
           : null)}
 
-        <ListItem className={classes.item} disableGutters>
+        <ListItem className={classes.item} disableGutters key={"123456789"}>
               {/* <Button
                 activeClassName={classes.active}
                 className={classes.button}

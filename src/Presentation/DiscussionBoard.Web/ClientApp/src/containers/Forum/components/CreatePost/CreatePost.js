@@ -24,10 +24,10 @@ const CreatePost = props => {
 
   const classes = useStyles();
   
-  const {
-    handleClose,
-    onCreatePost
-  } = props;
+  // const {
+  //   handleClose,
+  //   onCreatePost
+  // } = props;
   
   let form = ( 
     <Formik

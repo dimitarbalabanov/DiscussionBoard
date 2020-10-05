@@ -25,7 +25,7 @@ const UpdatePost = props => {
   const classes = useStyles();
   
   const {
-    handleClose,
+    //handleClose,
     postId,
     currentTitle,
     currentContent,

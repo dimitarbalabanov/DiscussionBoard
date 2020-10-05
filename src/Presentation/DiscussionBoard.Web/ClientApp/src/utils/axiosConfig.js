@@ -1,4 +1,4 @@
-import { store } from '../index';
+import store from '../store';
 
 export const axiosConfig = () => {
   const token = store.getState().auth.token;

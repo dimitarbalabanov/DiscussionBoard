@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import { getForumById } from '../../api/forumsService';
-import { showSnackbar } from './snackbar';
+//import { showSnackbar } from './snackbar';
 import { createPost as apiCreatePost } from '../../api/postsService';
 
 export const fetchForumByIdSuccess = (forum) => {
