@@ -18,8 +18,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public int VotesScore { get; set; }
 
-        public bool UserHasVoted { get; set; }
+        public bool CurrentUserHasVoted { get; set; }
 
-        public string VoteType { get; set; }
+        public string CurrentUserVoteType { get; set; }
     }
 }

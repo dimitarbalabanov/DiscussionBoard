@@ -13,6 +13,12 @@ import {
   CREATE_VOTE_START,
   CREATE_VOTE_SUCCESS,
   CREATE_VOTE_FAIL,
+  UPDATE_VOTE_START,
+  UPDATE_VOTE_SUCCESS,
+  UPDATE_VOTE_FAIL,
+  DELETE_VOTE_START,
+  DELETE_VOTE_SUCCESS,
+  DELETE_VOTE_FAIL,
   DELETE_POST_START,
   DELETE_POST_SUCCESS,
   DELETE_POST_FAIL,
@@ -54,10 +60,24 @@ const initialDeleteCommentState = {
 };
 
 const initialCreateVoteState = {
-  newVoteId: null,
-  newVoteLoading: false,
-  newVoteError: null,
-  newCommentScore: null
+  createVoteId: null,
+  createVoteLoading: false,
+  createVoteError: null,
+  createVoteCommentScore: null
+};
+
+const initialUpdateVoteState = {
+  updateVoteId: null,
+  updateVoteLoading: false,
+  updateVoteError: null,
+  updateVoteCommentScore: null
+};
+
+const initialDeleteVoteState = {
+  deleteVoteId: null,
+  deleteVoteLoading: false,
+  deleteVoteError: null,
+  deleteVoteCommentScore: null
 };
 
 const initialState = {
@@ -66,7 +86,9 @@ const initialState = {
   ...initialDeletePostState,
   ...initialCreateCommentState,
   ...initialDeleteCommentState,
-  ...initialCreateVoteState
+  ...initialCreateVoteState,
+  ...initialUpdateVoteState,
+  ...initialDeleteVoteState
 };
 
 const fetchPostByIdStart = (state, action) => {
@@ -248,8 +270,8 @@ const deleteCommentReset = (state, action) => {
 const createVoteStart = (state, action) => {
   return { 
     ...state,
-    newVoteError: null,
-    newVoteLoading: true 
+    createVoteError: null,
+    createVoteLoading: true 
   };
 };
 
@@ -260,16 +282,72 @@ const createVoteSuccess = (state, action) => {
       ...state.post,
       comments: state.post.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore})
     },  
-    newVoteLoading: false,
-    newVoteError: null
+    createVoteLoading: false,
+    createVoteError: null
   };
 };
 
 const createVoteFail = (state, action) => {
   return { 
     ...state,
-    newVoteError: action.newVoteError,
-    newVoteLoading: false,
+    createVoteError: action.createVoteError,
+    createVoteLoading: false
+  };
+};
+
+const updateVoteStart = (state, action) => {
+  return { 
+    ...state,
+    updateVoteError: null,
+    updateVoteLoading: true 
+  };
+};
+
+const updateVoteSuccess = (state, action) => {
+  return { 
+    ...state,
+    post: {
+      ...state.post,
+      comments: state.post.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore})
+    },  
+    updateVoteLoading: false,
+    updateVoteError: null
+  };
+};
+
+const updateVoteFail = (state, action) => {
+  return { 
+    ...state,
+    updateVoteError: action.updateVoteError,
+    updateVoteLoading: false
+  };
+};
+
+const deleteVoteStart = (state, action) => {
+  return { 
+    ...state,
+    deleteVoteError: null,
+    deleteVoteLoading: true 
+  };
+};
+
+const deleteVoteSuccess = (state, action) => {
+  return { 
+    ...state,
+    post: {
+      ...state.post,
+      comments: state.post.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore})
+    },  
+    deleteVoteLoading: false,
+    deleteVoteError: null
+  };
+};
+
+const deleteVoteFail = (state, action) => {
+  return { 
+    ...state,
+    deleteVoteError: action.deleteVoteError,
+    deleteVoteLoading: false
   };
 };
 
@@ -278,6 +356,15 @@ const reducer = (state = initialState, action) => {
         case FETCH_POST_START: return fetchPostByIdStart(state, action);
         case FETCH_POST_SUCCESS: return fetchPostByIdSuccess(state, action);
         case FETCH_POST_FAIL: return fetchPostByIdFail(state, action);
+        case UPDATE_POST_START: return updatePostStart(state, action);
+        case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
+        case UPDATE_POST_FAIL: return updatePostFail(state, action);
+        case UPDATE_POST_RESET: return updatePostReset(state, action);
+        case DELETE_POST_START: return deletePostStart(state, action);
+        case DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
+        case DELETE_POST_FAIL: return deletePostFail(state, action);
+        case DELETE_POST_RESET: return deletePostReset(state, action);
+
         case CREATE_COMMENT_START: return createCommentStart(state, action);
         case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
         case CREATE_COMMENT_FAIL: return createCommentFail(state, action);
@@ -286,17 +373,16 @@ const reducer = (state = initialState, action) => {
         case DELETE_COMMENT_SUCCESS: return deleteCommentSuccess(state, action);
         case DELETE_COMMENT_FAIL: return deleteCommentFail(state, action);
         case DELETE_COMMENT_RESET: return deleteCommentReset(state, action);
+
         case CREATE_VOTE_START: return createVoteStart(state, action);
         case CREATE_VOTE_SUCCESS: return createVoteSuccess(state, action);
         case CREATE_VOTE_FAIL: return createVoteFail(state, action);
-        case DELETE_POST_START: return deletePostStart(state, action);
-        case DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
-        case DELETE_POST_FAIL: return deletePostFail(state, action);
-        case DELETE_POST_RESET: return deletePostReset(state, action);
-        case UPDATE_POST_START: return updatePostStart(state, action);
-        case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
-        case UPDATE_POST_FAIL: return updatePostFail(state, action);
-        case UPDATE_POST_RESET: return updatePostReset(state, action);
+        case UPDATE_VOTE_START: return updateVoteStart(state, action);
+        case UPDATE_VOTE_SUCCESS: return updateVoteSuccess(state, action);
+        case UPDATE_VOTE_FAIL: return updateVoteFail(state, action);
+        case DELETE_VOTE_START: return deleteVoteStart(state, action);
+        case DELETE_VOTE_SUCCESS: return deleteVoteSuccess(state, action);
+        case DELETE_VOTE_FAIL: return deleteVoteFail(state, action);
         default: return state;
     }
 };

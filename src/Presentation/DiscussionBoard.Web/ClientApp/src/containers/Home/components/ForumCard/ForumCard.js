@@ -22,10 +22,13 @@ const useStyles = makeStyles((theme) => ({
   },
   statsItem: {
     alignItems: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   statsIcon: {
     marginRight: theme.spacing(1)
+  },
+  title: {
+    marginBottom: theme.spacing(1)
   }
 }));
 
@@ -34,18 +37,19 @@ const ForumCard = (props) => {
   const { forum } = props;
 
   return (
-    <Grid item xs={6} md={4}>
+    // <Grid item xs={6} md={4}>
+    <Grid item xs={6} md={8}>
       <CardActionArea>
         <Link to={`/forums/${forum.id}`}>
           <Card className={classes.card}>
             <div className={classes.cardDetails}>
               <CardContent>
-                <Typography component="h2" variant="h3">
+                <Typography className={classes.title} component="h2" variant="h2">
                   {forum.title}
                 </Typography>
-                <Typography variant="subtitle1" paragraph>
+                {/* <Typography variant="subtitle1" paragraph>
                   {forum.description}
-                </Typography>
+                </Typography> */}
                 <Grid className={classes.statsItem} item >
                   <ChatBubbleIcon className={classes.statsIcon} color="action" />
                     <Typography color="textSecondary" display="inline" variant="body2" >

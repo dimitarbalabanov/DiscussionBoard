@@ -4,7 +4,7 @@ import * as actions from '../../store/actions';
 
 import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
-import AnotherSpinner from '../../components/Spinner/AnotherSpinner';
+//import AnotherSpinner from '../../components/Spinner/AnotherSpinner';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 //import Heading from './components/Heading/Heading';
@@ -18,8 +18,8 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import CommentIcon from '@material-ui/icons/Comment';
+//import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
+//import CommentIcon from '@material-ui/icons/Comment';
 
 //import NestedGrid from './Sample';
 //import Search from '../../components/SearchToolbar/SearchToolbar';
@@ -37,10 +37,10 @@ import CommentIcon from '@material-ui/icons/Comment';
 // import CommentIcon from '@material-ui/icons/Comment';
 // import ModeCommentIcon from '@material-ui/icons/ModeComment';
 // import { Link } from 'react-router-dom';
-import AnotherCard from './components/ForumCard/AnotherCard';
+//import AnotherCard from './components/ForumCard/AnotherCard';
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
-    marginTop: theme.spacing(2),
+    //marginTop: theme.spacing(2),
   },
   // table: {
   //   minWidth: 650,
@@ -74,41 +74,36 @@ const Home = props => {
     onFetchPosts();
   }, [onFetchForums, onFetchPosts]);
 
-  //let forumsDiv = <Spinner />;
+  let forumsDiv = <Spinner />;
   let postsDiv = <Spinner />
   
-  let forumsDiv = (
-    <Grid container spacing={4} className={classes.mainGrid} >
-      {[1,2,3,4,5].map((i) => (
-        <Grid item xs={6} md={4} key={i}>
-              <Card className={classes.card}>
-                <div className={classes.cardDetails}>
-                  <CardContent>
-                    <Typography component="h2" variant="h3">
-                      <Skeleton />
-                    </Typography>
-                    <Typography variant="subtitle1" paragraph>
-                    <Skeleton />
-                    </Typography>
-                    <Grid className={classes.statsItem} item >
-                      <ChatBubbleIcon className={classes.statsIcon} color="action" />
-                        <Typography color="textSecondary" display="inline" variant="body2" >
-                        <Skeleton />
-                        </Typography>
-                    </Grid>
-                    <Grid className={classes.statsItem} item >
-                      <CommentIcon className={classes.statsIcon} color="action" />
-                        <Typography color="textSecondary" display="inline" variant="body2" >
-                        <Skeleton />
-                        </Typography>
-                    </Grid>
-                  </CardContent>
-                </div>
-              </Card>
-        </Grid>
-      ))}
-    </Grid>
-  );
+  // let forumsDiv = (
+  //   <Grid container spacing={4} className={classes.mainGrid} >
+  //     {[1,2,3,4,5].map((i) => (
+  //       <Grid item xs={6} md={4} key={i}>
+  //             <Card className={classes.card}>
+  //               <div className={classes.cardDetails}>
+  //                 <CardContent>
+  //                   <Typography component="h2" variant="h3">
+  //                     <Skeleton />
+  //                   </Typography>
+  //                   <Typography variant="subtitle1" paragraph>
+  //                   <Skeleton />
+  //                   </Typography>
+  //                       <Typography color="textSecondary" display="inline" variant="body2" >
+  //                       <Skeleton />
+  //                       </Typography>
+
+  //                       <Typography color="textSecondary" display="inline" variant="body2" >
+  //                       <Skeleton />
+  //                       </Typography>
+  //                 </CardContent>
+  //               </div>
+  //             </Card>
+  //       </Grid>
+  //     ))}
+  //   </Grid>
+  // );
   
   if (!forumsLoading && !forumsError && forums) {
     forumsDiv = (
@@ -122,7 +117,7 @@ const Home = props => {
 
   if (!postsLoading && !postsError && posts) {
     postsDiv = (
-      <Grid container spacing={4} className={classes.mainGrid} justify="center">
+      <Grid container spacing={2} className={classes.mainGrid} justify="center">
         {posts.map((post) => (
           <HomePostCard key={post.id} post={post} />
         ))}
@@ -135,8 +130,17 @@ const Home = props => {
       { forumsError ? <Snackbar message={forumsError} type="error" reset={() => {}}/> : null }
       { postsError ? <Snackbar message={postsError} type="error" reset={() => {}}/> : null }
       {/* <AlternateHeading /> */}
-      {forumsDiv}
-      {postsDiv}
+
+      <Grid container spacing={5} className={classes.mainGrid}>
+        <Grid item xs={12} md={8}>
+          {postsDiv}
+        </Grid>
+        <Grid item xs={12} md={4}>
+          {forumsDiv}
+        </Grid>
+      </Grid>
+
+
     </Page>
   );
 }

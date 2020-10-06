@@ -42,9 +42,11 @@ const CommentCard = props => {
     content,
     creatorUserName,
     createdOn,
-    votesScore
+    votesScore,
+    currentUserHasVoted,
+    currentUserVoteType
   } = props.comment;
-
+  
   const {
     deleteCommentLoading,
     deleteCommentError,
@@ -69,14 +71,22 @@ const CommentCard = props => {
             <Typography variant="subtitle1" paragraph>
               {content}
             </Typography>
+            <Typography variant="subtitle1" paragraph>
+              {currentUserHasVoted ? "votnal sym" : "ne sym votnal be"}
+            </Typography>
+            <Typography variant="subtitle1" paragraph>
+              {currentUserVoteType ?? "nema taip"}
+            </Typography>
             <Grid className={classes.statsItem} item >
               <ScoreIcon className={classes.statsIcon} color="action" />
               <Typography color="textSecondary" display="inline" variant="body2" >
-               {createVoteLoading ? <CircularProgress /> : <div>{votesScore} {' '} Score</div> }
+               {createVoteLoading ? <CircularProgress /> : <React.Fragment>{votesScore} {' '} Score</React.Fragment> }
               </Typography>
               <Voting
                 onCreateVote={props.onCreateVote}
                 commentId={id}
+                currentUserHasVoted={currentUserHasVoted}
+                currentUserVoteType={currentUserVoteType}
                 //loading={loading} 
                 //error={error} 
                 //onCreateVote={onCreateVote}

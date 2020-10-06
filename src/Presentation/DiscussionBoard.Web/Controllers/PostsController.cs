@@ -27,7 +27,7 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(new GetPostByIdQuery { Id = id });
+            var vm = await Mediator.Send(new GetPostByIdQuery { Id = id, AuthUserId = _authUserService.UserId });
             return Ok(vm);
         }
 

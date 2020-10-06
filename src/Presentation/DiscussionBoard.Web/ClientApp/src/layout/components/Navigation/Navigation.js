@@ -5,12 +5,16 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
 
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+//import PeopleIcon from '@material-ui/icons/People';
+//import TextFieldsIcon from '@material-ui/icons/TextFields';
+//import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
 import AuthModal from '../../../containers/TabAuth/AuthModal'
+//import ProfileMenu from '../ProfileMenu/ProfileMenu';
+import StyledMenu from '../ProfileMenu/StyledMenu';
+//import SimpleMenu from '../ProfileMenu/SimpleMenu';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -56,49 +60,98 @@ const Navigation = props => {
 
   const classes = useStyles();
 
-  const pages = [
-    {
-      title: 'Home',
-      href: '/',
-      exact: true,
-      icon: <DashboardIcon />,
-      render: true
-    },
-    {
-      title: 'Login',
-      href: '/login',
-      icon: <PeopleIcon />,
-      render: !isAuth
-    },
-    {
-      title: 'Register',
-      href: '/register',
-      icon: <LockOpenIcon />,
-      render: !isAuth
-    },
-    {
-      title: 'Logout',
-      href: '/logout',
-      icon: <TextFieldsIcon />,
-      render: isAuth
-    },
-    {
-      title: username,
-      href: '/profile',
-      icon: <PersonIcon />,
-      render: isAuth
-    },
-    {
-      title: 'Authentication',
-      href: '/auth',
-      icon: <PersonIcon />,
-      render: true
-    }
-  ];
+  // const pages = [
+  //   {
+  //     title: 'Home',
+  //     href: '/',
+  //     exact: true,
+  //     icon: <DashboardIcon />,
+  //     render: true
+  //   },
+  //   {
+  //     title: 'Login',
+  //     href: '/login',
+  //     icon: <PeopleIcon />,
+  //     render: !isAuth
+  //   },
+  //   {
+  //     title: 'Register',
+  //     href: '/register',
+  //     icon: <LockOpenIcon />,
+  //     render: !isAuth
+  //   },
+  //   {
+  //     title: 'Logout',
+  //     href: '/logout',
+  //     icon: <TextFieldsIcon />,
+  //     render: isAuth
+  //   },
+  //   {
+  //     title: username,
+  //     href: '/profile',
+  //     icon: <PersonIcon />,
+  //     render: isAuth
+  //   },
+  //   {
+  //     title: 'Authentication',
+  //     href: '/auth',
+  //     icon: <PersonIcon />,
+  //     render: true
+  //   }
+  // ];
 
   return (
     <List className={clsx(classes.root, className)}>
-      {pages.map(page => page.render
+      <ListItem className={classes.item} disableGutters>
+        <Button
+          activeClassName={classes.active}
+          className={classes.button}
+          component={CustomRouterLink}
+          to={'/'}
+          exact
+        >
+        <div className={classes.icon}>
+          <DashboardIcon />
+        </div>
+          {'Home'}
+        </Button>
+      </ListItem>
+      {isAuth 
+        ? <React.Fragment>
+            <ListItem className={classes.item} disableGutters>
+                <Button
+                  activeClassName={classes.active}
+                  className={classes.button}
+                  component={CustomRouterLink}
+                  to={'/profile'}
+                >
+                <div className={classes.icon}>
+                  <PersonIcon />
+                </div>
+                  {username ?? "Guest"}
+                </Button>
+              </ListItem>
+              <ListItem className={classes.item} disableGutters>
+              <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={'/logout'}
+              >
+              <div className={classes.icon}>
+                <ExitToAppIcon />
+              </div>
+                {'Logout'}
+              </Button>
+            </ListItem>
+          </React.Fragment>
+        : <ListItem className={classes.item} disableGutters>
+            <AuthModal />
+          </ListItem> }
+        {/* <ProfileMenu /> */}
+        <StyledMenu />
+        {/* <SimpleMenu /> */}
+      {/* {pages.map(page => page.render
           ? <ListItem className={classes.item} disableGutters key={page.title}>
               <Button
                 activeClassName={classes.active}
@@ -111,21 +164,11 @@ const Navigation = props => {
                 {page.title}
               </Button>
             </ListItem>  
-          : null)}
+          : null)} 
 
         <ListItem className={classes.item} disableGutters key={"123456789"}>
-              {/* <Button
-                activeClassName={classes.active}
-                className={classes.button}
-                component={CustomRouterLink}
-                to={page.href}
-                exact={page.exact}
-              >
-              <div className={classes.icon}>{page.icon}</div>
-                {page.title}
-              </Button> */}
-              <AuthModal />
-            </ListItem>  
+          <AuthModal />
+        </ListItem>   */}
     </List>
   );
 };

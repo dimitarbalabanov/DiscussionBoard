@@ -10,8 +10,9 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import Hidden from '@material-ui/core/Hidden';
 import Logo from '../../../components/Logo/Logo';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchBar from '../../../components/SearchToolbar/AnotherSearchToolbar';
+//import SearchBar from '../../../components/SearchToolbar/AnotherSearchToolbar';
 import Search from '../../../components/SearchToolbar/SearchToolbar';
+
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     borderBottom: `1px solid ${theme.palette.divider}`,

@@ -12,7 +12,8 @@ import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
 import CreateComment from './components/CreateComment/CreateComment';
 import Snackbar from '../../components/Snackbar/Snackbar';
-import UpdatePost from './components/UpdatePost/UpdatePost';
+//import UpdatePost from './components/UpdatePost/UpdatePost';
+
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     marginTop: theme.spacing(3),
@@ -41,7 +42,7 @@ const Post = (props) => {
     //updatePostLoading,
     updatePostError,
     updatePostSuccess,
-    onUpdatePost,
+    //onUpdatePost,
     onUpdatePostReset,
 
     deletePostLoading,

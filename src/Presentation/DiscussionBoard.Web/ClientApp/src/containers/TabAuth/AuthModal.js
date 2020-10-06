@@ -13,6 +13,7 @@ import LoginFrom from './components/LoginForm/LoginForm';
 import RegisterForm from './components/RegisterForm/RegisterForm';
 import { colors } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -32,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     fontWeight: theme.typography.fontWeightMedium
   },
+  icon: {
+    color: theme.palette.icon,
+    width: 24,
+    height: 24,
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: theme.spacing(1)
+  }
 }));
 
 const AuthModal = props => {
@@ -67,7 +76,10 @@ const AuthModal = props => {
   return (
     <div>
       <Button className={classes.button} onClick={handleClickOpen}>
-        Sign in/up
+        <div className={classes.icon}>
+          <PersonIcon />
+        </div>
+        {'Sign in/up'}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>

@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ThumbUpIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownIcon from '@material-ui/icons/ThumbDownAlt';
@@ -33,8 +33,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
 }))(ToggleButtonGroup);
 
 const Voting = props => {
-  const [type, setType] = useState('');
-
+  
   const {
     commentId,
     //loading,
@@ -42,13 +41,19 @@ const Voting = props => {
     onCreateVote
   } = props;
 
+  let currentUserVoteType = props.currentUserVoteType ? props.currentUserVoteType.toLowerCase() : '';
+  const [type, setType] = useState(currentUserVoteType);
+  
   const handleTypeChange = (event, newType) => {
-    setType(newType);
-    const vote = {
-      type: newType,
-      commentId: commentId
+    if (!type) {
+      setType(newType);
+      const vote = {
+        type: newType,
+        commentId: commentId
+      }
+      onCreateVote(vote);
     }
-    onCreateVote(vote);
+    alert('glasuval si momche')
   };
 
   const classes = useStyles();

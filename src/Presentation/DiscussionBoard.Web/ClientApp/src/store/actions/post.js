@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import { getPostById, deletePostById, updatePostById } from '../../api/postsService';
 import { createComment as apiCreateComment, deleteCommentById} from '../../api/commentsService';
-import { createVote as apiCreateVote} from '../../api/votesService';
+import { createVote as apiCreateVote, editVoteById, deleteVoteById} from '../../api/votesService';
 
 export const fetchPostByIdSuccess = (post) => {
   return {
@@ -189,7 +189,7 @@ export const createVoteStart = () => {
 export const createVoteFail = (error) => {
   return {
     type: actionTypes.CREATE_VOTE_FAIL,
-    newVoteError: error
+    createVoteError: error
   };
 };
 
@@ -207,5 +207,66 @@ export const createVote = (newVote) => {
     apiCreateVote(newVote)
       .then(res => dispatch(createVoteSuccess(res.data, newVote.commentId)))
       .catch(error => dispatch(createVoteFail(error)));
+  };
+};
+
+export const updateVoteStart = () => {
+  return {
+    type: actionTypes.UPDATE_VOTE_START
+  };
+};
+
+export const updateVoteFail = (error) => {
+  return {
+    type: actionTypes.UPDATE_VOTE_FAIL,
+    updateVoteError: error
+  };
+};
+
+export const updateVoteSuccess = (newScore, commentId) => {
+  return {
+    type: actionTypes.UPDATE_VOTE_SUCCESS,
+    newScore: newScore,
+    commentId: commentId
+  };
+};
+
+export const updateVote = (newVote) => {
+  return dispatch => {
+    dispatch(updateVoteStart());
+    editVoteById(newVote)
+      .then(res => dispatch(updateVoteSuccess(res.data, newVote.commentId)))
+      .catch(error => dispatch(updateVoteFail(error)));
+  };
+};
+
+
+export const deleteVoteStart = () => {
+  return {
+    type: actionTypes.DELETE_VOTE_START
+  };
+};
+
+export const deleteVoteFail = (error) => {
+  return {
+    type: actionTypes.DELETE_VOTE_FAIL,
+    deleteVoteError: error
+  };
+};
+
+export const deleteVoteSuccess = (newScore, commentId) => {
+  return {
+    type: actionTypes.DELETE_VOTE_SUCCESS,
+    newScore: newScore,
+    commentId: commentId
+  };
+};
+
+export const deleteVote = (newVote) => {
+  return dispatch => {
+    dispatch(deleteVoteStart());
+    deleteVoteById(newVote)
+      .then(res => dispatch(deleteVoteSuccess(res.data, newVote.commentId)))
+      .catch(error => dispatch(deleteVoteFail(error)));
   };
 };

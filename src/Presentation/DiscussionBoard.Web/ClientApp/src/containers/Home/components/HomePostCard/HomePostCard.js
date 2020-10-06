@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import TitleIcon from '@material-ui/icons/Title';
+//import TitleIcon from '@material-ui/icons/Title';
 import CommentIcon from '@material-ui/icons/Comment';
 import convertDate from '../../../../utils/dateConvertor';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+//import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -37,7 +37,9 @@ const HomePostCard = (props) => {
   const { post } = props;
   const timeAgo = convertDate(new Date(post.createdOn));
   return (
-    <Grid item xs={8} md={6}>
+    //<Grid item xs={8} md={6}>
+
+    <Grid item xs={8} md={10}>
       <CardActionArea>
         <Link to={`/posts/${post.id}`}>
           <Card className={classes.card}>
