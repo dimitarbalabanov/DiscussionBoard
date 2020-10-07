@@ -78,14 +78,14 @@ const Post = (props) => {
   if (!postLoading && post) {
     postDiv = 
       <React.Fragment>
-           <PostHeading 
-              post={post}
-              deletePostLoading={deletePostLoading}
-              deletePostError={deletePostError}
-              deletePostSuccess={deletePostSuccess}
-              onDeletePost={onDeletePost}
-              onDeletePostReset={onDeletePostReset}
-            />
+        <PostHeading 
+          post={post}
+          deletePostLoading={deletePostLoading}
+          deletePostError={deletePostError}
+          deletePostSuccess={deletePostSuccess}
+          onDeletePost={onDeletePost}
+          onDeletePostReset={onDeletePostReset}
+        />
         <ToggleShowButton 
           title={"Add a comment"}
           component={CreateComment}

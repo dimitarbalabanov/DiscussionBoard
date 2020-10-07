@@ -1,8 +1,8 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
+﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,10 +11,12 @@ namespace DiscussionBoard.Application.Votes.Commands.DeleteVote
     public class DeleteVoteCommandHandler : IRequestHandler<DeleteVoteCommand>
     {
         private readonly IRepository<Vote> _votesRepository;
+        private readonly IAuthenticatedUserService _authUserService;
 
-        public DeleteVoteCommandHandler(IRepository<Vote> votesRepository)
+        public DeleteVoteCommandHandler(IRepository<Vote> votesRepository, IAuthenticatedUserService authUserService)
         {
             _votesRepository = votesRepository;
+            _authUserService = authUserService;
         }
 
         public async Task<Unit> Handle(DeleteVoteCommand request, CancellationToken cancellationToken)
@@ -25,12 +27,12 @@ namespace DiscussionBoard.Application.Votes.Commands.DeleteVote
 
             if (vote == null)
             {
-                throw new Exception("Not Found");
+                throw new NotFoundException(nameof(Vote));
             }
 
-            if (vote.CreatorId != request.CreatorId)
+            if (vote.CreatorId != _authUserService.UserId)
             {
-                throw new Exception("Unauthorized");
+                throw new UnauthorizedException();
             }
 
             _votesRepository.Delete(vote);

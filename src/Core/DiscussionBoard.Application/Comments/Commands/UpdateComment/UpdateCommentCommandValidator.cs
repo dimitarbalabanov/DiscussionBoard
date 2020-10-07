@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using static DiscussionBoard.Application.Comments.Commands.ValidatorConstants;
+﻿using DiscussionBoard.Application.Comments.Commands.Validators;
+using FluentValidation;
 
 namespace DiscussionBoard.Application.Comments.Commands.UpdateComment
 {
@@ -8,9 +8,7 @@ namespace DiscussionBoard.Application.Comments.Commands.UpdateComment
         public UpdateCommentCommandValidator()
         {
             RuleFor(p => p.Content)
-               .NotEmpty()
-               .Length(ContentMinLength, ContentMaxLength)
-               .WithMessage(string.Format(ErrorMsg, ContentMinLength, ContentMaxLength));
+               .IsContentProperLength();
         }
     }
 }

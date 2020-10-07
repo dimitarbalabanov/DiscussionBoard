@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Application.Posts.Commands.CreatePost;
+﻿using DiscussionBoard.Application.Posts.Commands.CreatePost;
 using DiscussionBoard.Application.Posts.Commands.DeletePost;
 using DiscussionBoard.Application.Posts.Commands.UpdatePost;
 using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
@@ -14,20 +13,14 @@ namespace DiscussionBoard.Web.Controllers
     [Authorize]
     public class PostsController : BaseController
     {
-        private readonly IAuthenticatedUserService _authUserService;
-
-        public PostsController(IAuthenticatedUserService authUserService)
-        {
-            _authUserService = authUserService;
-        }
-
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(new GetPostByIdQuery { Id = id, AuthUserId = _authUserService.UserId });
+            var vm = await Mediator.Send(new GetPostByIdQuery { Id = id });
+
             return Ok(vm);
         }
 
@@ -36,7 +29,9 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> GetAll()
         {
             Thread.Sleep(300);
+
             var vm = await Mediator.Send(new GetAllPostsQuery());
+
             return Ok(vm);
         }
 
@@ -45,8 +40,8 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            command.CreatorId = _authUserService.UserId;
             var response = await Mediator.Send(command);
+
             return CreatedAtAction(nameof(Get), new { response.Id }, response);
         }
 
@@ -55,9 +50,9 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            command.CreatorId = _authUserService.UserId;
             command.Id = id;
             await Mediator.Send(command);
+
             return NoContent();
         }
 
@@ -66,7 +61,8 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            await Mediator.Send(new DeletePostCommand { Id = id, CreatorId = _authUserService.UserId });
+            await Mediator.Send(new DeletePostCommand { Id = id });
+
             return NoContent();
         }
     }

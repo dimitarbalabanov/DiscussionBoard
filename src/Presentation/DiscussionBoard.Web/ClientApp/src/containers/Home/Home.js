@@ -70,7 +70,9 @@ const Home = props => {
    } = props;
 
   useEffect(() => {
+    if (forums.length === 0) {
     onFetchForums();
+    }
     onFetchPosts();
   }, [onFetchForums, onFetchPosts]);
 

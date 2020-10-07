@@ -8,8 +8,6 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
         public string Content { get; set; }
 
-        public string CreatorId { get; set; }
-
         public int ForumId { get; set; }
     }
 }

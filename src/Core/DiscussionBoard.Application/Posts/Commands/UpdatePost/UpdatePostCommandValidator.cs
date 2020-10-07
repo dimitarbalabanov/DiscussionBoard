@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using static DiscussionBoard.Application.Posts.Commands.ValidatorConstants;
+﻿using DiscussionBoard.Application.Posts.Commands.Validators;
+using FluentValidation;
 
 namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
 {
@@ -8,14 +8,10 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
         public UpdatePostCommandValidator()
         {
             RuleFor(p => p.Title)
-                .NotEmpty()
-                .Length(TitleMinLength, TitleMaxLength)
-                .WithMessage("{PropertyName}" + string.Format(ErrorMsg, TitleMinLength, TitleMaxLength));
+                .IsTitleProperLength();
 
             RuleFor(p => p.Content)
-                .NotEmpty()
-                .Length(TitleMinLength, TitleMaxLength)
-                .WithMessage("{PropertyName}" + string.Format(ErrorMsg, TitleMinLength, TitleMaxLength));
+                .IsContentProperLength();
         }
     }
 }

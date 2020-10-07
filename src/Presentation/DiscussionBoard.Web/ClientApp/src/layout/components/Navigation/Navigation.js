@@ -11,7 +11,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 //import TextFieldsIcon from '@material-ui/icons/TextFields';
 //import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
-import AuthModal from '../../../containers/TabAuth/AuthModal'
+import AuthModal from '../../../containers/TabAuth/AuthModal';
 //import ProfileMenu from '../ProfileMenu/ProfileMenu';
 import StyledMenu from '../ProfileMenu/StyledMenu';
 //import SimpleMenu from '../ProfileMenu/SimpleMenu';

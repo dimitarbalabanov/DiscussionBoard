@@ -12,15 +12,19 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> GetAll()
         {
             Thread.Sleep(300);
+
             var vm = await Mediator.Send(new GetAllForumsQuery());
+
             return Ok(vm);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var vm = await Mediator.Send(new GetForumByIdQuery { Id = id });
             Thread.Sleep(300);
+
+            var vm = await Mediator.Send(new GetForumByIdQuery { Id = id });
+
             return Ok(vm);
         }
     }

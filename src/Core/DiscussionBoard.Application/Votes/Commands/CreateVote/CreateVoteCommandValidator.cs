@@ -1,21 +1,14 @@
-﻿using DiscussionBoard.Domain.Entities.Enums;
+﻿using DiscussionBoard.Application.Votes.Commands.Validator;
 using FluentValidation;
-using System;
 
 namespace DiscussionBoard.Application.Votes.Commands.CreateVote
 {
     public class CreateVoteCommandValidator : AbstractValidator<CreateVoteCommand>
     {
-        private const string ErrorMsg = "Invalid {PropertyName}";
-
         public CreateVoteCommandValidator()
         {
             RuleFor(v => v.Type)
-                .Must(type => Enum.TryParse(type, true, out VoteType result) && Enum.IsDefined(typeof(VoteType), result))
-                .WithMessage(ErrorMsg);
-
-            RuleFor(v => v.CreatorId)
-                .NotEmpty();
+                .IsValidEnumType();
 
             RuleFor(v => v.CommentId)
                 .NotEmpty();

@@ -19,41 +19,14 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var sameEmailUser = await _userManager.FindByEmailAsync(request.Email);
-            if (sameEmailUser != null)
-            {
-                return new RegisterResponse
-                {
-                    Errors = new[] { "User with this email address already exists" }
-                };
-            }
-
-            var sameUsernameUser = await _userManager.FindByNameAsync(request.UserName);
-            if (sameUsernameUser != null)
-            {
-                return new RegisterResponse
-                {
-                    Errors = new[] { "User with this username already exists" }
-                };
-            }
-
-            var passwordsMatch = string.Equals(request.Password, request.ConfirmPassword);
-            if (!passwordsMatch)
-            {
-                return new RegisterResponse
-                {
-                    Errors = new[] { "Password and Confirm Password do not match" }
-                };
-            }
-
-            var newUser = new ApplicationUser
+            var user = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 UserName = request.UserName
             };
 
-            var createdUser = await _userManager.CreateAsync(newUser, request.Password);
+            var createdUser = await _userManager.CreateAsync(user, request.Password);
             if (!createdUser.Succeeded)
             {
                 return new RegisterResponse

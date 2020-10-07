@@ -13,11 +13,13 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
     public class CreateVoteCommandHandler : IRequestHandler<CreateVoteCommand, int>
     {
         private readonly IRepository<Vote> _votesRepository;
+        private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
-        public CreateVoteCommandHandler(IRepository<Vote> votesRepository, IMapper mapper)
+        public CreateVoteCommandHandler(IRepository<Vote> votesRepository, IAuthenticatedUserService authUserService, IMapper mapper)
         {
             _votesRepository = votesRepository;
+            _authUserService = authUserService;
             _mapper = mapper;
         }
 
@@ -25,7 +27,7 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
         {
             var exists = await _votesRepository
                 .All()
-                .SingleOrDefaultAsync(v => v.CommentId == request.CommentId && v.CreatorId == request.CreatorId) != null;
+                .SingleOrDefaultAsync(v => v.CommentId == request.CommentId && v.CreatorId == _authUserService.UserId) != null;
 
             if (exists)
             {

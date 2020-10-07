@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Application.Votes.Commands.CreateVote;
+﻿using DiscussionBoard.Application.Votes.Commands.CreateVote;
 using DiscussionBoard.Application.Votes.Commands.DeleteVote;
 using DiscussionBoard.Application.Votes.Commands.UpdateVote;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +11,6 @@ namespace DiscussionBoard.Web.Controllers
     [Authorize]
     public class VotesController : BaseController
     {
-        private readonly IAuthenticatedUserService _authUserService;
-
-        public VotesController(IAuthenticatedUserService authUserService)
-        {
-            _authUserService = authUserService;
-        }
-
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -31,8 +23,8 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            command.CreatorId = _authUserService.UserId;
             var id = await Mediator.Send(command);
+
             return CreatedAtAction(nameof(Get), new { id }, id);
         }
 
@@ -41,9 +33,9 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            command.CreatorId = _authUserService.UserId;
             command.Id = id;
             await Mediator.Send(command);
+
             return NoContent();
         }
 
@@ -52,7 +44,8 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            await Mediator.Send(new DeleteVoteCommand { Id = id, CreatorId = _authUserService.UserId });
+            await Mediator.Send(new DeleteVoteCommand { Id = id });
+
             return NoContent();
         }
     }

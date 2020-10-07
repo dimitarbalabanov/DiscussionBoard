@@ -1,8 +1,8 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
+﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,10 +11,12 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
     public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
     {
         private readonly IRepository<Post> _postsRepository;
+        private readonly IAuthenticatedUserService _authUserService;
 
-        public DeletePostCommandHandler(IRepository<Post> postsRepository)
+        public DeletePostCommandHandler(IRepository<Post> postsRepository, IAuthenticatedUserService authUserService)
         {
             _postsRepository = postsRepository;
+            _authUserService = authUserService;
         }
 
         public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
@@ -25,12 +27,12 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
 
             if (post == null)
             {
-                throw new Exception("Not Found");
+                throw new NotFoundException(nameof(Post));
             }
 
-            if (post.CreatorId != request.CreatorId)
+            if (post.CreatorId != _authUserService.UserId)
             {
-                throw new Exception("Unauthorized");
+                throw new UnauthorizedException();
             }
 
             _postsRepository.Delete(post);

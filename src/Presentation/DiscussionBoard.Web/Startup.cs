@@ -1,6 +1,7 @@
 using DiscussionBoard.Application;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Persistence;
+using DiscussionBoard.Web.Middlewares;
 using DiscussionBoard.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,7 @@ namespace DiscussionBoard.Web
                 app.UseHsts();
             }
 
+            app.UseCustomExceptionHandler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();

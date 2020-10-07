@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
+﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Entities.Enums;
 using MediatR;
@@ -12,10 +13,12 @@ namespace DiscussionBoard.Application.Votes.Commands.UpdateVote
     public class UpdateVoteCommandHandler : IRequestHandler<UpdateVoteCommand>
     {
         private readonly IRepository<Vote> _votesRepository;
+        private readonly IAuthenticatedUserService _authUserService;
 
-        public UpdateVoteCommandHandler(IRepository<Vote> votesRepository)
+        public UpdateVoteCommandHandler(IRepository<Vote> votesRepository, IAuthenticatedUserService authUserService)
         {
             _votesRepository = votesRepository;
+            _authUserService = authUserService;
         }
 
         public async Task<Unit> Handle(UpdateVoteCommand request, CancellationToken cancellationToken)
@@ -26,12 +29,12 @@ namespace DiscussionBoard.Application.Votes.Commands.UpdateVote
 
             if (vote == null)
             {
-                throw new Exception("Not Found");
+                throw new NotFoundException(nameof(Vote));
             }
 
-            if (vote.CreatorId != request.CreatorId)
+            if (vote.CreatorId != _authUserService.UserId)
             {
-                throw new Exception("Unauthorized");
+                throw new UnauthorizedException();
             }
 
             vote.Type = Enum.Parse<VoteType>(request.Type, true);
