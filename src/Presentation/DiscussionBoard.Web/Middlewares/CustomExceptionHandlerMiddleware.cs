@@ -43,6 +43,10 @@ namespace DiscussionBoard.Web.Middlewares
                     code = HttpStatusCode.BadRequest;
                     result = badRequestException.Message;
                     break;
+                case AuthRequestException authRequestException:
+                    code = HttpStatusCode.BadRequest;
+                    result = authRequestException.Message;
+                    break;
                 case NotFoundException _:
                     code = HttpStatusCode.NotFound;
                     break;

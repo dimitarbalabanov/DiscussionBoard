@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Domain.Entities;
+﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -31,27 +32,20 @@ namespace DiscussionBoard.Application.Identity.Commands.Login
 
             if (user == null)
             {
-                return new LoginResponse
-                {
-                    Errors = new[] { "User does not exist" }
-                };
+                throw new AuthRequestException("User does not exist");
             }
 
             var userHasValidPassword = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!userHasValidPassword)
             {
-                return new LoginResponse
-                {
-                    Errors = new[] { "User/password combination is invalid" }
-                };
+                throw new AuthRequestException("User/password combination is invalid");
             }
 
             var (token, expiration) = await GenerateJwtToken(user);
 
             return new LoginResponse
             {
-                Success = true,
                 Token = token,
                 ExpiresAt = expiration,
                 Username = user.UserName

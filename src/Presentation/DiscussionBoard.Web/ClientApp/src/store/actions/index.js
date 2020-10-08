@@ -14,13 +14,13 @@ export {
 } from './home';
 
 export {
-  fetchForumById,
-  createPost,
-  createPostReset
+  fetchForumById
 } from './forum';
 
 export {
   fetchPostById,
+  createPost,
+  createPostReset,
   updatePost,
   updatePostReset,
   deletePost,

@@ -9,23 +9,72 @@ import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
-import Sample from './containers/Home/Sample';
+import CreatePost from './containers/CreatePost/CreatePost';
 import AuthModal from './containers/TabAuth/AuthModal';
 
 const Routes = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home}/>
-      <Route exact path="/forums/:forumId" component={Forum}/>
-      <Route exact path="/posts/:postId" component={Post}/>
-      <Route exact path="/login" component={Login}/>
-      <Route exact path="/register" component={Register}/>
-      <Route exact path="/logout" component={Logout}/>
-      <Route exact path="/not-found" component={NotFound}/>
-      <Route exact path="/auth" component={Auth}/>
-
-      <Route exact path="/sample" component={Sample}/>
-      <Route exact path="/modal" component={AuthModal}/>
+      <Route 
+        component={Home}
+        
+        exact 
+        path="/" 
+      />
+      <Route 
+        component={Forum}
+        
+        exact 
+        path="/forums/:forumId" 
+      />
+      <Route 
+        component={Post}
+        
+        exact 
+        path="/posts/:postId" 
+      />
+      <Route 
+        component={Login}
+        
+        exact 
+        path="/login" 
+      />
+      <Route 
+        component={Register}
+        
+        exact 
+        path="/register" 
+      />
+      <Route
+        component={Logout}
+        
+        exact
+        path="/logout"
+      />
+      <Route
+        component={NotFound}
+        
+        exact 
+        path="/not-found" 
+      />
+      <Route 
+        component={Auth}
+        
+        exact 
+        path="/auth" 
+      />
+      <Route 
+        component={CreatePost}
+        
+        exact 
+        path="/create" 
+      />
+      <Route 
+        component={AuthModal}
+        
+        exact 
+        path="/modal" 
+      />
       <Redirect to="/not-found" />
     </Switch>
   );

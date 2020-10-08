@@ -20,14 +20,14 @@ const App = props => {
   }, [onTryAutoSignup]);
 
   return (
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-          <Router>
-            <Layout isAuth={isAuthenticated} username={username}>
-              <Routes/>
-            </Layout>
-          </Router>
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+        <Router>
+          <Layout isAuth={isAuthenticated} username={username}>
+            <Routes/>
+          </Layout>
+        </Router>
+    </ThemeProvider>
   );
 };
 

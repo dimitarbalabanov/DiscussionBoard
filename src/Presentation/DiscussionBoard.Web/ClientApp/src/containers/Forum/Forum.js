@@ -54,7 +54,7 @@ const Forum = props => {
       <React.Fragment>
         <ToggleShowButton 
             title={"Add a post"} 
-            component={CreatePost} 
+            component={CreatePost}
             forumId={forumId} 
             loading={createPostLoading} 
             onCreatePost={onCreatePost}
@@ -71,7 +71,6 @@ const Forum = props => {
 
   return (
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
-      <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
           { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
           { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null }
@@ -79,7 +78,6 @@ const Forum = props => {
           { forumDiv }
         </Grid>
         <ForumSidebar />
-      </Grid>
     </Page>
   );
 }

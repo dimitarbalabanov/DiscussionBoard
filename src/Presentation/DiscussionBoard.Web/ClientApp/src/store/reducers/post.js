@@ -2,6 +2,10 @@ import {
   FETCH_POST_START,
   FETCH_POST_SUCCESS,
   FETCH_POST_FAIL,
+  CREATE_POST_START,
+  CREATE_POST_SUCCESS,
+  CREATE_POST_FAIL,
+  CREATE_POST_RESET,
   UPDATE_POST_START,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAIL,
@@ -34,6 +38,13 @@ const initialPostState = {
   postLoading: false,
   postError: null
 };
+
+const initialCreatePostState = {
+  createPostSuccess: false,
+  createPostLoading: false,
+  createPostError: null,
+  newPostId: null
+}
 
 const initialUpdatePostState = {
   updatePostLoading: false,
@@ -82,6 +93,7 @@ const initialDeleteVoteState = {
 
 const initialState = {
   ...initialPostState,
+  ...initialCreatePostState,
   ...initialUpdatePostState,
   ...initialDeletePostState,
   ...initialCreateCommentState,
@@ -113,6 +125,45 @@ const fetchPostByIdFail = (state, action) => {
     ...state, 
     postLoading: false,
     postError: action.error
+  };
+};
+
+const createPostStart = (state, action) => {
+  return {
+    ...state,
+    createPostSuccess: false,
+    createPostLoading: true,
+    createPostError: null
+  };
+};
+
+const createPostSuccess = (state, action) => {
+  return {
+    ...state,
+    forum: {
+      ...state.forum,
+      posts: [action.newPost, ...state.forum.posts]
+    },
+    newPostId: action.newPost.id,
+    createPostSuccess: true,
+    createPostLoading: false,
+    createPostError: null
+  };
+};
+
+const createPostFail = (state, action) => {
+  return {
+    ...state,
+    createPostError: action.error,
+    createPostLoading: false,
+    createPostSuccess: false
+  };
+};
+
+const createPostReset = (state, action) => {
+  return {
+    ...state,
+    ...initialCreatePostState
   };
 };
 
@@ -356,6 +407,11 @@ const reducer = (state = initialState, action) => {
         case FETCH_POST_START: return fetchPostByIdStart(state, action);
         case FETCH_POST_SUCCESS: return fetchPostByIdSuccess(state, action);
         case FETCH_POST_FAIL: return fetchPostByIdFail(state, action);
+
+        case CREATE_POST_START: return createPostStart(state, action);
+        case CREATE_POST_SUCCESS: return createPostSuccess(state, action);
+        case CREATE_POST_FAIL: return createPostFail(state, action);
+        case CREATE_POST_RESET: return createPostReset(state, action);
         case UPDATE_POST_START: return updatePostStart(state, action);
         case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
         case UPDATE_POST_FAIL: return updatePostFail(state, action);

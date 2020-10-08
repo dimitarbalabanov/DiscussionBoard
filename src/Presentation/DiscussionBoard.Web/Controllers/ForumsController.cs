@@ -11,7 +11,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            Thread.Sleep(300);
+            Thread.Sleep(1000);
 
             var vm = await Mediator.Send(new GetAllForumsQuery());
 

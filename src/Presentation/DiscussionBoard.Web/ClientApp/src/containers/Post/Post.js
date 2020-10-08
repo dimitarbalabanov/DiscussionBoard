@@ -125,7 +125,6 @@ const Post = (props) => {
   
   return (
     <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
-      <Grid container spacing={5} className={classes.mainGrid}>
         <Grid item xs={12} md={9}>
           {postDiv}
           {createCommentError ? <Snackbar message={createCommentError.message} type={"error"} reset={onCreateCommentReset}/> : null}
@@ -134,7 +133,6 @@ const Post = (props) => {
           {updatePostSuccess ? <Snackbar message="Successfully updated the post" type={"success"} reset={onUpdatePostReset}/> : null}
         </Grid>
         <PostSidebar />
-      </Grid>
     </Page>
   );
 }

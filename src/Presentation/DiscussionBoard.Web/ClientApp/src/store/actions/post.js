@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { getPostById, deletePostById, updatePostById } from '../../api/postsService';
+import { getPostById, createPost as apiCreatePost, deletePostById, updatePostById } from '../../api/postsService';
 import { createComment as apiCreateComment, deleteCommentById} from '../../api/commentsService';
 import { createVote as apiCreateVote, editVoteById, deleteVoteById} from '../../api/votesService';
 
@@ -29,6 +29,47 @@ export const fetchPostById = (postId) => {
     getPostById(postId)
       .then(res => dispatch(fetchPostByIdSuccess(res.data)))
       .catch(err => dispatch(fetchPostByIdFail(err)));
+  };
+};
+
+export const createPostStart = () => {
+  return {
+    type: actionTypes.CREATE_POST_START
+  };
+};
+
+export const createPostFail = (error) => {
+  return {
+    type: actionTypes.CREATE_POST_FAIL,
+    error: error
+  };
+};
+
+export const createPostSuccess = (newPost) => {
+  return {
+    type: actionTypes.CREATE_POST_SUCCESS,
+    newPost: newPost
+  };
+};
+
+export const createPostReset = () => {
+  return {
+    type: actionTypes.CREATE_POST_RESET
+  };
+};
+
+export const createPost = (newPost) => {
+  return dispatch => {
+    dispatch(createPostStart());
+    apiCreatePost(newPost)
+      .then(res => {
+        dispatch(createPostSuccess(res.data));
+        //dispatch(showSnackbar("success", "Successfully created a post."));
+      })
+      .catch(err => {
+        dispatch(createPostFail(err.message));
+        //dispatch(showSnackbar("error", error.message));
+      });
   };
 };
 

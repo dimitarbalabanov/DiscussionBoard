@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.DTOs.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DiscussionBoard.Application.Identity.Commands.Login;
 using DiscussionBoard.Application.Identity.Commands.Register;
@@ -16,46 +15,17 @@ namespace DiscussionBoard.Web.Controllers
 
             var response = await Mediator.Send(command);
 
-            if (!response.Success)
-            {
-                return BadRequest(new LoginFailedResponse
-                {
-                    Errors = response.Errors
-                });
-            }
-
-            return Ok(new LoginSuccessResponse
-            {
-                Token = response.Token,
-                Username = response.Username,
-                ExpiresAt = response.ExpiresAt
-            });
+            return Ok(response);
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
-            // validation check
-            // return BadRequest(new RegisterFailedResponse
-            // {
-            //     Errors = response.Errors
-            // });
             Thread.Sleep(300);
 
-            var response = await Mediator.Send(command);
+            await Mediator.Send(command);
 
-            if (!response.Success)
-            {
-                return BadRequest(new RegisterFailedResponse
-                {
-                    Errors = response.Errors
-                });
-            }
-
-            return Ok(new RegisterSuccessResponse
-            {
-                Success = response.Success
-            });
+            return Ok();
         }
     }
 }
