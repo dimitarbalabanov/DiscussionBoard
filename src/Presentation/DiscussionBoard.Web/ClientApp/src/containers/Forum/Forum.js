@@ -11,7 +11,7 @@ import ForumHeading from './components/ForumHeading/ForumHeading';
 import PostCard from './components/PostCard/PostCard';
 import CreatePost from './components/CreatePost/CreatePost';
 import { fetchForumById, createPost, createPostReset } from '../../store/actions';
-import StatusSnackbar from '../../components/Snackbar/Snackbar';
+//import StatusSnackbar from '../../components/Snackbar/Snackbar';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -72,8 +72,8 @@ const Forum = props => {
   return (
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
         <Grid item xs={12} md={9}>
-          { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
-          { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null }
+          {/* { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
+          { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null } */}
           {/* { createPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null } */}
           { forumDiv }
         </Grid>

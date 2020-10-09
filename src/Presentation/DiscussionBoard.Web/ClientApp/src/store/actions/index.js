@@ -36,3 +36,8 @@ export {
   showSnackbar,
   hideSnackbar
 } from './snackbar';
+
+export {
+  newFetchForums,
+  newFetchPosts
+} from './newHome';

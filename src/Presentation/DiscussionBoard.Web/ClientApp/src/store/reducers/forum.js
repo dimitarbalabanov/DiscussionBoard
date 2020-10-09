@@ -39,8 +39,6 @@ const fetchForumByIdFail = (state, action) => {
   };
 };
 
-
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_FORUM_START: return fetchForumByIdStart( state, action );

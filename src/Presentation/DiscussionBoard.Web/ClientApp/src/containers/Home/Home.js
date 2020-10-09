@@ -34,6 +34,7 @@ const Home = props => {
     postsLoading,
     postsError,
     onFetchPosts,
+    onCloseSnackbar
     // showSnackbar,
     // type
    } = props;
@@ -48,9 +49,10 @@ const Home = props => {
 
   return (
     <Page className={classes.root} title="Discussion Board">
-      { forumsError ? <Snackbar message={forumsError} type="error" reset={() => {}}/> : null }
-      { postsError ? <Snackbar message={postsError} type="error" reset={() => {}}/> : null }
+      {/* { forumsError ? <Snackbar message={forumsError} type="error" reset={() => {}}/> : null }
+      { postsError ? <Snackbar message={postsError} type="error" reset={() => {}}/> : null } */}
       <Grid container className={classes.mainGrid}>
+      <Snackbar show={props.show} type={props.type} message={props.message} onClose={onCloseSnackbar}/>
         <HomePostsList posts={posts} loading={postsLoading} />
         <ForumsList forums={forums} loading={forumsLoading}/>
       </Grid>
@@ -66,15 +68,19 @@ const mapStateToProps = state => {
     posts: state.home.posts,
     postsLoading: state.home.postsLoading,
     postsError: state.home.postsError,
-    // showSnackbar: state.snackbar.show,
-    // type: state.snackbar.type
+    show: state.snackbar.show,
+    type: state.snackbar.type,
+    message: state.snackbar.message
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForums: () => dispatch(actions.fetchForums()),
-    onFetchPosts: () => dispatch(actions.fetchPosts())
+    // onFetchForums: () => dispatch(actions.fetchForums()),
+    // onFetchPosts: () => dispatch(actions.fetchPosts()),
+    onFetchForums: () => dispatch(actions.newFetchForums()),
+    onFetchPosts: () => dispatch(actions.newFetchPosts()),
+    onCloseSnackbar: () => dispatch(actions.hideSnackbar())
   };
 };
 

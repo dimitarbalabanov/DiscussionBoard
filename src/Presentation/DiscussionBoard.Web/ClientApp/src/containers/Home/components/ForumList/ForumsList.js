@@ -15,9 +15,9 @@ const ForumsList = props => {
     loading
    } = props;
 
-   console.log("start forum list")
-   console.log(props)
-   console.log("end forum list")
+  //  console.log("start forum list")
+  //  console.log(props)
+  //  console.log("end forum list")
    let output = loading ? [...Array(5)].map((u, i) => {
     let obj = {}
     obj["id"] = i

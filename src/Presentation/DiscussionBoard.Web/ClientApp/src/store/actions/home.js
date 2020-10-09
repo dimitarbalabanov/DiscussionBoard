@@ -27,7 +27,10 @@ export const fetchForums = () => {
   return dispatch => {
     dispatch(fetchForumsStart());
     getAllForums()
-      .then(res => dispatch(fetchForumsSuccess(res.data.forums)))
+      .then(res => {
+        console.log(res)
+        dispatch(fetchForumsSuccess(res.data.forums))
+      })
       .catch( err => { 
         dispatch(fetchForumsFail(err.message));
         //dispatch(showSnackbar("error", err.message));

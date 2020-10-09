@@ -5,12 +5,12 @@ import {
 
 const initialState = {
   show: false,
-  type: null,
-  message: null
+  type: '',
+  message: ''
 };
 
 const showSnackbar = (state, action) => {
-  return { 
+  return {
     show: true,
     type: action.snackbarType,
     message: action.message

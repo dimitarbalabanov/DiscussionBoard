@@ -38,8 +38,8 @@ const Layout = props => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
-        <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
+        {/* <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
+        <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/> */}
         <main>
           {/* <Grid container className={classes.mainGrid}> */}
             {props.children}

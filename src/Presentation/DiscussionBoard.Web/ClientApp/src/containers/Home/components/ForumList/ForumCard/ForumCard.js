@@ -47,9 +47,9 @@ const ForumCard = props => {
     loading
   } = props;
   
-  console.log("start forum card")
-  console.log(props)
-  console.log("end forum card")
+  // console.log("start forum card")
+  // console.log(props)
+  // console.log("end forum card")
   return (
     // <Grid item xs={6} md={4}>
     <Grid item xs={6} md={8}>

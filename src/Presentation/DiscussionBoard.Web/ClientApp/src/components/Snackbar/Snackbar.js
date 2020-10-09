@@ -15,20 +15,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Snackbar = props => {
-  const [open, setOpen] = useState(true);
-  const handleClose = () => {
-    setOpen(false);
-    reset();
-  }
+  const handleClose = () => props.onClose();
 
   const classes = useStyles();
 
   const {
-    //show,
+    show,
     type,
-    message,
-    reset
-    //hideSnackbar
+    message
   } = props;
 
   return (
@@ -38,7 +32,7 @@ const Snackbar = props => {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        open={open}
+        open={show}
         autoHideDuration={3000}
         onClose={handleClose}
         action={
@@ -54,20 +48,4 @@ const Snackbar = props => {
   );
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     show: state.snackbar.show,
-//     type: state.snackbar.type,
-//     message: state.snackbar.message
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     onHideSnackbar: () => dispatch(actions.hideSnackbar()),
-//     onCreateComment: (comment) => dispatch(actions.createComment(comment)),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Snackbar);
 export default Snackbar;
