@@ -9,11 +9,6 @@ export {
 } from './register';
 
 export {
-  fetchForums,
-  fetchPosts
-} from './home';
-
-export {
   fetchForumById
 } from './forum';
 

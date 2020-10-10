@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DiscussionBoard.Application.Forums.Queries.GetForumById
+﻿namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 {
     public class GetForumByIdVm
     {
@@ -8,8 +6,10 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         public int PostsCount { get; set; }
 
-        public IEnumerable<PostDto> Posts { get; set; }
+        public int CommentsCount { get; set; }
     }
 }

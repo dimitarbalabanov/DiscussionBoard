@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
@@ -13,7 +13,7 @@ import {
   Button,
   TextField,
   Typography,
-  Paper
+  //Paper
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,11 +52,11 @@ const CreatePost = props => {
         content: Yup.string().min(30).max(2500).required('Content is required')
       })}
       onSubmit={values => {
-        const post = {
-          title: values.title,
-          content: values.content,
-          //forumId: props.forumId
-        };
+        // const post = {
+        //   title: values.title,
+        //   content: values.content,
+        //   forumId: props.forumId
+        // };
         values = {
           content: ''
         };

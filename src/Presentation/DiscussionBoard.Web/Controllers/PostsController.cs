@@ -26,11 +26,11 @@ namespace DiscussionBoard.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GetAllPostsQuery query)
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(new GetAllPostsQuery());
+            var vm = await Mediator.Send(query);
 
             return Ok(vm);
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DiscussionBoard.Application.Posts.Queries.GetPostById
+namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
     public class CommentDto
     {

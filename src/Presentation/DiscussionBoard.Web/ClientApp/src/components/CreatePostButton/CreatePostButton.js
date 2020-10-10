@@ -43,7 +43,7 @@ const Create = props => {
   const classes = useStyles();
 
   return (
-    <Grid item xs={8} md={10} component={Paper}>
+    <Grid item xs={8} md={10} component={Paper} >
       <Grid container spacing={1} alignItems="flex-end" justify="center">
         <Grid item>
           <NoteAddIcon />

@@ -29,16 +29,16 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
+// const StyledMenuItem = withStyles((theme) => ({
+//   root: {
+//     '&:focus': {
+//       backgroundColor: theme.palette.primary.main,
+//       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+//         color: theme.palette.common.white,
+//       },
+//     },
+//   },
+// }))(MenuItem);
 
 export default function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = React.useState(null);

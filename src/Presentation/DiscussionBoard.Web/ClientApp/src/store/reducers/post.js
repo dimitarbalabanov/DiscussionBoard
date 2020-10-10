@@ -1,35 +1,35 @@
 import {
   FETCH_POST_START,
   FETCH_POST_SUCCESS,
-  FETCH_POST_FAIL,
+  FETCH_POST_FAILURE,
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
-  CREATE_POST_FAIL,
+  CREATE_POST_FAILURE,
   CREATE_POST_RESET,
   UPDATE_POST_START,
   UPDATE_POST_SUCCESS,
-  UPDATE_POST_FAIL,
+  UPDATE_POST_FAILURE,
   UPDATE_POST_RESET,
   CREATE_COMMENT_START,
   CREATE_COMMENT_SUCCESS,
-  CREATE_COMMENT_FAIL,
+  CREATE_COMMENT_FAILURE,
   CREATE_COMMENT_RESET,
   CREATE_VOTE_START,
   CREATE_VOTE_SUCCESS,
-  CREATE_VOTE_FAIL,
+  CREATE_VOTE_FAILURE,
   UPDATE_VOTE_START,
   UPDATE_VOTE_SUCCESS,
-  UPDATE_VOTE_FAIL,
+  UPDATE_VOTE_FAILURE,
   DELETE_VOTE_START,
   DELETE_VOTE_SUCCESS,
-  DELETE_VOTE_FAIL,
+  DELETE_VOTE_FAILURE,
   DELETE_POST_START,
   DELETE_POST_SUCCESS,
-  DELETE_POST_FAIL,
+  DELETE_POST_FAILURE,
   DELETE_POST_RESET,
   DELETE_COMMENT_START,
   DELETE_COMMENT_SUCCESS,
-  DELETE_COMMENT_FAIL,
+  DELETE_COMMENT_FAILURE,
   DELETE_COMMENT_RESET
 } from '../actions/actionTypes';
 
@@ -406,39 +406,39 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_POST_START: return fetchPostByIdStart(state, action);
         case FETCH_POST_SUCCESS: return fetchPostByIdSuccess(state, action);
-        case FETCH_POST_FAIL: return fetchPostByIdFail(state, action);
+        case FETCH_POST_FAILURE: return fetchPostByIdFail(state, action);
 
         case CREATE_POST_START: return createPostStart(state, action);
         case CREATE_POST_SUCCESS: return createPostSuccess(state, action);
-        case CREATE_POST_FAIL: return createPostFail(state, action);
+        case CREATE_POST_FAILURE: return createPostFail(state, action);
         case CREATE_POST_RESET: return createPostReset(state, action);
         case UPDATE_POST_START: return updatePostStart(state, action);
         case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
-        case UPDATE_POST_FAIL: return updatePostFail(state, action);
+        case UPDATE_POST_FAILURE: return updatePostFail(state, action);
         case UPDATE_POST_RESET: return updatePostReset(state, action);
         case DELETE_POST_START: return deletePostStart(state, action);
         case DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
-        case DELETE_POST_FAIL: return deletePostFail(state, action);
+        case DELETE_POST_FAILURE: return deletePostFail(state, action);
         case DELETE_POST_RESET: return deletePostReset(state, action);
 
         case CREATE_COMMENT_START: return createCommentStart(state, action);
         case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
-        case CREATE_COMMENT_FAIL: return createCommentFail(state, action);
+        case CREATE_COMMENT_FAILURE: return createCommentFail(state, action);
         case CREATE_COMMENT_RESET: return createCommentReset(state, action);
         case DELETE_COMMENT_START: return deleteCommentStart(state, action);
         case DELETE_COMMENT_SUCCESS: return deleteCommentSuccess(state, action);
-        case DELETE_COMMENT_FAIL: return deleteCommentFail(state, action);
+        case DELETE_COMMENT_FAILURE: return deleteCommentFail(state, action);
         case DELETE_COMMENT_RESET: return deleteCommentReset(state, action);
 
         case CREATE_VOTE_START: return createVoteStart(state, action);
         case CREATE_VOTE_SUCCESS: return createVoteSuccess(state, action);
-        case CREATE_VOTE_FAIL: return createVoteFail(state, action);
+        case CREATE_VOTE_FAILURE: return createVoteFail(state, action);
         case UPDATE_VOTE_START: return updateVoteStart(state, action);
         case UPDATE_VOTE_SUCCESS: return updateVoteSuccess(state, action);
-        case UPDATE_VOTE_FAIL: return updateVoteFail(state, action);
+        case UPDATE_VOTE_FAILURE: return updateVoteFail(state, action);
         case DELETE_VOTE_START: return deleteVoteStart(state, action);
         case DELETE_VOTE_SUCCESS: return deleteVoteSuccess(state, action);
-        case DELETE_VOTE_FAIL: return deleteVoteFail(state, action);
+        case DELETE_VOTE_FAILURE: return deleteVoteFail(state, action);
         default: return state;
     }
 };

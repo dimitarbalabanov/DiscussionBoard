@@ -4,6 +4,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
     public class GetAllPostsVm
     {
-        public IEnumerable<GetAllPostsPostDto> Posts { get; set; }
+        public IEnumerable<PostDto> Posts { get; set; }
     }
 }

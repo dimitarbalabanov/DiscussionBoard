@@ -23,9 +23,16 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public async Task<GetAllPostsVm> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
-            var posts = await _postsRepository
-                .AllAsNoTracking()
-                .ProjectTo<GetAllPostsPostDto>(_mapper.ConfigurationProvider)
+            var query = _postsRepository
+                .AllAsNoTracking();
+
+            if (request.ForumId != null)
+            {
+                query = query.Where(p => p.ForumId == request.ForumId);
+            }
+
+            var posts = await query
+                .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.CreatedOn)
                 .Take(10)
                 .ToListAsync();

@@ -11,7 +11,8 @@ import { Redirect } from 'react-router-dom';
 //import DeleteIcon from '@material-ui/icons/Delete';
 //import Button from '@material-ui/core/Button';
 import ConfirmDialog from '../../../../components/ConfirmDialog/ConfirmDialog';
-import Snackbar from '../../../../components/Snackbar/Snackbar';
+import Snackbar from '../../../../components/GlobalSnackbar/GlobalSnackbar';
+import ConvertToRelativeTime from '../../../../utils/dateConvertor';
 import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     display: 'flex',
+    border: "none",
+    boxShadow: "none"
   },
   cardDetails: {
     flex: 1,
@@ -85,7 +88,7 @@ const PostHeading = (props) => {
             {title}
           </Typography >
           <Typography  variant="caption" paragraph>
-            {createdOn} by <Link>{creatorUserName}</Link>
+            {ConvertToRelativeTime(createdOn)} by <Link>{creatorUserName}</Link>
           </Typography >
           <Typography paragraph>
             {content}

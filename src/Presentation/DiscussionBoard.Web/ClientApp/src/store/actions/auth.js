@@ -7,6 +7,7 @@ import {
   removeAuthorization
 } from '../../utils/authStorage';
 import * as actionTypes from './actionTypes';
+import { showSnackbar } from "./snackbar";
 
 export const authStart = () => {
   return {
@@ -25,7 +26,7 @@ export const authSuccess = (token, username, expiresAt) => {
 
 export const authFail = (error) => {
   return {
-    type: actionTypes.AUTH_FAIL,
+    type: actionTypes.AUTH_FAILURE,
     error: error
   };
 };
@@ -62,6 +63,7 @@ export const auth = (email, password) => {
         } = response.data;
         setAuthorization(username, token, expiresAt);
         dispatch(authSuccess(token, username, expiresAt));
+        dispatch(showSnackbar("info", `Logged in as ${username}`));
         dispatch(checkAuthTimeout(expiresAt));
       })
       .catch(error => {

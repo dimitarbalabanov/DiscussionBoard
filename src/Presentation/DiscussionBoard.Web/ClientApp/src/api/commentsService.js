@@ -1,15 +1,14 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { COMMENTS_URL } from './apiRoutes';
-import { axiosConfig } from '../utils/axiosConfig';
 
-export const createComment = (data) => {
-  return axios.post(COMMENTS_URL, data, axiosConfig());
+export const createComment = (comment) => {
+  return axiosInstance.post(COMMENTS_URL, comment);
 };
 
-export const editCommentById = (commentId, data) => {
-  return axios.put(COMMENTS_URL + commentId, data, axiosConfig());
+export const editCommentById = (commentId, newComment) => {
+  return axiosInstance.put(COMMENTS_URL + commentId, newComment);
 };
 
 export const deleteCommentById = (commentId) => {
-  return axios.delete(COMMENTS_URL + commentId, axiosConfig());
+  return axiosInstance.delete(COMMENTS_URL + commentId);
 };

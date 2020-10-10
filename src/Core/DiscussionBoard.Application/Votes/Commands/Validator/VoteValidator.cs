@@ -6,7 +6,7 @@ namespace DiscussionBoard.Application.Votes.Commands.Validator
 {
     public static class VoteValidator
     {
-        private const string ErrorMsg = "Invalid {PropertyName}";
+        private const string ErrorMsg = "Invalid vote type";
 
         public static IRuleBuilderOptions<T, string> IsValidEnumType<T>(this IRuleBuilder<T, string> rule)
         {

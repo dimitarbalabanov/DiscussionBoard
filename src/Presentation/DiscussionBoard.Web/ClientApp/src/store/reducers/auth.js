@@ -1,7 +1,7 @@
 import {
   AUTH_START,
   AUTH_SUCCESS,
-  AUTH_FAIL,
+  AUTH_FAILURE,
   AUTH_LOGOUT
 } from '../actions/actionTypes';
 
@@ -53,7 +53,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
       case AUTH_START: return authStart(state, action);
       case AUTH_SUCCESS: return authSuccess(state, action);
-      case AUTH_FAIL: return authFail(state, action);
+      case AUTH_FAILURE: return authFail(state, action);
       case AUTH_LOGOUT: return authLogout(state, action);
       default: return state;
     }

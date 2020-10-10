@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DiscussionBoard.Application.Forums.Queries.GetForumById
+namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
     public class PostDto
     {
@@ -17,5 +17,9 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
         public DateTime? ModifiedOn { get; set; }
 
         public int CommentsCount { get; set; }
+
+        public int ForumId { get; set; }
+
+        public string ForumTitle { get; set; }
     }
 }

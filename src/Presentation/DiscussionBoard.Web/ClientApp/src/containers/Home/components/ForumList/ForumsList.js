@@ -2,13 +2,6 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ForumCard from './ForumCard/ForumCard';
 
-const emptyForum = {
-  id: 0,
-  title: "title",
-  postsCount: 0,
-  commentsCount: 0,
-};
-
 const ForumsList = props => {
   const { 
     forums,

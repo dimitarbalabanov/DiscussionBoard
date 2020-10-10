@@ -100,11 +100,9 @@ const CreateComment = props => {
   );
   
   return (
-    <Paper>
-      <Grid item xs={12} md={6} className={classes.root}>
+      <Grid item xs={12} md={12} className={classes.root}>
         {form}
       </Grid>
-    </Paper>
   );
 };
 

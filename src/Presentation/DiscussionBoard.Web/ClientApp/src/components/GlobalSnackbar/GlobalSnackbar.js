@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MaterialSnackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -15,14 +15,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Snackbar = props => {
-  const handleClose = () => props.onClose();
-
   const classes = useStyles();
-
   const {
     show,
     type,
-    message
+    message,
+    handleClose
   } = props;
 
   return (

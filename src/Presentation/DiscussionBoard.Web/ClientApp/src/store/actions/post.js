@@ -12,7 +12,7 @@ export const fetchPostByIdSuccess = (post) => {
 
 export const fetchPostByIdFail = (error) => {
   return {
-    type: actionTypes.FETCH_POST_FAIL,
+    type: actionTypes.FETCH_POST_FAILURE,
     error: error
   };
 };
@@ -40,7 +40,7 @@ export const createPostStart = () => {
 
 export const createPostFail = (error) => {
   return {
-    type: actionTypes.CREATE_POST_FAIL,
+    type: actionTypes.CREATE_POST_FAILURE,
     error: error
   };
 };
@@ -81,7 +81,7 @@ export const updatePostStart = () => {
 
 export const updatePostFail = (error) => {
   return {
-    type: actionTypes.UPDATE_POST_FAIL,
+    type: actionTypes.UPDATE_POST_FAILURE,
     error: error
   };
 };
@@ -121,7 +121,7 @@ export const deletePostSuccess = () => {
 
 export const deletePostFail = ( error ) => {
   return {
-    type: actionTypes.DELETE_POST_FAIL,
+    type: actionTypes.DELETE_POST_FAILURE,
     error: error
   };
 };
@@ -155,7 +155,7 @@ export const createCommentStart = () => {
 
 export const createCommentFail = (error) => {
   return {
-    type: actionTypes.CREATE_COMMENT_FAIL,
+    type: actionTypes.CREATE_COMMENT_FAILURE,
     newCommentError: error
   };
 };
@@ -194,7 +194,7 @@ export const deleteCommentStart = () => {
 
 export const deleteCommentFail = (error) => {
   return {
-    type: actionTypes.DELETE_COMMENT_FAIL,
+    type: actionTypes.DELETE_COMMENT_FAILURE,
     deleteCommentError: error
   };
 };
@@ -229,7 +229,7 @@ export const createVoteStart = () => {
 
 export const createVoteFail = (error) => {
   return {
-    type: actionTypes.CREATE_VOTE_FAIL,
+    type: actionTypes.CREATE_VOTE_FAILURE,
     createVoteError: error
   };
 };
@@ -259,7 +259,7 @@ export const updateVoteStart = () => {
 
 export const updateVoteFail = (error) => {
   return {
-    type: actionTypes.UPDATE_VOTE_FAIL,
+    type: actionTypes.UPDATE_VOTE_FAILURE,
     updateVoteError: error
   };
 };
@@ -290,7 +290,7 @@ export const deleteVoteStart = () => {
 
 export const deleteVoteFail = (error) => {
   return {
-    type: actionTypes.DELETE_VOTE_FAIL,
+    type: actionTypes.DELETE_VOTE_FAILURE,
     deleteVoteError: error
   };
 };

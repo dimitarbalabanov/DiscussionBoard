@@ -10,6 +10,7 @@ export const showSnackbar = (snackbarType, message) => {
 
 export const hideSnackbar = () => {
     return {
-        type: actionTypes.HIDE_SNACKBAR
+        type: actionTypes.HIDE_SNACKBAR,
+        message: null
     };
 };

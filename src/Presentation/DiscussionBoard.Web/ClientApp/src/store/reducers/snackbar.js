@@ -6,7 +6,7 @@ import {
 const initialState = {
   show: false,
   type: '',
-  message: ''
+  message: null
 };
 
 const showSnackbar = (state, action) => {
@@ -18,7 +18,11 @@ const showSnackbar = (state, action) => {
 };
 
 const hideSnackbar = (state, action) => {
-  return initialState;
+  return {
+    ...state,
+    show: false,
+    message: null
+  };
 };
 
 const reducer = (state = initialState, action) => {

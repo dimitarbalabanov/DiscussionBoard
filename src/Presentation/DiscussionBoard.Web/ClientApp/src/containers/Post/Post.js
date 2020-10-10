@@ -4,6 +4,7 @@ import * as actions from '../../store/actions';
 import Page from '../../components/Page/Page';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Spinner from '../../components/Spinner/Spinner';
 import ToggleShowButton from '../../components/ToggleShowButton/ToggleShowButton';
@@ -11,7 +12,7 @@ import PostSidebar from './components/PostSidebar/PostSidebar';
 import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
 import CreateComment from './components/CreateComment/CreateComment';
-import Snackbar from '../../components/Snackbar/Snackbar';
+import Snackbar from '../../components/GlobalSnackbar/GlobalSnackbar';
 //import UpdatePost from './components/UpdatePost/UpdatePost';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,10 +41,10 @@ const Post = (props) => {
     onFetchPost,
 
     //updatePostLoading,
-    updatePostError,
-    updatePostSuccess,
+    //updatePostError,
+    //updatePostSuccess,
     //onUpdatePost,
-    onUpdatePostReset,
+    //onUpdatePostReset,
 
     deletePostLoading,
     deletePostError,
@@ -77,7 +78,7 @@ const Post = (props) => {
 
   if (!postLoading && post) {
     postDiv = 
-      <React.Fragment>
+      <Grid container className={classes.mainFeaturedPost}>
         <PostHeading 
           post={post}
           deletePostLoading={deletePostLoading}
@@ -86,9 +87,7 @@ const Post = (props) => {
           onDeletePost={onDeletePost}
           onDeletePostReset={onDeletePostReset}
         />
-        <ToggleShowButton 
-          title={"Add a comment"}
-          component={CreateComment}
+        <CreateComment
           postId={postId} 
           createCommentLoading={createCommentLoading} 
           createCommentError={createCommentError}
@@ -120,17 +119,13 @@ const Post = (props) => {
             createVoteLoading={newVoteLoading}
           />
         ))}
-      </React.Fragment>
+      </Grid>
   }
   
   return (
     <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={10}>
           {postDiv}
-          {createCommentError ? <Snackbar message={createCommentError.message} type={"error"} reset={onCreateCommentReset}/> : null}
-          {createCommentSuccess ? <Snackbar message="Successfully created a comment" type={"success"} reset={onCreateCommentReset}/> : null}
-          {updatePostError ? <Snackbar message={updatePostError.message} type={"error"} reset={onUpdatePostReset}/> : null}
-          {updatePostSuccess ? <Snackbar message="Successfully updated the post" type={"success"} reset={onUpdatePostReset}/> : null}
         </Grid>
         <PostSidebar />
     </Page>
@@ -162,20 +157,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+    onUpdatePost: (postId, content) => dispatch(actions.updatePost(postId, content)),
+    onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
 
     onCreateComment: (comment) => dispatch(actions.createComment(comment)),
-    onCreateCommentReset: () => dispatch(actions.createCommentReset()),
+    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
 
     onCreateVote: (vote) => dispatch(actions.createVote(vote)),
-
-    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
-    onDeleteCommentReset: () => dispatch(actions.deleteCommentReset()),
-
-    onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
-    onDeletePostReset: () => dispatch(actions.deletePostReset()),
-
-    onUpdatePost: (postId, content) => dispatch(actions.updatePost(postId, content)),
-    onUpdatePostReset: () => dispatch(actions.updatePostReset()),
   };
 };
 

@@ -1,10 +1,10 @@
 import {
   FETCH_FORUMS_START,
   FETCH_FORUMS_SUCCESS,
-  FETCH_FORUMS_FAIL,
+  FETCH_FORUMS_FAILURE,
   FETCH_POSTS_START,
   FETCH_POSTS_SUCCESS,
-  FETCH_POSTS_FAIL
+  FETCH_POSTS_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -36,7 +36,7 @@ const reducer = (state = initialState, action) => {
             forumsLoading: false
           };
 
-        case FETCH_FORUMS_FAIL: 
+        case FETCH_FORUMS_FAILURE: 
           return { 
             ...state,
             forumsError: action.error,
@@ -58,7 +58,7 @@ const reducer = (state = initialState, action) => {
             postsError: null
           };
 
-        case FETCH_POSTS_FAIL:
+        case FETCH_POSTS_FAILURE:
           return { 
             ...state,
             postsError: action.error,

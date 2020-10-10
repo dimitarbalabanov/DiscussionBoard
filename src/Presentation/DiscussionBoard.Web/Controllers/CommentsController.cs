@@ -1,6 +1,7 @@
 ﻿using DiscussionBoard.Application.Comments.Commands.CreateComment;
 using DiscussionBoard.Application.Comments.Commands.DeleteComment;
 using DiscussionBoard.Application.Comments.Commands.UpdateComment;
+using DiscussionBoard.Application.Comments.Queries.GetAllComments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -17,6 +18,17 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> Get(int id)
         {
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllCommentsQuery query)
+        {
+            Thread.Sleep(300);
+
+            var vm = await Mediator.Send(query);
+
+            return Ok(vm);
         }
 
         [HttpPost]

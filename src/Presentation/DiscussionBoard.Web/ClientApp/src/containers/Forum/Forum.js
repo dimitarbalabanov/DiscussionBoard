@@ -27,10 +27,10 @@ const Forum = props => {
   const { 
     forum, 
     forumLoading, 
-    forumError,
+    //forumError,
     createPostSuccess,
     createPostLoading,
-    createPostError,
+    //createPostError,
     onFetchForum,
     onCreatePost,
     onCreatePostReset,

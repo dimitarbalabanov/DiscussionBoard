@@ -11,11 +11,14 @@ import Voting from '../Voting/Voting';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
-import Snackbar from '../../../../components/Snackbar/Snackbar';
+import Snackbar from '../../../../components/GlobalSnackbar/GlobalSnackbar';
+import ConvertToRelativeTime from '../../../../utils/dateConvertor';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
+    border: "none",
+    boxShadow: "none"
   },
   cardDetails: {
     flex: 1,
@@ -66,7 +69,7 @@ const CommentCard = props => {
               {creatorUserName}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
-              {createdOn}
+              {ConvertToRelativeTime(createdOn)}
             </Typography>
             <Typography variant="subtitle1" paragraph>
               {content}

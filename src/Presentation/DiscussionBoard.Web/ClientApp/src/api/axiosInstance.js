@@ -28,36 +28,29 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use((response) => {
     return response
 }, error => {
-  //if (error.response) {
-    console.log('---error response');
-    console.log(error.response)
+  if (error.response) {
+    console.log(error)
+    console.log(error.response.status)
+    error = error.response.status
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    console.log('--data');
-    console.log(error.response.data);
-    console.log('--status');
-    console.log(error.response.status);
-    console.log('--headers');
-    console.log(error.response.headers);
-    console.log('------------------------------')
-  //} else if (error.request) {
+    // console.log(error.response.data);
+    // console.log(error.response.headers);
+  } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    console.log('---error request')
-    console.log(error.request);
-    console.log('------------------------------')
-
-  //} else {
+    console.log(error)
+    console.log(error.request)
+  } else {
     // Something happened in setting up the request that triggered an Error
-    console.log('---error')
-    console.log('--message')
-    console.log(error.message);
-    console.log('------------------------------')
-
-  //}
-  console.log('---error config')
-  console.log(error.config);
+    error = error.message;
+    console.log(error);
+    console.log(error.message)
+    console.log(error.type)
+    console.log(error.code)
+  }
+  // console.log(error.config);
   return Promise.reject(error);
 });
 

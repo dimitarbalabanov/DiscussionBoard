@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import CommentIcon from '@material-ui/icons/Comment';
-import convertDate from '../../../../../utils/dateConvertor';
 import Paper from '@material-ui/core/Paper';
 import Skeleton from '@material-ui/lab/Skeleton';
+import ConvertToRelativeTime from '../../../../../utils/dateConvertor';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,16 +29,15 @@ const useStyles = makeStyles((theme) => ({
 const HomePostCard = (props) => {
   const classes = useStyles();
   const { post, loading } = props;
-  const timeAgo = convertDate(new Date(post.createdOn));
 
   return (
     <Link to={`/posts/${post.id}`}>
-      <Grid item xs={8} md={12} component={Paper} className={classes.root}>
+      <Grid item xs={12} md={12} component={Paper} className={classes.root}>
         <Grid className={classes.statsItem} item >
           <Typography color="textSecondary" display="inline" variant="body2" >
             {loading ? <Skeleton /> : 
               <React.Fragment>
-                <strong>{post.forumTitle}</strong> posted {timeAgo} by <strong>{post.creatorUserName}</strong>
+                <strong>{post.forumTitle}</strong> posted {ConvertToRelativeTime(post.createdOn)} by <strong>{post.creatorUserName}</strong>
               </React.Fragment>}
           </Typography>
         </Grid>

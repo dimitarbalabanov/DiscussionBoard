@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DiscussionBoard.Application.Comments.Commands.CreateComment;
+using DiscussionBoard.Application.Comments.Queries.GetAllComments;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
 using DiscussionBoard.Application.Posts.Commands.CreatePost;
@@ -16,15 +17,17 @@ namespace DiscussionBoard.Application.Common.Mappings
         public MappingProfile()
         {
             CreateMap<Forum, ForumDto>()
+                .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
 
             CreateMap<Forum, GetForumByIdVm>()
-                .ForMember(dest => dest.Posts, src => src.Ignore())
-                .ForMember(dest => dest.PostsCount, src => src.Ignore());
+                .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
+                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
+
             CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
 
-            CreateMap<Post, GetAllPostsPostDto>()
+            CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
 
             CreateMap<Post, GetPostByIdVm>();

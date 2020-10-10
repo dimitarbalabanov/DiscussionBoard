@@ -64,7 +64,7 @@ const ForumCard = props => {
                 {/* <Typography variant="subtitle1" paragraph>
                   {description}
                 </Typography> */}
-                <Grid className={classes.statsItem} item >
+                <Grid className={classes.statsItem} item>
                   <ChatBubbleIcon className={classes.statsIcon} color="action" />
                     <Typography color="textSecondary" display="inline" variant="body2" >
                       {loading ? <Skeleton /> :`${postsCount} ' ' Posts`}

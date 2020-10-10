@@ -1,7 +1,7 @@
 import {
   REGISTER_START,
   REGISTER_SUCCESS,
-  REGISTER_FAIL
+  REGISTER_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
   switch ( action.type ) {
       case REGISTER_START: return registerStart(state, action);
       case REGISTER_SUCCESS: return registerSuccess(state, action);
-      case REGISTER_FAIL: return registerFail(state, action);
+      case REGISTER_FAILURE: return registerFail(state, action);
       default:
           return state;
   }

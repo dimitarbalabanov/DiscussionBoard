@@ -4,7 +4,6 @@ import * as actions from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../components/Page/Page';
-import Snackbar from '../../components/Snackbar/Snackbar';
 import ForumsList from './components/ForumList/ForumsList';
 import HomePostsList from './components/HomePostsList/HomePostsList';
 //import Search from '../../components/SearchToolbar/SearchToolbar';
@@ -28,15 +27,13 @@ const Home = props => {
   const { 
     forums,
     forumsLoading,
-    forumsError,
+    //forumsError,
     onFetchForums,
     posts,
     postsLoading,
     postsError,
     onFetchPosts,
-    onCloseSnackbar
-    // showSnackbar,
-    // type
+    
    } = props;
 
   useEffect(() => {
@@ -45,15 +42,14 @@ const Home = props => {
     }
 
     onFetchPosts();
-  }, [onFetchForums, onFetchPosts]);
+  }, [onFetchForums, onFetchPosts, forums.length]);
 
   return (
     <Page className={classes.root} title="Discussion Board">
       {/* { forumsError ? <Snackbar message={forumsError} type="error" reset={() => {}}/> : null }
       { postsError ? <Snackbar message={postsError} type="error" reset={() => {}}/> : null } */}
       <Grid container className={classes.mainGrid}>
-      <Snackbar show={props.show} type={props.type} message={props.message} onClose={onCloseSnackbar}/>
-        <HomePostsList posts={posts} loading={postsLoading} />
+        <HomePostsList posts={posts} loading={postsLoading} error={postsError}/>
         <ForumsList forums={forums} loading={forumsLoading}/>
       </Grid>
     </Page>
@@ -68,9 +64,6 @@ const mapStateToProps = state => {
     posts: state.home.posts,
     postsLoading: state.home.postsLoading,
     postsError: state.home.postsError,
-    show: state.snackbar.show,
-    type: state.snackbar.type,
-    message: state.snackbar.message
   };
 };
 
@@ -79,8 +72,7 @@ const mapDispatchToProps = dispatch => {
     // onFetchForums: () => dispatch(actions.fetchForums()),
     // onFetchPosts: () => dispatch(actions.fetchPosts()),
     onFetchForums: () => dispatch(actions.newFetchForums()),
-    onFetchPosts: () => dispatch(actions.newFetchPosts()),
-    onCloseSnackbar: () => dispatch(actions.hideSnackbar())
+    onFetchPosts: () => dispatch(actions.newFetchPosts())
   };
 };
 

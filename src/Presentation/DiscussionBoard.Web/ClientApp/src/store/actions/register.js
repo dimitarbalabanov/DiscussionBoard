@@ -16,7 +16,7 @@ export const registerSuccess = () => {
 
 export const registerFail = (error) => {
   return {
-      type: actionTypes.REGISTER_FAIL,
+      type: actionTypes.REGISTER_FAILURE,
       error: error
   };
 };

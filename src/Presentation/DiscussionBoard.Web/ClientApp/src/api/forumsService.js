@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { FORUMS_URL } from './apiRoutes';
 
 export const getForumById = (forumId) => {
-  return axios.get(FORUMS_URL + forumId);
+  return axiosInstance.get(FORUMS_URL + forumId);
 };
 
 export const getAllForums = () => {
-  return axios.get(FORUMS_URL);
+  return axiosInstance.get(FORUMS_URL);
 };

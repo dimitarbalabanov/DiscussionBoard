@@ -1,15 +1,14 @@
-import axios from 'axios';
+import axiosInstance from './axiosInstance';
 import { VOTES_URL } from './apiRoutes';
-import { axiosConfig } from '../utils/axiosConfig';
 
 export const createVote = (data) => {
-  return axios.post(VOTES_URL, data, axiosConfig());
+  return axiosInstance.post(VOTES_URL, data);
 };
 
 export const editVoteById = (voteId, data) => {
-  return axios.put(VOTES_URL + voteId, data, axiosConfig());
+  return axiosInstance.put(VOTES_URL + voteId, data);
 };
 
 export const deleteVoteById = (voteId, data) => {
-  return axios.delete(VOTES_URL + voteId, data, axiosConfig());
+  return axiosInstance.delete(VOTES_URL + voteId, data);
 };
