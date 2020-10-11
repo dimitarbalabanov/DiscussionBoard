@@ -28,7 +28,7 @@ const reducer = (state = initialState, action) => {
       case FETCH_FORUM_SUCCESS: 
         return {
           ...state, 
-          forum: action.data.forum,
+          forum: action.data,
           forumLoading: false,
           forumError: null
         };

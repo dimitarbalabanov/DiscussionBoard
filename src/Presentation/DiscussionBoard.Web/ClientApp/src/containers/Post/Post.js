@@ -4,15 +4,12 @@ import * as actions from '../../store/actions';
 import Page from '../../components/Page/Page';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Spinner from '../../components/Spinner/Spinner';
-import ToggleShowButton from '../../components/ToggleShowButton/ToggleShowButton';
 import PostSidebar from './components/PostSidebar/PostSidebar';
 import PostHeading from './components/PostHeading/PostHeading';
 import CommentCard from './components/CommentCard/CommentCard';
 import CreateComment from './components/CreateComment/CreateComment';
-import Snackbar from '../../components/GlobalSnackbar/GlobalSnackbar';
 //import UpdatePost from './components/UpdatePost/UpdatePost';
 
 const useStyles = makeStyles((theme) => ({
@@ -103,7 +100,7 @@ const Post = (props) => {
           onUpdatePost={onUpdatePost}
         /> */}
         <Divider />
-        {post.comments.map((comment) => (
+        {/* {post.comments.map((comment) => (
           <CommentCard
             key={comment.id}
             comment={comment} 
@@ -115,19 +112,20 @@ const Post = (props) => {
             deleteCommentError={deleteCommentError}
             deleteCommentLoading={deleteCommentLoading}
             deleteCommentSuccess={deleteCommentSuccess}
-
             createVoteLoading={newVoteLoading}
           />
-        ))}
+        ))} */}
       </Grid>
   }
   
   return (
     <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
-        <Grid item xs={12} md={10}>
+      <Grid container>
+        <Grid item xs={12} md={8}>
           {postDiv}
         </Grid>
         <PostSidebar />
+      </Grid>
     </Page>
   );
 }

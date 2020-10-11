@@ -29,12 +29,12 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
 
         private async Task<bool> IsUniqueEmail(string email, CancellationToken cancellationToken)
         {
-            return await _userManager.FindByEmailAsync(email) != null;
+            return await _userManager.FindByEmailAsync(email) == null;
         }
 
         private async Task<bool> IsUniqueUsername(string username, CancellationToken cancellationToken)
         {
-            return await _userManager.FindByNameAsync(username) != null;
+            return await _userManager.FindByNameAsync(username) == null;
         }
     }
 }

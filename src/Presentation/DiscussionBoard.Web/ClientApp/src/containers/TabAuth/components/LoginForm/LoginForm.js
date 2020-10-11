@@ -20,10 +20,7 @@ const LoginForm = props => {
   const classes = useStyles();
 
   const {
-    //loading,
-    //error,
-    onAuth,
-    //isAuthenticated
+    onAuth
   } = props;
 
   return (

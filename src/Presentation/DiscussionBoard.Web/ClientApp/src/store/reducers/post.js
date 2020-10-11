@@ -114,7 +114,7 @@ const fetchPostByIdStart = (state, action) => {
 const fetchPostByIdSuccess = (state, action) => {
   return { 
     ...state,
-    post: action.post,
+    post: action.data,
     postLoading: false,
     postError: null
   };

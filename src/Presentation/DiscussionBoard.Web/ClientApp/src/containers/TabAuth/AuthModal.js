@@ -9,8 +9,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import TabPanel from './components/TabPanel/TabPanel';
-import LoginFrom from './components/LoginForm/LoginForm';
+import LoginForm from './components/LoginForm/LoginForm';
 import RegisterForm from './components/RegisterForm/RegisterForm';
+import Spinner from '../../components/Spinner/Spinner';
 import { colors } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PersonIcon from '@material-ui/icons/Person';
@@ -47,8 +48,8 @@ const AuthModal = props => {
   const classes = useStyles();
   
   const {
-    // loading,
-    // error,
+    authLoading,
+    registerLoading,
     onAuth,
     onRegister,
     isAuthenticated
@@ -91,10 +92,10 @@ const AuthModal = props => {
               </Tabs>
             </Paper>
             <TabPanel value={value} index={0}>
-              <LoginFrom onAuth={onAuth}/>
+            {authLoading ? <Spinner /> : <LoginForm onAuth={onAuth}/>}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <RegisterForm onRegister={onRegister} />
+            {registerLoading ? <Spinner /> : <RegisterForm onRegister={onRegister}/>}
             </TabPanel>
           </div>
         </DialogContent>

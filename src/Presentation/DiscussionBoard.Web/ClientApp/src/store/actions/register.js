@@ -37,7 +37,7 @@ export const register = (email, password, confirmPassword, username) => {
        dispatch(auth(email, password));
       })
       .catch(error => {
-          dispatch(registerFail(error.response.data.errors))
+          dispatch(registerFail(error))
         });
   }
 }

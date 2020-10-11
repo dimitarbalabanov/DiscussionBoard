@@ -14,6 +14,9 @@ import CommentIcon from '@material-ui/icons/Comment';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
+    color: theme.palette.primary,
+    borderColor: theme.palette.primary,
+    borderLeft: theme.palette.primary
   },
   cardDetails: {
     flex: 1,
@@ -55,7 +58,7 @@ const ForumCard = props => {
     <Grid item xs={6} md={8}>
       <CardActionArea>
         <Link to={`/forums/${id}`}>
-          <Card className={classes.card}>
+          <Card className={classes.card} variant="outlined" borderColor="primary">
             <div className={classes.cardDetails}>
               <CardContent>
                 <Typography className={classes.title} component="h2" variant="h2">

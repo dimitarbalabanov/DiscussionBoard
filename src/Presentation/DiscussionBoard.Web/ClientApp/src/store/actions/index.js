@@ -15,15 +15,10 @@ export {
 export {
   fetchPostById,
   createPost,
-  createPostReset,
   updatePost,
-  updatePostReset,
   deletePost,
-  deletePostReset,
   createComment,
-  createCommentReset,
   deleteComment,
-  deleteCommentReset,
   createVote,
 } from './post';
 

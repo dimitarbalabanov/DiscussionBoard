@@ -34,10 +34,11 @@ const CreateComment = props => {
   let form = ( 
     <Formik
       initialValues={{
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu'
+        content: ''
+        // content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu'
       }}
       validationSchema={Yup.object().shape({
-        content: Yup.string().max(255).required('content is required')
+        content: Yup.string().max(255).required('Content is required')
       })}
       onSubmit={values => {
         const comment = {
@@ -62,16 +63,11 @@ const CreateComment = props => {
         values
       }) => (
         <form onSubmit={handleSubmit} >
-          <Box mb={3}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              Create Comment
-            </Typography>
-          </Box>
           <TextField
             error={Boolean(touched.content && errors.content)}
             fullWidth
             helperText={touched.content && errors.content}
-            label="Content"
+            label="What are your thoughts?"
             margin="normal"
             name="content"
             onBlur={handleBlur}
@@ -82,18 +78,15 @@ const CreateComment = props => {
             multiline
             rows={4}
           />
-          <Box my={2}>
             <Button
-              color="primary"
               disabled={isSubmitting}
-              fullWidth
-              size="large"
               type="submit"
-              variant="contained"
+              variant="outlined"
             >
-              Create
+            <Typography color="textSecondary" display="inline" variant="body2" >
+              Delete
+            </Typography>
             </Button>
-          </Box>
         </form>
       )}
     </Formik>

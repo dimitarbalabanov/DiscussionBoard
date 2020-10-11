@@ -31,7 +31,8 @@ instance.interceptors.response.use((response) => {
   if (error.response) {
     console.log(error)
     console.log(error.response.status)
-    error = error.response.status
+    console.log(error.response.data)
+    error = error.response.data ?? error.response.status;
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     // console.log(error.response.data);

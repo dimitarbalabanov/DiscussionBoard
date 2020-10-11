@@ -26,8 +26,8 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
         public async Task<int> Handle(CreateVoteCommand request, CancellationToken cancellationToken)
         {
             var exists = await _votesRepository
-                .All()
-                .SingleOrDefaultAsync(v => v.CommentId == request.CommentId && v.CreatorId == _authUserService.UserId) != null;
+                .AllAsNoTracking()
+                .AnyAsync(v => v.CommentId == request.CommentId && v.CreatorId == _authUserService.UserId);
 
             if (exists)
             {

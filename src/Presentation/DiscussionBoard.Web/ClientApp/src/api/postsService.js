@@ -5,8 +5,9 @@ export const getPostById = (postId) => {
   return axiosInstance.get(POSTS_URL + postId);
 };
 
-export const getAllPosts = () => {
-  return axiosInstance.get(POSTS_URL);
+export const getAllPosts = (forumId) => {
+  let query = forumId ? `?forumId=${forumId}` : '';
+  return axiosInstance.get(POSTS_URL + query);
 };
 
 export const createPost = (post) => {

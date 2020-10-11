@@ -37,17 +37,12 @@ const Home = props => {
    } = props;
 
   useEffect(() => {
-    if (forums.length === 0) {
-      onFetchForums();
-    }
-
+    onFetchForums();
     onFetchPosts();
-  }, [onFetchForums, onFetchPosts, forums.length]);
+  }, [onFetchForums, onFetchPosts]);
 
   return (
     <Page className={classes.root} title="Discussion Board">
-      {/* { forumsError ? <Snackbar message={forumsError} type="error" reset={() => {}}/> : null }
-      { postsError ? <Snackbar message={postsError} type="error" reset={() => {}}/> : null } */}
       <Grid container className={classes.mainGrid}>
         <HomePostsList posts={posts} loading={postsLoading} error={postsError}/>
         <ForumsList forums={forums} loading={forumsLoading}/>
@@ -69,8 +64,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onFetchForums: () => dispatch(actions.fetchForums()),
-    // onFetchPosts: () => dispatch(actions.fetchPosts()),
     onFetchForums: () => dispatch(actions.newFetchForums()),
     onFetchPosts: () => dispatch(actions.newFetchPosts())
   };

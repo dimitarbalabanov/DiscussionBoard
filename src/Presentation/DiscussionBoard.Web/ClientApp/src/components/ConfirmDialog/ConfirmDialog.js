@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 
 const ConfirmDialog = props => {
   const [open, setOpen] = React.useState(false);
@@ -32,8 +33,10 @@ const ConfirmDialog = props => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="outlined" size="small" onClick={handleClickOpen}>
+      <Typography color="textSecondary" display="inline" variant="body2" >
         Delete
+      </Typography>
       </Button>
       <Dialog
         open={open}

@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import Header from './components/Header/Header';
 import DrawerBar from './components/DrawerBar/DrawerBar';
 //import Footer from './components/Footer/Footer';
-
+import Grid from '@material-ui/core/Grid'
 // import { makeStyles } from '@material-ui/core/styles';
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -41,9 +41,7 @@ const Layout = props => {
         <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
         <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
         <main>
-          {/* <Grid container className={classes.mainGrid}> */}
             {props.children}
-          {/* </Grid> */}
         </main>
         {/* <Footer /> */}
       </Container>

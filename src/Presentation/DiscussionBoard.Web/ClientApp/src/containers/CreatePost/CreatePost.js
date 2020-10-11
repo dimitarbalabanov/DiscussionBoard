@@ -168,8 +168,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onCreatePost: (post) => dispatch(createPost(post)),
-    onCreatePostReset: () => dispatch(createPostReset())
+    onCreatePost: (post) => dispatch(createPost(post))
   };
 };
 

@@ -70,12 +70,10 @@ const PostHeading = (props) => {
     deletePostLoading,
     deletePostError,
     deletePostSuccess,
-    onDeletePost,
-    onDeletePostReset,
+    onDeletePost
   } = props;
 
   if (deletePostSuccess) {
-    onDeletePostReset();
     return <Redirect to={`/forums/${forumId}`}/>
   }
 
@@ -96,11 +94,10 @@ const PostHeading = (props) => {
           <Grid className={classes.statsItem} item >
             <CommentIcon className={classes.statsIcon} color="action" />
             <Typography color="textSecondary" display="inline" variant="body2" >
-              {comments.length} {' '} Comments
+              {20} {' '} Comments
             </Typography>
-          </Grid>
             {deletePostLoading ? <CircularProgress /> : <ConfirmDialog id={id} onDelete={onDeletePost} /> }
-            {deletePostError ? <Snackbar message={deletePostError.message} type={"error"} reset={onDeletePostReset}/> : null}
+          </Grid>
         </CardContent>
       </div>
     </Card>

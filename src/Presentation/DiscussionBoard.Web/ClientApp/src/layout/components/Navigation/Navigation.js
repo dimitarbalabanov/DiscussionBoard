@@ -11,9 +11,10 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 //import TextFieldsIcon from '@material-ui/icons/TextFields';
 //import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
-import AuthModal from '../../../containers/TabAuth/AuthModal';
+//import AuthModal from '../../../containers/TabAuth/AuthModal';
+import Auth from '../../../containers/TabAuth/Auth';
 //import ProfileMenu from '../ProfileMenu/ProfileMenu';
-import StyledMenu from '../ProfileMenu/StyledMenu';
+//import StyledMenu from '../ProfileMenu/StyledMenu';
 //import SimpleMenu from '../ProfileMenu/SimpleMenu';
 
 const useStyles = makeStyles(theme => ({
@@ -146,10 +147,20 @@ const Navigation = props => {
             </ListItem>
           </React.Fragment>
         : <ListItem className={classes.item} disableGutters>
-            <AuthModal />
+            <Button
+                activeClassName={classes.active}
+                className={classes.button}
+                component={CustomRouterLink}
+                to={'/auth'}
+              >
+              <div className={classes.icon}>
+                <PersonIcon />
+              </div>
+                {'Auth'}
+              </Button>
           </ListItem> }
         {/* <ProfileMenu /> */}
-        <StyledMenu />
+        {/* <StyledMenu /> */}
         {/* <SimpleMenu /> */}
       {/* {pages.map(page => page.render
           ? <ListItem className={classes.item} disableGutters key={page.title}>
