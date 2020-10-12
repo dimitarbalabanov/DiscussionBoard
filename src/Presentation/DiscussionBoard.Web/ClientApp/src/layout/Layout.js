@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 //import Grid from '@material-ui/core/Grid';
 import Header from './components/Header/Header';
 import DrawerBar from './components/DrawerBar/DrawerBar';
 //import Footer from './components/Footer/Footer';
-import Grid from '@material-ui/core/Grid'
-// import { makeStyles } from '@material-ui/core/styles';
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     paddingTop: 56,
-//     height: '100%',
-//     [theme.breakpoints.up('sm')]: {
-//       paddingTop: 64
-//     }
-//   },
-//   mainGrid: {
-//     marginTop: theme.spacing(3),
-//   },
-// }));
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   paddingTop: 56,
+  //   height: '100%',
+  //   [theme.breakpoints.up('sm')]: {
+  //     paddingTop: 64
+  //   }
+  // },
+  // mainGrid: {
+  //   marginTop: theme.spacing(3),
+  // },
+  // background: {
+  //   backgroundColor: theme.palette.primary.main,
+  // },
+}));
 
 const Layout = props => {
   const { isAuth, username } = props
@@ -36,9 +37,8 @@ const Layout = props => {
 
   return (
     <React.Fragment>
-      <CssBaseline />
+      <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
       <Container maxWidth="lg">
-        <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
         <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
         <main>
             {props.children}

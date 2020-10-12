@@ -9,6 +9,7 @@ import Link from '@material-ui/core/Link';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
+import SelectedForumCard from '../SelectedForumCard/SelectedForumCard';
 
 const useStyles = makeStyles((theme) => ({
   sidebarAboutBox: {
@@ -50,6 +51,7 @@ const ForumSidebar = props => {
 
   return (
     <Grid item xs={12} md={3}>
+      <SelectedForumCard />
       <Typography variant="h6" gutterBottom className={classes.sidebarSection}>
         Forums
       </Typography>

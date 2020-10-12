@@ -5,11 +5,12 @@ const theme = createMuiTheme({
   palette: {
     background: {
       dark: '#F4F6F8',
-      default: colors.common.white,
+      default: colors.common.black,
       paper: colors.common.white
     },
     primary: {
-      main: colors.teal[300]
+      main: colors.red[500]
+      //main: '#0079D3'
     },
     secondary: {
       main: colors.red[300]

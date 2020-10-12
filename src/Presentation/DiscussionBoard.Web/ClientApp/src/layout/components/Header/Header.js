@@ -15,11 +15,11 @@ import Search from '../../../components/SearchToolbar/SearchToolbar';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
     boxShadow: "none",
     backgroundColor: colors.common.white,
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(3)
+    marginBottom: theme.spacing(3),
   },
   toolbarTitle: {
     flex: 1,

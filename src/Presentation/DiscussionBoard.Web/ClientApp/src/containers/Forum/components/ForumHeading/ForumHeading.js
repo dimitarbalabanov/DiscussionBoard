@@ -51,6 +51,11 @@ const ForumHeading = props => {
             <Typography variant="h5" color="inherit" paragraph>
               Anything about whatever.
             </Typography>
+                            {/* <Typography variant="subtitle1" paragraph>
+                  {description}
+                </Typography> */}
+
+
             {/* <Link variant="subtitle1" href="#">
               {post.linkText}
             </Link> */}

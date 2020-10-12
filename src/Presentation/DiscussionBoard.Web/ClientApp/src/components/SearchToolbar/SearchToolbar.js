@@ -40,7 +40,7 @@ const SearchToolbar = ({ className, ...rest }) => {
                   )
                 }}
                 placeholder="Search in forums"
-                variant="outlined"
+                
               />
             {/* </Box>
           </CardContent>

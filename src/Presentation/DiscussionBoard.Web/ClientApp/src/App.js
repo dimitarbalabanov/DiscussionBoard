@@ -3,6 +3,7 @@ import { BrowserRouter as Router} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from './store/actions/index';
 import { ThemeProvider } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles';
 import theme from './theme/theme';
 import Routes from './Routes';
@@ -27,6 +28,7 @@ const App = props => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
+      <CssBaseline />
       <Snackbar show={showSnackbar} type={snackbarType} message={snackbarMessage} handleClose={onCloseSnackbar}/>
         <Router>
           <Layout isAuth={isAuthenticated} username={username}>

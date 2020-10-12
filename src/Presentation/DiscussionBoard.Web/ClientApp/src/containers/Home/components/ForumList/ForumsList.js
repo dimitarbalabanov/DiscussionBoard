@@ -1,6 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import ForumCard from './ForumCard/ForumCard';
+import SelectedForumCard from '../../../Forum/components/SelectedForumCard/SelectedForumCard';
+import ForumTitleCard from '../../../Forum/components/ForumTitleCard/ForumTitleCard';
 
 const ForumsList = props => {
   const { 
@@ -20,6 +22,8 @@ const ForumsList = props => {
   return (
     <Grid item xs={12} md={4}>
       <Grid container spacing={1} justify="center">
+        <SelectedForumCard />
+        <ForumTitleCard />
         {/* {loading ? Array(10).fill(emptyForum).map((forum,i) => (
             <ForumCard key={i} forum={forum} loading={loading}/>
           )) : forums.map((forum) => (
