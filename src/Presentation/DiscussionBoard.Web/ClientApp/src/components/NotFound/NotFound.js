@@ -6,6 +6,7 @@ import {
   makeStyles,
   Paper
 } from '@material-ui/core';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import Page from '../Page/Page';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,7 @@ const NotFound = () => {
     <Page className={classes.root} title="404">
       <Container maxWidth="md">
         <Box display="flex" flexDirection="column" height="100%" justifyContent="center" m={5} p={5} component={Paper}>
+          <NotInterestedIcon></NotInterestedIcon>
           <Typography align="center" color="textPrimary" variant="h1" >
             404: The page you are looking for isn’t here
           </Typography>

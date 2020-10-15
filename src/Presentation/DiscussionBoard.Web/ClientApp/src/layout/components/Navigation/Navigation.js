@@ -11,6 +11,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 //import TextFieldsIcon from '@material-ui/icons/TextFields';
 //import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
 //import AuthModal from '../../../containers/TabAuth/AuthModal';
 import Auth from '../../../containers/TabAuth/Auth';
 //import ProfileMenu from '../ProfileMenu/ProfileMenu';
@@ -103,7 +104,7 @@ const Navigation = props => {
 
   return (
     <List className={clsx(classes.root, className)}>
-      <ListItem className={classes.item} disableGutters>
+      {/* <ListItem className={classes.item} disableGutters>
         <Button
           activeClassName={classes.active}
           className={classes.button}
@@ -116,7 +117,7 @@ const Navigation = props => {
         </div>
           {'Home'}
         </Button>
-      </ListItem>
+      </ListItem> */}
       {isAuth 
         ? <React.Fragment>
             <ListItem className={classes.item} disableGutters>
@@ -154,9 +155,9 @@ const Navigation = props => {
                 to={'/auth'}
               >
               <div className={classes.icon}>
-                <PersonIcon />
+              <PersonPinIcon/>
               </div>
-                {'Auth'}
+                {'Sign in / up'}
               </Button>
           </ListItem> }
         {/* <ProfileMenu /> */}

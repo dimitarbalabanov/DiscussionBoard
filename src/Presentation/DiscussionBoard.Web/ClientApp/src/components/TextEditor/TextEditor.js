@@ -10,7 +10,8 @@ class RichEditorExample extends React.Component {
 		this.focus = () => this.refs.editor.focus();
 	}
 	onChange = (editorState) => {
-		this.setState({editorState});
+    this.setState({editorState});
+    console.log(this.state)
 	}
 
 	toggleBlockType = (blockType) => {

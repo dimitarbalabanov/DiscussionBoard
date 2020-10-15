@@ -1,69 +1,81 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
-import Paper from '@material-ui/core/Paper';
+import CardHeader from '@material-ui/core/CardHeader';
+import TextField from '@material-ui/core/TextField'
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    // marginLeft: theme.spacing(0),
-    // marginRight: theme.spacing(1),
-    //width: '90%',
-  },
-  margin: {
-    // margin: theme.spacing(1),
-  },
   card: {
-    //display: 'flex',
+    display: 'flex',
+    //borderColor: theme.palette.primary.main,
   },
   cardDetails: {
-    //flex: 1,
+    flex: 1
   },
   cardMedia: {
-    //width: 160,
+    width: 160,
   },
   statsItem: {
-    // alignItems: 'center',
-    // display: 'flex',
-    // marginTop: theme.spacing(1)
+    alignItems: 'center',
+    display: 'flex',
+    margin: theme.spacing(1)
+  },
+  statsIcon: {
+    marginRight: theme.spacing(1),
+    fontSize: "24px"
+  },
+  cardcontent: {
+    padding: 0,
+    "&:last-child": {
+      paddingBottom: 0
+    },
+    margin: theme.spacing(2),
+    borderColor: theme.palette.primary.main,
+  },
+  header: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  textField: {
+    "&:hover": {
+      cursor: 'theme.palette.primary.main'
+    },
   }
 }));
 
-
-const Create = props => {
+const CreatePostButton = props => {
   const classes = useStyles();
-
   return (
-    <Grid item xs={8} md={10} component={Paper} >
-      <Grid container spacing={1} alignItems="flex-end" justify="center">
-        <Grid item>
-          <NoteAddIcon />
-        </Grid>
-        <Grid item xs={10}>
-        <TextField
-          component={Link}
-          to={'/create'}
-          className={classes.textField}
-          placeholder="Create post"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          />
-        </Grid>
+    <Grid item xs={12} md={10}>
+      <Grid item>
+            <Card className={classes.card} variant="outlined">
+              <div className={classes.cardDetails}>
+                {/* <CardHeader className={classes.header} /> */}
+                <CardContent className={classes.cardcontent}>
+                  <Grid className={classes.statsItem} item >
+                    <NoteAddIcon className={classes.statsIcon} color="primary"/>
+                    <TextField
+                      component={Link}
+                      to={'/create'}
+                      className={classes.textField}
+                      placeholder="Create post"
+                      fullWidth
+                      color="primary"
+                      size="small"
+                      variant="outlined"
+                      margin="none"
+                      />
+                  </Grid>
+                </CardContent>
+              </div>
+            </Card>
       </Grid>
     </Grid>
   );
 }
 
-export default Create;
+export default CreatePostButton;

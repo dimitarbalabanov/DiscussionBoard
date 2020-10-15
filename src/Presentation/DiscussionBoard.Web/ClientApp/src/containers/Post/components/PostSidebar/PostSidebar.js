@@ -49,7 +49,7 @@ const PostSidebar = (props) => {
   const { forums, social, recent } = sidebar;
 
   return (
-    <Grid item xs={12} md={3}>
+    <Grid item xs={12} md={10}>
       <Typography variant="h6" gutterBottom className={classes.sidebarSection}>
         Forums
       </Typography>

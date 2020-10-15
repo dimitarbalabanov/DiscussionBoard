@@ -7,13 +7,14 @@ import Page from '../../components/Page/Page';
 import { createPost, createPostReset } from '../../store/actions';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import TextEditor from '../../components/TextEditor/TextEditor'
 
 import {
   Box,
   Button,
   TextField,
   Typography,
-  //Paper
+  Paper
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -92,7 +93,8 @@ const CreatePost = props => {
             value={values.title}
             variant="outlined"
           />
-          <TextField
+          <TextEditor />
+          {/* <TextField
             error={Boolean(touched.content && errors.content)}
             fullWidth
             helperText={touched.content && errors.content}
@@ -106,7 +108,7 @@ const CreatePost = props => {
             variant="outlined"
             multiline
             rows={4}
-          />
+          /> */}
           <Box my={2}>
             <Button
               color="primary"
@@ -146,7 +148,7 @@ const CreatePost = props => {
 
   return (
     <Page className={classes.root} title={"Create Post"}>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={9} component={Paper}>
           {/* { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
           { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null } */}
           {/* { createPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null } */}

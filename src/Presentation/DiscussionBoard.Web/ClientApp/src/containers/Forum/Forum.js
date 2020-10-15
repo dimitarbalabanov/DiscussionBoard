@@ -5,10 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Spinner from '../../components/Spinner/Spinner';
 import Page from '../../components/Page/Page';
-import ForumSidebar from './components/ForumSidebar/ForumSidebar';
-import ForumHeading from './components/ForumHeading/ForumHeading';
-import PostCard from './components/PostCard/PostCard';
-import { fetchForumById, createPost, fetchAllPosts } from '../../store/actions';
+import PostCard from '../../components/Post/PostCard/PostCard';
+import PostsList from '../../components/Post/PostsList/PostsList';
+import { fetchForumById, createPost, newFetchPosts } from '../../store/actions';
+import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
+import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -32,52 +33,47 @@ const Forum = props => {
     onCreatePost,
     onCreatePostReset,
     newPostId,
+    onFetchPosts,
+    posts,
+    forums,
+    postsLoading,
+    postsError
     //isAuth
   } = props;
   
   useEffect(() => {
+    onFetchPosts(forumId);
     onFetchForum(forumId);
-  }, [onFetchForum, forumId]);
+  }, [onFetchForum, onFetchPosts, forumId]);
 
-  if(createPostSuccess) {
-    onCreatePostReset();
-    return <Redirect to={`/posts/${newPostId}`} />
-  }
-
-  let forumDiv = <Spinner />
-
-  if (!forumLoading && forum) {
-    forumDiv = (
-      <React.Fragment>
-        {/* <CreatePost 
-            component={CreatePost}
-            forumId={forumId} 
-            loading={createPostLoading} 
-            onCreatePost={onCreatePost} /> */}
-        <ForumHeading forum={forum} />
-        <Grid container spacing={4}>
-          {/* {forum.posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))} */}
-        </Grid>
-      </React.Fragment>
-    );
-  }
+  
 
   return (
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
-      <Grid container>
-        <Grid item xs={12} md={8}>
-          { forumDiv }
+      <Grid container spacing={10} direction="row" alignItems="flex-start">
+
+        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+          <ForumTitleCard forum={forum} loading={forumLoading} />
+          <PostsList posts={posts} loading={postsLoading} error={postsError}/>
         </Grid>
-        <ForumSidebar />
+
+        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
+          <Grid item md={10}>
+            <AboutForumCard forum={forum} loading={forumLoading} />
+          </Grid>
+        </Grid>
       </Grid>
+
     </Page>
   );
 }
 
 const mapStateToProps = state => {
   return {
+    posts: state.home.posts,
+    postsLoading: state.home.postsLoading,
+    postsError: state.home.postsError,
+    forums: state.home.forums,
     forum: state.forum.forum,
     forumLoading: state.forum.forumLoading,
     forumError: state.forum.forumError,
@@ -86,6 +82,7 @@ const mapStateToProps = state => {
     createPostSuccess: state.forum.createPostSuccess,
     newPostId: state.forum.newPostId,
     isAuth: state.auth.token !== null,
+    //posts: state.forum.posts
     //showSnackbar: state.snackbar.show,
     //type: state.snackbar.type
   };
@@ -94,7 +91,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onFetchForumPosts: (forumId) => dispatch(fetch(forumId)),
+    onFetchPosts: (forumId) => dispatch(newFetchPosts(forumId)),
     onCreatePost: (post) => dispatch(createPost(post))
   };
 };

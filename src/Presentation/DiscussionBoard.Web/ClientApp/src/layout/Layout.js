@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-//import Grid from '@material-ui/core/Grid';
 import Header from './components/Header/Header';
 import DrawerBar from './components/DrawerBar/DrawerBar';
-//import Footer from './components/Footer/Footer';
+import Footer from './components/Footer/Footer';
 import { makeStyles } from '@material-ui/core/styles';
+import { GridListTile } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   // root: {
   //   paddingTop: 56,
@@ -38,8 +39,8 @@ const Layout = props => {
   return (
     <React.Fragment>
       <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
+      <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
       <Container maxWidth="lg">
-        <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
         <main>
             {props.children}
         </main>

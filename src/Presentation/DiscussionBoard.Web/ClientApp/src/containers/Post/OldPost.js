@@ -120,24 +120,11 @@ const Post = (props) => {
   
   return (
     <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
-      <Grid 
-        container
-        spacing={10}
-        direction="row"
-        //justify="center"
-        alignItems="flex-start"
-      >  
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-
+      <Grid container>
+        <Grid item xs={12} md={8}>
           {postDiv}
-
         </Grid>
-        
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-
-          <PostSidebar />
-
-        </Grid>
+        <PostSidebar />
       </Grid>
     </Page>
   );

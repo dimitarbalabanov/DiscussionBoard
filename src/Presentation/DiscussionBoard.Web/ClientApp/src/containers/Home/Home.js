@@ -4,9 +4,9 @@ import * as actions from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../components/Page/Page';
-import ForumsList from './components/ForumList/ForumsList';
-import HomePostsList from './components/HomePostsList/HomePostsList';
-//import Search from '../../components/SearchToolbar/SearchToolbar';
+import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+import PostsList from '../../components/Post/PostsList/PostsList';
+import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 //import MovieCreationIcon from '@material-ui/icons/MovieCreation';
 //import MusicNoteIcon from '@material-ui/icons/MusicNote';
 //import ComputerIcon from '@material-ui/icons/Computer';
@@ -43,11 +43,22 @@ const Home = props => {
 
   return (
     <Page className={classes.root} title="Discussion Board">
-      <Grid container className={classes.mainGrid}>
-        <HomePostsList posts={posts} loading={postsLoading} error={postsError}/>
+    <Grid 
+      container
+      spacing={10}
+      direction="row"
+      //justify="center"
+      alignItems="flex-start"
+    > 
+      <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+        <CreatePostButton />
+        <PostsList posts={posts} loading={postsLoading} error={postsError}/>
+      </Grid>
+      <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
         <ForumsList forums={forums} loading={forumsLoading}/>
       </Grid>
-    </Page>
+    </Grid>
+  </Page>
   );
 }
 
