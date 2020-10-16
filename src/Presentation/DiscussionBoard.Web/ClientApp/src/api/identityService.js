@@ -4,10 +4,10 @@ import {
   IDENTITY_REGISTER_URL
 } from './apiRoutes';
 
-export const loginApi = (data) => {
-  return axiosInstance.post(IDENTITY_LOGIN_URL, data);
+export const login = (email, password) => {
+  return axiosInstance.post(IDENTITY_LOGIN_URL, { email, password });
 };
 
-export const registerApi = (data) => {
-  return axiosInstance.post(IDENTITY_REGISTER_URL, data);
+export const register = (email, username, password, confirmPassword) => {
+  return axiosInstance.post(IDENTITY_REGISTER_URL, { email, username, password, confirmPassword });
 };

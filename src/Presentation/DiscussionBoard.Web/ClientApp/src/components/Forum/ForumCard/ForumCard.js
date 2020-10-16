@@ -55,7 +55,7 @@ const ForumCard = props => {
   } = props;
 
   return (
-    <Card className={classes.card} variant="outlined" borderColor="primary" component={Link} to={`/forums/${id}`}>
+    <Card className={classes.card} variant="outlined" component={Link} to={`/forums/${id}`}>
       <div className={classes.cardDetails}>
         <CardHeader className={classes.header}/>
         <CardContent>

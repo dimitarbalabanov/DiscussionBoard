@@ -1,40 +1,26 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import {
+  fetchForums,
+  fetchPosts
+} from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import Page from '../../components/Page/Page';
 import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
-//import MovieCreationIcon from '@material-ui/icons/MovieCreation';
-//import MusicNoteIcon from '@material-ui/icons/MusicNote';
-//import ComputerIcon from '@material-ui/icons/Computer';
-//import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
-//import AddIcon from '@material-ui/icons/Add';
-
-const useStyles = makeStyles((theme) => ({
-  mainGrid: {
-    //marginTop: theme.spacing(2),
-  }
-}));
-
-//const icons = [<MovieCreationIcon />, <MusicNoteIcon />, <ComputerIcon />, <VideogameAssetIcon />, <AddIcon />]
 
 const Home = props => {
-  const classes = useStyles();
-
   const { 
     forums,
     forumsLoading,
     //forumsError,
-    onFetchForums,
     posts,
     postsLoading,
     postsError,
-    onFetchPosts,
-    
-   } = props;
+    onFetchForums,
+    onFetchPosts
+  } = props;
 
   useEffect(() => {
     onFetchForums();
@@ -42,12 +28,11 @@ const Home = props => {
   }, [onFetchForums, onFetchPosts]);
 
   return (
-    <Page className={classes.root} title="Discussion Board">
+    <Page title="Discussion Board">
     <Grid 
       container
       spacing={10}
       direction="row"
-      //justify="center"
       alignItems="flex-start"
     > 
       <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
@@ -64,19 +49,19 @@ const Home = props => {
 
 const mapStateToProps = state => {
   return {
-    forums: state.home.forums,
-    forumsLoading: state.home.forumsLoading,
-    forumsError: state.home.forumsError,
-    posts: state.home.posts,
-    postsLoading: state.home.postsLoading,
-    postsError: state.home.postsError,
+    forums: state.forums.forums,
+    forumsLoading: state.forums.loading,
+    forumsError: state.forums.error,
+    posts: state.posts.posts,
+    postsLoading: state.posts.loading,
+    postsError: state.posts.error,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForums: () => dispatch(actions.newFetchForums()),
-    onFetchPosts: () => dispatch(actions.newFetchPosts())
+    onFetchForums: () => dispatch(fetchForums()),
+    onFetchPosts: () => dispatch(fetchPosts())
   };
 };
 

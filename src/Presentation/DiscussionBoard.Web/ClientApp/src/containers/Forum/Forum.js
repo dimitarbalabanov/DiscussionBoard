@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
-import Spinner from '../../components/Spinner/Spinner';
 import Page from '../../components/Page/Page';
-import PostCard from '../../components/Post/PostCard/PostCard';
 import PostsList from '../../components/Post/PostsList/PostsList';
-import { fetchForumById, createPost, newFetchPosts } from '../../store/actions';
+import { fetchForumById, fetchPosts } from '../../store/actions';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
 import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 
@@ -26,27 +23,17 @@ const Forum = props => {
     forum, 
     forumLoading, 
     //forumError,
-    createPostSuccess,
-    createPostLoading,
-    //createPostError,
-    onFetchForum,
-    onCreatePost,
-    onCreatePostReset,
-    newPostId,
-    onFetchPosts,
     posts,
-    forums,
     postsLoading,
-    postsError
-    //isAuth
+    postsError,
+    onFetchPosts,
+    onFetchForum,
   } = props;
   
   useEffect(() => {
     onFetchPosts(forumId);
     onFetchForum(forumId);
   }, [onFetchForum, onFetchPosts, forumId]);
-
-  
 
   return (
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
@@ -70,29 +57,19 @@ const Forum = props => {
 
 const mapStateToProps = state => {
   return {
-    posts: state.home.posts,
-    postsLoading: state.home.postsLoading,
-    postsError: state.home.postsError,
-    forums: state.home.forums,
+    posts: state.posts.posts,
+    postsLoading: state.posts.loading,
+    postsError: state.posts.error,
     forum: state.forum.forum,
-    forumLoading: state.forum.forumLoading,
-    forumError: state.forum.forumError,
-    createPostLoading: state.forum.createPostLoading,
-    createPostError: state.forum.createPostError,
-    createPostSuccess: state.forum.createPostSuccess,
-    newPostId: state.forum.newPostId,
-    isAuth: state.auth.token !== null,
-    //posts: state.forum.posts
-    //showSnackbar: state.snackbar.show,
-    //type: state.snackbar.type
+    forumLoading: state.forum.loading,
+    forumError: state.forum.error
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onFetchPosts: (forumId) => dispatch(newFetchPosts(forumId)),
-    onCreatePost: (post) => dispatch(createPost(post))
+    onFetchPosts: (forumId) => dispatch(fetchPosts(forumId))
   };
 };
 

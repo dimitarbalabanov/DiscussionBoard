@@ -5,29 +5,39 @@ export {
 } from './auth';
 
 export {
-  register
-} from './register';
+  fetchComments,
+  createComment,
+  updateComment,
+  deleteComment,
+  createVote,
+  updateVote,
+  deleteVote
+} from './comments';
 
 export {
   fetchForumById
 } from './forum';
 
 export {
+  fetchForums
+} from './forums';
+
+export {
   fetchPostById,
   createPost,
   updatePost,
-  deletePost,
-  createComment,
-  deleteComment,
-  createVote,
+  deletePost
 } from './post';
+
+export {
+  fetchPosts
+} from './posts';
+
+export {
+  register
+} from './register';
 
 export {
   showSnackbar,
   hideSnackbar
 } from './snackbar';
-
-export {
-  newFetchForums,
-  newFetchPosts
-} from './newHome';

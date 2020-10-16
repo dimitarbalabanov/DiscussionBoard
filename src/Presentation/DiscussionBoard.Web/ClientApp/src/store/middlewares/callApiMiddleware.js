@@ -1,8 +1,8 @@
-const callAPIMiddleware = ({ dispatch }) => {
+const callApiMiddleware = ({ dispatch }) => {
   return next => action => {
     const {
       types,
-      callAPI,
+      callApi,
       ...props 
     } = action
 
@@ -17,8 +17,8 @@ const callAPIMiddleware = ({ dispatch }) => {
       throw new Error('Expected an array of three string types.')
     }
 
-    if (typeof callAPI !== 'function') {
-      throw new Error('Expected callAPI to be a function.')
+    if (typeof callApi !== 'function') {
+      throw new Error('Expected callApi to be a function.')
     }
 
     const [requestType, successType, failureType] = types
@@ -28,7 +28,7 @@ const callAPIMiddleware = ({ dispatch }) => {
       type: requestType
     });
   
-    return callAPI()
+    return callApi()
       .then(response => {
         console.log(response.data)
         dispatch({
@@ -45,4 +45,4 @@ const callAPIMiddleware = ({ dispatch }) => {
   }
 }
 
-export default callAPIMiddleware;
+export default callApiMiddleware;

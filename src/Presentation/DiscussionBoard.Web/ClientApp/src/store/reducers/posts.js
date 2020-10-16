@@ -1,39 +1,41 @@
 import {
-  REGISTER_START,
-  REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REQUEST_POSTS_START,
+  REQUEST_POSTS_SUCCESS,
+  REQUEST_POSTS_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
+  posts: [],
   loading: false,
   error: null
 };
 
 const reducer = (state = initialState, action) => {
-  switch ( action.type ) {
-
-    case REGISTER_START:
+  switch (action.type) {
+    
+    case REQUEST_POSTS_START: 
       return { 
         ...state,
         error: null,
-        loading: true 
+        loading: true
       };
 
-    case REGISTER_SUCCESS:
+    case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        error: null,
-        loading: false 
+        posts: action.data.posts,
+        loading: false,
+        error: null
       };
 
-    case REGISTER_FAILURE:
+    case REQUEST_POSTS_FAILURE:
       return { 
         ...state,
         error: action.error,
         loading: false
       };
 
-    default: 
+    default:
       return state;
   }
 };

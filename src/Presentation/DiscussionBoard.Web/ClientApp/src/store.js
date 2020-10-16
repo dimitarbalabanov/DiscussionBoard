@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import callApiMiddleware from './store/middlewares/callApiMiddleware';
 import effectsMiddleware from './store/middlewares/effectsMiddleware';
 import authReducer from './store/reducers/auth';
-import registerReducer from './store/reducers/register';
-import newHome from './store/reducers/newHome';
+import commentsReducer from './store/reducers/comments';
 import forumReducer from './store/reducers/forum';
+import forumsReducer from './store/reducers/forums';
 import postReducer from './store/reducers/post';
+import postsReducer from './store/reducers/posts';
+import registerReducer from './store/reducers/register';
 import snackbarReducer from './store/reducers/snackbar';
 
 // const composeEnhancers = process.env.NODE_ENV === 'development' 
@@ -15,9 +17,11 @@ import snackbarReducer from './store/reducers/snackbar';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  home: newHome,
+  comments: commentsReducer,
   forum: forumReducer,
+  forums: forumsReducer,
   post: postReducer,
+  posts: postsReducer,
   register: registerReducer,
   snackbar: snackbarReducer
 });

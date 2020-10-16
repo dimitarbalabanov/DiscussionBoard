@@ -11,7 +11,6 @@ import { Redirect } from 'react-router-dom';
 //import DeleteIcon from '@material-ui/icons/Delete';
 //import Button from '@material-ui/core/Button';
 import ConfirmDialog from '../../../../components/ConfirmDialog/ConfirmDialog';
-import Snackbar from '../../../../components/GlobalSnackbar/GlobalSnackbar';
 import ConvertToRelativeTime from '../../../../utils/dateConvertor';
 import { CircularProgress } from '@material-ui/core';
 
@@ -62,13 +61,13 @@ const PostHeading = (props) => {
     content,
     creatorUserName,
     createdOn,
-    comments,
+    //comments,
     forumId
   } = props.post;
 
   const {
     deletePostLoading,
-    deletePostError,
+    //deletePostError,
     deletePostSuccess,
     onDeletePost
   } = props;

@@ -5,6 +5,6 @@ export const getForumById = (forumId) => {
   return axiosInstance.get(FORUMS_URL + forumId);
 };
 
-export const getAllForums = () => {
+export const getForums = () => {
   return axiosInstance.get(FORUMS_URL);
 };

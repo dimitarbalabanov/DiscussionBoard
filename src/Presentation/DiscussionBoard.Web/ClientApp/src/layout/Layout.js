@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Header from './components/Header/Header';
 import DrawerBar from './components/DrawerBar/DrawerBar';
-import Footer from './components/Footer/Footer';
-import { makeStyles } from '@material-ui/core/styles';
-import { GridListTile } from '@material-ui/core';
-const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   paddingTop: 56,
-  //   height: '100%',
-  //   [theme.breakpoints.up('sm')]: {
-  //     paddingTop: 64
-  //   }
-  // },
-  // mainGrid: {
-  //   marginTop: theme.spacing(3),
-  // },
-  // background: {
-  //   backgroundColor: theme.palette.primary.main,
-  // },
-}));
+//import Footer from './components/Footer/Footer';
+
+//import { makeStyles } from '@material-ui/core/styles';
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     paddingTop: 56,
+//     height: '100%',
+//     [theme.breakpoints.up('sm')]: {
+//       paddingTop: 64
+//     }
+//   },
+//   mainGrid: {
+//     marginTop: theme.spacing(3),
+//   },
+//   background: {
+//     backgroundColor: theme.palette.primary.main,
+//   },
+// }));
 
 const Layout = props => {
   const { isAuth, username } = props

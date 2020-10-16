@@ -1,4 +1,4 @@
-import { loginApi } from "../../api/identityService";
+import { login as loginApi } from "../../api/identityService";
 import {
   getUsername,
   getToken,
@@ -6,18 +6,23 @@ import {
   setAuthorization,
   removeAuthorization
 } from '../../utils/authStorage';
-import * as actionTypes from './actionTypes';
+import {
+  AUTH_START,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
+  AUTH_LOGOUT
+} from './actionTypes';
 import { showSnackbar } from "./snackbar";
 
 export const authStart = () => {
   return {
-    type: actionTypes.AUTH_START
+    type: AUTH_START
   };
 };
 
 export const authSuccess = (token, username, expiresAt) => {
   return {
-    type: actionTypes.AUTH_SUCCESS,
+    type: AUTH_SUCCESS,
     token: token,
     username: username,
     expiresAt: expiresAt
@@ -26,7 +31,7 @@ export const authSuccess = (token, username, expiresAt) => {
 
 export const authFail = (error) => {
   return {
-    type: actionTypes.AUTH_FAILURE,
+    type: AUTH_FAILURE,
     error: error
   };
 };
@@ -34,7 +39,7 @@ export const authFail = (error) => {
 export const logout = () => {
   removeAuthorization();
   return {
-      type: actionTypes.AUTH_LOGOUT
+      type: AUTH_LOGOUT
   };
 };
 

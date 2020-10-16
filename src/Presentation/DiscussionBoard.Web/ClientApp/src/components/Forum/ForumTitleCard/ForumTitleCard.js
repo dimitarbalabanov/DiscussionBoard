@@ -1,15 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+//import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Skeleton from '@material-ui/lab/Skeleton';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import CommentIcon from '@material-ui/icons/Comment';
 
 const useStyles = makeStyles((theme) => ({
   card: {

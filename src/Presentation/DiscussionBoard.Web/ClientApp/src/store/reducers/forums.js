@@ -1,39 +1,41 @@
 import {
-  REGISTER_START,
-  REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REQUEST_FORUMS_START,
+  REQUEST_FORUMS_SUCCESS,
+  REQUEST_FORUMS_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
+  forums: [],
   loading: false,
   error: null
 };
 
 const reducer = (state = initialState, action) => {
-  switch ( action.type ) {
-
-    case REGISTER_START:
+  switch (action.type) {
+    
+    case REQUEST_FORUMS_START: 
       return { 
         ...state,
         error: null,
-        loading: true 
+        loading: true
       };
 
-    case REGISTER_SUCCESS:
+    case REQUEST_FORUMS_SUCCESS:
       return { 
         ...state,
+        forums: action.data.forums,
         error: null,
-        loading: false 
+        loading: false
       };
 
-    case REGISTER_FAILURE:
+    case REQUEST_FORUMS_FAILURE: 
       return { 
         ...state,
         error: action.error,
         loading: false
       };
 
-    default: 
+    default:
       return state;
   }
 };

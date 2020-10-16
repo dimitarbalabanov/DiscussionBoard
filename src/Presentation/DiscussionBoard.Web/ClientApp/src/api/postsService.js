@@ -5,17 +5,17 @@ export const getPostById = (postId) => {
   return axiosInstance.get(POSTS_URL + postId);
 };
 
-export const getAllPosts = (forumId) => {
+export const getPosts = (forumId) => {
   let query = forumId ? `?forumId=${forumId}` : '';
   return axiosInstance.get(POSTS_URL + query);
 };
 
-export const createPost = (post) => {
-  return axiosInstance.post(POSTS_URL, post);
+export const createPost = (forumId, title, content) => {
+  return axiosInstance.post(POSTS_URL, { forumId, title, content });
 };
 
-export const updatePostById = (postId, newPost) => {
-  return axiosInstance.put(POSTS_URL + postId, newPost);
+export const updatePostById = (postId, title, content) => {
+  return axiosInstance.put(POSTS_URL + postId, { title, content });
 };
 
 export const deletePostById = (postId) => {

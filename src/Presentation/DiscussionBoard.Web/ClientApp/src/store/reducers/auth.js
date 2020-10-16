@@ -13,50 +13,44 @@ const initialState = {
   loading: false
 };
 
-const authStart = (state, action) => {
-  return { 
-    ...state,
-    error: null,
-    loading: true 
-  };
-};
-
-const authSuccess = (state, action) => {
-  return {
-    ...state, 
-    token: action.token,
-    username: action.username,
-    expiresAt: action.expiresAt,
-    error: null,
-    loading: false
-    };
-};
-
-const authFail = (state, action) => {
-  return {
-    ...state, 
-    error: action.error,
-    loading: false
-  };
-};
-
-const authLogout = (state, action) => {
-  return {
-    ...state,
-    token: null,
-    username: null,
-    expiresAt: null 
-  };
-};
-
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-      case AUTH_START: return authStart(state, action);
-      case AUTH_SUCCESS: return authSuccess(state, action);
-      case AUTH_FAILURE: return authFail(state, action);
-      case AUTH_LOGOUT: return authLogout(state, action);
-      default: return state;
-    }
+  switch (action.type) {
+
+    case AUTH_START: 
+      return { 
+        ...state,
+        error: null,
+        loading: true 
+      };
+      
+    case AUTH_SUCCESS: 
+      return {
+        ...state, 
+        token: action.data.token,
+        username: action.data.username,
+        expiresAt: action.data.expiresAt,
+        error: null,
+        loading: false
+      };
+
+    case AUTH_FAILURE: 
+      return {
+        ...state, 
+        error: action.error,
+        loading: false
+      };
+
+    case AUTH_LOGOUT: 
+      return {
+        ...state,
+        token: null,
+        username: null,
+        expiresAt: null 
+      };
+
+    default: 
+      return state;
+  }
 };
 
 export default reducer;

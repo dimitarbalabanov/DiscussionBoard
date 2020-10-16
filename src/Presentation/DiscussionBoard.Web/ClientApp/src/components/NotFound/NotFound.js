@@ -1,11 +1,9 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  makeStyles,
-  Paper
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import Page from '../Page/Page';
 
@@ -39,13 +37,6 @@ const NotFound = () => {
             You either tried some shady route or you came here by mistake.
             Whichever it is, try using the navigation.
           </Typography>
-          {/* <Box textAlign="center">
-            <img
-              alt="Under development"
-              // className={classes.image}
-              // src="/static/images/undraw_page_not_found_su7k.svg"
-            />
-          </Box> */}
         </Box>
       </Container>
     </Page>

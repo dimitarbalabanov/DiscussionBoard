@@ -1,85 +1,43 @@
 import {
-  FETCH_FORUM_START,
-  FETCH_FORUM_SUCCESS,
-  FETCH_FORUM_FAILURE
+  REQUEST_FORUM_START,
+  REQUEST_FORUM_SUCCESS,
+  REQUEST_FORUM_FAILURE
 } from '../actions/actionTypes';
 
-const initialForumState = {
-  forum: null,
-  forumLoading: false,
-  forumError: null
-};
-
 const initialState = {
-  ...initialForumState
+  forum: null,
+  loading: false,
+  error: null
 };
 
 const reducer = (state = initialState, action) => {
-
   switch (action.type) {
 
-      case FETCH_FORUM_START: 
-        return { 
-          ...state,
-          forumLoading: true,
-          forumError: null
-        };
+    case REQUEST_FORUM_START: 
+      return { 
+        ...state,
+        loading: true,
+        error: null
+      };
 
-      case FETCH_FORUM_SUCCESS: 
-        return {
-          ...state, 
-          forum: action.data,
-          forumLoading: false,
-          forumError: null
-        };
+    case REQUEST_FORUM_SUCCESS: 
+      return {
+        ...state, 
+        forum: action.data,
+        loading: false,
+        error: null
+      };
 
-      case FETCH_FORUM_FAILURE: 
-        return  {
-          ...state,
-          forumLoading: false,
-          forumError: action.error 
-        };
+    case REQUEST_FORUM_FAILURE: 
+      return  {
+        ...state,
+        loading: false,
+        error: action.error 
+      };
 
-      default:
-        return state;
+    default:
+      return state;
   }
 };
 
-
 export default reducer;
-
-
-
-// const fetchForumByIdStart = (state, action) => {
-//   return { 
-//     ...state,
-//     forumLoading: true,
-//     forumError: null
-//   };
-// };
-
-// const fetchForumByIdSuccess = (state, action) => {
-//   return {
-//     ...state, 
-//     forum: action.forum,
-//     forumLoading: false,
-//     forumError: null
-//   };
-// };
-
-// const fetchForumByIdFail = (state, action) => {
-//   return  {
-//     ...state,
-//     forumLoading: false,
-//     forumError: action.error 
-//   };
-// };
-
-// const reducer = (state = initialState, action) => {
-//     switch (action.type) {
-//         case FETCH_FORUM_START: return fetchForumByIdStart( state, action );
-//         case FETCH_FORUM_SUCCESS: return fetchForumByIdSuccess( state, action );
-//         case FETCH_FORUM_FAILURE: return fetchForumByIdFail( state, action );
-//         default: return state;
-//     }
-// };

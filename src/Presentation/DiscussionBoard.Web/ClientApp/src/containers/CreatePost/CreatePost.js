@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
-import { createPost, createPostReset } from '../../store/actions';
+import { createPost } from '../../store/actions';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import TextEditor from '../../components/TextEditor/TextEditor'
@@ -31,7 +31,6 @@ const CreatePost = props => {
   // const {
   //   createPostSuccess,
   //   createPostError,
-  //   onFetchForum,
   //   onCreatePost,
   //   onCreatePostReset,
   //   newPostId,
@@ -126,35 +125,11 @@ const CreatePost = props => {
     </Formik>
   );
 
-  // if (!forumLoading && forum) {
-  //   forumDiv = (
-  //     <React.Fragment>
-  //       <ToggleShowButton 
-  //           title={"Add a post"} 
-  //           component={CreatePost}
-  //           forumId={forumId} 
-  //           loading={createPostLoading} 
-  //           onCreatePost={onCreatePost}
-  //       />
-  //       <ForumHeading forum={forum} />
-  //       <Grid container spacing={4}>
-  //         {forum.posts.map((post) => (
-  //           <PostCard key={post.id} post={post} />
-  //         ))}
-  //       </Grid>
-  //     </React.Fragment>
-  //   );
-  // }
-
   return (
     <Page className={classes.root} title={"Create Post"}>
         <Grid item xs={12} md={9} component={Paper}>
-          {/* { createPostError ? <StatusSnackbar message={createPostError} type={"error"} reset={onCreatePostReset}/> : null }
-          { forumError ? <StatusSnackbar message={forumError} type={"error"} reset={() => {}}/> : null } */}
-          {/* { createPostSuccess ? <StatusSnackbar message="Successfully created a post." type={"success"} reset={onCreatePostReset} /> : null } */}
           { form }
         </Grid>
-        {/* <ForumSidebar /> */}
     </Page>
   );
 }
