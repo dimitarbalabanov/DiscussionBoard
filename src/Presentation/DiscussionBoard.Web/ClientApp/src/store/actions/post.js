@@ -5,6 +5,7 @@ import {
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILURE,
+  CREATE_POST_RESET,
   UPDATE_POST_START,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_FAILURE,
@@ -41,14 +42,14 @@ export const fetchPostById = (postId) => {
   }
 };
 
-export const createPost = (post) => {
+export const createPost = (forumId, title, content) => {
   return {
     types: [
       CREATE_POST_START,
       CREATE_POST_SUCCESS,
       CREATE_POST_FAILURE
     ],
-    callApi: () => createPostApi(post),
+    callApi: () => createPostApi(forumId, title, content),
     effect({ dispatch, state, type}) {
       if (type === CREATE_POST_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully created a post.`))
@@ -97,3 +98,9 @@ export const deletePost = (postId) => {
     }
   }
 };
+
+export const createPostReset = () => {
+  return {
+    type: CREATE_POST_RESET
+  };
+}

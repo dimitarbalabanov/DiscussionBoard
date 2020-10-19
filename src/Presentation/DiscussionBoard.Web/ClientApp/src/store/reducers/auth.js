@@ -26,9 +26,9 @@ const reducer = (state = initialState, action) => {
     case AUTH_SUCCESS: 
       return {
         ...state, 
-        token: action.data.token,
-        username: action.data.username,
-        expiresAt: action.data.expiresAt,
+        token: action.token,
+        username: action.username,
+        expiresAt: action.expiresAt,
         error: null,
         loading: false
       };

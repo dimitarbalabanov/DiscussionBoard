@@ -27,11 +27,8 @@ namespace DiscussionBoard.Application.Common.Mappings
             CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
 
-            CreateMap<Post, PostDto>()
+            CreateMap<Post, GetPostByIdVm>()
                 .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
-
-            CreateMap<Post, GetPostByIdVm>();
-                //.ForMember(src => src.Comments, opt => opt.Ignore());
 
             CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));

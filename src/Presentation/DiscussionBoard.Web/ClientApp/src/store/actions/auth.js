@@ -88,7 +88,7 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         const username = getUsername();
-        dispatch(authSuccess(token, username));
+        dispatch(authSuccess(token, username, expiresAt));
         dispatch(checkAuthTimeout(expiresAt));
       }   
     }

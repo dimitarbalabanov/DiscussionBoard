@@ -26,7 +26,8 @@ export {
   fetchPostById,
   createPost,
   updatePost,
-  deletePost
+  deletePost,
+  createPostReset
 } from './post';
 
 export {

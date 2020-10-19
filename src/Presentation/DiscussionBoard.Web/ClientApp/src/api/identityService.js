@@ -5,9 +5,9 @@ import {
 } from './apiRoutes';
 
 export const login = (email, password) => {
-  return axiosInstance.post(IDENTITY_LOGIN_URL, { email, password });
+  return axiosInstance.post(IDENTITY_LOGIN_URL, email, password);
 };
 
 export const register = (email, username, password, confirmPassword) => {
-  return axiosInstance.post(IDENTITY_REGISTER_URL, { email, username, password, confirmPassword });
+  return axiosInstance.post(IDENTITY_REGISTER_URL, email, username, password, confirmPassword);
 };

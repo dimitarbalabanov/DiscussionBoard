@@ -6,6 +6,7 @@ import {
   CREATE_POST_START,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILURE,
+  CREATE_POST_RESET,
 
   UPDATE_POST_START,
   UPDATE_POST_SUCCESS,
@@ -26,6 +27,7 @@ const initialCreatePostState = {
   createPostSuccess: false,
   createPostLoading: false,
   createPostError: null,
+  createPostId: null
 }
 
 const initialUpdatePostState = {
@@ -83,14 +85,10 @@ const reducer = (state = initialState, action) => {
     case CREATE_POST_SUCCESS:
       return {
         ...state,
-        // forum: {
-        //   ...state.forum,
-        //   posts: [action.newPost, ...state.forum.posts]
-        // },
-        // newPostId: action.newPost.id,
         createPostSuccess: true,
         createPostLoading: false,
-        createPostError: null
+        createPostError: null,
+        post: action.data
       };
 
     case CREATE_POST_FAILURE: 
@@ -99,6 +97,12 @@ const reducer = (state = initialState, action) => {
         createPostError: action.error,
         createPostLoading: false,
         createPostSuccess: false
+      };
+
+      case CREATE_POST_RESET: 
+      return {
+        ...state,
+        ...initialCreatePostState
       };
 
     case UPDATE_POST_START: 

@@ -19,6 +19,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public DateTime? ModifiedOn { get; set; }
 
+        public int CommentsCount { get; set; }
+
         public int ForumId { get; set; }
+
+        public string ForumTitle { get; set; }
     }
 }

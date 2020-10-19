@@ -49,7 +49,8 @@ const initialUpdateCommentState = {
 const initialDeleteCommentState = {
   deleteCommentLoading: false,
   deleteCommentError: null,
-  deleteCommentSuccess: false
+  deleteCommentSuccess: false,
+  deleteCommentId: null
 };
 
 const initialCreateVoteState = {
@@ -116,9 +117,15 @@ const reducer = (state = initialState, action) => {
       };
 
     case CREATE_COMMENT_SUCCESS:
+      const comment = {
+        creatorUserName : "asdf",
+        createdOn : new Date(),
+        content : action.content
+      };
+
       return { 
         ...state,
-          comments: [...state.comments, action.newComment],
+        comments: [comment, ...state.comments],
         createCommentSuccess: true,
         createCommentLoading: false,
         createCommentError: null
@@ -162,7 +169,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         deleteCommentError: null,
         deleteCommentLoading: true,
-        deleteCommentSuccess: false
+        deleteCommentSuccess: false,
+        deleteCommentId: action.commentId
       };
 
     case DELETE_COMMENT_SUCCESS:
@@ -171,7 +179,8 @@ const reducer = (state = initialState, action) => {
         comments: state.comments.filter(c => c.id !== action.commentId),
         deleteCommentLoading: false,
         deleteCommentError: null,
-        deleteCommentSuccess: true
+        deleteCommentSuccess: true,
+        deleteCommentId: null
       };
 
     case DELETE_COMMENT_FAILURE:
@@ -179,7 +188,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         deleteCommentError: action.error,
         deleteCommentLoading: false,
-        deleteCommentSuccess: false
+        deleteCommentSuccess: false,
+        deleteCommentId: null
       };
 
     case CREATE_VOTE_START:

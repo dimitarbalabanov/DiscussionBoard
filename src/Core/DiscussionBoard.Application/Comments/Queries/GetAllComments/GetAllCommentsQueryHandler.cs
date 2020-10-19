@@ -38,7 +38,6 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                 .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
                 
-
             if (_authUserService.UserId != null)
             {
                 var commentIds = comments

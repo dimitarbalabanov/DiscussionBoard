@@ -53,14 +53,14 @@ export const fetchComments = (postId) => {
   }
 };
 
-export const createComment = (comment) => {
+export const createComment = (content, postId) => {
   return {
     types: [
       CREATE_COMMENT_START,
       CREATE_COMMENT_SUCCESS,
       CREATE_COMMENT_FAILURE
     ],
-    callApi: () => createCommentApi(comment),
+    callApi: () => createCommentApi(content, postId),
     effect({ dispatch, state, type}) {
       if (type === CREATE_COMMENT_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully created a comment.`));
@@ -68,7 +68,8 @@ export const createComment = (comment) => {
       if (type === CREATE_COMMENT_FAILURE) {
         dispatch(showSnackbar('error', 'Error creating a comment.'));
       }
-    }
+    },
+    content: content
   }
 };
 
@@ -106,7 +107,8 @@ export const deleteComment = (commentId) => {
       if (type === DELETE_COMMENT_FAILURE) {
         dispatch(showSnackbar('error', 'Error deleting the comment.'));
       }
-    }
+    },
+    commentId: commentId
   }
 };
 
