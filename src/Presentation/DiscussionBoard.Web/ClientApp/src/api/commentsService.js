@@ -11,7 +11,7 @@ export const createComment = (content, postId) => {
 };
 
 export const updateCommentById = (commentId, content) => {
-  return axiosInstance.put(COMMENTS_URL + commentId, content);
+  return axiosInstance.put(COMMENTS_URL + commentId, { content });
 };
 
 export const deleteCommentById = (commentId) => {

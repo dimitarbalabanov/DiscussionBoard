@@ -52,6 +52,7 @@ const Voting = props => {
   
   const {
     commentId,
+    votesScore
     //loading,
     //error,
     //onCreateVote
@@ -99,7 +100,7 @@ const Voting = props => {
           </ToggleButton>
           {/* <Divider flexItem orientation="horizontal" className={classes.divider} /> */}
           <Typography color="textSecondary" display="inline" variant="body2" align="center">
-            105
+            {votesScore}
           </Typography>
           {/* <Divider flexItem orientation="horizontal" className={classes.divider} /> */}
           <ToggleButton value="down">

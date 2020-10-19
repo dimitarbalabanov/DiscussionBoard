@@ -37,7 +37,8 @@ const initialCommentsState = {
 const initialCreateCommentState = {
   createCommentLoading: false,
   createCommentError: null,
-  createCommentSuccess: false
+  createCommentSuccess: false,
+  updateCommentId: null
 };
 
 const initialUpdateCommentState = {
@@ -144,13 +145,23 @@ const reducer = (state = initialState, action) => {
         ...state,
         updateCommentSuccess: false,
         updateCommentLoading: true,
-        updateCommentError: null
+        updateCommentError: null,
+        updateCommentId: action.commentId
       };
 
     case UPDATE_COMMENT_SUCCESS:
+      const commentIndex = state.comments.findIndex(c => c.id === action.commentId);
+      const newComment = {
+        ...state.comments[commentIndex],
+        content: action.content
+      }     
       return { 
         ...state,
-        //comments: [...state.comments, action.newComment],
+        comments: [
+          ...state.comments.slice(0, commentIndex),
+          newComment,
+          ...state.comments.slice(commentIndex + 1)
+        ],
         updateCommentSuccess: true,
         updateCommentLoading: false,
         updateCommentError: null

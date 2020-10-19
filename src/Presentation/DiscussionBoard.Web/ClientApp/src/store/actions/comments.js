@@ -73,14 +73,14 @@ export const createComment = (content, postId) => {
   }
 };
 
-export const updateComment = (commentId, newComment) => {
+export const updateComment = (commentId, content) => {
   return {
     types: [
       UPDATE_COMMENT_START,
       UPDATE_COMMENT_SUCCESS,
       UPDATE_COMMENT_FAILURE
     ],
-    callApi: () => updateCommentById(commentId, newComment),
+    callApi: () => updateCommentById(commentId, content),
     effect({ dispatch, state, type}) {
       if (type === UPDATE_COMMENT_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully updated the comment.`));
@@ -88,7 +88,9 @@ export const updateComment = (commentId, newComment) => {
       if (type === UPDATE_COMMENT_FAILURE) {
         dispatch(showSnackbar('error', 'Error updating the comment.'));
       }
-    }
+    },
+    commentId: commentId,
+    content: content
   }
 };
 

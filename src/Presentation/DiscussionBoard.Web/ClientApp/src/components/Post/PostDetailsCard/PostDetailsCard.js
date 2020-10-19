@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
 import CommentCard from '../../Comment/CommentCard/CommentCard';
 import Spinner from '../../Spinner/Spinner';
+import EditPost from '../EditPost/EditPost';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -38,10 +42,25 @@ const useStyles = makeStyles((theme) => ({
   textColor: {
     color: theme.palette.primary.main
   },
+  iconColor: {
+    color: theme.palette.text.secondary,
+  },
+  margin: {
+    marginRight: theme.spacing(1)
+  }
 }));
 
 const PostDetailsCard = props => {
   const classes = useStyles();
+  const [showUpdateForm, setUpdateForm] = useState(false);
+
+  const handleOpen = () => {
+    setUpdateForm(true);
+  }
+  const handleClose = () => {
+    setUpdateForm(false);
+  }
+
   const { post,
     postsLoading,
     comments,
@@ -51,7 +70,10 @@ const PostDetailsCard = props => {
     createCommentError,
     onDeleteComment,
     deleteCommentLoading,
-    deleteCommentId
+    deleteCommentId,
+    onUpdateComment,
+    updateCommentLoading,
+    updateCommentId,
   } = props;
 
   return (
@@ -64,22 +86,38 @@ const PostDetailsCard = props => {
               <strong className={classes.textColor}>{post.forumTitle}</strong> posted {ConvertToRelativeTime(post.createdOn)} by <strong className={classes.textColor}>{post.creatorUserName}</strong>
             </Typography>
           </Grid>}
-          <Grid className={classes.statsItem} item >
-            <Typography component="h2" variant="h4">
-            {postsLoading ? <Skeleton /> : post.title}
-            </Typography>
-          </Grid>
-          <Grid className={classes.statsItem} item >
-            <Typography>
-              {postsLoading ? <Skeleton /> : post.content}
-            </Typography>
-          </Grid>
+          {showUpdateForm ? <EditPost onClose={handleClose} title={post.title} content={post.content}/> : 
+            <React.Fragment>
+              <Grid className={classes.statsItem} item >
+              <Typography component="h2" variant="h4">
+              {postsLoading ? <Skeleton /> : post.title}
+              </Typography>
+            </Grid>
+            <Grid className={classes.statsItem} item >
+              <Typography>
+                {postsLoading ? <Skeleton /> : post.content}
+              </Typography>
+            </Grid>
+            </React.Fragment>
+          }
+          
           <Grid className={classes.statsItem} item >
             <CommentIcon className={classes.statsIcon} color="primary"/>
-            <Typography color="textSecondary" display="inline" variant="body2" >
+            <Typography className={classes.margin} color="textSecondary" display="inline" variant="body2" >
               {postsLoading ? <Skeleton /> :`${post.commentsCount} Comments`}
             </Typography>
-          </Grid>
+            {showUpdateForm ? null : <React.Fragment>
+            <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
+              <Typography color="textSecondary" display="inline" variant="body2">
+                Edit
+              </Typography>
+            </Button>
+              <Button onClick={() => {}} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
+                <Typography color="textSecondary" display="inline" variant="body2">
+                  Delete
+                </Typography> 
+              </Button></React.Fragment>}
+            </Grid>
           {createCommentLoading 
             ? <Spinner /> 
             : <CreateComment 
@@ -98,6 +136,9 @@ const PostDetailsCard = props => {
                 onDeleteComment={onDeleteComment}
                 deleteCommentLoading={deleteCommentLoading}
                 deleteCommentId={deleteCommentId}
+                onUpdateComment={onUpdateComment}
+                updateCommentLoading={updateCommentLoading}
+                updateCommentId={updateCommentId}
               />)
           }
         </CardContent>

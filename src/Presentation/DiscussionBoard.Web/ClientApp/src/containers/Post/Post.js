@@ -46,6 +46,10 @@ const Post = (props) => {
     onDeleteComment,
     deleteCommentLoading,
     deleteCommentId,
+    onUpdateComment,
+    updateCommentError,
+    updateCommentId,
+    updateCommentLoading
     // deletePostLoading,
     // deletePostSuccess,
     // deletePostError,
@@ -92,6 +96,10 @@ const Post = (props) => {
       onDeleteComment={onDeleteComment}
       deleteCommentLoading={deleteCommentLoading}
       deleteCommentId={deleteCommentId}
+      onUpdateComment={onUpdateComment}
+      updateCommentError={updateCommentError}
+      updateCommentLoading={updateCommentLoading}
+      updateCommentId={updateCommentId}
     />
   }
   
@@ -135,6 +143,10 @@ const mapStateToProps = state => {
     deleteCommentLoading: state.comments.deleteCommentLoading,
     deleteCommentError: state.comments.deleteCommentError,
     deleteCommentId: state.comments.deleteCommentId,
+
+    updateCommentLoading: state.comments.updateCommentLoading,
+    updateCommentError: state.comments.updateCommentError,
+    updateCommentId: state.comments.updateCommentId
   };
 };
 
@@ -143,6 +155,7 @@ const mapDispatchToProps = dispatch => {
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
     onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
     onCreateComment: (content, postId) => dispatch(actions.createComment(content, postId)),
+    onUpdateComment: (commentId, content) => dispatch(actions.updateComment(commentId, content)),
     onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId))
   };
 };

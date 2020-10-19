@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -11,7 +11,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Voting from '../../Voting/Voting';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
-import { CircularProgress } from '@material-ui/core';
+import EditComment from '../EditComment/EditComment';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -50,19 +51,31 @@ const useStyles = makeStyles((theme) => ({
 
 const CommentCard = props => {
   const classes = useStyles();
+  const [showUpdateForm, setUpdateForm] = useState(false);
+
+  const handleOpen = () => {
+    setUpdateForm(true);
+  }
+  const handleClose = () => {
+    setUpdateForm(false);
+  }
+
   const { 
     comment,
     loading,
     onDeleteComment,
     deleteCommentLoading,
-    deleteCommentId 
+    deleteCommentId,
+    onUpdateComment,
+    updateCommentLoading,
+    updateCommentId,
   } = props;
-
+  console.log(props)
   return (
     <React.Fragment>
       <Divider />
       <Card className={classes.card}>
-        <Voting className={classes.voting}/>
+        <Voting className={classes.voting} votesScore={comment.votesScore}/>
         <div className={classes.cardDetails}>
           <CardContent className={classes.cardcontent}>
             <Grid className={classes.statsItem} item >
@@ -70,26 +83,38 @@ const CommentCard = props => {
                 {loading ? <Skeleton /> : <span> by <strong className={classes.textColor}>{comment.creatorUserName}</strong> posted {ConvertToRelativeTime(comment.createdOn)}</span>} 
               </Typography>
             </Grid>
-            <Grid className={classes.statsItem} item >
-              <Typography>
-                {loading ? <Skeleton /> : comment.content}
-              </Typography>
-            </Grid>
-            <Grid className={classes.statsItem} item >
-              <Button size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
-                <Typography color="textSecondary" display="inline" variant="body2">
-                  Edit
-                </Typography>
-              </Button>
-                <Button onClick={() => onDeleteComment(comment.id)} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
-                  {deleteCommentLoading && comment.id === deleteCommentId 
-                    ? <CircularProgress /> 
-                    : <Typography color="textSecondary" display="inline" variant="body2">
-                        Delete
-                      </Typography> 
-                  }
-                </Button>
-            </Grid>
+            {showUpdateForm 
+              ? <EditComment 
+                  onClose={handleClose}
+                  commentId={comment.id}
+                  content={comment.content}
+                  onUpdateComment={onUpdateComment}
+                  updateCommentLoading={updateCommentLoading}
+                /> 
+              : <React.Fragment>
+                  <Grid className={classes.statsItem} item >
+                    <Typography>
+                      {loading ? <Skeleton /> : updateCommentLoading && updateCommentId === comment.id ? <CircularProgress /> :
+                      comment.content}
+                    </Typography>
+                  </Grid>
+                  <Grid className={classes.statsItem} item >
+                    <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
+                      <Typography color="textSecondary" display="inline" variant="body2">
+                        Edit
+                      </Typography>
+                    </Button>
+                      <Button onClick={() => onDeleteComment(comment.id)} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
+                        {deleteCommentLoading && comment.id === deleteCommentId 
+                          ? <CircularProgress /> 
+                          : <Typography color="textSecondary" display="inline" variant="body2">
+                              Delete
+                            </Typography> 
+                        }
+                      </Button>
+                  </Grid>
+                </React.Fragment>
+            }
           </CardContent>
         </div>
       </Card>
