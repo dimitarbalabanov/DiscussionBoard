@@ -18,7 +18,9 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     border: 'none',
-    boxShadow: 'none'
+    boxShadow: 'none',
+    marginLeft: theme.spacing(2),
+    marginBottom: theme.spacing(1)
   },
   cardDetails: {
     flex: 1
@@ -69,13 +71,38 @@ const CommentCard = props => {
     onUpdateComment,
     updateCommentLoading,
     updateCommentId,
+    onCreateVote,
+    createVoteLoading,
+    createVoteError,
+    onUpdateVote,
+    updateVoteError,
+    updateVoteLoading,
+    onDeleteVote,
+    deleteVoteError,
+    deleteVoteLoading,
   } = props;
+
   console.log(props)
   return (
     <React.Fragment>
       <Divider />
       <Card className={classes.card}>
-        <Voting className={classes.voting} votesScore={comment.votesScore}/>
+        <Voting 
+          className={classes.voting}
+          commentId={comment.id}
+          currentUserVoteType={comment.currentUserVoteType}
+          currentUserVoteId={comment.currentUserVoteId}
+          votesScore={comment.votesScore}
+          onCreateVote={onCreateVote}
+          createVoteLoading={createVoteLoading}
+          createVoteError={createVoteError}
+          onUpdateVote={onUpdateVote}
+          updateVoteError={updateVoteError}
+          updateVoteLoading={updateVoteLoading}
+          onDeleteVote={onDeleteVote}
+          deleteVoteError={deleteVoteError}
+          deleteVoteLoading={deleteVoteLoading}
+        />
         <div className={classes.cardDetails}>
           <CardContent className={classes.cardcontent}>
             <Grid className={classes.statsItem} item >

@@ -43,6 +43,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                 var commentIds = comments
                     .Select(c => c.Id)
                     .ToList();
+
                 var currentUserVotesInComments = await _votesRepository
                     .AllAsNoTracking()
                     .Where(v => commentIds.Contains(v.CommentId) && v.CreatorId == _authUserService.UserId)
@@ -53,7 +54,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                     var commentVote = currentUserVotesInComments.SingleOrDefault(v => v.CommentId == comment.Id);
                     if (commentVote != null)
                     {
-                        comment.CurrentUserHasVoted = true;
+                        comment.CurrentUserVoteId = commentVote.Id;
                         comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
                     }
                 }

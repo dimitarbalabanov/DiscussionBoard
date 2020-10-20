@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     //backgroundColor: theme.palette.primary.main,
     borderColor: theme.palette.primary.main,
+    border: '3px solid'
   },
   cardDetails: {
     flex: 1,

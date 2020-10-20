@@ -18,7 +18,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
         public int VotesScore { get; set; }
 
-        public bool CurrentUserHasVoted { get; set; }
+        public int CurrentUserVoteId { get; set; }
 
         public string CurrentUserVoteType { get; set; }
     }

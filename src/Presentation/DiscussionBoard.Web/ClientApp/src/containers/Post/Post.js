@@ -4,17 +4,17 @@ import * as actions from '../../store/actions';
 import Page from '../../components/Page/Page';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import Spinner from '../../components/Spinner/Spinner';
-import PostSidebar from './components/PostSidebar/PostSidebar';
-import PostHeading from './components/PostHeading/PostHeading';
-import CommentCard from './components/CommentCard/CommentCard';
-import CreateComment from './components/CreateComment/CreateComment';
+import PostSidebar from '../../components/Post/PostSidebar/PostSidebar';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
+import CommentCard from '../../components/Comment/CommentCard/CommentCard';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
-    marginTop: theme.spacing(3),
+    backgroundColor: theme.palette.common.white,
+    borderColor: theme.palette.primary.main,
+    border: '1px solid',
+    borderRadius: '5px'
   },
   mainFeaturedPost: {
     position: 'relative',
@@ -49,15 +49,16 @@ const Post = (props) => {
     onUpdateComment,
     updateCommentError,
     updateCommentId,
-    updateCommentLoading
-    // deletePostLoading,
-    // deletePostSuccess,
-    // deletePostError,
-    // onDeletePost,
-    // createCommentSuccess,
-    // createCommentLoading,
-    // createCommentError,
-    // onCreateComment
+    updateCommentLoading,
+    onCreateVote,
+    createVoteError,
+    createVoteLoading,
+    onUpdateVote,
+    updateVoteError,
+    updateVoteLoading,
+    onDeleteVote,
+    deleteVoteError,
+    deleteVoteLoading,
   } = props;
 
   useEffect(() => {
@@ -70,20 +71,6 @@ const Post = (props) => {
   let postDiv = <Spinner />;
   let commentsDiv = <Spinner />;
 
-  // if (!commentsLoading && comments && comments.length !== 0) {
-  //   commentsDiv = comments.map((comment) => (
-  //     <CommentCard
-  //       key={comment.id}
-  //       comment={comment}
-  //       // onCreateVote={onCreateVote}
-  //       // onDeleteComment={onDeleteComment}
-  //       // deleteCommentError={deleteCommentError}
-  //       // deleteCommentLoading={deleteCommentLoading}
-  //       // deleteCommentSuccess={deleteCommentSuccess}
-  //     />
-  //   ));
-  // };
-
   if (!postLoading && post && !commentsLoading && comments) {
     postDiv = <PostDetailsCard 
       post={post} 
@@ -94,15 +81,32 @@ const Post = (props) => {
       createCommentError={createCommentError}
       createCommentLoading={createCommentLoading}
       onDeleteComment={onDeleteComment}
-      deleteCommentLoading={deleteCommentLoading}
-      deleteCommentId={deleteCommentId}
-      onUpdateComment={onUpdateComment}
-      updateCommentError={updateCommentError}
-      updateCommentLoading={updateCommentLoading}
-      updateCommentId={updateCommentId}
     />
   }
   
+  if (!commentsLoading && comments) {
+    commentsDiv = comments.map(comment => 
+      <CommentCard 
+        key={comment.id}
+        comment={comment}
+        onDeleteComment={onDeleteComment}
+        deleteCommentLoading={deleteCommentLoading}
+        deleteCommentId={deleteCommentId}
+        onUpdateComment={onUpdateComment}
+        updateCommentLoading={updateCommentLoading}
+        updateCommentId={updateCommentId}
+        onCreateVote={onCreateVote}
+        createVoteError={createVoteError}
+        createVoteLoading={createVoteLoading}
+        onUpdateVote={onUpdateVote}
+        updateVoteError={updateVoteError}
+        updateVoteLoading={updateVoteLoading}
+        onDeleteVote={onDeleteVote}
+        deleteVoteError={deleteVoteError}
+        deleteVoteLoading={deleteVoteLoading}
+      />)
+  }
+
   return (
     <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
       <Grid 
@@ -111,13 +115,14 @@ const Post = (props) => {
         direction="row"
         alignItems="flex-start"
       >  
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-          <Grid item xs={12} md={10}>
+        <Grid container item xs={12} md={8} spacing={2} justify="flex-end" >
+          <Grid item xs={12} md={10} className={classes.mainGrid}>
             {postDiv}
+            {commentsDiv}
           </Grid>
         </Grid>
         
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
+        <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
 
           <PostSidebar />
 
@@ -146,7 +151,16 @@ const mapStateToProps = state => {
 
     updateCommentLoading: state.comments.updateCommentLoading,
     updateCommentError: state.comments.updateCommentError,
-    updateCommentId: state.comments.updateCommentId
+    updateCommentId: state.comments.updateCommentId,
+
+    createVoteLoading: state.comments.createVoteLoading,
+    createVoteError: state.comments.createVoteError,
+
+    updateVoteLoading: state.comments.updateVoteLoading,
+    updateVoteError: state.comments.updateVoteError,
+
+    deleteVoteLoading: state.comments.deleteVoteLoading,
+    deleteVoteError: state.comments.deleteVoteError,
   };
 };
 
@@ -156,7 +170,10 @@ const mapDispatchToProps = dispatch => {
     onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
     onCreateComment: (content, postId) => dispatch(actions.createComment(content, postId)),
     onUpdateComment: (commentId, content) => dispatch(actions.updateComment(commentId, content)),
-    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId))
+    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
+    onCreateVote: (commentId, type) => dispatch(actions.createVote(commentId, type)),
+    onUpdateVote: (commentId, voteId, type) => dispatch(actions.updateVote(commentId, voteId, type)),
+    onDeleteVote: (commentId, voteId, type) => dispatch(actions.deleteVote(commentId, voteId, type)),
   };
 };
 

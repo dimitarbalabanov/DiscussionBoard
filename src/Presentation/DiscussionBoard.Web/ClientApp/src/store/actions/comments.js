@@ -114,14 +114,14 @@ export const deleteComment = (commentId) => {
   }
 };
 
-export const createVote = (vote) => {
+export const createVote = (commentId, voteType) => {
   return {
     types: [
       CREATE_VOTE_START,
       CREATE_VOTE_SUCCESS,
       CREATE_VOTE_FAILURE
     ],
-    callApi: () => createVoteApi(vote),
+    callApi: () => createVoteApi(commentId, voteType),
     effect({ dispatch, state, type}) {
       if (type === CREATE_VOTE_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully created a vote.`));
@@ -129,18 +129,20 @@ export const createVote = (vote) => {
       if (type === CREATE_VOTE_FAILURE) {
         dispatch(showSnackbar('error', 'Error creating a vote.'));
       }
-    }
+    },
+    commentId: commentId,
+    voteType: voteType
   }
 };
 
-export const updateVote = (voteId, newVote) => {
+export const updateVote = (commentId, voteId, voteType) => {
   return {
     types: [
       UPDATE_VOTE_START,
       UPDATE_VOTE_SUCCESS,
       UPDATE_VOTE_FAILURE
     ],
-    callApi: () => updateVoteById(voteId, newVote),
+    callApi: () => updateVoteById(voteId, voteType),
     effect({ dispatch, state, type}) {
       if (type === UPDATE_VOTE_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully updated the vote.`));
@@ -148,11 +150,13 @@ export const updateVote = (voteId, newVote) => {
       if (type === UPDATE_VOTE_FAILURE) {
         dispatch(showSnackbar('error', 'Error updating the vote.'));
       }
-    }
+    },
+    commentId: commentId,
+    voteType: voteType
   }
 };
 
-export const deleteVote = (voteId) => {
+export const deleteVote = (commentId, voteId, voteType) => {
   return {
     types: [
       DELETE_VOTE_START,
@@ -167,6 +171,8 @@ export const deleteVote = (voteId) => {
       if (type === DELETE_VOTE_FAILURE) {
         dispatch(showSnackbar('error', 'Error deleting the vote.'));
       }
-    }
+    },
+    commentId: commentId,
+    voteType: voteType
   }
 };

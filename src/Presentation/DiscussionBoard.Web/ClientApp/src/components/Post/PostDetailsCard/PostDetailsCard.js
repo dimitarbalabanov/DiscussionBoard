@@ -18,7 +18,9 @@ import EditPost from '../EditPost/EditPost';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderColor: theme.palette.primary.main,
+    //borderColor: theme.palette.primary.main,
+    //border: 'none',
+    boxShadow: 'none'
   },
   cardDetails: {
     flex: 1
@@ -61,23 +63,16 @@ const PostDetailsCard = props => {
     setUpdateForm(false);
   }
 
-  const { post,
+  const { 
+    post,
     postsLoading,
-    comments,
-    commentsLoading,
     onCreateComment,
     createCommentLoading,
     createCommentError,
-    onDeleteComment,
-    deleteCommentLoading,
-    deleteCommentId,
-    onUpdateComment,
-    updateCommentLoading,
-    updateCommentId,
   } = props;
 
   return (
-    <Card className={classes.card} variant="outlined">
+    <Card className={classes.card}>
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
           {postsLoading ? <Skeleton /> : 
@@ -126,20 +121,6 @@ const PostDetailsCard = props => {
                 createCommentLoading={createCommentLoading} 
                 postId={post.id}
               /> 
-          }
-          {commentsLoading 
-            ? null 
-            : comments.map(comment => 
-              <CommentCard 
-                key={comment.id}
-                comment={comment}
-                onDeleteComment={onDeleteComment}
-                deleteCommentLoading={deleteCommentLoading}
-                deleteCommentId={deleteCommentId}
-                onUpdateComment={onUpdateComment}
-                updateCommentLoading={updateCommentLoading}
-                updateCommentId={updateCommentId}
-              />)
           }
         </CardContent>
       </div>

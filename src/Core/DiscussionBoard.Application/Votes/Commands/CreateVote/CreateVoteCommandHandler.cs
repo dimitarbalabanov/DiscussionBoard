@@ -35,15 +35,16 @@ namespace DiscussionBoard.Application.Votes.Commands.CreateVote
             }
 
             var vote = _mapper.Map<Vote>(request);
+            vote.CreatorId = _authUserService.UserId;
             await _votesRepository.AddAsync(vote);
             await _votesRepository.SaveChangesAsync();
 
-            var score = await _votesRepository
-                .AllAsNoTracking()
-                .Where(v => v.CommentId == request.CommentId)
-                .SumAsync(v => (int)v.Type);
+            //var score = await _votesRepository
+            //    .AllAsNoTracking()
+            //    .Where(v => v.CommentId == request.CommentId)
+            //    .SumAsync(v => (int)v.Type);
 
-            return score;
+            return vote.Id;
         }
     }
 }

@@ -213,7 +213,22 @@ const reducer = (state = initialState, action) => {
     case CREATE_VOTE_SUCCESS:
       return { 
         ...state,
-        comments: state.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore}),
+        comments: state.comments.slice()
+          .map(comment => {
+            if (comment.id !== action.commentId) {
+              return comment;
+            }
+
+            if (comment.id === action.commentId) {
+              let newScore = action.voteType === 'up' ? comment.votesScore + 1 : comment.votesScore - 1; 
+              return {
+                ...comment,
+                votesScore: newScore,
+                currentUserVoteType: action.voteType,
+                currentUserVoteId: action.data
+              }
+            }
+          }),
         createVoteLoading: false,
         createVoteError: null
       };
@@ -235,7 +250,21 @@ const reducer = (state = initialState, action) => {
     case UPDATE_VOTE_SUCCESS:
       return { 
         ...state,
-        comments: state.post.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore}),
+        comments: state.comments.slice()
+          .map(comment => {
+            if (comment.id !== action.commentId) {
+              return comment;
+            }
+
+            if (comment.id === action.commentId) {
+              let newScore = action.voteType === 'up' ? comment.votesScore + 2 : comment.votesScore - 2; 
+              return {
+                ...comment,
+                votesScore: newScore,
+                currentUserVoteType: action.voteType
+              }
+            }
+          }),
         updateVoteLoading: false,
         updateVoteError: null
       };
@@ -257,7 +286,22 @@ const reducer = (state = initialState, action) => {
     case DELETE_VOTE_SUCCESS:
       return {
         ...state,
-        comments: state.comments.slice().map((comment) => comment.id !== action.commentId ? comment : {...comment, votesScore: action.newScore}),
+        comments: state.comments.slice()
+          .map(comment => {
+            if (comment.id !== action.commentId) {
+              return comment;
+            }
+
+            if (comment.id === action.commentId) {
+              let newScore = action.voteType === 'up' ? comment.votesScore - 1 : comment.votesScore + 1; 
+              return {
+                ...comment,
+                votesScore: newScore,
+                currentUserVoteType: null,
+                currentUserVoteId: null
+              }
+            }
+          }),
         deleteVoteLoading: false,
         deleteVoteError: null
       };

@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { blue, red, green } from '@material-ui/core/colors';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     margin: theme.spacing(1, 0.5),
+  },
+  score: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
   blue: {
     color: blue[500],
@@ -52,38 +57,47 @@ const Voting = props => {
   
   const {
     commentId,
-    votesScore
-    //loading,
-    //error,
-    //onCreateVote
+    votesScore,
+    currentUserVoteType,
+    currentUserVoteId,
+    createVoteLoading,
+    createVoteError,
+    onCreateVote,
+    onUpdateVote,
+    updateVoteError,
+    updateVoteLoading,
+    onDeleteVote,
+    deleteVoteError,
+    deleteVoteLoading,
   } = props;
 
-  let currentUserVoteType = props.currentUserVoteType ? props.currentUserVoteType.toLowerCase() : '';
-  const [type, setType] = useState(currentUserVoteType);
+  let voteType = currentUserVoteType ? currentUserVoteType : null;
+  const [type, setType] = useState(voteType);
   
   const handleTypeChange = (event, newType) => {
-    //if (!type) {
-      setType(newType);
-      // const vote = {
-      //   type: newType,
-      //   commentId: commentId
-      // }
-      // onCreateVote(vote);
-    //}
-    //alert('glasuval si momche')
+    if (!type) {
+      onCreateVote(commentId, newType)
+    } else if (type && newType && newType !== type) {
+      onUpdateVote(commentId, currentUserVoteId, newType)
+    } else if (newType === null) {
+      onDeleteVote(commentId, currentUserVoteId, type)
+    }
+    setType(newType);
   };
 
   const classes = useStyles();
 
   let upIcon = <ThumbUpIcon/>;
-  if(type === 'up') {
+  if (type === 'up') {
     upIcon = <ThumbUpIcon className={classes.blue}/>
   }
 
   let downIcon = <ThumbDownIcon />
-  if(type === 'down') {
+  if (type === 'down') {
     downIcon = <ThumbDownIcon className={classes.red}/>
   }
+
+  const isAuthenticated = false;
 
   return (
     <div>
@@ -95,15 +109,15 @@ const Voting = props => {
           exclusive
           onChange={handleTypeChange}
         >
-          <ToggleButton value="up">
+          <ToggleButton value="up" disabled={!isAuthenticated}>
             {upIcon}
           </ToggleButton>
           {/* <Divider flexItem orientation="horizontal" className={classes.divider} /> */}
-          <Typography color="textSecondary" display="inline" variant="body2" align="center">
-            {votesScore}
+          <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
+              {createVoteLoading || updateVoteLoading || deleteVoteLoading ? <CircularProgress /> : votesScore}
           </Typography>
           {/* <Divider flexItem orientation="horizontal" className={classes.divider} /> */}
-          <ToggleButton value="down">
+          <ToggleButton value="down" disabled={!isAuthenticated}>
             {downIcon}
           </ToggleButton>
         </StyledToggleButtonGroup>
