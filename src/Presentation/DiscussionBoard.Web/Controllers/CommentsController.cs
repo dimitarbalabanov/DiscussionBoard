@@ -42,7 +42,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateCommentCommand command)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentCommand command)
         {
             Thread.Sleep(300);
 
@@ -53,7 +53,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             Thread.Sleep(300);
 

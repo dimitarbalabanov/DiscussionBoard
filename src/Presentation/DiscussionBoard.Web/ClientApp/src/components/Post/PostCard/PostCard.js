@@ -46,21 +46,24 @@ const PostCard = props => {
     <Card className={classes.card} variant="outlined" component={Link} to={`/posts/${post.id}`}>
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
-          {loading ? <Skeleton /> : 
+          {/* {loading ? <Skeleton /> :  */}
         <Grid className={classes.statsItem} item >
           <Typography color="textSecondary" display="inline" variant="body2" >
             <strong className={classes.textColor}>{post.forumTitle}</strong> posted {ConvertToRelativeTime(post.createdOn)} by <strong className={classes.textColor}>{post.creatorUserName}</strong>
           </Typography>
-        </Grid>}
+        </Grid>
+        
         <Grid className={classes.statsItem} item >
           <Typography component="h2" variant="h4">
-          {loading ? <Skeleton /> : post.title.length > 65 ? post.title.substring(0, 65) + '...' : post.title}
+          {/* {loading ? <Skeleton /> :  */}
+          {post.title.length > 65 ? post.title.substring(0, 65) + '...' : post.title}
           </Typography>
         </Grid>
         <Grid className={classes.statsItem} item >
           <CommentIcon className={classes.statsIcon} color="primary"/>
             <Typography color="textSecondary" display="inline" variant="body2" >
-            {loading ? <Skeleton /> :`${post.commentsCount} Comments`}
+            {/* {loading ? <Skeleton /> : */}
+            {`${post.commentsCount} Comments`}
             </Typography>
         </Grid>
         </CardContent>

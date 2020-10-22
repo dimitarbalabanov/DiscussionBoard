@@ -12,7 +12,8 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    //borderColor: theme.palette.primary.main,
+    borderColor: theme.palette.primary.main,
+    border: '3px solid'
   },
   cardDetails: {
     flex: 1
@@ -49,6 +50,30 @@ const useStyles = makeStyles((theme) => ({
 
 const CreatePostButton = props => {
   const classes = useStyles();
+  const { isAuthenticated } = props;
+
+  const field = isAuthenticated ? <TextField
+                                    component={Link}
+                                    to={'/create'}
+                                    className={classes.textField}
+                                    placeholder={"Create post"}
+                                    fullWidth
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
+                                    margin="none"
+                                  /> 
+                                : <TextField
+                                    className={classes.textField}
+                                    placeholder={"Please, login to create a post."}
+                                    fullWidth
+                                    color="primary"
+                                    size="small"
+                                    variant="outlined"
+                                    margin="none"
+                                    disabled
+                                  />;
+
   return (
     <Grid item xs={12} md={10}>
       <Grid item>
@@ -58,17 +83,7 @@ const CreatePostButton = props => {
                 <CardContent className={classes.cardcontent}>
                   <Grid className={classes.statsItem} item >
                     <NoteAddIcon className={classes.statsIcon} color="primary"/>
-                    <TextField
-                      component={Link}
-                      to={'/create'}
-                      className={classes.textField}
-                      placeholder="Create post"
-                      fullWidth
-                      color="primary"
-                      size="small"
-                      variant="outlined"
-                      margin="none"
-                      />
+                    {field}
                   </Grid>
                 </CardContent>
               </div>

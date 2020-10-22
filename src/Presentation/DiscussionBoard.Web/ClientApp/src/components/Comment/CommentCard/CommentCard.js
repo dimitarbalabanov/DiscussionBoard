@@ -80,6 +80,7 @@ const CommentCard = props => {
     onDeleteVote,
     deleteVoteError,
     deleteVoteLoading,
+    isAuthenticated
   } = props;
 
   console.log(props)
@@ -102,6 +103,7 @@ const CommentCard = props => {
           onDeleteVote={onDeleteVote}
           deleteVoteError={deleteVoteError}
           deleteVoteLoading={deleteVoteLoading}
+          isAuthenticated={isAuthenticated}
         />
         <div className={classes.cardDetails}>
           <CardContent className={classes.cardcontent}>
@@ -125,7 +127,7 @@ const CommentCard = props => {
                       comment.content}
                     </Typography>
                   </Grid>
-                  <Grid className={classes.statsItem} item >
+                  {isAuthenticated ? <Grid className={classes.statsItem} item >
                     <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
                       <Typography color="textSecondary" display="inline" variant="body2">
                         Edit
@@ -139,7 +141,7 @@ const CommentCard = props => {
                             </Typography> 
                         }
                       </Button>
-                  </Grid>
+                  </Grid> : null}
                 </React.Fragment>
             }
           </CardContent>

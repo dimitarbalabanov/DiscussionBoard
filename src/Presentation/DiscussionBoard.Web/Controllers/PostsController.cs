@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Posts.Commands.CreatePost;
+﻿using DiscussionBoard.Application.Common.Queries;
+using DiscussionBoard.Application.Posts.Commands.CreatePost;
 using DiscussionBoard.Application.Posts.Commands.DeletePost;
 using DiscussionBoard.Application.Posts.Commands.UpdatePost;
 using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
@@ -15,7 +16,7 @@ namespace DiscussionBoard.Web.Controllers
     {
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             Thread.Sleep(300);
 
@@ -28,15 +29,15 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetAllPostsQuery query)
         {
+            var context = this.HttpContext;
             Thread.Sleep(300);
-
             var vm = await Mediator.Send(query);
 
             return Ok(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]CreatePostCommand command)
+        public async Task<IActionResult> Create([FromBody] CreatePostCommand command)
         {
             Thread.Sleep(300);
 
@@ -46,7 +47,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]UpdatePostCommand command)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePostCommand command)
         {
             Thread.Sleep(300);
 
@@ -57,7 +58,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             Thread.Sleep(300);
 

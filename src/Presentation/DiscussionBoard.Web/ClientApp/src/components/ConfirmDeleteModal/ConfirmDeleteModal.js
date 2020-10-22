@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 
-const ConfirmDialog = props => {
+const ConfirmDeleteModal = props => {
   const [open, setOpen] = React.useState(false);
 
   const {
@@ -17,34 +17,27 @@ const ConfirmDialog = props => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
-  const handleCancel = () => {
+  
+  const handleClose = () => {
     setOpen(false);
-  };
+1 };
 
   const handleDelete = () => {
     onDelete(id);
     setOpen(false);
   };
 
-  const handleClose = () => {
-    
-  };
-
   return (
-    <div>
+    <React.Fragment>
       <Button variant="outlined" size="small" onClick={handleClickOpen}>
       <Typography color="textSecondary" display="inline" variant="body2" >
         Delete
       </Typography>
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{`Delete this ${title}?`}</DialogTitle>
         <DialogActions>
-          <Button onClick={handleCancel} color="primary">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button onClick={handleDelete} color="primary" autoFocus>
@@ -52,8 +45,8 @@ const ConfirmDialog = props => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </React.Fragment>
   );
 }
 
-export default ConfirmDialog;
+export default ConfirmDeleteModal;

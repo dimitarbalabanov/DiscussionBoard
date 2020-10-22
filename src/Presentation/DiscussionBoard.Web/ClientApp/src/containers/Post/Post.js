@@ -47,7 +47,7 @@ const Post = (props) => {
     deleteCommentLoading,
     deleteCommentId,
     onUpdateComment,
-    updateCommentError,
+    //updateCommentError,
     updateCommentId,
     updateCommentLoading,
     onCreateVote,
@@ -59,6 +59,7 @@ const Post = (props) => {
     onDeleteVote,
     deleteVoteError,
     deleteVoteLoading,
+    isAuthenticated
   } = props;
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const Post = (props) => {
       createCommentError={createCommentError}
       createCommentLoading={createCommentLoading}
       onDeleteComment={onDeleteComment}
+      isAuthenticated={isAuthenticated}
     />
   }
   
@@ -104,6 +106,7 @@ const Post = (props) => {
         onDeleteVote={onDeleteVote}
         deleteVoteError={deleteVoteError}
         deleteVoteLoading={deleteVoteLoading}
+        isAuthenticated={isAuthenticated}
       />)
   }
 
@@ -161,6 +164,8 @@ const mapStateToProps = state => {
 
     deleteVoteLoading: state.comments.deleteVoteLoading,
     deleteVoteError: state.comments.deleteVoteError,
+
+    isAuthenticated: state.auth.token !== null
   };
 };
 

@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import {  makeStyles} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import { colors } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+//import IconButton from '@material-ui/core/IconButton';
 import Navigation from '../Navigation/Navigation';
 
 import { NavLink as RouterLink } from 'react-router-dom';
 import Hidden from '@material-ui/core/Hidden';
 import Logo from '../../../components/Logo/Logo';
-import MenuIcon from '@material-ui/icons/Menu';
+//import MenuIcon from '@material-ui/icons/Menu';
 //import SearchBar from '../../../components/SearchToolbar/AnotherSearchToolbar';
-import Search from '../../../components/SearchToolbar/SearchToolbar';
+// import Search from '../../../components/SearchToolbar/SearchToolbar';
+import StyledMenu from '../ProfileMenu/StyledMenu';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const { isAuth, username, onSidebarOpen } = props;
+  const { isAuth, username,  } = props;
 
   return (
     <React.Fragment>
@@ -48,14 +49,15 @@ export default function Header(props) {
       <RouterLink to="/">
           <Logo />
         </RouterLink>
-        <Search />
+        {/* <Search /> */}
         <Hidden mdDown>
           <Navigation className={classes.nav} isAuth={isAuth} username={username}/>
         </Hidden>
         <Hidden lgUp>
-          <IconButton color="inherit" onClick={onSidebarOpen} >
+          <StyledMenu />
+          {/* <IconButton color="inherit" onClick={onSidebarOpen} >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
         </Hidden>
         {/* <Button variant="outlined" size="small">
           Sign up

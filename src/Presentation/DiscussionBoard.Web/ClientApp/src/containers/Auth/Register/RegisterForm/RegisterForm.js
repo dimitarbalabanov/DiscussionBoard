@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 //import { makeStyles } from '@material-ui/core';
@@ -125,20 +123,9 @@ const RegisterForm = props => {
                 type="submit"
                 variant="contained"
               >
-                Sign up now
+                Register now
               </Button>
             </Box>
-            <Typography color="textSecondary" variant="body1">
-              Have an account?
-              {' '}
-              <Link
-                component={RouterLink}
-                to="/login"
-                variant="h6"
-              >
-                Sign in
-              </Link>
-            </Typography>
           </form>
         )}
       </Formik>

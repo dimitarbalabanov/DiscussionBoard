@@ -1,20 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { auth, register } from '../../store/actions';
+import { register } from '../../../../store/actions';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
-import TabPanel from './components/TabPanel/TabPanel';
-import LoginForm from './components/LoginForm/LoginForm';
-import RegisterForm from './components/RegisterForm/RegisterForm';
-import Spinner from '../../components/Spinner/Spinner';
-import { colors } from '@material-ui/core';
+import RegisterForm from '../RegisterForm/RegisterForm';
+import Spinner from '../../../../components/Spinner/Spinner';
 import { makeStyles } from '@material-ui/core/styles';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -26,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   button: {
-    color: colors.blueGrey[800],
-    padding: '10px 8px',
-    justifyContent: 'flex-start',
-    textTransform: 'none',
-    letterSpacing: 0,
-    width: '100%',
-    fontWeight: theme.typography.fontWeightMedium
+    // color: colors.blueGrey[800],
+    // padding: '10px 8px',
+    // justifyContent: 'flex-start',
+    // textTransform: 'none',
+    // letterSpacing: 0,
+    // width: '100%',
+    // fontWeight: theme.typography.fontWeightMedium
   },
   icon: {
     color: theme.palette.icon,
@@ -44,23 +38,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AuthModal = props => {
+const RegisterModal = props => {
   const classes = useStyles();
   
   const {
-    authLoading,
     registerLoading,
-    onAuth,
     onRegister,
     isAuthenticated
   } = props;
 
-  const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,27 +63,16 @@ const AuthModal = props => {
 
   return (
     <div>
-      <Button className={classes.button} onClick={handleClickOpen}>
+      <Button className={classes.button} onClick={handleClickOpen} size="small" variant="contained" color="primary"> 
         <div className={classes.icon}>
-          <PersonIcon />
+          <PersonAddIcon />
         </div>
-        {'Sign in/up'}
+        {'Register'}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
           <div className={classes.root}>
-            <Paper square>
-              <Tabs centered value={value} onChange={handleChange}>
-                <Tab label="Sign in" index={0} />
-                <Tab label="Sign up" index={1} />
-              </Tabs>
-            </Paper>
-            <TabPanel value={value} index={0}>
-            {authLoading ? <Spinner /> : <LoginForm onAuth={onAuth}/>}
-            </TabPanel>
-            <TabPanel value={value} index={1}>
             {registerLoading ? <Spinner /> : <RegisterForm onRegister={onRegister}/>}
-            </TabPanel>
           </div>
         </DialogContent>
         {/* <DialogActions>
@@ -115,8 +91,6 @@ const AuthModal = props => {
 
 const mapStateToProps = state => {
   return {
-    loginLoading: state.auth.loading,
-    loginError: state.auth.error,
     registerLoading: state.register.loading,
     registerError: state.register.error,
     isAuthenticated: state.auth.token !== null,
@@ -125,7 +99,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password) => dispatch(auth(email, password)),
     onRegister: (email, password, confirmPassword, username) => dispatch(register(email, password, confirmPassword, username))
   };
 };
@@ -133,5 +106,5 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AuthModal);
+)(RegisterModal);
 

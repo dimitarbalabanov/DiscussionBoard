@@ -23,7 +23,7 @@ const reducer = (state = initialState, action) => {
     case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        posts: action.data.posts,
+        posts: [...state.posts, ...action.data.posts],
         loading: false,
         error: null
       };

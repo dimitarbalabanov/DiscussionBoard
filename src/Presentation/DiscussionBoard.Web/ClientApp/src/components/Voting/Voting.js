@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import ThumbUpIcon from '@material-ui/icons/ArrowUpward';
 import ThumbDownIcon from '@material-ui/icons/ArrowDownward';
-import Divider from '@material-ui/core/Divider';
+//import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { blue, red, green } from '@material-ui/core/colors';
+import { blue, red,  } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,16 +61,17 @@ const Voting = props => {
     currentUserVoteType,
     currentUserVoteId,
     createVoteLoading,
-    createVoteError,
+    //createVoteError,
     onCreateVote,
     onUpdateVote,
-    updateVoteError,
+    //updateVoteError,
     updateVoteLoading,
     onDeleteVote,
-    deleteVoteError,
+    //deleteVoteError,
     deleteVoteLoading,
+    isAuthenticated
   } = props;
-
+  
   let voteType = currentUserVoteType ? currentUserVoteType : null;
   const [type, setType] = useState(voteType);
   
@@ -96,8 +97,6 @@ const Voting = props => {
   if (type === 'down') {
     downIcon = <ThumbDownIcon className={classes.red}/>
   }
-
-  const isAuthenticated = false;
 
   return (
     <div>

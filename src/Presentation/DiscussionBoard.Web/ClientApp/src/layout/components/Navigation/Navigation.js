@@ -5,25 +5,28 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { List, ListItem, Button, colors } from '@material-ui/core';
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+//import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 //import DashboardIcon from '@material-ui/icons/Dashboard';
 //import PeopleIcon from '@material-ui/icons/People';
 //import TextFieldsIcon from '@material-ui/icons/TextFields';
 //import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+//import PersonPinIcon from '@material-ui/icons/PersonPin';
 //import AuthModal from '../../../containers/TabAuth/AuthModal';
 //import Auth from '../../../containers/TabAuth/Auth';
-//import ProfileMenu from '../ProfileMenu/ProfileMenu';
 //import StyledMenu from '../ProfileMenu/StyledMenu';
-//import SimpleMenu from '../ProfileMenu/SimpleMenu';
+
+import LoginModal from '../../../containers/Auth/Login/LoginModal/LoginModal';
+import LogoutButton from '../../../containers/Auth/Logout/LogoutButton';
+import RegisterModal from '../../../containers/Auth/Register/RegisterModal/RegisterModal';
 
 const useStyles = makeStyles(theme => ({
   root: {},
   item: {
     display: 'flex',
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    paddingLeft: theme.spacing(1)
   },
   button: {
     color: colors.blueGrey[800],
@@ -103,7 +106,7 @@ const Navigation = props => {
   // ];
 
   return (
-    <List className={clsx(classes.root, className)}>
+     <List className={clsx(classes.root, className)}>
       {/* <ListItem className={classes.item} disableGutters>
         <Button
           activeClassName={classes.active}
@@ -134,7 +137,8 @@ const Navigation = props => {
                 </Button>
               </ListItem>
               <ListItem className={classes.item} disableGutters>
-              <Button
+                <LogoutButton />
+              {/* <Button
                 activeClassName={classes.active}
                 className={classes.button}
                 component={CustomRouterLink}
@@ -144,25 +148,18 @@ const Navigation = props => {
                 <ExitToAppIcon />
               </div>
                 {'Logout'}
-              </Button>
+              </Button> */}
             </ListItem>
           </React.Fragment>
-        : <ListItem className={classes.item} disableGutters>
-            <Button
-                activeClassName={classes.active}
-                className={classes.button}
-                component={CustomRouterLink}
-                to={'/auth'}
-              >
-              <div className={classes.icon}>
-              <PersonPinIcon/>
-              </div>
-                {'Sign in / up'}
-              </Button>
-          </ListItem> }
-        {/* <ProfileMenu /> */}
+        : <React.Fragment>
+            <ListItem className={classes.item} disableGutters>
+                <LoginModal />
+              </ListItem> 
+              <ListItem className={classes.item} disableGutters>
+                <RegisterModal />
+              </ListItem> 
+            </React.Fragment>}
         {/* <StyledMenu /> */}
-        {/* <SimpleMenu /> */}
       {/* {pages.map(page => page.render
           ? <ListItem className={classes.item} disableGutters key={page.title}>
               <Button
@@ -181,7 +178,7 @@ const Navigation = props => {
         <ListItem className={classes.item} disableGutters key={"123456789"}>
           <AuthModal />
         </ListItem>   */}
-    </List>
+    </List> 
   );
 };
 
@@ -190,3 +187,82 @@ Navigation.propTypes = {
 };
 
 export default Navigation;
+
+
+    //  <List className={clsx(classes.root, className)}>
+    //   {/* <ListItem className={classes.item} disableGutters>
+    //     <Button
+    //       activeClassName={classes.active}
+    //       className={classes.button}
+    //       component={CustomRouterLink}
+    //       to={'/'}
+    //       exact
+    //     >
+    //     <div className={classes.icon}>
+    //       <DashboardIcon />
+    //     </div>
+    //       {'Home'}
+    //     </Button>
+    //   </ListItem> */}
+    //   {isAuth 
+    //     ? <React.Fragment>
+    //         <ListItem className={classes.item} disableGutters>
+    //             <Button
+    //               activeClassName={classes.active}
+    //               className={classes.button}
+    //               component={CustomRouterLink}
+    //               to={'/profile'}
+    //             >
+    //             <div className={classes.icon}>
+    //               <PersonIcon />
+    //             </div>
+    //               {username ?? "Guest"}
+    //             </Button>
+    //           </ListItem>
+    //           <ListItem className={classes.item} disableGutters>
+    //           <Button
+    //             activeClassName={classes.active}
+    //             className={classes.button}
+    //             component={CustomRouterLink}
+    //             to={'/logout'}
+    //           >
+    //           <div className={classes.icon}>
+    //             <ExitToAppIcon />
+    //           </div>
+    //             {'Logout'}
+    //           </Button>
+    //         </ListItem>
+    //       </React.Fragment>
+    //     : <ListItem className={classes.item} disableGutters>
+    //         <Button
+    //             activeClassName={classes.active}
+    //             className={classes.button}
+    //             component={CustomRouterLink}
+    //             to={'/auth'}
+    //           >
+    //           <div className={classes.icon}>
+    //           <PersonPinIcon/>
+    //           </div>
+    //             {'Sign in / up'}
+    //           </Button>
+    //       </ListItem> }
+    //     <StyledMenu />
+    //   {/* {pages.map(page => page.render
+    //       ? <ListItem className={classes.item} disableGutters key={page.title}>
+    //           <Button
+    //             activeClassName={classes.active}
+    //             className={classes.button}
+    //             component={CustomRouterLink}
+    //             to={page.href}
+    //             exact={page.exact}
+    //           >
+    //           <div className={classes.icon}>{page.icon}</div>
+    //             {page.title}
+    //           </Button>
+    //         </ListItem>  
+    //       : null)} 
+
+    //     <ListItem className={classes.item} disableGutters key={"123456789"}>
+    //       <AuthModal />
+    //     </ListItem>   */}
+    // </List>

@@ -19,7 +19,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             Thread.Sleep(300);
 

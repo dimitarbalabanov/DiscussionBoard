@@ -215,10 +215,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         comments: state.comments.slice()
           .map(comment => {
-            if (comment.id !== action.commentId) {
-              return comment;
-            }
-
             if (comment.id === action.commentId) {
               let newScore = action.voteType === 'up' ? comment.votesScore + 1 : comment.votesScore - 1; 
               return {
@@ -227,6 +223,8 @@ const reducer = (state = initialState, action) => {
                 currentUserVoteType: action.voteType,
                 currentUserVoteId: action.data
               }
+            } else {
+              return comment
             }
           }),
         createVoteLoading: false,
@@ -252,10 +250,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         comments: state.comments.slice()
           .map(comment => {
-            if (comment.id !== action.commentId) {
-              return comment;
-            }
-
             if (comment.id === action.commentId) {
               let newScore = action.voteType === 'up' ? comment.votesScore + 2 : comment.votesScore - 2; 
               return {
@@ -263,6 +257,8 @@ const reducer = (state = initialState, action) => {
                 votesScore: newScore,
                 currentUserVoteType: action.voteType
               }
+            } else {
+              return comment
             }
           }),
         updateVoteLoading: false,
@@ -288,10 +284,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         comments: state.comments.slice()
           .map(comment => {
-            if (comment.id !== action.commentId) {
-              return comment;
-            }
-
             if (comment.id === action.commentId) {
               let newScore = action.voteType === 'up' ? comment.votesScore - 1 : comment.votesScore + 1; 
               return {
@@ -300,6 +292,8 @@ const reducer = (state = initialState, action) => {
                 currentUserVoteType: null,
                 currentUserVoteId: null
               }
+            } else {
+              return comment
             }
           }),
         deleteVoteLoading: false,

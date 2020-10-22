@@ -11,7 +11,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
-import CommentCard from '../../Comment/CommentCard/CommentCard';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
 
@@ -69,6 +68,7 @@ const PostDetailsCard = props => {
     onCreateComment,
     createCommentLoading,
     createCommentError,
+    isAuthenticated
   } = props;
 
   return (
@@ -101,7 +101,7 @@ const PostDetailsCard = props => {
             <Typography className={classes.margin} color="textSecondary" display="inline" variant="body2" >
               {postsLoading ? <Skeleton /> :`${post.commentsCount} Comments`}
             </Typography>
-            {showUpdateForm ? null : <React.Fragment>
+            {showUpdateForm || !isAuthenticated ? null : <React.Fragment>
             <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
               <Typography color="textSecondary" display="inline" variant="body2">
                 Edit
@@ -120,6 +120,7 @@ const PostDetailsCard = props => {
                 createCommentError={createCommentError} 
                 createCommentLoading={createCommentLoading} 
                 postId={post.id}
+                isAuthenticated={isAuthenticated}
               /> 
           }
         </CardContent>

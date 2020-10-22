@@ -25,9 +25,10 @@ const CreateComment = props => {
   const classes = useStyles();
   const {
     postId,
-    createCommentLoading,
-    createCommentError,
+    //createCommentLoading,
+    //createCommentError,
     onCreateComment,
+    isAuthenticated
   } = props;
 
   let form = ( 
@@ -60,7 +61,8 @@ const CreateComment = props => {
             error={Boolean(touched.content && errors.content)}
             fullWidth
             helperText={touched.content && errors.content}
-            label="What are your thoughts?"
+            label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}
+            disabled={!isAuthenticated}
             margin="normal"
             name="content"
             onBlur={handleBlur}
@@ -71,7 +73,7 @@ const CreateComment = props => {
             multiline
             rows={4}
           />
-            <Button
+            {isAuthenticated ? <Button
               disabled={isSubmitting}
               type="submit"
               variant="outlined"
@@ -80,7 +82,7 @@ const CreateComment = props => {
               <Typography color="textSecondary" display="inline" variant="body2">
                 Comment
               </Typography>
-            </Button>
+            </Button> : null}
         </form>
       )}
     </Formik>

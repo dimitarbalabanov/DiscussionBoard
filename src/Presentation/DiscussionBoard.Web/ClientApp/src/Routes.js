@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import NotFound from './components/NotFound/NotFound';
-import Auth from './containers/TabAuth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
 import Forum from './containers/Forum/Forum';
@@ -36,11 +35,6 @@ const Routes = () => {
         component={NotFound}
         exact 
         path="/not-found" 
-      />
-      <Route 
-        component={Auth}
-        exact 
-        path="/auth" 
       />
       <Route 
         component={CreatePost}
