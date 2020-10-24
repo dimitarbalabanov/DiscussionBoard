@@ -1,22 +1,25 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DiscussionBoard.Application.Common.Interfaces;
+using DiscussionBoard.Application.Common.Responses;
 using DiscussionBoard.Domain.Entities;
 using FluentValidation.Validators;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
-    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, GetAllPostsVm>
+    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, PagedResponse<GetAllPostsVm>>
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IMapper _mapper;
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         public GetAllPostsQueryHandler(IRepository<Post> postsRepository, IMapper mapper)
         {
@@ -24,29 +27,65 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             _mapper = mapper;
         }
 
-        public async Task<GetAllPostsVm> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResponse<GetAllPostsVm>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
             var query = _postsRepository
                 .AllAsNoTracking();
-
+            int total = query.Count();
             if (request.ForumId != null)
             {
                 query = query.Where(p => p.ForumId == request.ForumId);
             }
 
-            query = query.OrderByDescending(p => p.CreatedOn);
+            if (request.Cursor != null)
+            {
+                var (id, createdOn) = DecodeCursor(request.Cursor);
 
-            var pageNumber = request.PageNumber != null ? (int)request.PageNumber : 1;
-            var skip = (pageNumber - 1) * PageSize;
-            query = query.Skip(skip).Take(PageSize);
+                query = query.Where(p => p.CreatedOn <= createdOn && (p.Id == id || p.CreatedOn <= createdOn));
+            }
 
-            var posts = await query
-                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                 .ToListAsync();
+            query = query.OrderByDescending(p => p.CreatedOn)
+                .ThenByDescending(p => p.Id);
 
-            var vm = new GetAllPostsVm { Posts = posts, NextPage = pageNumber + 1};
+            // sorting, if present, here...
 
-            return vm;
+            query = query.Take(PageSize);
+
+            var posts = await query.ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            var response = new PagedResponse<GetAllPostsVm>
+            {
+                Data = new GetAllPostsVm { Posts = posts },
+                Cursor = "",
+                TotalCount = total,
+                CurrentCount = posts.Count
+            };
+
+            if (posts.Count > 0)
+            {
+                var lastPost = posts[posts.Count - 1];
+                var cursor = EncodeCursor(lastPost.Id, lastPost.CreatedOn);
+                response.Cursor = cursor;
+            }
+
+            return response;
+        }
+
+        private (int, DateTime) DecodeCursor(string encodedCursor)
+        {
+            var decodedCursor = Encoding.UTF8.GetString(Convert.FromBase64String(encodedCursor));
+            var split = decodedCursor.Split('#');
+            var createdOn = DateTime.Parse(split[0]);
+            var id = int.Parse(split[1]);
+            return (id, createdOn);
+        }
+
+        private string EncodeCursor(int id, DateTime createdOn)
+        {
+            var cursorStr = createdOn.ToString() + '#' + id;
+            var encodedCursor = Convert.ToBase64String(Encoding.UTF8.GetBytes(cursorStr));
+            return encodedCursor;
         }
     }
 }

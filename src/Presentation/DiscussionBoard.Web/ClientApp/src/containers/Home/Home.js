@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { connect } from 'react-redux';
 import {
   fetchForums,
@@ -7,9 +7,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import { CircularProgress, makeStyles, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
+//import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 //import ForumCard2 from '../../components/Forum/ForumCard/ForumCard2';
@@ -18,27 +16,21 @@ import PostCardSkeleton from '../../components/Post/PostCard/PostCardSkeleton';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import Spinner from '../../components/Spinner/Spinner';
 
-const useStyles = makeStyles((theme) => ({
-  mainGrid: {
-    marginTop: theme.spacing(3),
-  }
-}));
-const divStyle = {
-  color: 'blue',
-  height: '250px',
-  textAlign: 'center',
-  padding: '5px 10px',
-  background: '#eee',
-  marginTop: '15px'
-};
+// const useStyles = makeStyles((theme) => ({
+//   mainGrid: {
+//     marginTop: theme.spacing(3),
+//   }
+// }));
+
 const Home = props => {
-  const classes = useStyles();
+  //const classes = useStyles();
 
   const { 
     forums,
     forumsLoading,
     //forumsError,
     posts,
+    postsCursor,
     postsLoading,
     postsError,
     onFetchForums,
@@ -46,35 +38,48 @@ const Home = props => {
     isAuthenticated
   } = props;
   
-  const [page, setPage] = useState(1);
   const loader = useRef(null);
   
-  const handleObserver = (entities) => {
+  const handleObserver = useCallback((entities) => {
+    console.log("from handle observer")
+    console.log(props)
     const target = entities[0];
-    if (target.isIntersecting) {   
-      setPage((page) => page + 1)
+    if (target.isIntersecting && postsCursor) {   
+      console.log("handle observer making request")
+      console.log(props)
+      onFetchPosts(postsCursor)
     }
-  };
+  }, [postsCursor]);
   
   useEffect(() => {
+    console.log("useEffect request for forums")
     onFetchForums();
+    console.log("forum request")
   }, [onFetchForums])
 
   useEffect(() => {
-    onFetchPosts(page);
-  }, [onFetchPosts, page]);
+    console.log("useEffect request for posts")
+    onFetchPosts();
+    console.log("single request")
+  }, [onFetchPosts]);
 
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0
-    };
-    const observer = new IntersectionObserver(handleObserver, options);
-    if (loader.current) {
-      observer.observe(loader.current)
+    console.log("useEffect created the observer.")
+    if (postsCursor) {
+      const options = {
+        root: null,
+        rootMargin: "20px",
+        threshold: 1.0
+      };
+  
+      const observer = new IntersectionObserver(handleObserver, options);
+      if (loader.current) {
+        observer.observe(loader.current)
+        console.log("current");
+      }
+      console.log("observer creation");
     }
-  }, []);
+  }, [handleObserver, postsCursor]);
 
 
   return (
@@ -91,23 +96,23 @@ const Home = props => {
         {posts.length < 1 &&
         <React.Fragment>
 
-          <Grid item xs={12} md={10} justify="center">
+          <Grid item xs={12} md={10}>
             <PostCardSkeleton />
           </Grid>
 
-          <Grid item xs={12} md={10} justify="center">
+          <Grid item xs={12} md={10}>
             <Box component={Paper}>
             <PostCardSkeleton />
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={10} justify="center">
+          <Grid item xs={12} md={10}>
             <Box component={Paper}>
             <PostCardSkeleton />
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={10} justify="center">
+          <Grid item xs={12} md={10}>
             <Box component={Paper}>
             <PostCardSkeleton />
             </Box>
@@ -115,7 +120,7 @@ const Home = props => {
 
         </React.Fragment>
         }
-        <Grid item xs={12} md={10} justify="center">
+        <Grid item xs={12} md={10}>
             <Box component={Paper}>
               <Spinner/>
             </Box>
@@ -137,6 +142,7 @@ const mapStateToProps = state => {
     forumsLoading: state.forums.loading,
     forumsError: state.forums.error,
     posts: state.posts.posts,
+    postsCursor: state.posts.cursor,
     postsLoading: state.posts.loading,
     postsError: state.posts.error,
     isAuthenticated: state.auth.token !== null
@@ -146,7 +152,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    onFetchPosts: (pageNumber) => dispatch(fetchPosts(null, pageNumber))
+    onFetchPosts: (cursor) => dispatch(fetchPosts(null, cursor))
   };
 };
 

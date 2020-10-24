@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -37,9 +38,12 @@ const PostCardSkeleton = () => {
     <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
-            <Skeleton component={Typography} width={320} className={classes.statsItem} color="textSecondary" display="inline" variant="body2"/>
-            <Skeleton component={Typography} className={classes.statsItem} component="h2" variant="h4"/>
-            <Skeleton component={Typography} width={120} className={classes.statsItem} color="textSecondary" display="inline" variant="body2"/>
+        <Grid className={classes.statsItem} item >
+        <Skeleton component={Typography} width={320}/>
+
+        </Grid>
+            <Skeleton component={Typography} className={classes.statsItem}/>
+            <Skeleton component={Typography} width={120} className={classes.statsItem}/>
         </CardContent>
       </div>
     </Card>

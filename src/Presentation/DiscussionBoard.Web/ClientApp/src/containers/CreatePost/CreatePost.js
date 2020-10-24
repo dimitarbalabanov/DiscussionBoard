@@ -40,7 +40,7 @@ const CreatePost = props => {
 
   const {
     createPostSuccess,
-    createPostError,
+    //createPostError,
     createPostLoading,
     createPostId,
     onCreatePost,
@@ -51,7 +51,7 @@ const CreatePost = props => {
   
   useEffect(() => {
     onFetchForums();
-  }, [])
+  }, [onFetchForums])
   
   if(createPostSuccess) {
     return <Redirect to={`/posts/${createPostId}`} />

@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Skeleton from '@material-ui/lab/Skeleton';
+//import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
 const PostCard = props => {
   const classes = useStyles();
-  const { post, loading } = props;
+  const { 
+    post,
+    //loading
+  } = props;
+  
   return (
     <Card className={classes.card} variant="outlined" component={Link} to={`/posts/${post.id}`}>
       <div className={classes.cardDetails}>

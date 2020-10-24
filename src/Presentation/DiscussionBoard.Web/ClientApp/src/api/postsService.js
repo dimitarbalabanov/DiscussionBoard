@@ -1,18 +1,18 @@
 import axiosInstance from './axiosInstance';
-import { POSTS_URL, POSTS_QUERY_URL } from './apiRoutes';
+import { POSTS_URL } from './apiRoutes';
 
 export const getPostById = (postId) => {
   return axiosInstance.get(POSTS_URL + postId);
 };
 
-export const getPosts = (forumId, pageNumber) => {
+export const getPosts = (forumId, cursor) => {
   const queries = [];
   if (forumId) {
     queries.push(`forumId=${forumId}`);
   }
 
-  if (pageNumber) {
-    queries.push(`pageNumber=${pageNumber}`);
+  if (cursor) {
+    queries.push(`cursor=${cursor}`);
   }
 
   return axiosInstance.get(POSTS_URL + '?' + queries.join('&'));

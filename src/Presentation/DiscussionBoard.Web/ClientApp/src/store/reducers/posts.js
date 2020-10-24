@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   posts: [],
+  cursor: null,
   loading: false,
   error: null
 };
@@ -17,13 +18,15 @@ const reducer = (state = initialState, action) => {
       return { 
         ...state,
         error: null,
-        loading: true
+        loading: true,
+        cursor: null
       };
 
     case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        posts: [...state.posts, ...action.data.posts],
+        posts: [...state.posts, ...action.data.data.posts],
+        cursor: action.data.cursor,
         loading: false,
         error: null
       };
@@ -31,6 +34,7 @@ const reducer = (state = initialState, action) => {
     case REQUEST_POSTS_FAILURE:
       return { 
         ...state,
+        cursor: null,
         error: action.error,
         loading: false
       };
