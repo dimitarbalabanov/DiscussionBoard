@@ -17,10 +17,10 @@ namespace DiscussionBoard.Application.Identity.Commands.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public LoginCommandHandler(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings)
+        public LoginCommandHandler(UserManager<User> userManager, JwtSettings jwtSettings)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
@@ -52,7 +52,7 @@ namespace DiscussionBoard.Application.Identity.Commands.Login
             };
         }
 
-        private async Task<(string, DateTime)> GenerateJwtToken(ApplicationUser user)
+        private async Task<(string, DateTime)> GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
             {

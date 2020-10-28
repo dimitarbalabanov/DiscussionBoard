@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Posts.Commands.Validators;
+﻿using DiscussionBoard.Application.Posts.Commands.Validator;
 using FluentValidation;
 
 namespace DiscussionBoard.Application.Posts.Commands.UpdatePost

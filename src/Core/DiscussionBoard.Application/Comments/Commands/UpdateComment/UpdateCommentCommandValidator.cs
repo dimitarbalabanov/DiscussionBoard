@@ -1,4 +1,4 @@
-﻿using DiscussionBoard.Application.Comments.Commands.Validators;
+﻿using DiscussionBoard.Application.Comments.Commands.Validator;
 using FluentValidation;
 
 namespace DiscussionBoard.Application.Comments.Commands.UpdateComment

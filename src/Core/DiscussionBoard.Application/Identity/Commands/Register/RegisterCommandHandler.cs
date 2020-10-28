@@ -11,16 +11,16 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public RegisterCommandHandler(UserManager<ApplicationUser> userManager)
+        public RegisterCommandHandler(UserManager<User> userManager)
         {
             _userManager = userManager;
         }
 
         public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var user = new ApplicationUser
+            var user = new User
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,

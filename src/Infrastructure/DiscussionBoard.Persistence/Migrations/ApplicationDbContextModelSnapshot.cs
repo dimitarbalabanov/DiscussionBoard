@@ -27,10 +27,6 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("AvatarUrl")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
@@ -197,12 +193,10 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Vote", b =>
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserCommentVote", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CommentId")
                         .HasColumnType("int");
@@ -210,8 +204,29 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("CreatorId", "CommentId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("UsersCommentsVotes");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserPostVote", b =>
+                {
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -219,13 +234,32 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CreatorId", "PostId");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("PostId");
 
-                    b.HasIndex("CreatorId");
+                    b.ToTable("UsersPostsVotes");
+                });
 
-                    b.ToTable("Votes");
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserSavedPost", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("UsersSavedPosts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -385,7 +419,7 @@ namespace DiscussionBoard.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Vote", b =>
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserCommentVote", b =>
                 {
                     b.HasOne("DiscussionBoard.Domain.Entities.Comment", "Comment")
                         .WithMany("Votes")
@@ -394,8 +428,40 @@ namespace DiscussionBoard.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.ApplicationUser", "Creator")
+                        .WithMany("CommentVotes")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserPostVote", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.ApplicationUser", "Creator")
+                        .WithMany("PostVotes")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
                         .WithMany("Votes")
-                        .HasForeignKey("CreatorId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserSavedPost", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
+                        .WithMany("SavedBy")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("SavedPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

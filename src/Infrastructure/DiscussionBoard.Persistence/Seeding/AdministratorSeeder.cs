@@ -12,12 +12,12 @@ namespace DiscussionBoard.Persistence.Seeding
     {
         public async Task SeedAsync(IApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
             await SeedAdminAsync(userManager, "Administrator");
         }
 
-        private static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager, string administratorRoleName)
+        private static async Task SeedAdminAsync(UserManager<User> userManager, string administratorRoleName)
         {
             var user = await userManager.FindByNameAsync("Administrator");
             if (user != null && (await userManager.IsInRoleAsync(user, "Administrator")))
@@ -25,7 +25,7 @@ namespace DiscussionBoard.Persistence.Seeding
                 return;
             }
 
-            var admin = new ApplicationUser
+            var admin = new User
             {
                 UserName = "Administrator",
                 Email = "admin@admin.admin",

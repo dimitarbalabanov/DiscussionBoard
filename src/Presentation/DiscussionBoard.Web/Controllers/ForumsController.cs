@@ -13,9 +13,9 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(1000);
 
-            var vm = await Mediator.Send(new GetAllForumsQuery());
+            var response = await Mediator.Send(new GetAllForumsQuery());
 
-            return Ok(vm);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
@@ -23,9 +23,9 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(new GetForumByIdQuery { Id = id });
+            var response = await Mediator.Send(new GetForumByIdQuery { Id = id });
 
-            return Ok(vm);
+            return Ok(response);
         }
     }
 }

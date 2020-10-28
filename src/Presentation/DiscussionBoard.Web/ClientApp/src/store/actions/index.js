@@ -31,7 +31,8 @@ export {
 } from './post';
 
 export {
-  fetchPosts
+  fetchPosts,
+  clearPosts
 } from './posts';
 
 export {

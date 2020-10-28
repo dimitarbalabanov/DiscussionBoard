@@ -26,9 +26,9 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(query);
+            var response = await Mediator.Send(query);
 
-            return Ok(vm);
+            return Ok(response);
         }
 
         [HttpPost]

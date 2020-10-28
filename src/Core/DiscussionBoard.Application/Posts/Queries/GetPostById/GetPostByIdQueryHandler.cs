@@ -11,31 +11,53 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
-    public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdVm>
+    public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdResponse>
     {
         private readonly IRepository<Post> _postsRepository;
+        private readonly IRepository<UserPostVote> _votesRepository;
+        private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
-        public GetPostByIdQueryHandler(IRepository<Post> postsRepository, IMapper mapper)
+        public GetPostByIdQueryHandler(
+            IRepository<Post> postsRepository,
+            IRepository<UserPostVote> votesRepository,
+            IAuthenticatedUserService authUserService,
+            IMapper mapper)
         {
             _postsRepository = postsRepository;
+            _votesRepository = votesRepository;
+            _authUserService = authUserService;
             _mapper = mapper;
         }
 
-        public async Task<GetPostByIdVm> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetPostByIdResponse> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
-            var vm = await _postsRepository
+            var response = await _postsRepository
                 .AllAsNoTracking()
                 .Where(p => p.Id == request.Id)
-                .ProjectTo<GetPostByIdVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<GetPostByIdResponse>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-            if (vm == null)
+            if (response == null)
             {
                 throw new NotFoundException(nameof(Post));
             }
 
-            return vm;
+            var userId = _authUserService.UserId;
+
+            if (userId != null)
+            {
+                var vote = await _votesRepository
+                    .AllAsNoTracking()
+                    .SingleOrDefaultAsync(v => v.PostId == response.Id && v.CreatorId == userId);
+
+                if (vote != null)
+                {
+                    response.CurrentUserVoteType = vote.Type.ToString().ToLower();
+                }
+            }
+
+            return response;
         }
     }
 }

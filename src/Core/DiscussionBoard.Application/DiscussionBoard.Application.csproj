@@ -18,8 +18,4 @@
     <ProjectReference Include="..\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Votes\Queries\" />
-  </ItemGroup>
-
 </Project>

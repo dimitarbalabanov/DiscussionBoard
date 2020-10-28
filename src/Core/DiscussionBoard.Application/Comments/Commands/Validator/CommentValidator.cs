@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace DiscussionBoard.Application.Comments.Commands.Validators
+namespace DiscussionBoard.Application.Comments.Commands.Validator
 {
     public static class CommentValidator
     {

@@ -7,17 +7,17 @@ namespace DiscussionBoard.Domain.Entities
     {
         public Comment()
         {
-            Votes = new HashSet<Vote>();
+            Votes = new HashSet<UserCommentVote>();
         }
 
         public string Content { get; set; }
 
         public string CreatorId { get; set; }
-        public virtual ApplicationUser Creator { get; set; }
+        public virtual User Creator { get; set; }
 
         public int PostId { get; set; }
         public virtual Post Post { get; set; }
 
-        public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<UserCommentVote> Votes { get; set; }
     }
 }

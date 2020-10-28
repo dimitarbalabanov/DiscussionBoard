@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace DiscussionBoard.Application.Posts.Commands.Validators
+namespace DiscussionBoard.Application.Posts.Commands.Validator
 {
     public static class PostValidator
     {

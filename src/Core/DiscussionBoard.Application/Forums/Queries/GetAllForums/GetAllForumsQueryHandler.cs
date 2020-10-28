@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 {
-    public class GetAllForumsQueryHandler : IRequestHandler<GetAllForumsQuery, GetAllForumsVm>
+    public class GetAllForumsQueryHandler : IRequestHandler<GetAllForumsQuery, GetAllForumsResponse>
     {
         private readonly IRepository<Forum> _forumsRepository;
         private readonly IMapper _mapper;
@@ -20,15 +20,15 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
             _mapper = mapper;
         }
 
-        public async Task<GetAllForumsVm> Handle(GetAllForumsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllForumsResponse> Handle(GetAllForumsQuery request, CancellationToken cancellationToken)
         {
             var forums = await _forumsRepository
                 .AllAsNoTracking()
                 .ProjectTo<ForumDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            var vm = new GetAllForumsVm { Forums = forums };
-            return vm;
+            var response = new GetAllForumsResponse { Forums = forums };
+            return response;
         }
     }
 }

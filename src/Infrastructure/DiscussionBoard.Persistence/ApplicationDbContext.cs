@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -24,7 +24,11 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<Vote> Votes { get; set; }
+        public DbSet<UserCommentVote> UsersCommentsVotes { get; set; }
+
+        public DbSet<UserPostVote> UsersPostsVotes { get; set; }
+
+        public DbSet<UserSavedPost> UsersSavedPosts { get; set; }
 
         public override int SaveChanges()
         {

@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, GetAllCommentsVm>
+    class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, GetAllCommentsResponse>
     {
         private readonly IRepository<Comment> _commentsRepository;
-        private readonly IRepository<Vote> _votesRepository;
+        private readonly IRepository<UserCommentVote> _votesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
         public GetAllCommentsQueryHandler(
             IRepository<Comment> commentsRepository,
-            IRepository<Vote> votesRepository,
+            IRepository<UserCommentVote> votesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
@@ -29,14 +29,14 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             _mapper = mapper;
         }
 
-        public async Task<GetAllCommentsVm> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllCommentsResponse> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
             var comments = await _commentsRepository
                 .AllAsNoTracking()
                 .Where(c => c.PostId == request.PostId)
                 .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-                
+
             if (_authUserService.UserId != null)
             {
                 var commentIds = comments
@@ -53,15 +53,13 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                     var commentVote = currentUserVotesInComments.SingleOrDefault(v => v.CommentId == comment.Id);
                     if (commentVote != null)
                     {
-                        comment.CurrentUserVoteId = commentVote.Id;
                         comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
                     }
                 }
             }
 
-            var vm = new GetAllCommentsVm { Comments = comments };
-
-            return vm;
+            var response = new GetAllCommentsResponse { Comments = comments };
+            return response;
         }
     }
 }

@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
-using DiscussionBoard.Application.Comments.Commands.CreateComment;
-using DiscussionBoard.Application.Comments.Queries.GetAllComments;
-using DiscussionBoard.Application.Forums.Queries.GetAllForums;
-using DiscussionBoard.Application.Forums.Queries.GetForumById;
-using DiscussionBoard.Application.Posts.Commands.CreatePost;
-using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
-using DiscussionBoard.Application.Posts.Queries.GetPostById;
-using DiscussionBoard.Application.Votes.Commands.CreateVote;
-using DiscussionBoard.Domain.Entities;
+using System;
 using System.Linq;
+using System.Reflection;
 
 namespace DiscussionBoard.Application.Common.Mappings
 {
@@ -16,30 +9,44 @@ namespace DiscussionBoard.Application.Common.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Forum, ForumDto>()
-                .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
-                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
-
-            CreateMap<Forum, GetForumByIdVm>()
-                .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
-                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
-
-            CreateMap<Post, PostDto>()
-                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
-
-            CreateMap<Post, GetPostByIdVm>()
-                .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
-
-            CreateMap<Comment, CommentDto>()
-                .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));
-
-            CreateMap<CreatePostCommand, Post>();
-            CreateMap<Post, CreatePostCommandResponse>();
-
-            CreateMap<CreateCommentCommand, Comment>();
-            CreateMap<Comment, CreateCommentCommandResponse>();
-
-            CreateMap<CreateVoteCommand, Vote>();
+            ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
         }
+        private void ApplyMappingsFromAssembly(Assembly assembly)
+        {
+            var types = assembly.GetExportedTypes()
+                .Where(t => t.GetInterfaces().Any(i =>
+                    i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+                .ToList();
+
+            foreach (var type in types)
+            {
+                var instance = Activator.CreateInstance(type);
+                var methodInfo = type.GetMethod("Mapping");
+                methodInfo?.Invoke(instance, new object[] { this });
+            }
+        }
+
+        //CreateMap<Forum, ForumDto>()
+        //    .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
+        //    .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
+
+        //CreateMap<Forum, GetForumByIdVm>()
+        //    .ForMember(dest => dest.PostsCount, src => src.MapFrom(x => x.Posts.Count()))
+        //    .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Posts.SelectMany(x => x.Comments).Count()));
+
+        //CreateMap<Post, PostDto>()
+        //    .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
+
+        //CreateMap<Post, GetPostByIdVm>()
+        //    .ForMember(dest => dest.CommentsCount, src => src.MapFrom(x => x.Comments.Count()));
+
+        //CreateMap<Comment, CommentDto>()
+        //    .ForMember(dest => dest.VotesScore, src => src.MapFrom(x => x.Votes.Sum(x => (int)x.Type)));
+
+        //CreateMap<CreatePostCommand, Post>();
+        //CreateMap<Post, CreatePostCommandResponse>();
+
+        //CreateMap<CreateCommentCommand, Comment>();
+        //CreateMap<Comment, CreateCommentCommandResponse>();
     }
 }

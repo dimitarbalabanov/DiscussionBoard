@@ -1,0 +1,48 @@
+﻿using AutoMapper;
+using DiscussionBoard.Application.Common.Interfaces;
+using DiscussionBoard.Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace DiscussionBoard.Application.UserSavedPosts.Commands.CreateUserSavedPost
+{
+    public class CreateUserSavedPostCommandHandler : IRequestHandler<CreateUserSavedPostCommand>
+    {
+        private readonly IRepository<UserSavedPost> _savedRepository;
+        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IMapper _mapper;
+
+        public CreateUserSavedPostCommandHandler(IRepository<UserSavedPost> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
+        {
+            _savedRepository = savedRepository;
+            _authUserService = authUserService;
+            _mapper = mapper;
+        }
+
+        public async Task<Unit> Handle(CreateUserSavedPostCommand request, CancellationToken cancellationToken)
+        {
+            var exists = await _savedRepository
+                .AllAsNoTracking()
+                .AnyAsync(v => v.PostId == request.PostId && v.UserId == _authUserService.UserId);
+
+            if (exists)
+            {
+                throw new Exception("Already saved");
+            }
+
+            var userSavedPost = new UserSavedPost
+            {
+                PostId = request.PostId,
+                UserId = _authUserService.UserId
+            };
+
+            await _savedRepository.AddAsync(userSavedPost);
+            await _savedRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+    }
+}

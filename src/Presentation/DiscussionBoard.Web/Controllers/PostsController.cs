@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Queries;
-using DiscussionBoard.Application.Posts.Commands.CreatePost;
+﻿using DiscussionBoard.Application.Posts.Commands.CreatePost;
 using DiscussionBoard.Application.Posts.Commands.DeletePost;
 using DiscussionBoard.Application.Posts.Commands.UpdatePost;
 using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
@@ -20,20 +19,20 @@ namespace DiscussionBoard.Web.Controllers
         {
             Thread.Sleep(300);
 
-            var vm = await Mediator.Send(new GetPostByIdQuery { Id = id });
+            var response = await Mediator.Send(new GetPostByIdQuery { Id = id });
 
-            return Ok(vm);
+            return Ok(response);
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] GetAllPostsQuery query)
         {
-            var context = this.HttpContext;
             Thread.Sleep(300);
-            var vm = await Mediator.Send(query);
 
-            return Ok(vm);
+            var response = await Mediator.Send(query);
+
+            return Ok(response);
         }
 
         [HttpPost]

@@ -1,21 +1,13 @@
-﻿using System;
+﻿using DiscussionBoard.Application.Common.Mappings;
+using DiscussionBoard.Domain.Entities;
+using System;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
-    public class CreatePostCommandResponse
+    public class CreatePostCommandResponse : IMapFrom<Post>
     {
         public int Id { get; set; }
 
-        public string Title { get; set; }
-
-        public string CreatorUserName { get; set; }
-
-        public string CreatorAvatarUrl { get; set; }
-
         public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
-
-        public int CommentsCount { get; set; }
     }
 }

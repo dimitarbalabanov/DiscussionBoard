@@ -8,9 +8,9 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
 {
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public RegisterCommandValidator(UserManager<ApplicationUser> userManager)
+        public RegisterCommandValidator(UserManager<User> userManager)
         {
             _userManager = userManager;
 

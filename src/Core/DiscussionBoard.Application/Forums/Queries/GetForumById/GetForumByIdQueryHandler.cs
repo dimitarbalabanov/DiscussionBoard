@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 {
-    public class GetForumByIdQueryHandler : IRequestHandler<GetForumByIdQuery, GetForumByIdVm>
+    public class GetForumByIdQueryHandler : IRequestHandler<GetForumByIdQuery, GetForumByIdResponse>
     {
         private readonly IRepository<Forum> _forumsRepository;
         private readonly IMapper _mapper;
@@ -20,12 +20,12 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
             _mapper = mapper;
         }
 
-        public async Task<GetForumByIdVm> Handle(GetForumByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetForumByIdResponse> Handle(GetForumByIdQuery request, CancellationToken cancellationToken)
         {
             var vm = await _forumsRepository
                 .AllAsNoTracking()
                 .Where(f => f.Id == request.Id)
-                .ProjectTo<GetForumByIdVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<GetForumByIdResponse>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
             return vm;

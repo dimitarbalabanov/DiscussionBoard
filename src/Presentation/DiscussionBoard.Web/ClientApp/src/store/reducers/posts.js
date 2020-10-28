@@ -1,12 +1,14 @@
 import {
   REQUEST_POSTS_START,
   REQUEST_POSTS_SUCCESS,
-  REQUEST_POSTS_FAILURE
+  REQUEST_POSTS_FAILURE,
+  CLEAR_POSTS
 } from '../actions/actionTypes';
 
 const initialState = {
   posts: [],
   cursor: null,
+  hasNextPage: null,
   loading: false,
   error: null
 };
@@ -19,7 +21,8 @@ const reducer = (state = initialState, action) => {
         ...state,
         error: null,
         loading: true,
-        cursor: null
+        cursor: null,
+        hasNextPage: null
       };
 
     case REQUEST_POSTS_SUCCESS: 
@@ -27,6 +30,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         posts: [...state.posts, ...action.data.data.posts],
         cursor: action.data.cursor,
+        hasNextPage: action.data.cursor !== null,
         loading: false,
         error: null
       };
@@ -35,8 +39,14 @@ const reducer = (state = initialState, action) => {
       return { 
         ...state,
         cursor: null,
+        hasNextPage: null,
         error: action.error,
         loading: false
+      }; 
+
+    case CLEAR_POSTS:
+      return { 
+        ...initialState
       };
 
     default:

@@ -28,7 +28,7 @@ namespace DiscussionBoard.Persistence
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 4;
                 options.Password.RequireDigit = false;

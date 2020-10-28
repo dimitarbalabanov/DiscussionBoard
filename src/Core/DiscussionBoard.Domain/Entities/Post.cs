@@ -8,6 +8,8 @@ namespace DiscussionBoard.Domain.Entities
         public Post()
         {
             Comments = new HashSet<Comment>();
+            Votes = new HashSet<UserPostVote>();
+            SavedBy = new HashSet<UserSavedPost>();
         }
 
         public string Title { get; set; }
@@ -15,11 +17,15 @@ namespace DiscussionBoard.Domain.Entities
         public string Content { get; set; }
 
         public string CreatorId { get; set; }
-        public virtual ApplicationUser Creator { get; set; }
+        public virtual User Creator { get; set; }
 
         public int ForumId { get; set; }
         public virtual Forum Forum { get; set; }
 
         public virtual IEnumerable<Comment> Comments { get; set; }
+
+        public virtual IEnumerable<UserPostVote> Votes { get; set; }
+
+        public virtual IEnumerable<UserSavedPost> SavedBy { get; set; }
     }
 }

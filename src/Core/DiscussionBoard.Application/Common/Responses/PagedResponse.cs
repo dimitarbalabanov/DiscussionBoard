@@ -5,9 +5,5 @@
         public T Data { get; set; }
 
         public string Cursor { get; set; }
-
-        public int TotalCount { get; set; }
-
-        public int CurrentCount { get; set; }
     }   
 }
