@@ -32,6 +32,16 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasMany(p => p.Comments)
                 .WithOne(c => c.Post)
                 .HasForeignKey(c => c.PostId);
+
+            //post.Property(p => p.Score)
+            //    .HasComputedColumnSql();
+
+
+            
+                //SELECT SUM(CAST([v].[Type] AS int))
+                //FROM [PostsVotes] AS [p]
+                //INNER JOIN [Votes] AS [v] ON[p].[VoteId] = [v].[Id]
+                //WHERE [p0].[Id] = [p].[PostId]
         }
     }
 }

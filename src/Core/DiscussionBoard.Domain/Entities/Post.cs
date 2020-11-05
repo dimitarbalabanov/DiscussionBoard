@@ -8,7 +8,7 @@ namespace DiscussionBoard.Domain.Entities
         public Post()
         {
             Comments = new HashSet<Comment>();
-            Votes = new HashSet<UserPostVote>();
+            Votes = new HashSet<PostVote>();
             SavedBy = new HashSet<UserSavedPost>();
         }
 
@@ -22,9 +22,13 @@ namespace DiscussionBoard.Domain.Entities
         public int ForumId { get; set; }
         public virtual Forum Forum { get; set; }
 
+        public string MediaUrl { get; set; }
+
+        public string MediaPublicId { get; set; }
+
         public virtual IEnumerable<Comment> Comments { get; set; }
 
-        public virtual IEnumerable<UserPostVote> Votes { get; set; }
+        public virtual IEnumerable<PostVote> Votes { get; set; }
 
         public virtual IEnumerable<UserSavedPost> SavedBy { get; set; }
     }

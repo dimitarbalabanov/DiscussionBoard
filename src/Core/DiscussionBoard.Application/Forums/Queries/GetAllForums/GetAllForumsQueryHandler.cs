@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DiscussionBoard.Domain.Entities;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 {
@@ -24,6 +25,8 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
         {
             var forums = await _forumsRepository
                 .AllAsNoTracking()
+                .OrderByDescending(f => f.Posts.Count)
+                .Take(5)
                 .ProjectTo<ForumDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 

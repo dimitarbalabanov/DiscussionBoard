@@ -7,7 +7,7 @@ namespace DiscussionBoard.Domain.Entities
     {
         public Comment()
         {
-            Votes = new HashSet<UserCommentVote>();
+            Votes = new HashSet<CommentVote>();
         }
 
         public string Content { get; set; }
@@ -18,6 +18,6 @@ namespace DiscussionBoard.Domain.Entities
         public int PostId { get; set; }
         public virtual Post Post { get; set; }
 
-        public virtual ICollection<UserCommentVote> Votes { get; set; }
+        public virtual ICollection<CommentVote> Votes { get; set; }
     }
 }

@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 //import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     borderColor: theme.palette.primary.main,
-    border: '3px solid'
+    border: '1px solid'
   },
   cardDetails: {
     flex: 1,
@@ -44,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     color: theme.palette.background.default
+  },
+  margin: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   }
 }));
 
@@ -59,21 +64,16 @@ const AboutForumCard = props => {
   return (
     <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
-        {/* <CardHeader className={classes.header} title="About forum" titleTypographyProps={{variant: 'h4', color: theme.palette.background.default}}/> */}
-        {/* <CardHeader 
-          className={classes.header}
-          title={
-            <Typography  className={classes.text} variant="h4" component="h2">
-              About {loading || !forum ? <Skeleton /> : forum.title}
-            </Typography>
-          } 
-        /> */}
-
         <CardContent>
-          <Typography className={classes.title} paragraph color="textSecondary"> 
-            {loading || !forum ? <Skeleton /> : forum.description + forum.description + forum.description + forum.description}
+          <Typography className={classes.title} component="h2" variant="h4">
+            {"About forum"}
+            <Divider />
           </Typography>
-          <Grid container justify="center" spacing={2}>
+          <Typography className={classes.title} color="textSecondary" display="inline" variant="body2"> 
+            {loading || !forum ? <Skeleton /> : forum.description}
+          </Typography>
+          <Divider className={classes.margin}/>
+          <Grid  container justify="center" spacing={2} >
             <Grid className={classes.statsItem} item>
               <ChatBubbleIcon className={classes.statsIcon} color="action" />
               <Typography color="textSecondary" display="inline" variant="body2" >
@@ -86,17 +86,17 @@ const AboutForumCard = props => {
                 {loading || !forum ? <Skeleton /> :`${forum.commentsCount} Comments`}
               </Typography>
             </Grid>
-          <Button
-            component={Link}
-            to={'/create'}
-            size="small"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<NoteAddIcon />}
-          >
-            Post in {loading || !forum ? <Skeleton /> : forum.title}
-          </Button>
+            <Button
+              component={Link}
+              to={'/create'}
+              size="small"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              startIcon={<NoteAddIcon />}
+            >
+              Post in {loading || !forum ? <Skeleton /> : forum.title}
+            </Button>
           </Grid>
         </CardContent>
       </div>

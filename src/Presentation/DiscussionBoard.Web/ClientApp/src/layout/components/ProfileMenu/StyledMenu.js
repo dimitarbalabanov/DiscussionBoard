@@ -69,12 +69,14 @@ export default function CustomizedMenus() {
         onClose={handleClose}
       >
         <MenuItem>
+
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Profile" />
         </MenuItem>
         <MenuItem>
+        
           <ListItemIcon>
             <DraftsIcon fontSize="small" />
           </ListItemIcon>

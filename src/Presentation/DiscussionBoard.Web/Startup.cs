@@ -44,7 +44,6 @@ namespace DiscussionBoard.Web
                 seeder.SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

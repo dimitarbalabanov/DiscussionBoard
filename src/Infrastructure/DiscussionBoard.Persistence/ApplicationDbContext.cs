@@ -24,11 +24,15 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<UserCommentVote> UsersCommentsVotes { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
-        public DbSet<UserPostVote> UsersPostsVotes { get; set; }
+        public DbSet<CommentVote> CommentsVotes { get; set; }
+
+        public DbSet<PostVote> PostsVotes { get; set; }
 
         public DbSet<UserSavedPost> UsersSavedPosts { get; set; }
+
+        public DbSet<PostsVotesScores> PostsVotesScores { get; set; }
 
         public override int SaveChanges()
         {
@@ -72,3 +76,14 @@ namespace DiscussionBoard.Persistence
         }
     }
 }
+
+
+
+//CREATE VIEW View_PostsVotesScores AS 
+//SELECT [p0].[Id], (
+//SELECT SUM(CAST([v].[Type] AS int))
+//    FROM[PostsVotes] AS[p]
+//    INNER JOIN[Votes] AS [v] ON[p].[VoteId] = [v].[Id]
+//    WHERE[p0].[Id] = [p].[PostId]) AS[VotesScore]
+//FROM[Posts] AS[p0]
+

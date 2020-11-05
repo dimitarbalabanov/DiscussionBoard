@@ -14,18 +14,18 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
     public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdResponse>
     {
         private readonly IRepository<Post> _postsRepository;
-        private readonly IRepository<UserPostVote> _votesRepository;
+        private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
         public GetPostByIdQueryHandler(
             IRepository<Post> postsRepository,
-            IRepository<UserPostVote> votesRepository,
+            IRepository<PostVote> postVotesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
             _postsRepository = postsRepository;
-            _votesRepository = votesRepository;
+            _postVotesRepository = postVotesRepository;
             _authUserService = authUserService;
             _mapper = mapper;
         }
@@ -34,6 +34,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
         {
             var response = await _postsRepository
                 .AllAsNoTracking()
+                .Include(p => p.Votes)
+                .ThenInclude(pv => pv.Vote)
                 .Where(p => p.Id == request.Id)
                 .ProjectTo<GetPostByIdResponse>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
@@ -44,16 +46,17 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
             }
 
             var userId = _authUserService.UserId;
-
             if (userId != null)
             {
-                var vote = await _votesRepository
+                var postVote = await _postVotesRepository
                     .AllAsNoTracking()
-                    .SingleOrDefaultAsync(v => v.PostId == response.Id && v.CreatorId == userId);
+                    .Include(pv => pv.Vote)
+                    .SingleOrDefaultAsync(pv => pv.PostId == request.Id && pv.Vote.CreatorId == userId);
 
-                if (vote != null)
+                if (postVote != null)
                 {
-                    response.CurrentUserVoteType = vote.Type.ToString().ToLower();
+                    response.CurrentUserVoteId = postVote.VoteId;
+                    response.CurrentUserVoteType = postVote.Vote.Type.ToString().ToLower();
                 }
             }
 

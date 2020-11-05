@@ -12,6 +12,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public string Title { get; set; }
 
+        public string Content { get; set; }
+
         public string CreatorUserName { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -26,13 +28,15 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public int VotesScore { get; set; }
 
+        public int CurrentUserVoteId { get; set; }
+
         public string CurrentUserVoteType { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(v => (int)v.Type)));
+                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Vote.Type)));
         }
     }
 }

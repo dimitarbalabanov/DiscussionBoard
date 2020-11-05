@@ -61,3 +61,9 @@ export default
     mapStateToProps,
     mapDispatchToProps
   )(App);
+
+
+  // "devDependencies": {
+  //   "eslint": "^7.12.1",
+  //   "eslint-plugin-react": "^7.21.5"
+  // }

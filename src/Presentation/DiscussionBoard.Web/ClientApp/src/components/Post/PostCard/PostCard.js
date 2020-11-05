@@ -5,9 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 //import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
+import Empty from '../../Voting/Empty';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -32,10 +34,15 @@ const useStyles = makeStyles((theme) => ({
     "&:last-child": {
       paddingBottom: 0
     },
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
+    marginLeft: theme.spacing(1)
   },
   textColor: {
     color: theme.palette.primary.main
+  },
+  media: {
+    height: 140,
+    paddingTop: '70.25%',
   },
 }));
 
@@ -48,20 +55,32 @@ const PostCard = props => {
   
   return (
     <Card className={classes.card} variant="outlined" component={Link} to={`/posts/${post.id}`}>
+      <Empty />
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
           {/* {loading ? <Skeleton /> :  */}
         <Grid className={classes.statsItem} item >
           <Typography color="textSecondary" display="inline" variant="body2" >
-            <strong className={classes.textColor}>{post.forumTitle}</strong> posted {ConvertToRelativeTime(post.createdOn)} by <strong className={classes.textColor}>{post.creatorUserName}</strong>
+            <strong className={classes.textColor}>f/{post.forumTitle.substring(0, 10).toLowerCase()}</strong> posted by {post.creatorUserName} {ConvertToRelativeTime(post.createdOn)} 
           </Typography>
         </Grid>
         
         <Grid className={classes.statsItem} item >
           <Typography component="h2" variant="h4">
           {/* {loading ? <Skeleton /> :  */}
-          {post.title.length > 65 ? post.title.substring(0, 65) + '...' : post.title}
+          {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
           </Typography>
+        </Grid>
+          <CardMedia
+            className={classes.media}
+            //image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
+            image={"https://images.theconversation.com/files/177834/original/file-20170712-14488-19lw3sc.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"}
+            title="Paella dish"
+          />
+        <Grid className={classes.statsItem} item >
+            <Typography color="textSecondary" display="inline" variant="body2" >
+            {`${post.content.substring(0,250) + "..."} `}
+            </Typography>
         </Grid>
         <Grid className={classes.statsItem} item >
           <CommentIcon className={classes.statsIcon} color="primary"/>

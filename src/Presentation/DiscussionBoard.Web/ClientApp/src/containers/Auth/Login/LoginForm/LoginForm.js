@@ -24,8 +24,8 @@ const LoginForm = props => {
   return (
     <Formik
         initialValues={{
-          email: 'dohn@doe.com',
-          password: 'JohnDoe'
+          email: 'admin@admin.admin',
+          password: 'Administrator'
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),

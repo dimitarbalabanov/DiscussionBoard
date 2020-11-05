@@ -4,6 +4,6 @@
     {
         public T Data { get; set; }
 
-        public string Cursor { get; set; }
+        public int? Cursor { get; set; }
     }   
 }

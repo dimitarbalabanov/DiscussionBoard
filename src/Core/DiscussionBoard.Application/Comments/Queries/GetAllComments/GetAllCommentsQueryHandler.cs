@@ -13,18 +13,18 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
     class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, GetAllCommentsResponse>
     {
         private readonly IRepository<Comment> _commentsRepository;
-        private readonly IRepository<UserCommentVote> _votesRepository;
+        private readonly IRepository<CommentVote> _commentVotesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
         public GetAllCommentsQueryHandler(
             IRepository<Comment> commentsRepository,
-            IRepository<UserCommentVote> votesRepository,
+            IRepository<CommentVote> commentVotesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
             _commentsRepository = commentsRepository;
-            _votesRepository = votesRepository;
+            _commentVotesRepository = commentVotesRepository;
             _authUserService = authUserService;
             _mapper = mapper;
         }
@@ -33,27 +33,32 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
         {
             var comments = await _commentsRepository
                 .AllAsNoTracking()
+                .Include(c => c.Votes)
+                .ThenInclude(cv => cv.Vote)
                 .Where(c => c.PostId == request.PostId)
                 .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            if (_authUserService.UserId != null)
+            var userId = _authUserService.UserId;
+            if (userId != null)
             {
                 var commentIds = comments
                     .Select(c => c.Id)
                     .ToList();
 
-                var currentUserVotesInComments = await _votesRepository
+                var currentUserVotesInComments = await _commentVotesRepository
                     .AllAsNoTracking()
-                    .Where(v => commentIds.Contains(v.CommentId) && v.CreatorId == _authUserService.UserId)
+                    .Include(cv => cv.Vote)
+                    .Where(cv => commentIds.Contains(cv.CommentId) && cv.Vote.CreatorId == userId)
                     .ToListAsync();
 
                 foreach (var comment in comments)
                 {
-                    var commentVote = currentUserVotesInComments.SingleOrDefault(v => v.CommentId == comment.Id);
+                    var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
                     if (commentVote != null)
                     {
-                        comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
+                        comment.CurrentUserVoteId = commentVote.VoteId;
+                        comment.CurrentUserVoteType = commentVote.Vote.Type.ToString().ToLower();
                     }
                 }
             }

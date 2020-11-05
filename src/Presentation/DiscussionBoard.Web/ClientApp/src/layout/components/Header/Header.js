@@ -54,7 +54,7 @@ export default function Header(props) {
           <Navigation className={classes.nav} isAuth={isAuth} username={username}/>
         </Hidden>
         <Hidden lgUp>
-          <StyledMenu />
+          <StyledMenu className={classes.nav} isAuth={isAuth} username={username}/>
           {/* <IconButton color="inherit" onClick={onSidebarOpen} >
             <MenuIcon />
           </IconButton> */}

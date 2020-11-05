@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DiscussionBoard.Application.Common.Mappings;
-using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
 using DiscussionBoard.Domain.Entities;
 using System;
 using System.Linq;
@@ -29,13 +28,15 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public int VotesScore { get; set; }
 
+        public int CurrentUserVoteId { get; set; }
+
         public string CurrentUserVoteType { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Post, PostDto>()
+            profile.CreateMap<Post, GetPostByIdResponse>()
                 .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(v => (int)v.Type)));
+                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Vote.Type)));
         }
     }
 }

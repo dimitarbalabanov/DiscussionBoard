@@ -12,8 +12,8 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderColor: theme.palette.primary.main,
-    border: '3px solid'
+    // borderColor: theme.palette.primary.main,
+    // border: '3px solid'
   },
   cardDetails: {
     flex: 1

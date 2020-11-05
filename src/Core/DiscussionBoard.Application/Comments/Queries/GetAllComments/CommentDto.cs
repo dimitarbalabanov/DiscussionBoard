@@ -20,12 +20,14 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
         public int VotesScore { get; set; }
 
+        public int CurrentUserVoteId { get; set; }
+
         public string CurrentUserVoteType { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Comment, CommentDto>()
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(v => (int)v.Type)));
+                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(cv => (int)cv.Vote.Type)));
         }
     }
 }

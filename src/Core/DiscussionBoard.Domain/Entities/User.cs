@@ -12,8 +12,7 @@ namespace DiscussionBoard.Domain.Entities
             Id = Guid.NewGuid().ToString();
             Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
-            CommentVotes = new HashSet<UserCommentVote>();
-            PostVotes = new HashSet<UserPostVote>();
+            Votes = new HashSet<Vote>();
             SavedPosts = new HashSet<UserSavedPost>();
         }
 
@@ -27,9 +26,7 @@ namespace DiscussionBoard.Domain.Entities
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<UserCommentVote> CommentVotes { get; set; }
-
-        public virtual ICollection<UserPostVote> PostVotes { get; set; }
+        public virtual ICollection<Vote> Votes { get; set; }
 
         public virtual ICollection<UserSavedPost> SavedPosts { get; set; }
     }

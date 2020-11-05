@@ -7,7 +7,7 @@ import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import { createPost, fetchForums } from '../../store/actions';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
 
 import {
   Box,
@@ -21,6 +21,7 @@ import {
   FormControl,
   CircularProgress
 } from '@material-ui/core';
+import ImageInput from '../../components/FileInput/FileInput';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -62,14 +63,32 @@ const CreatePost = props => {
       initialValues={{
         title: 'Neque porro quisquam est qui dolorem',
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu interdum. Aliquam in massa dui. Etiam sed sodales mi, eget iaculis erat. Etiam luctus id purus quis euismod. In porta a ex eget tristique.',
-        forumId: ''
+        forumId: '',
+        image : null
       }}
       validationSchema={Yup.object().shape({
         title: Yup.string().min(3).max(200).required('Title is required'),
         content: Yup.string().min(30).max(2500).required('Content is required'),
-        forumId: Yup.number().required('Selecting a forum is required'),
+        //forumId: Yup.number().required('Selecting a forum is required')
+        image: Yup.mixed()
+          .required("We need an Image!")
+          .test(
+            "fileSize",
+            "Your video is too big :(",
+            value => value && value.size <= 262144000
+        )
       })}
       onSubmit={values => {
+        console.log(values)
+        // var formData = new FormData();
+        // var imagefile = document.querySelector('#file');
+        // formData.append("image", imagefile.files[0]);
+        // axios.post('upload_file', formData, {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data'
+        //     }
+        // })
+
         onCreatePost(values.forumId, values.title, values.content);
       }}
     >
@@ -80,7 +99,9 @@ const CreatePost = props => {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
+        setFieldValue,
+        isValid
       }) => (
         <form onSubmit={handleSubmit} >
           <Typography component="h1" variant="h4" color="inherit" gutterBottom>
@@ -118,6 +139,13 @@ const CreatePost = props => {
             variant="outlined"
             size="small"
           />
+          <Field
+              name="image"
+              component={ImageInput}
+              title="Upload"
+              setFieldValue={setFieldValue}
+              onBlur={handleBlur}
+            />
           <TextField
             error={Boolean(touched.content && errors.content)}
             fullWidth
@@ -133,10 +161,11 @@ const CreatePost = props => {
             multiline
             rows={6}
           />
+
           <Box my={2} align="center">
             <Button
               color="primary"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isValid}
               type="submit"
               variant="contained"
             >

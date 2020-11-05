@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using DiscussionBoard.Application.Common.Mappings;
 using DiscussionBoard.Domain.Entities;
 using System.Linq;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 {
-    public class GetForumByIdResponse
+    public class GetForumByIdResponse : IMapFrom<Forum>
     {
         public int Id { get; set; }
 

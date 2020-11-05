@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Queries;
-using DiscussionBoard.Application.Common.Responses;
+﻿using DiscussionBoard.Application.Common.Responses;
 using MediatR;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
@@ -8,12 +7,12 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
     {
         public int? ForumId { get; set; }
 
+        public string Sort { get; set; }
+
+        public string Order { get; set; }
+
         //public string Filter { get; set; }
 
-        //public string Sort { get; set; }
-
-        //public string Order { get; set; }
-
-        //public string Cursor { get; set; }
+        public int? Cursor { get; set; }
     }
 }

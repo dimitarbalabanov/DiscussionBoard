@@ -21,6 +21,11 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasMany(u => u.Comments)
                 .WithOne(c => c.Creator)
                 .HasForeignKey(c => c.CreatorId);
+
+            user
+                .HasMany(u => u.Votes)
+                .WithOne(v => v.Creator)
+                .HasForeignKey(v => v.CreatorId);
         }
     }
 }

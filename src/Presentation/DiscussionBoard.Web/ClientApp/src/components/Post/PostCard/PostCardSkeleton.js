@@ -38,10 +38,9 @@ const PostCardSkeleton = () => {
     <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
-        <Grid className={classes.statsItem} item >
-        <Skeleton component={Typography} width={320}/>
-
-        </Grid>
+          <Grid className={classes.statsItem} item >
+            <Skeleton component={Typography} width={320}/>
+          </Grid>
             <Skeleton component={Typography} className={classes.statsItem}/>
             <Skeleton component={Typography} width={120} className={classes.statsItem}/>
         </CardContent>
