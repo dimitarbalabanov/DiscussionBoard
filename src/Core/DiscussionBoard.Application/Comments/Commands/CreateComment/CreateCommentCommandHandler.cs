@@ -23,7 +23,6 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
             _authUserService = authUserService;
         }
 
-        public IAuthenticatedUserService AuthenticatedUserService { get; }
 
         public async Task<CreateCommentCommandResponse> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
@@ -37,6 +36,7 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
                 PostId = request.PostId,
                 CreatorId = _authUserService.UserId
             };
+
             await _commentsRepository.AddAsync(comment);
             await _commentsRepository.SaveChangesAsync();
 

@@ -24,15 +24,30 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<Vote> Votes { get; set; }
+        public DbSet<CommentVote> CommentVotes { get; set; }
 
-        public DbSet<CommentVote> CommentsVotes { get; set; }
+        public DbSet<PostVote> PostVotes { get; set; }
 
-        public DbSet<PostVote> PostsVotes { get; set; }
+        public DbSet<CommentReport> CommentReports { get; set; }
+
+        public DbSet<PostReport> PostReports { get; set; }
+
+        public DbSet<ForumMedia> ForumMedias { get; set; }
+
+        public DbSet<PostMedia> PostMedias { get; set; }
+
+        public DbSet<UserMedia> UserMedias { get; set; }
 
         public DbSet<UserSavedPost> UsersSavedPosts { get; set; }
 
-        public DbSet<PostsVotesScores> PostsVotesScores { get; set; }
+        //public DbSet<PostsVotesScores> PostsVotesScores { get; set; }
+        //CREATE VIEW View_PostsVotesScores AS 
+        //SELECT [p0].[Id], (
+        //SELECT SUM(CAST([v].[Type] AS int))
+        //    FROM[PostsVotes] AS[p]
+        //    INNER JOIN[Votes] AS [v] ON[p].[VoteId] = [v].[Id]
+        //    WHERE[p0].[Id] = [p].[PostId]) AS[VotesScore]
+        //FROM[Posts] AS[p0]
 
         public override int SaveChanges()
         {
@@ -76,14 +91,3 @@ namespace DiscussionBoard.Persistence
         }
     }
 }
-
-
-
-//CREATE VIEW View_PostsVotesScores AS 
-//SELECT [p0].[Id], (
-//SELECT SUM(CAST([v].[Type] AS int))
-//    FROM[PostsVotes] AS[p]
-//    INNER JOIN[Votes] AS [v] ON[p].[VoteId] = [v].[Id]
-//    WHERE[p0].[Id] = [p].[PostId]) AS[VotesScore]
-//FROM[Posts] AS[p0]
-

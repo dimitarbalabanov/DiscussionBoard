@@ -20,23 +20,29 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public DateTime? ModifiedOn { get; set; }
 
-        public int CommentsCount { get; set; }
-
         public int ForumId { get; set; }
 
         public string ForumTitle { get; set; }
 
+        public string MediaUrl { get; set; }
+
+        public int CommentsCount { get; set; }
+
         public int VotesScore { get; set; }
 
-        public int CurrentUserVoteId { get; set; }
+        public bool IsCreator { get; set; }
 
-        public string CurrentUserVoteType { get; set; }
+        public bool IsSaved { get; set; }
+
+        public int? VoteId { get; set; }
+
+        public string VoteType { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Post, GetPostByIdResponse>()
                 .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Vote.Type)));
+                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
         }
     }
 }

@@ -1,6 +1,7 @@
 using DiscussionBoard.Application;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Persistence;
+using DiscussionBoard.Web.Hubs;
 using DiscussionBoard.Web.Middlewares;
 using DiscussionBoard.Web.Services;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +26,7 @@ namespace DiscussionBoard.Web
         {
             services.AddPersistence(Configuration);
             services.AddApplication();
-
+            services.AddSignalR();
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
@@ -54,7 +55,8 @@ namespace DiscussionBoard.Web
                 app.UseHsts();
             }
 
-            app.UseCustomExceptionHandler();
+            //app.UseCustomExceptionHandler();
+            app.UseMiddleware<TestSpinnerMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();
@@ -68,6 +70,7 @@ namespace DiscussionBoard.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
             //app.UseSpa(spa =>

@@ -2,7 +2,6 @@
 using DiscussionBoard.Application.UserSavedPosts.Commands.DeleteUserSavedPost;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
@@ -14,20 +13,14 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserSavedPostCommand command)
         {
-            Thread.Sleep(300);
-
             await Mediator.Send(command);
-
             return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteUserSavedPostCommand command)
         {
-            Thread.Sleep(300);
-
             await Mediator.Send(command);
-
             return NoContent();
         }
     }

@@ -7,6 +7,7 @@ namespace DiscussionBoard.Domain.Entities
     {
         public Forum()
         {
+            Rules = new HashSet<Rule>();
             Posts = new HashSet<Post>();
         }
 
@@ -16,9 +17,13 @@ namespace DiscussionBoard.Domain.Entities
 
         public string Color { get; set; }
 
-        public string MediaUrl { get; set; }
+        public string CreatorId { get; set; }
+        public virtual User Creator { get; set; }
 
-        public string MediaPublicId { get; set; }
+        public int ImageId { get; set; }
+        public virtual ForumMedia Image { get; set; }
+
+        public virtual ICollection<Rule> Rules { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
     }

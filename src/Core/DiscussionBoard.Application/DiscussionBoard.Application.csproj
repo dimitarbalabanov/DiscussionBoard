@@ -18,4 +18,12 @@
     <ProjectReference Include="..\DiscussionBoard.Domain\DiscussionBoard.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CommentReports\Queries\" />
+    <Folder Include="CommentVotes\Queries\" />
+    <Folder Include="Forums\Commands\Validator\" />
+    <Folder Include="PostReports\Queries\" />
+    <Folder Include="PostVotes\Queries\" />
+  </ItemGroup>
+
 </Project>

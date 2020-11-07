@@ -15,17 +15,20 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
+        private readonly IRepository<UserSavedPost> _savesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
         public GetPostByIdQueryHandler(
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
+            IRepository<UserSavedPost> savesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
             _postsRepository = postsRepository;
             _postVotesRepository = postVotesRepository;
+            _savesRepository = savesRepository;
             _authUserService = authUserService;
             _mapper = mapper;
         }
@@ -34,9 +37,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
         {
             var response = await _postsRepository
                 .AllAsNoTracking()
-                .Include(p => p.Votes)
-                .ThenInclude(pv => pv.Vote)
-                .Where(p => p.Id == request.Id)
+                .Where(p => p.Id == request.PostId)
                 .ProjectTo<GetPostByIdResponse>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
@@ -50,13 +51,21 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
             {
                 var postVote = await _postVotesRepository
                     .AllAsNoTracking()
-                    .Include(pv => pv.Vote)
-                    .SingleOrDefaultAsync(pv => pv.PostId == request.Id && pv.Vote.CreatorId == userId);
+                    .SingleOrDefaultAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId);
 
                 if (postVote != null)
                 {
-                    response.CurrentUserVoteId = postVote.VoteId;
-                    response.CurrentUserVoteType = postVote.Vote.Type.ToString().ToLower();
+                    response.VoteId = postVote.Id;
+                    response.VoteType = postVote.Type.ToString().ToLower();
+                }
+
+                var save = await _savesRepository
+                    .AllAsNoTracking()
+                    .SingleOrDefaultAsync(s => s.PostId == request.PostId && s.UserId == userId);
+
+                if (save != null)
+                {
+                    response.IsSaved = true;
                 }
             }
 

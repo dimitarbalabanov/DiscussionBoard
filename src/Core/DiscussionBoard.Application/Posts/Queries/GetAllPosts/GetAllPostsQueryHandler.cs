@@ -10,8 +10,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscussionBoard.Application.Common.Helpers;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
@@ -19,7 +17,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
-        private readonly IRepository<PostsVotesScores> _scoresRepository;
+        private readonly IRepository<UserSavedPost> _savesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
         private const int PageSize = 10;
@@ -27,13 +25,13 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         public GetAllPostsQueryHandler(
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
-            IRepository<PostsVotesScores> scoresRepository,
+            IRepository<UserSavedPost> savesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
             _postsRepository = postsRepository;
             _postVotesRepository = postVotesRepository;
-            _scoresRepository = scoresRepository;
+            _savesRepository = savesRepository;
             _authUserService = authUserService;
             _mapper = mapper;
         }
@@ -46,11 +44,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 {
                     if (Enum.TryParse(request.Order, out TopSorter date))
                     {
-                        var ids = await _scoresRepository
-                            .AllAsNoTracking()
-                            .ScoreSort(date)
-                            .Select(x => x.Id)
-                            .ToListAsync();
+
                     }
                 }
             }
@@ -69,32 +63,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 query = query.Where(p => p.Id > id);
             }
 
-            query = query
-                .Include(p => p.Votes)
-                .ThenInclude(pv => pv.Vote)
-                .Include(p => p.Creator)
-                .Include(p => p.Forum);
-
-            //query = query.Take(PageSize);
-
-            //var asdf = await query
-            //    .Select(p => new PostDto
-            //    {
-            //        CreatedOn = p.CreatedOn,
-            //        CreatorUserName = p.Creator.UserName,
-            //        ForumId = p.Forum.Id,
-            //        ForumTitle = p.Forum.Title,
-            //        Id = p.Id,
-            //        Title = p.Title,
-            //        ModifiedOn = p.ModifiedOn,
-            //        CommentsCount = p.Comments.Count(),
-            //        VotesScore = p.Votes.Sum(pv => (int)pv.Vote.Type)
-            //    })
-            //    .OrderBy(x => x.VotesScore)
-            //    .ToListAsync();
-
             var posts = await query
-                .Take(10)
+                .Take(PageSize)
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
@@ -105,19 +75,29 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                     .Select(p => p.Id)
                     .ToList();
 
-                var currentUserVotesInPosts = await _postVotesRepository
+                var votesInPosts = await _postVotesRepository
                     .AllAsNoTracking()
-                    .Include(pv => pv.Vote)
-                    .Where(pv => postIds.Contains(pv.PostId) && pv.Vote.CreatorId == userId)
+                    .Where(pv => postIds.Contains(pv.PostId) && pv.CreatorId == userId)
+                    .ToListAsync();
+
+                var savedPosts = await _savesRepository
+                    .AllAsNoTracking()
+                    .Where(s => postIds.Contains(s.PostId) && s.UserId == userId)
                     .ToListAsync();
 
                 foreach (var post in posts)
                 {
-                    var postVote = currentUserVotesInPosts.SingleOrDefault(v => v.PostId == post.Id);
+                    var postVote = votesInPosts.SingleOrDefault(v => v.PostId == post.Id);
                     if (postVote != null)
                     {
-                        post.CurrentUserVoteId = postVote.VoteId;
-                        post.CurrentUserVoteType = postVote.Vote.Type.ToString().ToLower();
+                        post.VoteId = postVote.Id;
+                        post.VoteType = postVote.Type.ToString().ToLower();
+                    }
+
+                    var save = savedPosts.SingleOrDefault(s => s.PostId == post.Id);
+                    if (save != null)
+                    {
+                        post.IsSaved = true;
                     }
                 }
             }
@@ -132,7 +112,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         }
     }
 }
-
 
     //SELECT(
     //    SELECT COUNT(*)
