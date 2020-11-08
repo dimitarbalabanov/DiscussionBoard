@@ -1,6 +1,7 @@
 using DiscussionBoard.Application;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Persistence;
+using DiscussionBoard.Web.Extensions;
 using DiscussionBoard.Web.Hubs;
 using DiscussionBoard.Web.Middlewares;
 using DiscussionBoard.Web.Services;
@@ -10,11 +11,13 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DiscussionBoard.Shared;
 
 namespace DiscussionBoard.Web
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,7 +29,9 @@ namespace DiscussionBoard.Web
         {
             services.AddPersistence(Configuration);
             services.AddApplication();
-            services.AddSignalR();
+            services.AddCloudinary(Configuration);
+            services.AddSwaggerExtension();
+            //services.AddSignalR();
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
@@ -66,7 +71,7 @@ namespace DiscussionBoard.Web
             app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSwaggerExtension();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

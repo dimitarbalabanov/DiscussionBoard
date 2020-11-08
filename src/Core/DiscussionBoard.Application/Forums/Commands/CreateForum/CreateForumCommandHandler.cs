@@ -22,7 +22,8 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
         {
             var forum = new Forum
             {
-                Avatar = new ForumMedia { Url = request.MediaFile },
+                //upload img
+                Image = new ForumMedia { Url = "dsadsadsadsa", PublicId = "3214324" },
                 Color = request.Color,
                 CreatorId = _authUserService.UserId,
                 Description = request.Description,
@@ -33,7 +34,7 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
             await _forumsRepository.AddAsync(forum);
             await _forumsRepository.SaveChangesAsync();
 
-            return new CreateForumCommandResponse();
+            return new CreateForumCommandResponse { ForumId = forum.Id };
         }
     }
 }

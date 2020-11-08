@@ -29,19 +29,32 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(p => p.ForumId);
 
             post
+                .HasOne(p => p.Media)
+                .WithOne(pm => pm.Post)
+                .HasForeignKey<PostMedia>(pm => pm.PostId);
+
+            post
                 .HasMany(p => p.Comments)
                 .WithOne(c => c.Post)
                 .HasForeignKey(c => c.PostId);
 
+            post
+                .HasMany(p => p.Votes)
+                .WithOne(pv => pv.Post)
+                .HasForeignKey(pv => pv.PostId);
+
+            post
+                .HasMany(p => p.Reports)
+                .WithOne(pv => pv.Post)
+                .HasForeignKey(pv => pv.PostId);
+
             //post.Property(p => p.Score)
             //    .HasComputedColumnSql();
 
-
-            
-                //SELECT SUM(CAST([v].[Type] AS int))
-                //FROM [PostsVotes] AS [p]
-                //INNER JOIN [Votes] AS [v] ON[p].[VoteId] = [v].[Id]
-                //WHERE [p0].[Id] = [p].[PostId]
+            //SELECT SUM(CAST([v].[Type] AS int))
+            //FROM [PostsVotes] AS [p]
+            //INNER JOIN [Votes] AS [v] ON[p].[VoteId] = [v].[Id]
+            //WHERE [p0].[Id] = [p].[PostId]
         }
     }
 }

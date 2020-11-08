@@ -1,6 +1,8 @@
-﻿namespace DiscussionBoard.Domain.Entities
+﻿using DiscussionBoard.Domain.Common;
+
+namespace DiscussionBoard.Domain.Entities
 {
-    public class ForumMedia : Media
+    public class ForumMedia : BaseMedia
     {
         public int ForumId { get; set; }
         public Forum Forum { get; set; }

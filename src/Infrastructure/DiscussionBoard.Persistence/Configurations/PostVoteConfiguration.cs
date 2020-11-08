@@ -9,12 +9,13 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<PostVote> postVote)
         {
             postVote
-                .HasKey(pv => new { pv.PostId, pv.VoteId });
+               .Property(pv => pv.Type)
+               .IsRequired();
 
             postVote
-                .HasOne(pv => pv.Vote)
-                .WithMany(v => v.PostsVotes)
-                .HasForeignKey(pv => pv.VoteId);
+                .HasOne(pv => pv.Creator)
+                .WithMany(u => u.PostVotes)
+                .HasForeignKey(pv => pv.CreatorId);
 
             postVote
                 .HasOne(pv => pv.Post)

@@ -34,7 +34,8 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             await _postsRepository.AddAsync(post);
             await _postsRepository.SaveChangesAsync();
 
-            return _mapper.Map<CreatePostCommandResponse>(post);
+            return new CreatePostCommandResponse { Id = post.Id, CreatedOn = post.CreatedOn };
+            //return _mapper.Map<CreatePostCommandResponse>(post);
         }
     }
 }

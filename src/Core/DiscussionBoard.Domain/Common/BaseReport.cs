@@ -1,12 +1,12 @@
-﻿using DiscussionBoard.Domain.Common;
+﻿using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Entities.Enums;
 using System;
 
-namespace DiscussionBoard.Domain.Entities
+namespace DiscussionBoard.Domain.Common
 {
-    public class Report : BaseModel<string>
+    public class BaseReport : BaseModel<string>
     {
-        public Report()
+        public BaseReport()
         {
             Id = Guid.NewGuid().ToString();
         }
@@ -23,7 +23,7 @@ namespace DiscussionBoard.Domain.Entities
         public string CreatorId { get; set; }
         public User Creator { get; set; }
 
-        public string ResolverId { get; set; }
-        public User Resolver { get; set; }
+        //public string ResolverId { get; set; }
+        //public User Resolver { get; set; }
     }
 }

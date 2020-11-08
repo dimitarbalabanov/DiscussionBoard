@@ -31,7 +31,7 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
 
             if (commentVote == null)
             {
-                throw new NotFoundException(nameof(Vote));
+                throw new NotFoundException(nameof(CommentVote));
             }
 
             if (commentVote.CreatorId != _authUserService.UserId)

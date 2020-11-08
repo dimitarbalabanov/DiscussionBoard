@@ -8,22 +8,17 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Scores.Queries.GetPostsVotesScores
 {
-    class GetPostsVotesScoresQueryHandler : IRequestHandler<GetPostsVotesScoresQuery, List<PostsVotesScores>>
+    public class GetPostsVotesScoresQueryHandler : IRequestHandler<GetPostsVotesScoresQuery>
     {
-        private readonly IRepository<PostsVotesScores> _repository;
+        //private readonly IRepository<PostsVotesScores> _repository;
 
-        public GetPostsVotesScoresQueryHandler(IRepository<PostsVotesScores> repository)
+        //public GetPostsVotesScoresQueryHandler(IRepository<PostsVotesScores> repository)
+        //{
+        //    _repository = repository;
+        //}
+        public Task<Unit> Handle(GetPostsVotesScoresQuery request, CancellationToken cancellationToken)
         {
-            _repository = repository;
-        }
-        public async Task<List<PostsVotesScores>> Handle(GetPostsVotesScoresQuery request, CancellationToken cancellationToken)
-        {
-
-
-
-
-            var result = await _repository.AllAsNoTracking().ToListAsync();
-            return result;
+            throw new System.NotImplementedException();
         }
     }
 }

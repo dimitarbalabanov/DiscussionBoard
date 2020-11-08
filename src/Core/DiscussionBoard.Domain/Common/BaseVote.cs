@@ -1,9 +1,9 @@
-﻿using DiscussionBoard.Domain.Common;
+﻿using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Entities.Enums;
 
-namespace DiscussionBoard.Domain.Entities
+namespace DiscussionBoard.Domain.Common
 {
-    public class Vote : BaseModel<int>
+    public class BaseVote : BaseModel<int>
     {
         public VoteType Type { get; set; }
 

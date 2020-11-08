@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Application.Common.Responses;
@@ -18,6 +19,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IRepository<UserSavedPost> _savesRepository;
+        private readonly IRepository<User> _usersRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
         private const int PageSize = 10;
@@ -26,18 +28,23 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
             IRepository<UserSavedPost> savesRepository,
+            IRepository<User> usersRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
             _postsRepository = postsRepository;
             _postVotesRepository = postVotesRepository;
             _savesRepository = savesRepository;
+            _usersRepository = usersRepository;
             _authUserService = authUserService;
             _mapper = mapper;
         }
 
         public async Task<PagedResponse<GetAllPostsResponse>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
+            var query = _postsRepository
+                .AllAsNoTracking();
+
             if (Enum.TryParse(request.Sort, out Sorter sorter))
             {
                 if (sorter == Sorter.Top)
@@ -49,8 +56,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 }
             }
 
-            var query = _postsRepository
-                .AllAsNoTracking();
+            query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
 
             if (request.ForumId != null)
             {
@@ -71,6 +77,11 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             var userId = _authUserService.UserId;
             if (userId != null)
             {
+
+                var asdf = _usersRepository
+                    .AllAsNoTracking()
+                    .Where(u => u.Id == userId);
+
                 var postIds = posts
                     .Select(p => p.Id)
                     .ToList();

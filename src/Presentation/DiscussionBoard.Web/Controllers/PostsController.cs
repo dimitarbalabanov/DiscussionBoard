@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
 {
+    [Produces("application/json")]
     [Authorize]
     public class PostsController : BaseController
     {

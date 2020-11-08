@@ -34,7 +34,6 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             var comments = await _commentsRepository
                 .AllAsNoTracking()
                 .Include(c => c.Votes)
-                .ThenInclude(cv => cv.Vote)
                 .Where(c => c.PostId == request.PostId)
                 .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -48,8 +47,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
                 var currentUserVotesInComments = await _commentVotesRepository
                     .AllAsNoTracking()
-                    .Include(cv => cv.Vote)
-                    .Where(cv => commentIds.Contains(cv.CommentId) && cv.Vote.CreatorId == userId)
+                    .Where(cv => commentIds.Contains(cv.CommentId) && cv.CreatorId == userId)
                     .ToListAsync();
 
                 foreach (var comment in comments)
@@ -57,8 +55,8 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                     var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
                     if (commentVote != null)
                     {
-                        comment.CurrentUserVoteId = commentVote.VoteId;
-                        comment.CurrentUserVoteType = commentVote.Vote.Type.ToString().ToLower();
+                        comment.CurrentUserVoteId = commentVote.Id;
+                        comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
                     }
                 }
             }

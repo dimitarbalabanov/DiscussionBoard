@@ -26,7 +26,6 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
             var forums = await _forumsRepository
                 .AllAsNoTracking()
                 .OrderByDescending(f => f.Posts.Count)
-                .Take(5)
                 .ProjectTo<ForumDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 

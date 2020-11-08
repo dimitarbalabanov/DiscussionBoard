@@ -9,12 +9,13 @@ namespace DiscussionBoard.Persistence.Configurations
         public void Configure(EntityTypeBuilder<CommentVote> commentVote)
         {
             commentVote
-                .HasKey(cv => new { cv.CommentId, cv.VoteId });
+               .Property(cv => cv.Type)
+               .IsRequired();
 
             commentVote
-                .HasOne(cv => cv.Vote)
-                .WithMany(v => v.CommentsVotes)
-                .HasForeignKey(cv => cv.VoteId);
+                .HasOne(cv => cv.Creator)
+                .WithMany(u => u.CommentVotes)
+                .HasForeignKey(cv => cv.CreatorId);
 
             commentVote
                 .HasOne(cv => cv.Comment)

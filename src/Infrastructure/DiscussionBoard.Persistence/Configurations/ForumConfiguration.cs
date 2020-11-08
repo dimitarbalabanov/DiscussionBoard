@@ -19,9 +19,29 @@ namespace DiscussionBoard.Persistence.Configurations
                .HasMaxLength(800);
 
             forum
+               .Property(f => f.Color)
+               .IsRequired()
+               .HasMaxLength(6);
+
+            forum
+                .HasOne(f => f.Creator)
+                .WithMany(u => u.Forums)
+                .HasForeignKey(f => f.CreatorId);
+
+            forum
+                .HasOne(f => f.Image)
+                .WithOne(fm => fm.Forum)
+                .HasForeignKey<ForumMedia>(fm => fm.ForumId);
+
+            forum
                 .HasMany(f => f.Posts)
                 .WithOne(p => p.Forum)
                 .HasForeignKey(p => p.ForumId);
+
+            forum
+                .HasMany(f => f.Rules)
+                .WithOne(r => r.Forum)
+                .HasForeignKey(r => r.ForumId);
         }
     }
 }

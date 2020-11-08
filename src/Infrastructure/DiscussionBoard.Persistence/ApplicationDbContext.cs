@@ -20,21 +20,21 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<Forum> Forums { get; set; }
 
+        public DbSet<ForumMedia> ForumMedias { get; set; }
+
         public DbSet<Post> Posts { get; set; }
+
+        public DbSet<PostVote> PostVotes { get; set; }
+
+        public DbSet<PostReport> PostReports { get; set; }
+
+        public DbSet<PostMedia> PostMedias { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<CommentVote> CommentVotes { get; set; }
 
-        public DbSet<PostVote> PostVotes { get; set; }
-
         public DbSet<CommentReport> CommentReports { get; set; }
-
-        public DbSet<PostReport> PostReports { get; set; }
-
-        public DbSet<ForumMedia> ForumMedias { get; set; }
-
-        public DbSet<PostMedia> PostMedias { get; set; }
 
         public DbSet<UserMedia> UserMedias { get; set; }
 
@@ -48,6 +48,18 @@ namespace DiscussionBoard.Persistence
         //    INNER JOIN[Votes] AS [v] ON[p].[VoteId] = [v].[Id]
         //    WHERE[p0].[Id] = [p].[PostId]) AS[VotesScore]
         //FROM[Posts] AS[p0]
+
+        //[Table("View_PostsVotesScores")]
+        //public class PostsVotesScores : IAuditInfo
+        //{
+        //    public int Id { get; set; }
+
+        //    public int? VotesScore { get; set; }
+
+        //    public DateTime CreatedOn { get; set; }
+
+        //    public DateTime? ModifiedOn { get; set; }
+        //}
 
         public override int SaveChanges()
         {

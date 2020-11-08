@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscussionBoard.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201030121153_AddedPostsVotesScoresView")]
-    partial class AddedPostsVotesScoresView
+    [Migration("20201108121757_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,25 +54,75 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.CommentVote", b =>
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.CommentReport", b =>
                 {
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("VoteId")
+                    b.Property<int>("CommentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsSubstantial")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CommentId", "VoteId");
+                    b.Property<bool>("Resolved")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("VoteId");
+                    b.Property<int>("RuleId")
+                        .HasColumnType("int");
 
-                    b.ToTable("CommentsVotes");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("RuleId");
+
+                    b.ToTable("CommentReports");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.CommentVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("CommentVotes");
                 });
 
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.Forum", b =>
@@ -82,13 +132,24 @@ namespace DiscussionBoard.Persistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(800)")
                         .HasMaxLength(800);
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -100,7 +161,43 @@ namespace DiscussionBoard.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatorId");
+
                     b.ToTable("Forums");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.ForumMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ForumId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumId")
+                        .IsUnique();
+
+                    b.ToTable("ForumMedias");
                 });
 
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.Post", b =>
@@ -124,6 +221,9 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<int>("ForumId")
                         .HasColumnType("int");
 
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -141,13 +241,12 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostVote", b =>
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostMedia", b =>
                 {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoteId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -155,26 +254,124 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PostId", "VoteId");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("VoteId");
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
-                    b.ToTable("PostsVotes");
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId")
+                        .IsUnique();
+
+                    b.ToTable("PostMedias");
                 });
 
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostsVotesScores", b =>
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostReport", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsSubstantial")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Resolved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("RuleId");
+
+                    b.ToTable("PostReports");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostVote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("VotesScore")
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("View_PostsVotesScores");
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostVotes");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Rule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("ForumId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ForumId");
+
+                    b.ToTable("Rule");
                 });
 
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.User", b =>
@@ -183,6 +380,9 @@ namespace DiscussionBoard.Persistence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AvatarId")
                         .HasColumnType("int");
 
                     b.Property<string>("Bio")
@@ -252,6 +452,41 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("UserMedias");
+                });
+
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserSavedPost", b =>
                 {
                     b.Property<string>("UserId")
@@ -271,32 +506,6 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("UsersSavedPosts");
-                });
-
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -443,6 +652,25 @@ namespace DiscussionBoard.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.CommentReport", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.Comment", "Comment")
+                        .WithMany("Reports")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
+                        .WithMany("CommentReports")
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.Rule", "Rule")
+                        .WithMany("CommentReports")
+                        .HasForeignKey("RuleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.CommentVote", b =>
                 {
                     b.HasOne("DiscussionBoard.Domain.Entities.Comment", "Comment")
@@ -451,9 +679,23 @@ namespace DiscussionBoard.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DiscussionBoard.Domain.Entities.Vote", "Vote")
-                        .WithMany("CommentsVotes")
-                        .HasForeignKey("VoteId")
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
+                        .WithMany("CommentVotes")
+                        .HasForeignKey("CreatorId");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Forum", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
+                        .WithMany("Forums")
+                        .HasForeignKey("CreatorId");
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.ForumMedia", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.Forum", "Forum")
+                        .WithOne("Image")
+                        .HasForeignKey("DiscussionBoard.Domain.Entities.ForumMedia", "ForumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -471,19 +713,61 @@ namespace DiscussionBoard.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostMedia", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
+                        .WithOne("Media")
+                        .HasForeignKey("DiscussionBoard.Domain.Entities.PostMedia", "PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostReport", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
+                        .WithMany("PostReports")
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
+                        .WithMany("Reports")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.Rule", "Rule")
+                        .WithMany("PostReports")
+                        .HasForeignKey("RuleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostVote", b =>
                 {
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
+                        .WithMany("PostVotes")
+                        .HasForeignKey("CreatorId");
+
                     b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
                         .WithMany("Votes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("DiscussionBoard.Domain.Entities.Vote", "Vote")
-                        .WithMany("PostsVotes")
-                        .HasForeignKey("VoteId")
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Rule", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.Forum", "Forum")
+                        .WithMany("Rules")
+                        .HasForeignKey("ForumId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserMedia", b =>
+                {
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "User")
+                        .WithOne("Avatar")
+                        .HasForeignKey("DiscussionBoard.Domain.Entities.UserMedia", "UserId");
                 });
 
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserSavedPost", b =>
@@ -499,13 +783,6 @@ namespace DiscussionBoard.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DiscussionBoard.Domain.Entities.Vote", b =>
-                {
-                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
-                        .WithMany("Votes")
-                        .HasForeignKey("CreatorId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

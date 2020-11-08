@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace DiscussionBoard.Application.Forums.Commands.CreateForum
@@ -11,7 +12,7 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 
         public string Color { get; set; }
 
-        public string MediaFile { get; set; }
+        public IFormFile MediaFile { get; set; }
 
         public IEnumerable<string> Rules { get; set; }
     }

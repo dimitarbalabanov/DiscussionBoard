@@ -3,13 +3,16 @@ using DiscussionBoard.Application.Forums.Commands.DeleteForum;
 using DiscussionBoard.Application.Forums.Commands.UpdateForum;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
 {
+    [Authorize]
     public class ForumsController : BaseController
     {
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -17,6 +20,7 @@ namespace DiscussionBoard.Web.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
@@ -28,7 +32,7 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> Create([FromBody] CreateForumCommand command)
         {
             var response = await Mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { response }, response);
+            return CreatedAtAction(nameof(Get), new { id = response.ForumId }, response);
         }
 
         [HttpPut("{id}")]

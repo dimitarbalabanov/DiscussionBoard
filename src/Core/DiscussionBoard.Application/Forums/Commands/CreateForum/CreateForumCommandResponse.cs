@@ -2,6 +2,6 @@
 {
     public class CreateForumCommandResponse
     {
-
+        public int ForumId { get; set; }
     }
 }

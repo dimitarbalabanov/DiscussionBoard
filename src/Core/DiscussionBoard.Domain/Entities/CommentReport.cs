@@ -1,6 +1,8 @@
-﻿namespace DiscussionBoard.Domain.Entities
+﻿using DiscussionBoard.Domain.Common;
+
+namespace DiscussionBoard.Domain.Entities
 {
-    public class CommentReport : Report
+    public class CommentReport : BaseReport
     {
         public int CommentId { get; set; }
         public virtual Comment Comment { get; set; }

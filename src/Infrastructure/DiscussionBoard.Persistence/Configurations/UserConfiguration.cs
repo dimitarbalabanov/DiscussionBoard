@@ -13,6 +13,11 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasMaxLength(200);
 
             user
+               .HasOne(u => u.Avatar)
+               .WithOne(um => um.User)
+               .HasForeignKey<UserMedia>(um => um.UserId);
+
+            user
                 .HasMany(u => u.Posts)
                 .WithOne(p => p.Creator)
                 .HasForeignKey(p => p.CreatorId);
@@ -23,7 +28,22 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(c => c.CreatorId);
 
             user
-                .HasMany(u => u.Votes)
+                .HasMany(u => u.PostReports)
+                .WithOne(v => v.Creator)
+                .HasForeignKey(v => v.CreatorId);
+
+            user
+                .HasMany(u => u.PostVotes)
+                .WithOne(v => v.Creator)
+                .HasForeignKey(v => v.CreatorId);
+
+            user
+                .HasMany(u => u.CommentReports)
+                .WithOne(v => v.Creator)
+                .HasForeignKey(v => v.CreatorId);
+
+            user
+                .HasMany(u => u.CommentVotes)
                 .WithOne(v => v.Creator)
                 .HasForeignKey(v => v.CreatorId);
         }

@@ -12,9 +12,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(GetPostsVotesScoresQuery query)
         {
-            var response = await Mediator.Send(query);
-
-            return Ok(response);
+            return Ok();
         }
     }
 }
