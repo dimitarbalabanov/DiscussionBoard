@@ -42,14 +42,16 @@ export const fetchPostById = (postId) => {
   }
 };
 
-export const createPost = (forumId, title, content) => {
+//export const createPost = (forumId, title, content) => {
+export const createPost = (formData) => {
   return {
     types: [
       CREATE_POST_START,
       CREATE_POST_SUCCESS,
       CREATE_POST_FAILURE
     ],
-    callApi: () => createPostApi(forumId, title, content),
+    //callApi: () => createPostApi(forumId, title, content),
+    callApi: () => createPostApi(formData),
     effect({ dispatch, state, type}) {
       if (type === CREATE_POST_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully created a post.`))

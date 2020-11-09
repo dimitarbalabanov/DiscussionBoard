@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DiscussionBoard.Web.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class BaseController : ControllerBase
     {

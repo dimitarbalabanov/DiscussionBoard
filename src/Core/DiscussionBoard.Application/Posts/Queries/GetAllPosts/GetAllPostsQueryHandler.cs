@@ -77,7 +77,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             var userId = _authUserService.UserId;
             if (userId != null)
             {
-
                 var asdf = _usersRepository
                     .AllAsNoTracking()
                     .Where(u => u.Id == userId);
@@ -116,7 +115,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             var response = new PagedResponse<GetAllPostsResponse>
             {
                 Data = new GetAllPostsResponse { Posts = posts },
-                Cursor = posts[posts.Count - 1].Id
+                Cursor = posts.Count > 0 ? posts[posts.Count - 1].Id : default(int?)
             };
 
             return response;

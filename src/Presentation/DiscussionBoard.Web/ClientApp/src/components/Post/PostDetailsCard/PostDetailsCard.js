@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -48,7 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
   margin: {
     marginRight: theme.spacing(1)
-  }
+  },
+  media: {
+    height: 140,
+    paddingTop: '70.25%',
+  },
 }));
 
 const PostDetailsCard = props => {
@@ -88,6 +93,13 @@ const PostDetailsCard = props => {
               {postsLoading ? <Skeleton /> : post.title}
               </Typography>
             </Grid>
+            {post.mediaUrl &&
+              <CardMedia
+                className={classes.media}
+                //image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
+                image={post.mediaUrl}
+                title={post.title.substring(0, 10)}
+              />}
             <Grid className={classes.statsItem} item >
               <Typography>
                 {postsLoading ? <Skeleton /> : post.content}
@@ -111,7 +123,8 @@ const PostDetailsCard = props => {
                 <Typography color="textSecondary" display="inline" variant="body2">
                   Delete
                 </Typography> 
-              </Button></React.Fragment>}
+              </Button>
+              </React.Fragment>}
             </Grid>
           {createCommentLoading 
             ? <Spinner /> 

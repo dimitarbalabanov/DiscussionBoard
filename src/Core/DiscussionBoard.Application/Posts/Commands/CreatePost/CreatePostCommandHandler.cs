@@ -11,12 +11,18 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IAuthenticatedUserService _authUserService;
+        private readonly IMediaService _mediaService;
         private readonly IMapper _mapper;
 
-        public CreatePostCommandHandler(IRepository<Post> postsRepository, IAuthenticatedUserService authUserService, IMapper mapper)
+        public CreatePostCommandHandler(
+            IRepository<Post> postsRepository,
+            IAuthenticatedUserService authUserService,
+            IMediaService mediaService,
+            IMapper mapper)
         {
             _postsRepository = postsRepository;
             _authUserService = authUserService;
+            _mediaService = mediaService;
             _mapper = mapper;
         }
 
@@ -24,6 +30,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
         {
             //var post = _mapper.Map<Post>(request);
             //post.CreatorId = _authUserService.UserId;
+
             var post = new Post
             {
                 Title = request.Title,
@@ -31,11 +38,22 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
                 ForumId = request.ForumId,
                 CreatorId = _authUserService.UserId
             };
+
+            if (request.PostMedia != null)
+            {
+                var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia, request.PostMedia.FileName);
+                post.Media = new PostMedia
+                {
+                    Url = uploadResult.AbsoluteUri,
+                    PublicId = uploadResult.PublicId
+                };
+            }
+
             await _postsRepository.AddAsync(post);
             await _postsRepository.SaveChangesAsync();
 
-            return new CreatePostCommandResponse { Id = post.Id, CreatedOn = post.CreatedOn };
             //return _mapper.Map<CreatePostCommandResponse>(post);
+            return new CreatePostCommandResponse { Id = post.Id, CreatedOn = post.CreatedOn, MediaUrl = post.Media?.Url ?? ""};
         }
     }
 }

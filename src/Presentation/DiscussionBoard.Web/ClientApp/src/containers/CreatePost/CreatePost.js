@@ -80,16 +80,13 @@ const CreatePost = props => {
       })}
       onSubmit={values => {
         console.log(values)
-        // var formData = new FormData();
-        // var imagefile = document.querySelector('#file');
-        // formData.append("image", imagefile.files[0]);
-        // axios.post('upload_file', formData, {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data'
-        //     }
-        // })
-
-        onCreatePost(values.forumId, values.title, values.content);
+        var formData = new FormData();
+        formData.append('forumId', values.forumId);
+        formData.append('title', values.title);
+        formData.append('content', values.content);
+        formData.append("postMedia", values.image);
+        //onCreatePost(values.forumId, values.title, values.content);
+        onCreatePost(formData);
       }}
     >
       {({
@@ -202,7 +199,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
+    //onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
+    onCreatePost: (formData) => dispatch(createPost(formData))
   };
 };
 

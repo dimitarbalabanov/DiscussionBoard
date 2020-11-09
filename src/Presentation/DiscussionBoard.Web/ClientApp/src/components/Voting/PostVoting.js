@@ -53,7 +53,7 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup);
 
-const Voting = props => {
+const PostVoting = props => {
   
   // const {
   //   commentId,
@@ -112,7 +112,7 @@ const Voting = props => {
             {upIcon}
           </ToggleButton>
           <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
-             12
+             0
           </Typography>
           <ToggleButton value="down">
             {downIcon}
@@ -123,4 +123,4 @@ const Voting = props => {
   );
 }
 
-export default Voting;
+export default PostVoting;

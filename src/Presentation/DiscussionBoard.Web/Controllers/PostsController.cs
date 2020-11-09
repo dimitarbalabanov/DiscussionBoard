@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Web.Controllers
 {
-    [Produces("application/json")]
     [Authorize]
     public class PostsController : BaseController
     {
@@ -30,7 +29,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreatePostCommand command)
+        public async Task<IActionResult> Create([FromForm] CreatePostCommand command)
         {
             var response = await Mediator.Send(command);
             return CreatedAtAction(nameof(Get), new { response.Id }, response);

@@ -7,9 +7,11 @@ namespace DiscussionBoard.Shared
 {
     public static class ServiceRegistrationExtension
     {
-        public static void AddCloudinary(this IServiceCollection services, IConfiguration _config)
+        public static void AddCloudinary(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(CloudinaryFactory.GetInstance(_config));
+            //services.AddSingleton(CloudinaryFactory.GetInstance(_config));
+            //services.AddTransient<IMediaService, CloudinaryService>();
+            services.AddSingleton<CloudinaryDotNet.Cloudinary>(x => CloudinaryFactory.GetInstance(configuration));
             services.AddTransient<IMediaService, CloudinaryService>();
         }
     }

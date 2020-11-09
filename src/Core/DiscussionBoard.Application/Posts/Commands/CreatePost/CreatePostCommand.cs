@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
@@ -9,6 +10,8 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
         public string Content { get; set; }
 
         public int ForumId { get; set; }
+
+        public IFormFile PostMedia { get; set; }
     }
 }
 

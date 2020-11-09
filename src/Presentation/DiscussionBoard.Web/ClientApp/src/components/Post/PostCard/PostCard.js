@@ -9,7 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 //import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
-import Empty from '../../Voting/Empty';
+import PostVoting from '../../Voting/PostVoting';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -55,7 +55,7 @@ const PostCard = props => {
   
   return (
     <Card className={classes.card} variant="outlined" component={Link} to={`/posts/${post.id}`}>
-      <Empty />
+      <PostVoting />
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
           {/* {loading ? <Skeleton /> :  */}
@@ -71,12 +71,13 @@ const PostCard = props => {
           {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
           </Typography>
         </Grid>
+        {post.mediaUrl &&
           <CardMedia
             className={classes.media}
             //image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
-            image={"https://images.theconversation.com/files/177834/original/file-20170712-14488-19lw3sc.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"}
-            title="Paella dish"
-          />
+            image={post.mediaUrl}
+            title={post.title.substring(0, 10)}
+          />}
         <Grid className={classes.statsItem} item >
             <Typography color="textSecondary" display="inline" variant="body2" >
             {`${post.content.substring(0,250) + "..."} `}

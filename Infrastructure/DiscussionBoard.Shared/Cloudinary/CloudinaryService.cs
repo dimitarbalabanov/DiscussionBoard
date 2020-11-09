@@ -28,11 +28,9 @@ namespace DiscussionBoard.Shared.Cloudinary
                 throw new ArgumentNullException(nameof(formFile));
             }
 
-            byte[] image;
             var memoryStream = new MemoryStream();
-
             await formFile.CopyToAsync(memoryStream);
-            image = memoryStream.ToArray();
+            byte[] image = memoryStream.ToArray();
             memoryStream.Dispose();
 
             var stream = new MemoryStream(image);
@@ -41,7 +39,6 @@ namespace DiscussionBoard.Shared.Cloudinary
                 File = new FileDescription(name, stream),
                 AllowedFormats = new string[] { JpgFormat, PngFormat },
             };
-
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
             stream.Dispose();
 
@@ -50,7 +47,6 @@ namespace DiscussionBoard.Shared.Cloudinary
                 AbsoluteUri = uploadResult.SecureUrl.AbsoluteUri,
                 PublicId = uploadResult.PublicId,
             };
-
             return result;
         }
 

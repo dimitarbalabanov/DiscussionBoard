@@ -17,19 +17,18 @@ namespace DiscussionBoard.Web
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddPersistence(Configuration);
+            services.AddPersistence(_configuration);
             services.AddApplication();
-            services.AddCloudinary(Configuration);
+            services.AddCloudinary(_configuration);
             services.AddSwaggerExtension();
             //services.AddSignalR();
             services.AddControllersWithViews().AddNewtonsoftJson();
