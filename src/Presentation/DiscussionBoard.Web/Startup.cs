@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DiscussionBoard.Shared;
+using DiscussionBoard.Application.Common.Mappings;
+using System.Reflection;
 
 namespace DiscussionBoard.Web
 {
@@ -42,6 +44,8 @@ namespace DiscussionBoard.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(typeof(AutoMapperConfig).GetTypeInfo().Assembly);
+
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<IApplicationDbContext>();

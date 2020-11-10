@@ -73,7 +73,8 @@ const PostDetailsCard = props => {
     onCreateComment,
     createCommentLoading,
     createCommentError,
-    isAuthenticated
+    isAuthenticated,
+    onOpenModal
   } = props;
 
   return (
@@ -96,11 +97,10 @@ const PostDetailsCard = props => {
             {post.mediaUrl &&
               <CardMedia
                 className={classes.media}
-                //image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
                 image={post.mediaUrl}
                 title={post.title.substring(0, 10)}
               />}
-            <Grid className={classes.statsItem} item >
+            <Grid className={classes.statsItem} item>
               <Typography>
                 {postsLoading ? <Skeleton /> : post.content}
               </Typography>
@@ -119,10 +119,10 @@ const PostDetailsCard = props => {
                 Edit
               </Typography>
             </Button>
-              <Button onClick={() => {}} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
-                <Typography color="textSecondary" display="inline" variant="body2">
+              <Button onClick={() => onOpenModal("nekaf taip", "nekaf title", "nekaf message")} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
+                {/* <Typography color="textSecondary" display="inline" variant="body2">
                   Delete
-                </Typography> 
+                </Typography>  */}
               </Button>
               </React.Fragment>}
             </Grid>

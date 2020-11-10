@@ -29,7 +29,7 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(p => p.ForumId);
 
             post
-                .HasOne(p => p.Media)
+                .HasOne(p => p.PostMedia)
                 .WithOne(pm => pm.Post)
                 .HasForeignKey<PostMedia>(pm => pm.PostId);
 

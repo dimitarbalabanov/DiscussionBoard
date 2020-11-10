@@ -23,7 +23,7 @@ namespace DiscussionBoard.Persistence.Configurations
 
             userMedia
                 .HasOne(um => um.User)
-                .WithOne(u => u.Avatar)
+                .WithOne(u => u.UserMedia)
                 .HasForeignKey<UserMedia>(um => um.UserId);
         }
     }

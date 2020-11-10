@@ -13,6 +13,8 @@ namespace DiscussionBoard.Domain.Entities
 
         public string Title { get; set; }
 
+        public string Subtitle { get; set; }
+
         public string Description { get; set; }
 
         public string Color { get; set; }
@@ -20,8 +22,8 @@ namespace DiscussionBoard.Domain.Entities
         public string CreatorId { get; set; }
         public virtual User Creator { get; set; }
 
-        public int ImageId { get; set; }
-        public virtual ForumMedia Image { get; set; }
+        public int ForumMediaId { get; set; }
+        public virtual ForumMedia ForumMedia { get; set; }
 
         public virtual ICollection<Rule> Rules { get; set; }
 

@@ -1,8 +1,11 @@
-import * as actionTypes from './actionTypes';
+import {
+  SHOW_SNACKBAR,
+  HIDE_SNACKBAR
+} from './actionTypes';
 
 export const showSnackbar = (snackbarType, message) => {
     return {
-        type: actionTypes.SHOW_SNACKBAR,
+        type: SHOW_SNACKBAR,
         snackbarType: snackbarType,
         message: message
     };
@@ -10,7 +13,7 @@ export const showSnackbar = (snackbarType, message) => {
 
 export const hideSnackbar = () => {
     return {
-        type: actionTypes.HIDE_SNACKBAR,
+        type: HIDE_SNACKBAR,
         message: null
     };
 };

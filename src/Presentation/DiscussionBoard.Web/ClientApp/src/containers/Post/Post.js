@@ -59,7 +59,8 @@ const Post = (props) => {
     onDeleteVote,
     deleteVoteError,
     deleteVoteLoading,
-    isAuthenticated
+    isAuthenticated,
+    onOpenModal
   } = props;
 
   useEffect(() => {
@@ -83,6 +84,7 @@ const Post = (props) => {
       createCommentLoading={createCommentLoading}
       onDeleteComment={onDeleteComment}
       isAuthenticated={isAuthenticated}
+      onOpenModal={onOpenModal}
     />
   }
   
@@ -179,6 +181,7 @@ const mapDispatchToProps = dispatch => {
     onCreateVote: (commentId, type) => dispatch(actions.createVote(commentId, type)),
     onUpdateVote: (commentId, voteId, type) => dispatch(actions.updateVote(commentId, voteId, type)),
     onDeleteVote: (commentId, voteId, type) => dispatch(actions.deleteVote(commentId, voteId, type)),
+    onOpenModal: (type, title, message) => dispatch(actions.showModal(type, title, message))
   };
 };
 

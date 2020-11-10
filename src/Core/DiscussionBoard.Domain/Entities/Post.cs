@@ -23,8 +23,8 @@ namespace DiscussionBoard.Domain.Entities
         public int ForumId { get; set; }
         public virtual Forum Forum { get; set; }
 
-        public int MediaId { get; set; }
-        public virtual PostMedia Media { get; set; }
+        public int PostMediaId { get; set; }
+        public virtual PostMedia PostMedia { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
 

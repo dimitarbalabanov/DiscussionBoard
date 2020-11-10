@@ -43,3 +43,8 @@ export {
   showSnackbar,
   hideSnackbar
 } from './snackbar';
+
+export {
+  showModal,
+  hideModal
+} from './modal';

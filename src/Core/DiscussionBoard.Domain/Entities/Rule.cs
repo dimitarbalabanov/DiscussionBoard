@@ -11,6 +11,8 @@ namespace DiscussionBoard.Domain.Entities
             PostReports = new HashSet<PostReport>();
         }
 
+        public string Title { get; set; }
+
         public string Description { get; set; }
 
         public int ForumId { get; set; }

@@ -22,6 +22,8 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<ForumMedia> ForumMedias { get; set; }
 
+        public DbSet<Rule> Rules { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<PostVote> PostVotes { get; set; }

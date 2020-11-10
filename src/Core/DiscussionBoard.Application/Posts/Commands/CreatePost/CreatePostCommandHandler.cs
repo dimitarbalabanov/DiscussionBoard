@@ -42,7 +42,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             if (request.PostMedia != null)
             {
                 var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia, request.PostMedia.FileName);
-                post.Media = new PostMedia
+                post.PostMedia = new PostMedia
                 {
                     Url = uploadResult.AbsoluteUri,
                     PublicId = uploadResult.PublicId
@@ -53,7 +53,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             await _postsRepository.SaveChangesAsync();
 
             //return _mapper.Map<CreatePostCommandResponse>(post);
-            return new CreatePostCommandResponse { Id = post.Id, CreatedOn = post.CreatedOn, MediaUrl = post.Media?.Url ?? ""};
+            return new CreatePostCommandResponse { Id = post.Id, CreatedOn = post.CreatedOn, MediaUrl = post.PostMedia?.Url ?? ""};
         }
     }
 }

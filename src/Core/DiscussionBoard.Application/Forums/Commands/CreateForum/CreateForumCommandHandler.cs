@@ -23,7 +23,7 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
             var forum = new Forum
             {
                 //upload img
-                Image = new ForumMedia { Url = "dsadsadsadsa", PublicId = "3214324" },
+                ForumMedia = new ForumMedia { Url = "dsadsadsadsa", PublicId = "3214324" },
                 Color = request.Color,
                 CreatorId = _authUserService.UserId,
                 Description = request.Description,

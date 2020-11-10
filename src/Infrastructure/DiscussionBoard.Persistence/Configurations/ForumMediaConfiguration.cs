@@ -23,7 +23,7 @@ namespace DiscussionBoard.Persistence.Configurations
 
             forumMedia
                 .HasOne(fm => fm.Forum)
-                .WithOne(f => f.Image)
+                .WithOne(f => f.ForumMedia)
                 .HasForeignKey<ForumMedia>(fm => fm.ForumId);
         }
     }
