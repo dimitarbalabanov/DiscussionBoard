@@ -12,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DiscussionBoard.Shared;
-using DiscussionBoard.Application.Common.Mappings;
-using System.Reflection;
 
 namespace DiscussionBoard.Web
 {
@@ -30,7 +28,7 @@ namespace DiscussionBoard.Web
         {
             services.AddPersistence(_configuration);
             services.AddApplication();
-            services.AddCloudinary(_configuration);
+            services.AddShared(_configuration);
             services.AddSwaggerExtension();
             //services.AddSignalR();
             services.AddControllersWithViews().AddNewtonsoftJson();
@@ -44,14 +42,12 @@ namespace DiscussionBoard.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(AutoMapperConfig).GetTypeInfo().Assembly);
-
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-                var seeder = serviceScope.ServiceProvider.GetRequiredService<IDbContextSeeder>();
-                seeder.SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            }
+            //using (var serviceScope = app.ApplicationServices.CreateScope())
+            //{
+            //    var dbContext = serviceScope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+            //    var seeder = serviceScope.ServiceProvider.GetRequiredService<IDbContextSeeder>();
+            //    seeder.SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+            //}
 
             if (env.IsDevelopment())
             {

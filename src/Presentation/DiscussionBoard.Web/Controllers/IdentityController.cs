@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DiscussionBoard.Application.Identity.Commands.Login;
 using DiscussionBoard.Application.Identity.Commands.Register;
+using DiscussionBoard.Application.Identity.Commands.ConfirmEmail;
 
 namespace DiscussionBoard.Web.Controllers
 {
@@ -17,8 +18,20 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            var response = await Mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpGet("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
+        {
+            if (command.UserId == null || command.Code == null)
+            {
+                return BadRequest();
+            }
+
+            var response = await Mediator.Send(command);
+            return Ok(response);
         }
     }
 }

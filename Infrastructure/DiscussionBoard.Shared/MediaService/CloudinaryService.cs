@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using DiscussionBoard.Application.Common.DTOs;
 
-namespace DiscussionBoard.Shared.Cloudinary
+namespace DiscussionBoard.Shared.MediaService
 {
     public class CloudinaryService : IMediaService
     {
         private const string JpgFormat = "jpg";
         private const string PngFormat = "png";
 
-        private readonly CloudinaryDotNet.Cloudinary _cloudinary;
+        private readonly Cloudinary _cloudinary;
 
-        public CloudinaryService(CloudinaryDotNet.Cloudinary cloudinary)
+        public CloudinaryService(Cloudinary cloudinary)
         {
             _cloudinary = cloudinary;
         }

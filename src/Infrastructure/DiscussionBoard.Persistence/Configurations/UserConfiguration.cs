@@ -13,7 +13,7 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasMaxLength(200);
 
             user
-               .HasOne(u => u.UserMedia)
+               .HasOne(u => u.Avatar)
                .WithOne(um => um.User)
                .HasForeignKey<UserMedia>(um => um.UserId);
 

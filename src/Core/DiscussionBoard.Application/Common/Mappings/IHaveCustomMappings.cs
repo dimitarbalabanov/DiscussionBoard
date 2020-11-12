@@ -4,6 +4,6 @@ namespace DiscussionBoard.Application.Common.Mappings
 {
     public interface IHaveCustomMappings
     {
-        void CreateMappings(IProfileExpression configuration);
+        void CreateMappings(Profile profile);
     }
 }

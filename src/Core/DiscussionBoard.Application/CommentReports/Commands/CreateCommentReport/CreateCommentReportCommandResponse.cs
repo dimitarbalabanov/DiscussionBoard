@@ -5,6 +5,5 @@ namespace DiscussionBoard.Application.CommentReports.Commands.CreateCommentRepor
 {
     public class CreateCommentReportCommandResponse : IMapFrom<Comment>
     {
-
     }
 }

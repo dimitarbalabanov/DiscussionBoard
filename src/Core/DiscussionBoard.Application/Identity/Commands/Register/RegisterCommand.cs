@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.Identity.Commands.Register
 {
-    public class RegisterCommand : IRequest
+    public class RegisterCommand : IRequest<string>
     {
         public string Email { get; set; }
 

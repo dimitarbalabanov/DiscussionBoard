@@ -42,6 +42,13 @@ namespace DiscussionBoard.Application.Identity.Commands.Login
                 throw new AuthRequestException("User/password combination is invalid");
             }
 
+            var userHasConfirmedEmail = await _userManager.IsEmailConfirmedAsync(user);
+
+            if (!userHasConfirmedEmail)
+            {
+                throw new AuthRequestException("Email is not confirmed");
+            }
+
             var (token, expiration) = await GenerateJwtToken(user);
 
             return new LoginResponse

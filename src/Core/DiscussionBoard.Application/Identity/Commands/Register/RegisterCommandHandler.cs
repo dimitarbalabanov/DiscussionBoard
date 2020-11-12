@@ -1,30 +1,37 @@
 ﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Identity.Commands.Register
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _sender;
 
-        public RegisterCommandHandler(UserManager<User> userManager)
+        public RegisterCommandHandler(UserManager<User> userManager, IEmailSender sender)
         {
             _userManager = userManager;
+            _sender = sender;
         }
 
-        public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var user = new User
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                UserName = request.UserName
+                UserName = request.UserName,
+                Avatar = new UserMedia { PublicId= "asdasdsadasdsadsa", Url = "asddsadsasadasd"}
             };
 
             var createdUser = await _userManager.CreateAsync(user, request.Password);
@@ -33,7 +40,37 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
                 throw new AuthRequestException(string.Join(" ", createdUser.Errors.Select(e => e.Description)));
             }
 
-            return Unit.Value;
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = $"https://localhost:44322/confirmEmail?userId={user.Id}&code={code}";
+
+            //var from = new EmailAddress("dimitar.balabanov@gmail.com", "Discussion Board");
+            //var to = new EmailAddress("dimcho.balabanov@gmail.com", "Example user");
+            //var msg = new SendGridMessage
+            //{
+            //    From = from,
+            //    Subject = "Sending with Twilio SendGrid is Fun"
+            //};
+            //msg.AddContent(MimeType.Text, "and easy to do anywhere, even with C#");
+            //msg.AddTo(to);
+
+            //Console.WriteLine($"Sending email with payload: \n{msg.Serialize()}");
+            await _sender.SendEmailAsync(
+                "dimitar.balabanov@gmail.com",
+                "Discussion Board",
+                request.Email,
+                request.UserName,
+                "Please confirm your account",
+                "link");
+                //$"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
+
+            //Console.WriteLine($"Response: {response.StatusCode}");
+            //Console.WriteLine(response.Headers);
+
+
+            //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            //await _emailSender.SendEmailAsync("dimitar.balabanov@gmail.com", "Discussion Board", request.Email, "Confirm your email",
+            //    $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
+            return callbackUrl;
         }
     }
 }
