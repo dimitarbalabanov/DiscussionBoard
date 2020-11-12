@@ -11,11 +11,11 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.DeleteUserSavedPos
 {
     public class DeleteUserSavedPostCommandHandler : IRequestHandler<DeleteUserSavedPostCommand>
     {
-        private readonly IRepository<UserSavedPost> _savedRepository;
+        private readonly IRepository<UserPostSave> _savedRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
-        public DeleteUserSavedPostCommandHandler(IRepository<UserSavedPost> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
+        public DeleteUserSavedPostCommandHandler(IRepository<UserPostSave> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
         {
             _savedRepository = savedRepository;
             _authUserService = authUserService;

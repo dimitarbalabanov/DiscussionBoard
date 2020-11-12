@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DiscussionBoard.Persistence.Configurations
 {
-    public class UserSavedPostConfiguration : IEntityTypeConfiguration<UserSavedPost>
+    public class UserSavedPostConfiguration : IEntityTypeConfiguration<UserPostSave>
     {
-        public void Configure(EntityTypeBuilder<UserSavedPost> userSavedPost)
+        public void Configure(EntityTypeBuilder<UserPostSave> userSavedPost)
         {
             userSavedPost
                 .HasKey(usp => new { usp.UserId, usp.PostId });

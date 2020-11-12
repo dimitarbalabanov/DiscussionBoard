@@ -31,7 +31,7 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 UserName = request.UserName,
-                Avatar = new UserMedia { PublicId= "asdasdsadasdsadsa", Url = "asddsadsasadasd"}
+                Avatar = new UserMedia { PublicId = "asdasdsadasdsadsa", Url = "asddsadsasadasd" }
             };
 
             var createdUser = await _userManager.CreateAsync(user, request.Password);
@@ -43,17 +43,6 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = $"https://localhost:44322/confirmEmail?userId={user.Id}&code={code}";
 
-            //var from = new EmailAddress("dimitar.balabanov@gmail.com", "Discussion Board");
-            //var to = new EmailAddress("dimcho.balabanov@gmail.com", "Example user");
-            //var msg = new SendGridMessage
-            //{
-            //    From = from,
-            //    Subject = "Sending with Twilio SendGrid is Fun"
-            //};
-            //msg.AddContent(MimeType.Text, "and easy to do anywhere, even with C#");
-            //msg.AddTo(to);
-
-            //Console.WriteLine($"Sending email with payload: \n{msg.Serialize()}");
             await _sender.SendEmailAsync(
                 "dimitar.balabanov@gmail.com",
                 "Discussion Board",
@@ -61,16 +50,22 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
                 request.UserName,
                 "Please confirm your account",
                 "link");
-                //$"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
+            //$"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
 
-            //Console.WriteLine($"Response: {response.StatusCode}");
-            //Console.WriteLine(response.Headers);
-
-
-            //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            //await _emailSender.SendEmailAsync("dimitar.balabanov@gmail.com", "Discussion Board", request.Email, "Confirm your email",
-            //    $"Please confirm your account by clicking this link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>link</a>");
             return callbackUrl;
         }
     }
 }
+
+//var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+//var from = new EmailAddress("dimitar.balabanov@gmail.com", "Discussion Board");
+//var to = new EmailAddress("dimcho.balabanov@gmail.com", "Example user");
+//var msg = new SendGridMessage
+//{
+//    From = from,
+//    Subject = "Sending with Twilio SendGrid is Fun"
+//};
+//msg.AddContent(MimeType.Text, "and easy to do anywhere, even with C#");
+//msg.AddTo(to);
+
+//Console.WriteLine($"Sending email with payload: \n{msg.Serialize()}");

@@ -18,7 +18,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
-        private readonly IRepository<UserSavedPost> _savesRepository;
+        private readonly IRepository<UserPostSave> _savesRepository;
         private readonly IRepository<User> _usersRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         public GetAllPostsQueryHandler(
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
-            IRepository<UserSavedPost> savesRepository,
+            IRepository<UserPostSave> savesRepository,
             IRepository<User> usersRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)

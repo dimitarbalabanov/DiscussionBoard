@@ -11,11 +11,11 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.CreateUserSavedPos
 {
     public class CreateUserSavedPostCommandHandler : IRequestHandler<CreateUserSavedPostCommand>
     {
-        private readonly IRepository<UserSavedPost> _savedRepository;
+        private readonly IRepository<UserPostSave> _savedRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
-        public CreateUserSavedPostCommandHandler(IRepository<UserSavedPost> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
+        public CreateUserSavedPostCommandHandler(IRepository<UserPostSave> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
         {
             _savedRepository = savedRepository;
             _authUserService = authUserService;
@@ -33,7 +33,7 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.CreateUserSavedPos
                 throw new Exception("Already saved");
             }
 
-            var userSavedPost = new UserSavedPost
+            var userSavedPost = new UserPostSave
             {
                 PostId = request.PostId,
                 UserId = _authUserService.UserId

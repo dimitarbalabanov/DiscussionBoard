@@ -17,7 +17,7 @@ namespace DiscussionBoard.Domain.Entities
             PostVotes = new HashSet<PostVote>();
             CommentReports = new HashSet<CommentReport>();
             PostReports = new HashSet<PostReport>();
-            SavedPosts = new HashSet<UserSavedPost>();
+            PostSaves = new HashSet<UserPostSave>();
         }
 
         public DateTime CreatedOn { get; set; }
@@ -26,8 +26,8 @@ namespace DiscussionBoard.Domain.Entities
 
         public string Bio { get; set; }
 
-        public int AvatarId { get; set; }
-        public UserMedia Avatar { get; set; }
+        public int MediaId { get; set; }
+        public UserMedia Media { get; set; }
 
         public virtual ICollection<Forum> Forums { get; set; }
 
@@ -43,6 +43,6 @@ namespace DiscussionBoard.Domain.Entities
 
         public virtual ICollection<PostReport> PostReports { get; set; }
 
-        public virtual ICollection<UserSavedPost> SavedPosts { get; set; }
+        public virtual ICollection<UserPostSave> PostSaves { get; set; }
     }
 }

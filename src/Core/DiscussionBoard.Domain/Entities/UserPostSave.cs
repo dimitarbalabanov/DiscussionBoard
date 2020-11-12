@@ -3,7 +3,7 @@ using System;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class UserSavedPost : IAuditInfo
+    public class UserPostSave : IAuditInfo
     {
         public DateTime CreatedOn { get; set; }
 

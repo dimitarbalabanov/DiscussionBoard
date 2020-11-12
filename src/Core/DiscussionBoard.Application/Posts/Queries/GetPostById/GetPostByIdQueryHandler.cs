@@ -15,14 +15,14 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
     {
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
-        private readonly IRepository<UserSavedPost> _savesRepository;
+        private readonly IRepository<UserPostSave> _savesRepository;
         private readonly IAuthenticatedUserService _authUserService;
         private readonly IMapper _mapper;
 
         public GetPostByIdQueryHandler(
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
-            IRepository<UserSavedPost> savesRepository,
+            IRepository<UserPostSave> savesRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {
