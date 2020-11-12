@@ -20,7 +20,7 @@ namespace DiscussionBoard.Persistence.Configurations
 
             postMedia
                 .HasOne(pm => pm.Post)
-                .WithOne(p => p.PostMedia)
+                .WithOne(p => p.Media)
                 .HasForeignKey<PostMedia>(pm => pm.PostId);
         }
     }

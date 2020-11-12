@@ -11,12 +11,13 @@ namespace DiscussionBoard.Persistence.Configurations
             comment
                .Property(c => c.Content)
                .IsRequired()
-               .HasMaxLength(2000);
+               .HasMaxLength(1500);
 
             comment
                 .HasOne(c => c.Creator)
                 .WithMany(u => u.Comments)
-                .HasForeignKey(c => c.CreatorId);
+                .HasForeignKey(c => c.CreatorId)
+                .IsRequired();
 
             comment
                 .HasOne(c => c.Post)

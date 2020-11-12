@@ -22,7 +22,6 @@ namespace DiscussionBoard.Domain.Entities
         public string CreatorId { get; set; }
         public virtual User Creator { get; set; }
 
-        public int MediaId { get; set; }
         public virtual ForumMedia Media { get; set; }
 
         public virtual ICollection<Rule> Rules { get; set; }

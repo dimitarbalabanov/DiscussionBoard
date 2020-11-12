@@ -20,18 +20,19 @@ namespace DiscussionBoard.Persistence.Configurations
 
             forum
                .Property(f => f.Color)
-               .IsRequired()
                .HasMaxLength(6);
 
             forum
                 .HasOne(f => f.Creator)
                 .WithMany(u => u.Forums)
-                .HasForeignKey(f => f.CreatorId);
+                .HasForeignKey(f => f.CreatorId)
+                .IsRequired();
 
             forum
-                .HasOne(f => f.ForumMedia)
+                .HasOne(f => f.Media)
                 .WithOne(fm => fm.Forum)
-                .HasForeignKey<ForumMedia>(fm => fm.ForumId);
+                .HasForeignKey<ForumMedia>(fm => fm.ForumId)
+                .HasConstraintName("ForumMediaId");
 
             forum
                 .HasMany(f => f.Posts)

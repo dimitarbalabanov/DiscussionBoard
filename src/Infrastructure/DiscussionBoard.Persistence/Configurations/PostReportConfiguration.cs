@@ -20,7 +20,8 @@ namespace DiscussionBoard.Persistence.Configurations
             postReport
                 .HasOne(pr => pr.Creator)
                 .WithMany(u => u.PostReports)
-                .HasForeignKey(pr => pr.CreatorId);
+                .HasForeignKey(pr => pr.CreatorId)
+                .IsRequired();
 
             //postReport
             //    .HasOne(pr => pr.Resolver)

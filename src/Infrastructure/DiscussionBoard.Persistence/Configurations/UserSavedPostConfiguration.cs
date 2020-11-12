@@ -6,20 +6,20 @@ namespace DiscussionBoard.Persistence.Configurations
 {
     public class UserSavedPostConfiguration : IEntityTypeConfiguration<UserPostSave>
     {
-        public void Configure(EntityTypeBuilder<UserPostSave> userSavedPost)
+        public void Configure(EntityTypeBuilder<UserPostSave> userPostSave)
         {
-            userSavedPost
-                .HasKey(usp => new { usp.UserId, usp.PostId });
+            userPostSave
+                .HasKey(ups => new { ups.UserId, ups.PostId });
 
-            userSavedPost
-                .HasOne(usp => usp.User)
-                .WithMany(u => u.SavedPosts)
-                .HasForeignKey(usp => usp.UserId);
+            userPostSave
+                .HasOne(ups => ups.User)
+                .WithMany(u => u.PostSaves)
+                .HasForeignKey(ups => ups.UserId);
 
-            userSavedPost
-                .HasOne(usp => usp.Post)
-                .WithMany(p => p.SavedBy)
-                .HasForeignKey(usp => usp.PostId);
+            userPostSave
+                .HasOne(ups => ups.Post)
+                .WithMany(p => p.UserSaves)
+                .HasForeignKey(ups => ups.PostId);
         }
     }
 }

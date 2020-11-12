@@ -17,7 +17,7 @@ namespace DiscussionBoard.Domain.Common
 
         public ReportType Type { get; set; }
 
-        public int RuleId { get; set; }
+        public int? RuleId { get; set; }
         public Rule Rule { get; set; }
 
         public string CreatorId { get; set; }

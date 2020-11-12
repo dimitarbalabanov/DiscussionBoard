@@ -15,7 +15,8 @@ namespace DiscussionBoard.Persistence.Configurations
             postVote
                 .HasOne(pv => pv.Creator)
                 .WithMany(u => u.PostVotes)
-                .HasForeignKey(pv => pv.CreatorId);
+                .HasForeignKey(pv => pv.CreatorId)
+                .IsRequired();
 
             postVote
                 .HasOne(pv => pv.Post)

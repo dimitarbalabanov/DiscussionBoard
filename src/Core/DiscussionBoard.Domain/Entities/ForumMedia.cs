@@ -5,6 +5,6 @@ namespace DiscussionBoard.Domain.Entities
     public class ForumMedia : BaseMedia
     {
         public int ForumId { get; set; }
-        public Forum Forum { get; set; }
+        public virtual Forum Forum { get; set; }
     }
 }

@@ -26,8 +26,7 @@ namespace DiscussionBoard.Domain.Entities
 
         public string Bio { get; set; }
 
-        public int MediaId { get; set; }
-        public UserMedia Media { get; set; }
+        public virtual UserMedia Media { get; set; }
 
         public virtual ICollection<Forum> Forums { get; set; }
 

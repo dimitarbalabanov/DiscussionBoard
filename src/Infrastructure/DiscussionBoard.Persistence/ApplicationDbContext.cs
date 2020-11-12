@@ -40,7 +40,7 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<UserMedia> UserMedias { get; set; }
 
-        public DbSet<UserPostSave> UsersSavedPosts { get; set; }
+        public DbSet<UserPostSave> UserPostSaves { get; set; }
 
         //public DbSet<PostsVotesScores> PostsVotesScores { get; set; }
         //CREATE VIEW View_PostsVotesScores AS 

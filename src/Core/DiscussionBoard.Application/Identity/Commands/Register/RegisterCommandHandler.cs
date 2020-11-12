@@ -31,7 +31,7 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
                 Id = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 UserName = request.UserName,
-                Avatar = new UserMedia { PublicId = "asdasdsadasdsadsa", Url = "asddsadsasadasd" }
+                Media = new UserMedia { PublicId = "asdasdsadasdsadsa", Url = "asddsadsasadasd" }
             };
 
             var createdUser = await _userManager.CreateAsync(user, request.Password);

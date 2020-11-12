@@ -10,9 +10,9 @@ namespace DiscussionBoard.Domain.Entities
         public DateTime? ModifiedOn { get; set; }
 
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public int PostId { get; set; }
-        public Post Post { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

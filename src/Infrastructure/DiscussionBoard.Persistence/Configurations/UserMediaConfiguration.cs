@@ -1,9 +1,6 @@
 ﻿using DiscussionBoard.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DiscussionBoard.Persistence.Configurations
 {
@@ -23,7 +20,7 @@ namespace DiscussionBoard.Persistence.Configurations
 
             userMedia
                 .HasOne(um => um.User)
-                .WithOne(u => u.Avatar)
+                .WithOne(u => u.Media)
                 .HasForeignKey<UserMedia>(um => um.UserId);
         }
     }

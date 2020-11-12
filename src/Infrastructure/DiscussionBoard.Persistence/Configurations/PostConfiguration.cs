@@ -11,17 +11,17 @@ namespace DiscussionBoard.Persistence.Configurations
             post
                .Property(p => p.Title)
                .IsRequired()
-               .HasMaxLength(200);
+               .HasMaxLength(300);
 
             post
                .Property(p => p.Content)
-               .IsRequired()
                .HasMaxLength(2500);
 
             post
                 .HasOne(p => p.Creator)
                 .WithMany(u => u.Posts)
-                .HasForeignKey(p => p.CreatorId);
+                .HasForeignKey(p => p.CreatorId)
+                .IsRequired();
 
             post
                 .HasOne(p => p.Forum)
@@ -29,7 +29,7 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(p => p.ForumId);
 
             post
-                .HasOne(p => p.PostMedia)
+                .HasOne(p => p.Media)
                 .WithOne(pm => pm.Post)
                 .HasForeignKey<PostMedia>(pm => pm.PostId);
 

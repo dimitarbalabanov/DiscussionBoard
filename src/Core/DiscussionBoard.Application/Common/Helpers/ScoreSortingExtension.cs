@@ -8,7 +8,7 @@ namespace DiscussionBoard.Application.Common.Helpers
     public static class ScoreSortingExtension
     {
         public static IQueryable<T> ScoreSort<T>(this IQueryable<T> collection, TopSorter sorter)
-            where T : IAuditInfo, IHaveVotes<BaseVote>
+            where T : IAuditInfo
         {
             var now = DateTime.UtcNow;
 
@@ -31,7 +31,7 @@ namespace DiscussionBoard.Application.Common.Helpers
                     break;
             }
 
-            collection = collection.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
+            //collection = collection.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
 
             return collection;
         } 
