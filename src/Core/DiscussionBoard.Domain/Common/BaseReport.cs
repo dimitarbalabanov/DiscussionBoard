@@ -23,7 +23,7 @@ namespace DiscussionBoard.Domain.Common
         public string CreatorId { get; set; }
         public User Creator { get; set; }
 
-        //public string ResolverId { get; set; }
-        //public User Resolver { get; set; }
+        public string ResolverId { get; set; }
+        public User Resolver { get; set; }
     }
 }

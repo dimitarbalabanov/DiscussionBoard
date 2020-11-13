@@ -21,7 +21,8 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasOne(p => p.Creator)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             post
                 .HasOne(p => p.Forum)
@@ -36,17 +37,20 @@ namespace DiscussionBoard.Persistence.Configurations
             post
                 .HasMany(p => p.Comments)
                 .WithOne(c => c.Post)
-                .HasForeignKey(c => c.PostId);
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             post
                 .HasMany(p => p.Votes)
                 .WithOne(pv => pv.Post)
-                .HasForeignKey(pv => pv.PostId);
+                .HasForeignKey(pv => pv.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             post
                 .HasMany(p => p.Reports)
                 .WithOne(pv => pv.Post)
-                .HasForeignKey(pv => pv.PostId);
+                .HasForeignKey(pv => pv.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //post.Property(p => p.Score)
             //    .HasComputedColumnSql();

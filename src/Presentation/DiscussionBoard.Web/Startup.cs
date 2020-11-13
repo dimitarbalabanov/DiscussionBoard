@@ -1,17 +1,15 @@
 using DiscussionBoard.Application;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Persistence;
+using DiscussionBoard.Shared;
 using DiscussionBoard.Web.Extensions;
-using DiscussionBoard.Web.Hubs;
 using DiscussionBoard.Web.Middlewares;
 using DiscussionBoard.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DiscussionBoard.Shared;
 
 namespace DiscussionBoard.Web
 {
@@ -33,7 +31,6 @@ namespace DiscussionBoard.Web
             //services.AddSignalR();
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
-
             //services.AddSpaStaticFiles(configuration =>
             //{
             //    configuration.RootPath = "ClientApp/build";
@@ -42,13 +39,6 @@ namespace DiscussionBoard.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //using (var serviceScope = app.ApplicationServices.CreateScope())
-            //{
-            //    var dbContext = serviceScope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-            //    var seeder = serviceScope.ServiceProvider.GetRequiredService<IDbContextSeeder>();
-            //    seeder.SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
-            //}
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,9 +54,7 @@ namespace DiscussionBoard.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();
-
             app.UseRouting();
-
             app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
@@ -76,7 +64,6 @@ namespace DiscussionBoard.Web
                 endpoints.MapControllers();
                 //endpoints.MapHub<ChatHub>("/hubs/chat");
             });
-
             //app.UseSpa(spa =>
             //{
             //    spa.Options.SourcePath = "ClientApp";

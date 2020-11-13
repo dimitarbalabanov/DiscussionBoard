@@ -17,6 +17,10 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 
         public int CommentsCount { get; set; }
 
+        public string MediaUrl { get; set; }
+
+        public string Color { get; set; }
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Forum, GetForumByIdResponse>()

@@ -19,10 +19,16 @@ namespace DiscussionBoard.Persistence.Configurations
 
             commentReport
                 .HasOne(cr => cr.Creator)
-                .WithMany(u => u.CommentReports)
+                .WithMany(u => u.CreatedCommentReports)
                 .HasForeignKey(cr => cr.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
+            commentReport
+                .HasOne(cr => cr.Resolver)
+                .WithMany(u => u.ResolvedCommentReports)
+                .HasForeignKey(cr => cr.ResolverId)
+                .OnDelete(DeleteBehavior.Restrict);
             //commentReport
             //    .HasOne(cr => cr.Resolver)
             //    .WithMany(u => u.CommentReports)

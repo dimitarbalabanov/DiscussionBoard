@@ -15,8 +15,10 @@ namespace DiscussionBoard.Domain.Entities
             Comments = new HashSet<Comment>();
             CommentVotes = new HashSet<CommentVote>();
             PostVotes = new HashSet<PostVote>();
-            CommentReports = new HashSet<CommentReport>();
-            PostReports = new HashSet<PostReport>();
+            CreatedCommentReports = new HashSet<CommentReport>();
+            ResolvedCommentReports = new HashSet<CommentReport>();
+            CreatedPostReports = new HashSet<PostReport>();
+            ResolvedPostReports = new HashSet<PostReport>();
             PostSaves = new HashSet<UserPostSave>();
         }
 
@@ -38,9 +40,13 @@ namespace DiscussionBoard.Domain.Entities
 
         public virtual ICollection<PostVote> PostVotes { get; set; }
 
-        public virtual ICollection<CommentReport> CommentReports { get; set; }
+        public virtual ICollection<CommentReport> CreatedCommentReports { get; set; }
 
-        public virtual ICollection<PostReport> PostReports { get; set; }
+        public virtual ICollection<CommentReport> ResolvedCommentReports { get; set; }
+
+        public virtual ICollection<PostReport> CreatedPostReports { get; set; }
+
+        public virtual ICollection<PostReport> ResolvedPostReports { get; set; }
 
         public virtual ICollection<UserPostSave> PostSaves { get; set; }
     }

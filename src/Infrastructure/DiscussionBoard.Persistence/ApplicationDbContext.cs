@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Domain.Common;
+﻿using DiscussionBoard.Domain.Common;
 using DiscussionBoard.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Persistence
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

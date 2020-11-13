@@ -80,7 +80,7 @@ const PostCard = props => {
           />}
         <Grid className={classes.statsItem} item >
             <Typography color="textSecondary" display="inline" variant="body2" >
-            {`${post.content.substring(0,250) + "..."} `}
+            {`${post.content ? post.content.substring(0,250) + "..." : null} `}
             </Typography>
         </Grid>
         <Grid className={classes.statsItem} item >

@@ -1,6 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Domain.Entities;
-using Newtonsoft.Json;
+﻿using DiscussionBoard.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Persistence.Seeding
 {
-    public class ForumsSeeder : IDbContextSeeder
+    public class ForumsSeeder 
     {
-        public async Task SeedAsync(IApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext.Forums.Any())
             {

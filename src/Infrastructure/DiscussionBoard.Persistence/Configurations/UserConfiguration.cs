@@ -28,9 +28,14 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(c => c.CreatorId);
 
             user
-                .HasMany(u => u.PostReports)
+                .HasMany(u => u.CreatedPostReports)
                 .WithOne(v => v.Creator)
                 .HasForeignKey(v => v.CreatorId);
+
+            user
+                .HasMany(u => u.ResolvedPostReports)
+                .WithOne(v => v.Resolver)
+                .HasForeignKey(v => v.ResolverId);
 
             user
                 .HasMany(u => u.PostVotes)
@@ -38,9 +43,14 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(v => v.CreatorId);
 
             user
-                .HasMany(u => u.CommentReports)
+                .HasMany(u => u.CreatedCommentReports)
                 .WithOne(v => v.Creator)
                 .HasForeignKey(v => v.CreatorId);
+
+            user
+                .HasMany(u => u.ResolvedCommentReports)
+                .WithOne(v => v.Resolver)
+                .HasForeignKey(v => v.ResolverId);
 
             user
                 .HasMany(u => u.CommentVotes)

@@ -17,7 +17,8 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasOne(c => c.Creator)
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             comment
                 .HasOne(c => c.Post)
@@ -32,7 +33,8 @@ namespace DiscussionBoard.Persistence.Configurations
             comment
                 .HasMany(c => c.Reports)
                 .WithOne(cr => cr.Comment)
-                .HasForeignKey(cr => cr.CommentId);
+                .HasForeignKey(cr => cr.CommentId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

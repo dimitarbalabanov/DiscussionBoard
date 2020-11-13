@@ -19,14 +19,16 @@ namespace DiscussionBoard.Persistence.Configurations
 
             postReport
                 .HasOne(pr => pr.Creator)
-                .WithMany(u => u.PostReports)
+                .WithMany(u => u.CreatedPostReports)
                 .HasForeignKey(pr => pr.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //postReport
-            //    .HasOne(pr => pr.Resolver)
-            //    .WithMany(u => u.PostReports)
-            //    .HasForeignKey(pr => pr.ResolverId);
+            postReport
+                .HasOne(pr => pr.Resolver)
+                .WithMany(u => u.ResolvedPostReports)
+                .HasForeignKey(pr => pr.ResolverId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             postReport
                 .HasOne(pr => pr.Rule)

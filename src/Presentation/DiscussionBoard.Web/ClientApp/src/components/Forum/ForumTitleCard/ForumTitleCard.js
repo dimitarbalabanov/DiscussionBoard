@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 150,
     width: 150
+  },
+  header: {
+    backgroundColor: null
   }
 }));
 
@@ -40,15 +43,18 @@ const ForumTitleCard = props => {
 
   return (
     <Grid item xs={12} md={10}>
+          {loading || !forum || !forum.color ? null : <CardHeader style={{backgroundColor: "#" + forum.color}}/>}
       <Card className={classes.card} >
+      {loading || !forum ? null : 
           <Avatar
-            className={classes.avatar}
-            src={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
-          />
+          className={classes.avatar}
+          src={forum.mediaUrl}
+          />}
         <Typography className={classes.title} component="h1" variant="h1" align="center">
           {loading || !forum ? <Skeleton /> : "f/" + forum.title.substring(0, 10).toLowerCase()}
         </Typography>
       </Card>
+          {loading || !forum || !forum.color ? null : <CardHeader style={{backgroundColor: "#" + forum.color}}/>}
     </Grid>
   );
 }

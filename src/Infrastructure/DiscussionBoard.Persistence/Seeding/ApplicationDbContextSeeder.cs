@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace DiscussionBoard.Persistence.Seeding
 {
     public class ApplicationDbContextSeeder : IDbContextSeeder
     {
-        public async Task SeedAsync(IApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext == null)
             {
@@ -23,7 +22,7 @@ namespace DiscussionBoard.Persistence.Seeding
                           {
                               new RolesSeeder(),
                               new AdministratorSeeder(),
-                              new ForumsSeeder()
+                              new UsersSeeder()
                           };
 
             foreach (var seeder in seeders)

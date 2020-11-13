@@ -21,7 +21,8 @@ namespace DiscussionBoard.Persistence.Configurations
             userMedia
                 .HasOne(um => um.User)
                 .WithOne(u => u.Media)
-                .HasForeignKey<UserMedia>(um => um.UserId);
+                .HasForeignKey<UserMedia>(um => um.UserId)
+                .IsRequired();
         }
     }
 }

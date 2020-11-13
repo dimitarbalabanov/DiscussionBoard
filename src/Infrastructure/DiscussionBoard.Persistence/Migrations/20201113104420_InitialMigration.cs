@@ -42,8 +42,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Bio = table.Column<string>(maxLength: 200, nullable: true),
-                    AvatarId = table.Column<int>(nullable: false)
+                    Bio = table.Column<string>(maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -165,10 +164,10 @@ namespace DiscussionBoard.Persistence.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Title = table.Column<string>(maxLength: 200, nullable: false),
+                    Subtitle = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 800, nullable: false),
-                    Color = table.Column<string>(maxLength: 6, nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
-                    ImageId = table.Column<int>(nullable: false)
+                    Color = table.Column<string>(maxLength: 6, nullable: true),
+                    CreatorId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -191,7 +190,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Url = table.Column<string>(maxLength: 200, nullable: false),
                     PublicId = table.Column<string>(maxLength: 200, nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,7 +200,7 @@ namespace DiscussionBoard.Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,7 +219,7 @@ namespace DiscussionBoard.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_ForumMedias", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ForumMedias_Forums_ForumId",
+                        name: "ForumMediaId",
                         column: x => x.ForumId,
                         principalTable: "Forums",
                         principalColumn: "Id",
@@ -235,11 +234,10 @@ namespace DiscussionBoard.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(maxLength: 200, nullable: false),
-                    Content = table.Column<string>(maxLength: 2500, nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
-                    ForumId = table.Column<int>(nullable: false),
-                    MediaId = table.Column<int>(nullable: false)
+                    Title = table.Column<string>(maxLength: 300, nullable: false),
+                    Content = table.Column<string>(maxLength: 2500, nullable: true),
+                    CreatorId = table.Column<string>(nullable: false),
+                    ForumId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,21 +257,22 @@ namespace DiscussionBoard.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rule",
+                name: "Rules",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 200, nullable: false),
                     ForumId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rule", x => x.Id);
+                    table.PrimaryKey("PK_Rules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rule_Forums_ForumId",
+                        name: "FK_Rules_Forums_ForumId",
                         column: x => x.ForumId,
                         principalTable: "Forums",
                         principalColumn: "Id",
@@ -288,8 +287,8 @@ namespace DiscussionBoard.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Content = table.Column<string>(maxLength: 2000, nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(maxLength: 1500, nullable: false),
+                    CreatorId = table.Column<string>(nullable: false),
                     PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -341,7 +340,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Type = table.Column<int>(nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<string>(nullable: false),
                     PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -362,7 +361,7 @@ namespace DiscussionBoard.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsersSavedPosts",
+                name: "UserPostSaves",
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
@@ -372,15 +371,15 @@ namespace DiscussionBoard.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersSavedPosts", x => new { x.UserId, x.PostId });
+                    table.PrimaryKey("PK_UserPostSaves", x => new { x.UserId, x.PostId });
                     table.ForeignKey(
-                        name: "FK_UsersSavedPosts_Posts_PostId",
+                        name: "FK_UserPostSaves_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UsersSavedPosts_AspNetUsers_UserId",
+                        name: "FK_UserPostSaves_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -397,8 +396,9 @@ namespace DiscussionBoard.Persistence.Migrations
                     Resolved = table.Column<bool>(nullable: false),
                     IsSubstantial = table.Column<bool>(nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    RuleId = table.Column<int>(nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
+                    RuleId = table.Column<int>(nullable: true),
+                    CreatorId = table.Column<string>(nullable: false),
+                    ResolverId = table.Column<string>(nullable: true),
                     PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -414,12 +414,17 @@ namespace DiscussionBoard.Persistence.Migrations
                         name: "FK_PostReports_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PostReports_Rule_RuleId",
+                        name: "FK_PostReports_AspNetUsers_ResolverId",
+                        column: x => x.ResolverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PostReports_Rules_RuleId",
                         column: x => x.RuleId,
-                        principalTable: "Rule",
+                        principalTable: "Rules",
                         principalColumn: "Id");
                 });
 
@@ -433,8 +438,9 @@ namespace DiscussionBoard.Persistence.Migrations
                     Resolved = table.Column<bool>(nullable: false),
                     IsSubstantial = table.Column<bool>(nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    RuleId = table.Column<int>(nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
+                    RuleId = table.Column<int>(nullable: true),
+                    CreatorId = table.Column<string>(nullable: false),
+                    ResolverId = table.Column<string>(nullable: true),
                     CommentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -444,8 +450,7 @@ namespace DiscussionBoard.Persistence.Migrations
                         name: "FK_CommentReports_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CommentReports_AspNetUsers_CreatorId",
                         column: x => x.CreatorId,
@@ -453,9 +458,15 @@ namespace DiscussionBoard.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CommentReports_Rule_RuleId",
+                        name: "FK_CommentReports_AspNetUsers_ResolverId",
+                        column: x => x.ResolverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CommentReports_Rules_RuleId",
                         column: x => x.RuleId,
-                        principalTable: "Rule",
+                        principalTable: "Rules",
                         principalColumn: "Id");
                 });
 
@@ -468,7 +479,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Type = table.Column<int>(nullable: false),
-                    CreatorId = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<string>(nullable: false),
                     CommentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -538,6 +549,11 @@ namespace DiscussionBoard.Persistence.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CommentReports_ResolverId",
+                table: "CommentReports",
+                column: "ResolverId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CommentReports_RuleId",
                 table: "CommentReports",
                 column: "RuleId");
@@ -590,6 +606,11 @@ namespace DiscussionBoard.Persistence.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PostReports_ResolverId",
+                table: "PostReports",
+                column: "ResolverId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PostReports_RuleId",
                 table: "PostReports",
                 column: "RuleId");
@@ -615,20 +636,19 @@ namespace DiscussionBoard.Persistence.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rule_ForumId",
-                table: "Rule",
+                name: "IX_Rules_ForumId",
+                table: "Rules",
                 column: "ForumId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserMedias_UserId",
                 table: "UserMedias",
                 column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsersSavedPosts_PostId",
-                table: "UsersSavedPosts",
+                name: "IX_UserPostSaves_PostId",
+                table: "UserPostSaves",
                 column: "PostId");
         }
 
@@ -671,7 +691,7 @@ namespace DiscussionBoard.Persistence.Migrations
                 name: "UserMedias");
 
             migrationBuilder.DropTable(
-                name: "UsersSavedPosts");
+                name: "UserPostSaves");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -680,7 +700,7 @@ namespace DiscussionBoard.Persistence.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Rule");
+                name: "Rules");
 
             migrationBuilder.DropTable(
                 name: "Posts");

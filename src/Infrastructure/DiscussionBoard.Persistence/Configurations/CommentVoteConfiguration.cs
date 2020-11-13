@@ -16,7 +16,8 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasOne(cv => cv.Creator)
                 .WithMany(u => u.CommentVotes)
                 .HasForeignKey(cv => cv.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             commentVote
                 .HasOne(cv => cv.Comment)

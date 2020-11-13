@@ -63,7 +63,7 @@ const LoginModal = props => {
 
   return (
     <div>
-      <Button className={classes.button} onClick={handleClickOpen} size="small" variant="contained" color="primary">
+      <Button className={classes.button} onClick={handleClickOpen} size="small" variant="outlined" color="primary">
         <div className={classes.icon}>
           <PersonPinIcon />
         </div>

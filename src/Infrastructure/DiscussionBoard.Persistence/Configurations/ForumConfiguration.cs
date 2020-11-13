@@ -26,7 +26,8 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasOne(f => f.Creator)
                 .WithMany(u => u.Forums)
                 .HasForeignKey(f => f.CreatorId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             forum
                 .HasOne(f => f.Media)

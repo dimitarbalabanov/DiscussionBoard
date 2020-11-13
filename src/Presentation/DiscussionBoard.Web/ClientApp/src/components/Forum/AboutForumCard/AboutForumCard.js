@@ -60,7 +60,6 @@ const AboutForumCard = props => {
     loading
   } = props;
 
-
   return (
     <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
@@ -70,7 +69,7 @@ const AboutForumCard = props => {
             <Divider />
           </Typography>
           <Typography className={classes.title} color="textSecondary" display="inline" variant="body2"> 
-            {loading || !forum ? <Skeleton /> : forum.description}
+            {loading || !forum ? <Skeleton /> : forum.description ? forum.description : "nema description"}
           </Typography>
           <Divider className={classes.margin}/>
           <Grid  container justify="center" spacing={2} >
@@ -86,17 +85,18 @@ const AboutForumCard = props => {
                 {loading || !forum ? <Skeleton /> :`${forum.commentsCount} Comments`}
               </Typography>
             </Grid>
-            <Button
+            {loading || !forum ? null : <Button
               component={Link}
               to={'/create'}
               size="small"
               variant="contained"
-              color="primary"
+              //color="primary"
               className={classes.button}
               startIcon={<NoteAddIcon />}
+              style={{backgroundColor: "#" + forum.color}}
             >
               Post in {loading || !forum ? <Skeleton /> : forum.title}
-            </Button>
+            </Button>}
           </Grid>
         </CardContent>
       </div>

@@ -21,9 +21,6 @@ namespace DiscussionBoard.Persistence
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-                    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
             services.AddSingleton<IDbContextSeeder, ApplicationDbContextSeeder>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

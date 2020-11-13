@@ -77,6 +77,9 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<bool>("Resolved")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ResolverId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("RuleId")
                         .HasColumnType("int");
 
@@ -88,6 +91,8 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasIndex("CommentId");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("ResolverId");
 
                     b.HasIndex("RuleId");
 
@@ -297,6 +302,9 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.Property<bool>("Resolved")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ResolverId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("RuleId")
                         .HasColumnType("int");
 
@@ -308,6 +316,8 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("ResolverId");
 
                     b.HasIndex("RuleId");
 
@@ -476,13 +486,13 @@ namespace DiscussionBoard.Persistence.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("UserMedias");
                 });
@@ -644,7 +654,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
                         .WithMany("Comments")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
@@ -659,14 +669,19 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.Comment", "Comment")
                         .WithMany("Reports")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
-                        .WithMany("CommentReports")
+                        .WithMany("CreatedCommentReports")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Resolver")
+                        .WithMany("ResolvedCommentReports")
+                        .HasForeignKey("ResolverId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Rule", "Rule")
                         .WithMany("CommentReports")
@@ -685,7 +700,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
                         .WithMany("CommentVotes")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -694,7 +709,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
                         .WithMany("Forums")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -713,7 +728,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
                         .WithMany("Posts")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Forum", "Forum")
@@ -735,16 +750,21 @@ namespace DiscussionBoard.Persistence.Migrations
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.PostReport", b =>
                 {
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
-                        .WithMany("PostReports")
+                        .WithMany("CreatedPostReports")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
                         .WithMany("Reports")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("DiscussionBoard.Domain.Entities.User", "Resolver")
+                        .WithMany("ResolvedPostReports")
+                        .HasForeignKey("ResolverId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Rule", "Rule")
                         .WithMany("PostReports")
@@ -757,7 +777,7 @@ namespace DiscussionBoard.Persistence.Migrations
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "Creator")
                         .WithMany("PostVotes")
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DiscussionBoard.Domain.Entities.Post", "Post")
@@ -780,7 +800,9 @@ namespace DiscussionBoard.Persistence.Migrations
                 {
                     b.HasOne("DiscussionBoard.Domain.Entities.User", "User")
                         .WithOne("Media")
-                        .HasForeignKey("DiscussionBoard.Domain.Entities.UserMedia", "UserId");
+                        .HasForeignKey("DiscussionBoard.Domain.Entities.UserMedia", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DiscussionBoard.Domain.Entities.UserPostSave", b =>

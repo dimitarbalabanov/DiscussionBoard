@@ -468,3 +468,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+/src/Presentation/DiscussionBoard.Web/appsettings.json

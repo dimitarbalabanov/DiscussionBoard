@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -9,11 +8,12 @@ namespace DiscussionBoard.Persistence.Seeding
 {
     public class RolesSeeder : IDbContextSeeder
     {
-        public async Task SeedAsync(IApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             await SeedRoleAsync(roleManager, "Administrator");
+            await SeedRoleAsync(roleManager, "Moderator");
         }
 
         private static async Task SeedRoleAsync(RoleManager<IdentityRole> roleManager, string roleName)
