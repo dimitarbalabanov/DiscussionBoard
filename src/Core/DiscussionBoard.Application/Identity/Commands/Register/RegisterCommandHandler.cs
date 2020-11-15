@@ -3,11 +3,8 @@ using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using System;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +14,7 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _sender;
+        private readonly IIdentityService _identityService;
 
         public RegisterCommandHandler(UserManager<User> userManager, IEmailSender sender)
         {

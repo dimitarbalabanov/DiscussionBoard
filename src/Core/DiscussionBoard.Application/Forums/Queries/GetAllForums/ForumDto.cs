@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 {
-    public class ForumDto : IMapFrom<Forum>
+    public class ForumDto : IMapFrom<Forum>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -13,7 +13,7 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 
         public int PostsCount { get; set; }
 
-        public void Mapping(Profile profile)
+        public void CreateMappings(Profile profile)
         {
             profile.CreateMap<Forum, ForumDto>()
                    .ForMember(dest => dest.PostsCount, opt => opt.MapFrom(src => src.Posts.Count()));

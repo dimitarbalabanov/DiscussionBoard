@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Shared.Messaging.Extensions

@@ -24,7 +24,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var response = await Mediator.Send(new GetForumByIdQuery { Id = id });
+            var response = await Mediator.Send(new GetForumByIdQuery(id));
             return Ok(response);
         }
 
@@ -32,7 +32,7 @@ namespace DiscussionBoard.Web.Controllers
         public async Task<IActionResult> Create([FromBody] CreateForumCommand command)
         {
             var response = await Mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { id = response.ForumId }, response);
+            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
         [HttpPut("{id}")]

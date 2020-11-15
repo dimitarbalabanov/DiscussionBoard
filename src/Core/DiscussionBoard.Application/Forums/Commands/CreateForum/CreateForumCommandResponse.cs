@@ -1,7 +1,10 @@
-﻿namespace DiscussionBoard.Application.Forums.Commands.CreateForum
+﻿using DiscussionBoard.Application.Common.Mappings;
+using DiscussionBoard.Domain.Entities;
+
+namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 {
-    public class CreateForumCommandResponse
+    public class CreateForumCommandResponse : IMapFrom<Forum>
     {
-        public int ForumId { get; set; }
+        public int Id { get; private set; }
     }
 }

@@ -1,7 +1,8 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
+﻿using AutoMapper;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
-using System.Linq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,32 +10,38 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 {
     public class CreateForumCommandHandler : IRequestHandler<CreateForumCommand, CreateForumCommandResponse>
     {
-        private readonly IAuthenticatedUserService _authUserService;
         private readonly IRepository<Forum> _forumsRepository;
+        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IMediaService _mediaService;
+        private readonly IMapper _mapper;
 
-        public CreateForumCommandHandler(IRepository<Forum> forumsRepository, IAuthenticatedUserService authUserService)
+        public CreateForumCommandHandler(
+            IRepository<Forum> forumsRepository,
+            IAuthenticatedUserService authUserService,
+            IMediaService mediaService,
+            IMapper mapper)
         {
-            _forumsRepository = forumsRepository;
-            _authUserService = authUserService;
+            _forumsRepository = forumsRepository ?? throw new ArgumentNullException(nameof(forumsRepository));
+            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CreateForumCommandResponse> Handle(CreateForumCommand request, CancellationToken cancellationToken)
         {
-            var forum = new Forum
+            var forum = _mapper.Map<Forum>(request);
+            forum.CreatorId = _authUserService.UserId;
+
+            if (request.MediaFile != null)
             {
-                //upload img
-                Media = new ForumMedia { Url = "dsadsadsadsa", PublicId = "3214324" },
-                Color = request.Color,
-                CreatorId = _authUserService.UserId,
-                Description = request.Description,
-                Title = request.Title,
-                Rules = request.Rules.Select(r => new Rule { Description = r }).ToList(),
-            };
+                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile, request.MediaFile.Name);
+                forum.Media = _mapper.Map<ForumMedia>(uploadResult);
+            }
 
             await _forumsRepository.AddAsync(forum);
             await _forumsRepository.SaveChangesAsync();
 
-            return new CreateForumCommandResponse { ForumId = forum.Id };
+            return _mapper.Map<CreateForumCommandResponse>(forum);
         }
     }
 }

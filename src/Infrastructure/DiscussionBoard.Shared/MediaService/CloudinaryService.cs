@@ -1,11 +1,11 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
-using System;
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using DiscussionBoard.Application.Common.DTOs;
+using DiscussionBoard.Application.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using DiscussionBoard.Application.Common.DTOs;
 
 namespace DiscussionBoard.Shared.MediaService
 {

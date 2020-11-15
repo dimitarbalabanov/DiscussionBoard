@@ -25,11 +25,6 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
         {
-            if (command.UserId == null || command.Code == null)
-            {
-                return BadRequest();
-            }
-
             var response = await Mediator.Send(command);
             return Ok(response);
         }
