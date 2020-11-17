@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -38,7 +39,13 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     backgroundColor: theme.palette.primary.main,
-  }
+  },
+  avatar: {
+    height: 35,
+    width: 35,
+    display: 'flex',
+    marginRight: theme.spacing(1)
+  },
 }));
 
 const PopularForumsCard = props => {
@@ -58,13 +65,20 @@ const PopularForumsCard = props => {
           <Typography component="h2" variant="h4">
             {"Trending forums"}
             <Divider className={classes.divider}/>
-
             </Typography>
             {loading ? <h1>Loading...</h1> : forums.map(forum =>
               <React.Fragment>
-                <Link display="block" variant="body1" component={RouterLink} to={`/forums/${forum.id}`}>
+                <Grid container alignItems="center" className={classes.divider}>
+                  <Grid item> <Avatar
+                  className={classes.avatar}
+                  //src={forum.mediaUrl}
+                  /></Grid>
+                  <Grid item><Link display="block" variant="body1" component={RouterLink} to={`/forums/${forum.id}`}>
                   {"f/" + forum.title.substring(0,10).toLowerCase()}
-                </Link>
+                </Link></Grid>
+                </Grid>
+               
+                
                 {/* <Typography className={classes.title} component={Link} to={`/forums/${forum.id}`} variant="h5" align="center">
                   {"f/" + forum.title.substring(0,10).toLowerCase()}
                 </Typography> */}

@@ -26,6 +26,35 @@ namespace DiscussionBoard.Persistence.Services
             _emailSender = emailSender;
             _jwtSettings = jwtSettings;
         }
+        public async Task<IdentityResultDto> LoginAsync(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return new IdentityResultDto { Error = "Bad login attempt" };
+            }
+
+            if (!await _userManager.CheckPasswordAsync(user, password))
+            {
+                return new IdentityResultDto { Error = "Bad login attempt" };
+            }
+
+            //if (!await _userManager.IsEmailConfirmedAsync(user))
+            //{
+            //    return new IdentityResultDto { Error = "Email is not confirmed" };
+            //}
+
+            var (token, expiration) = await GenerateJwtToken(user);
+
+            return new IdentityResultDto
+            {
+                Succeeded = true,
+                Token = token,
+                ExpiresAt = expiration,
+                UserName = user.UserName
+            };
+        }
 
         public async Task<IdentityResultDto> RegisterAsync(string email, string username, string password)
         {
@@ -85,36 +114,6 @@ namespace DiscussionBoard.Persistence.Services
                 ? new IdentityResultDto { Succeeded = true }
                 : new IdentityResultDto { Error = string.Join(" ", confirmResult.Errors.Select(e => e.Description)) };
             return result;
-        }
-
-        public async Task<IdentityResultDto> LoginAsync(string email, string password)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-            {
-                return new IdentityResultDto { Error = "Bad login attempt" };
-            }
-
-            if (!await _userManager.CheckPasswordAsync(user, password))
-            {
-                return new IdentityResultDto { Error = "Bad login attempt" };
-            }
-
-            //if (!await _userManager.IsEmailConfirmedAsync(user))
-            //{
-            //    return new IdentityResultDto { Error = "Email is not confirmed" };
-            //}
-
-            var (token, expiration) = await GenerateJwtToken(user);
-
-            return new IdentityResultDto
-            {
-                Succeeded = true,
-                Token = token,
-                ExpiresAt = expiration,
-                UserName = user.UserName
-            };
         }
 
         private async Task<(string, DateTime)> GenerateJwtToken(User user)

@@ -8,6 +8,8 @@ import { InfiniteScroll } from './containers/Home/InfiniteScroll';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
 import CreatePost from './containers/CreatePost/CreatePost';
+import UserProfile from './containers/UserProfile/UserProfile';
+import CreateForum from './containers/CreateForum/CreateForum';
 
 const Routes = () => {
   return (
@@ -16,6 +18,16 @@ const Routes = () => {
         component={Home}
         exact 
         path="/" 
+      />
+      <Route 
+        component={UserProfile}
+        exact 
+        path="/user" 
+      />
+      <Route 
+        component={CreateForum}
+        exact 
+        path="/createForum" 
       />
       <Route 
         component={InfiniteScroll}

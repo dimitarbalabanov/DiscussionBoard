@@ -71,11 +71,13 @@ const RulesCard = props => {
             {"Forum rules"}
             <Divider />
           </Typography>
+          
+          {forum ? <RuleAccordion rules={forum.rules}/> : null}
+
           {/* <Typography className={classes.title} color="textSecondary" display="inline" variant="body2"> 
             {loading || !forum ? <Skeleton /> : forum.description}
           </Typography> */}
           {/* <Divider className={classes.margin}/> */}
-          <RuleAccordion />
         </CardContent>
       </div>
     </Card>

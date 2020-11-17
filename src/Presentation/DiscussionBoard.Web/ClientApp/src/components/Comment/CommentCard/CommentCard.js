@@ -151,4 +151,4 @@ const CommentCard = props => {
   );
 }
 
-export default CommentCard;
+export default React.memo(CommentCard);

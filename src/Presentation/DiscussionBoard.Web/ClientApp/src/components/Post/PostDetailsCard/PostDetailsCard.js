@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link as RouterLink} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import Link from '@material-ui/core/Link';
+import Tooltip from '@material-ui/core/Tooltip';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
@@ -10,10 +13,13 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
+import ForumTooltip from '../../Forum/ForumTooltip/ForumTooltip';
+import Popover from '../../Forum/ForumTooltip/Popover';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -84,9 +90,10 @@ const PostDetailsCard = props => {
           {postsLoading ? <Skeleton /> : 
           <Grid className={classes.statsItem} item >
             <Typography color="textSecondary" display="inline" variant="body2" >
-              <strong className={classes.textColor}>{post.forumTitle}</strong> posted {ConvertToRelativeTime(post.createdOn)} by <strong className={classes.textColor}>{post.creatorUserName}</strong>
+            <Link component={RouterLink} to={"/forums/" + post.forumId}><strong className={classes.textColor}>{post.forumTitle}</strong></Link> posted <CreatedOnTooltip createdOn={post.createdOn} /> by <Link component={RouterLink} to={"/users/" + post.creatorUserName}><strong className={classes.textColor}>{post.creatorUserName}</strong></Link>
             </Typography>
           </Grid>}
+            <Popover />
           {showUpdateForm ? <EditPost onClose={handleClose} title={post.title} content={post.content}/> : 
             <React.Fragment>
               <Grid className={classes.statsItem} item >

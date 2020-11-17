@@ -22,6 +22,13 @@ namespace DiscussionBoard.Web.Controllers
             return Ok(response);
         }
 
+        //[HttpGet("profile")]
+        //public async Task<IActionResult> GetProfileAsync()
+        //{
+        //    var response = await Mediator.Send(new GetProfileQuery());
+        //    return Ok(response);
+        //}
+
         [HttpGet("confirmEmail")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
         {

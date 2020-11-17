@@ -7,12 +7,14 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
     {
         public int? ForumId { get; set; }
 
+        public string User { get; set; }
+
         public string Sort { get; set; }
 
         public string Order { get; set; }
 
-        //public string Filter { get; set; }
-
         public int? Cursor { get; set; }
+
+        //public string Filter { get; set; }
     }
 }

@@ -8,6 +8,7 @@ import { fetchForumById, fetchPosts } from '../../store/actions';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
 import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 import RulesCard from '../../components/Rule/RulesCard';
+import SortingComponent from '../../components/SortingComponent/SortingComponent';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -45,13 +46,14 @@ const Forum = props => {
         </Grid>
 
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+          <SortingComponent />
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
         </Grid>
 
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
           <Grid item md={10}>
             <AboutForumCard forum={forum} loading={forumLoading} />
-            <RulesCard />
+            <RulesCard forum={forum}/>
           </Grid>
         </Grid>
 

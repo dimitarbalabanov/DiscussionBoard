@@ -11,6 +11,8 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 
         public string Title { get; set; }
 
+        public string MediaUrl { get; set; }
+
         public int PostsCount { get; set; }
 
         public void CreateMappings(Profile profile)

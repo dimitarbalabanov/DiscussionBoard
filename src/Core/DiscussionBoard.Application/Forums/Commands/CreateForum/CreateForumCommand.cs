@@ -20,16 +20,16 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
             Rules = rules;
         }
 
-        public string Title { get; private set; }
+        public string Title { get; set; }
 
-        public string Subtitle { get; private set; }
+        public string Subtitle { get; set; }
 
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
-        public string Color { get; private set; }
+        public string Color { get; set; }
 
-        public IFormFile MediaFile { get; private set; }
+        public IFormFile MediaFile { get; set; }
 
-        public IEnumerable<RuleDto> Rules { get; private set; }
+        public IEnumerable<RuleDto> Rules { get; set; }
     }
 }

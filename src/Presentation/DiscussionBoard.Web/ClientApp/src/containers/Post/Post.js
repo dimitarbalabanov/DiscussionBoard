@@ -8,6 +8,8 @@ import Spinner from '../../components/Spinner/Spinner';
 import PostSidebar from '../../components/Post/PostSidebar/PostSidebar';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
+import RulesCard from '../../components/Rule/RulesCard';
+import AboutForumCard2 from '../../components/Forum/AboutForumCard/AboutForumCard2';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -31,7 +33,8 @@ const Post = (props) => {
 
   const { postId } = props.match.params;
 
-  const { 
+  const {
+    forum,
     post,
     postLoading,
     //postError,
@@ -128,9 +131,11 @@ const Post = (props) => {
         </Grid>
         
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
-
+        { forum ? <Grid item md={10}>
+            <AboutForumCard2 forum={forum}  />
+            <RulesCard forum={forum}/> 
+          </Grid> : null}
           <PostSidebar />
-
         </Grid>
       </Grid>
     </Page>
@@ -139,6 +144,8 @@ const Post = (props) => {
 
 const mapStateToProps = state => {
   return {
+    forum: state.forum.forum,
+
     post: state.post.post,
     postLoading: state.post.postLoading,
     postError: state.post.postError,

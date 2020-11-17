@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
 //import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
@@ -70,6 +71,7 @@ const PostCard = props => {
           {/* {loading ? <Skeleton /> :  */}
           {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
           </Typography>
+          <CreatedOnTooltip createdOn={post.createdOn} />
         </Grid>
         {post.mediaUrl &&
           <CardMedia

@@ -63,6 +63,16 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 query = query.Where(p => p.ForumId == request.ForumId);
             }
 
+            if (request.User != null)
+            {
+                var id = await _usersRepository
+                    .AllAsNoTracking()
+                    .Where(u => u.UserName == request.User)
+                    .Select(u => u.Id)
+                    .SingleOrDefaultAsync();
+                query = query.Where(p => p.CreatorId == id);
+            }
+
             if (request.Cursor != null)
             {
                 var id = (int)request.Cursor;
