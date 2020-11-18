@@ -77,7 +77,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onFetchPosts: (forumId) => dispatch(fetchPosts(forumId))
+    onFetchPosts: (forumId) => dispatch(fetchPosts(null, null, forumId))
   };
 };
 

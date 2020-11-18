@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 const PopularForumsCard = props => {
   const classes = useStyles();
 
+  React.useEffect(() => console.log("trending forums rendering"))
   const { 
     forums,
     loading
@@ -67,7 +68,7 @@ const PopularForumsCard = props => {
             <Divider className={classes.divider}/>
             </Typography>
             {loading ? <h1>Loading...</h1> : forums.map(forum =>
-              <React.Fragment>
+              <React.Fragment key={forum.id}>
                 <Grid container alignItems="center" className={classes.divider}>
                   <Grid item> <Avatar
                   className={classes.avatar}
@@ -77,8 +78,6 @@ const PopularForumsCard = props => {
                   {"f/" + forum.title.substring(0,10).toLowerCase()}
                 </Link></Grid>
                 </Grid>
-               
-                
                 {/* <Typography className={classes.title} component={Link} to={`/forums/${forum.id}`} variant="h5" align="center">
                   {"f/" + forum.title.substring(0,10).toLowerCase()}
                 </Typography> */}
@@ -92,4 +91,4 @@ const PopularForumsCard = props => {
   );
 }
 
-export default PopularForumsCard;
+export default React.memo(PopularForumsCard);

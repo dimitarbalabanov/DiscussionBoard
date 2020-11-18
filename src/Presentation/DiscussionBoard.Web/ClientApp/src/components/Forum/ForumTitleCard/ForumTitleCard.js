@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Avatar from '@material-ui/core/Avatar';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
+//import CardContent from '@material-ui/core/CardContent';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +48,7 @@ const ForumTitleCard = props => {
       {loading || !forum ? null : 
           <Avatar
           className={classes.avatar}
-          src={forum.mediaUrl}
+          //src={forum.mediaUrl}
           />}
         <Typography className={classes.title} component="h1" variant="h1" align="center">
           {loading || !forum ? <Skeleton /> : "f/" + forum.title.substring(0, 10).toLowerCase()}

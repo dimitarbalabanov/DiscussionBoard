@@ -2,8 +2,8 @@
 {
     public enum Sorter
     {
-        Newest = 1,
-        Oldest = 2,
+        New = 1,
+        Old = 2,
         Top = 3
     }
 }

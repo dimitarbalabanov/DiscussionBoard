@@ -22,7 +22,7 @@ const RulesAccordion = props => {
   return (
     <div className={classes.root}>
       {props.rules ? props.rules.map(rule => 
-        <Accordion>
+        <Accordion key={rule.id}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>{rule.title}</Typography>
           </AccordionSummary>

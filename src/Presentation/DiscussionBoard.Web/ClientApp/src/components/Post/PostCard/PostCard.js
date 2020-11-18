@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
+//import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
 //import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PostCard = props => {
   const classes = useStyles();
+  useEffect(() => console.log("post card rendering"))
   const { 
     post,
     //loading
@@ -71,7 +72,7 @@ const PostCard = props => {
           {/* {loading ? <Skeleton /> :  */}
           {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
           </Typography>
-          <CreatedOnTooltip createdOn={post.createdOn} />
+          {/* <CreatedOnTooltip createdOn={post.createdOn} /> */}
         </Grid>
         {post.mediaUrl &&
           <CardMedia
@@ -98,4 +99,4 @@ const PostCard = props => {
   );
 }
 
-export default PostCard;
+export default React.memo(PostCard);

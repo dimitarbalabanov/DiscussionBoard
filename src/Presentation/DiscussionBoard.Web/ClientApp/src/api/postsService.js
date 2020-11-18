@@ -1,13 +1,21 @@
 import axiosInstance from './axiosInstance';
-import axios from 'axios'
+//import axios from 'axios'
 import { POSTS_URL } from './apiRoutes';
 
 export const getPostById = (postId) => {
   return axiosInstance.get(POSTS_URL + postId);
 };
 
-export const getPosts = (forumId, cursor) => {
+export const getPosts = (sort, top, forumId, cursor) => {
   const queries = [];
+  if (sort) {
+    queries.push(`sort=${sort}`);
+  }
+
+  if (top) {
+    queries.push(`top=${top}`);
+  }
+
   if (forumId) {
     queries.push(`forumId=${forumId}`);
   }

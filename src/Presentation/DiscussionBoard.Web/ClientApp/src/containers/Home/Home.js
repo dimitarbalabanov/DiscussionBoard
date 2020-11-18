@@ -10,14 +10,17 @@ import Grid from '@material-ui/core/Grid';
 //import Paper from '@material-ui/core/Paper';
 ////import Box from '@material-ui/core/Box';
 import Page from '../../components/Page/Page';
-import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+//import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 import PostsList from '../../components/Post/PostsList/PostsList';
 //import PostsListSkeleton from '../../components/Post/PostsList/PostsListSkeleton';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import PopularForumsCard from '../../components/Forum/PopularForumsCard/PopularForumsCard';
 //import Spinner from '../../components/Spinner/Spinner';
+import SortingComponent from '../../components/SortingComponent/SortingComponent';
+import useTraceUpdate from '../../hooks/useTraceUpdate';
 
 const Home = props => {
+  useTraceUpdate(props)
   const { 
     forums,
     forumsLoading,
@@ -33,10 +36,25 @@ const Home = props => {
     //onClearPosts
   } = props;
 
+  const [sort, setSort] = React.useState(1);
+  const [top, setTop] = React.useState('');
+
+  const onSetSort = useCallback(newSort => setSort(newSort), [setSort]);
+  const onSetTop = useCallback(newTop => setTop(newTop), [setTop]);
+  
   useEffect(() => {
-    onFetchPosts();
+    console.log("home rendering")
+  });
+
+  useEffect(() => {
+    console.log("fetching posts")
+    onFetchPosts(sort, top);
+  }, [onFetchPosts, sort, top]);
+
+  useEffect(() => {
+    console.log("fetching forums")
     onFetchForums();
-  }, [onFetchPosts, onFetchForums]);
+  }, [onFetchForums]);
 
   const observeBorder = useCallback(
     node => {
@@ -78,10 +96,8 @@ const Home = props => {
         alignItems="flex-start"
       > 
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-
-
           <CreatePostButton isAuthenticated={isAuthenticated}/>
-
+          <SortingComponent sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
           {postsLoading && renderLoadingMessage()}
           {postsCursor && <div data-testid="bottom-border" ref={observeBorder} />}
@@ -124,7 +140,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
     onClearPosts: () => dispatch(clearPosts()),
-    onFetchPosts: (cursor) => dispatch(fetchPosts(null, cursor))
+    onFetchPosts: (sort, top) => dispatch(fetchPosts(sort, top))
   };
 };
 

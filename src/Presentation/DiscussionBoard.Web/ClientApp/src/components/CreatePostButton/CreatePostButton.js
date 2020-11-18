@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreatePostButton = props => {
   const classes = useStyles();
+  React.useEffect(() => console.log("create post button rendering"))
   const { isAuthenticated } = props;
 
   const field = isAuthenticated ? <TextField
@@ -93,4 +94,4 @@ const CreatePostButton = props => {
   );
 }
 
-export default CreatePostButton;
+export default React.memo(CreatePostButton);

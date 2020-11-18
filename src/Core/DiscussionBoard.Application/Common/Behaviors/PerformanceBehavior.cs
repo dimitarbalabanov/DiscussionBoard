@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Common.Behaviors
 {
-    public class RequestPerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly Stopwatch _timer;
         private readonly ILogger<TRequest> _logger;
         private readonly IAuthenticatedUserService _authUserService;
 
-        public RequestPerformanceBehaviour(ILogger<TRequest> logger, IAuthenticatedUserService authUserService)
+        public PerformanceBehaviour(ILogger<TRequest> logger, IAuthenticatedUserService authUserService)
         {
             _timer = new Stopwatch();
 

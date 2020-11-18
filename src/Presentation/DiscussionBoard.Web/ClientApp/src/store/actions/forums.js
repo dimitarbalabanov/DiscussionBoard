@@ -4,7 +4,7 @@ import {
   REQUEST_FORUMS_FAILURE
 } from './actionTypes';
 import { getForums } from '../../api/forumsService';
-import { showSnackbar } from './snackbar';
+//import { showSnackbar } from './snackbar';
 
 export const fetchForums = () => {
   return {
@@ -15,12 +15,12 @@ export const fetchForums = () => {
     ],
     callApi: () => getForums(),
     effect({ dispatch, state, type}) {
-      if (type === REQUEST_FORUMS_SUCCESS) {
-        dispatch(showSnackbar('success', 'Successfully fetched the forumS.'))
-      }
-      if (type === REQUEST_FORUMS_FAILURE) {
-        dispatch(showSnackbar('error', " Error fetching the forumS."))
-      }
+    //   if (type === REQUEST_FORUMS_SUCCESS) {
+    //     dispatch(showSnackbar('success', 'Successfully fetched the forumS.'))
+    //   }
+    //   if (type === REQUEST_FORUMS_FAILURE) {
+    //     dispatch(showSnackbar('error', " Error fetching the forumS."))
+    //   }
     }
   }
 };

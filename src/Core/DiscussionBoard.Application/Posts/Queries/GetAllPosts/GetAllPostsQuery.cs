@@ -11,10 +11,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public string Sort { get; set; }
 
-        public string Order { get; set; }
+        public string Top { get; set; }
 
         public int? Cursor { get; set; }
-
-        //public string Filter { get; set; }
     }
 }

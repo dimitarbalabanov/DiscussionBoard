@@ -20,4 +20,4 @@ const PostsList = props => {
   );
 }
 
-export default PostsList;
+export default React.memo(PostsList);

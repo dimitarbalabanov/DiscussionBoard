@@ -10,6 +10,7 @@ import {
   InputLabel,
   FormControl,
 } from '@material-ui/core';
+import useTraceUpdate from '../../hooks/useTraceUpdate';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -54,8 +55,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SortingComponent = props => {
+  useTraceUpdate(props)
   const classes = useStyles();
   const [show, setShow] = React.useState(false);
+
+  const {
+    sort,
+    top,
+    onSetSort,
+    onSetTop
+  } = props;
+
+  React.useEffect(() => {
+    console.log("sorting component render")
+  })
+
+  const handleSortClick = (event) => {
+    onSetSort(event.target.value);
+    if (event.target.value === 3) {
+      onSetTop(1)
+      setShow(true);
+    } else {
+      onSetTop('');
+      setShow(false);
+    }
+  }
+
+  const handleTopClick = (event) => {
+    onSetTop(event.target.value);
+  }
 
   return (
     <Grid item xs={12} md={10}>
@@ -67,29 +95,31 @@ const SortingComponent = props => {
               <Grid className={classes.statsItem} item >
                 <NoteAddIcon className={classes.statsIcon} color="primary"/>
                 <FormControl variant="outlined" size="small" className={classes.formControl}  >
-                  <InputLabel id="sort">Sort</InputLabel>
+                  <InputLabel>Sort</InputLabel>
                   <Select
-                    labelId="sort"
                     label="Sort"
-                    name="sortId"
+                    //name="sortId"
+                    value={sort}
+                    onChange={handleSortClick}
                   >
-                    <MenuItem key={1} value={1} onClick={() => setShow(false)}>New</MenuItem>
-                    <MenuItem key={2} value={2} onClick={() => setShow(false)}>Old</MenuItem>
-                    <MenuItem key={3} value={3} onClick={() => setShow(true)}>Top</MenuItem>
+                    <MenuItem value={1}>New</MenuItem>
+                    <MenuItem value={2}>Old</MenuItem>
+                    <MenuItem value={3}>Top</MenuItem>
                   </Select>
                 </FormControl>
                 {show ? 
                 <FormControl variant="outlined" size="small" className={classes.formControl}>
-                  <InputLabel id="top">Top</InputLabel>
+                  <InputLabel>Top</InputLabel>
                   <Select
-                    labelId="top"
                     label="Top"
-                    name="topId"
+                    //name="topId"
+                    value={top}
+                    onChange={handleTopClick}
                   >
-                    <MenuItem key={1} value={1}>Today</MenuItem>
-                    <MenuItem key={2} value={2}>This week</MenuItem>
-                    <MenuItem key={3} value={3}>This month</MenuItem>
-                    <MenuItem key={4} value={4}>All time</MenuItem>
+                    <MenuItem value={1}>Today</MenuItem>
+                    <MenuItem value={2}>This week</MenuItem>
+                    <MenuItem value={3}>This month</MenuItem>
+                    <MenuItem value={4}>All time</MenuItem>
                   </Select>
                 </FormControl>
                 : null}
@@ -102,4 +132,4 @@ const SortingComponent = props => {
   );
 }
 
-export default SortingComponent;
+export default React.memo(SortingComponent);

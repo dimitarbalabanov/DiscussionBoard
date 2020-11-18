@@ -47,16 +47,24 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
             if (Enum.TryParse(request.Sort, out Sorter sorter))
             {
-                if (sorter == Sorter.Top)
+                switch (sorter)
                 {
-                    if (Enum.TryParse(request.Order, out TopSorter date))
-                    {
-
-                    }
+                    case Sorter.New:
+                        query = query.OrderByDescending(p => p.CreatedOn);
+                        break;
+                    case Sorter.Old:
+                        query = query.OrderBy(p => p.CreatedOn);
+                        break;
+                    case Sorter.Top:
+                        if (Enum.TryParse(request.Top, out TopSorter date))
+                        {
+                            query = query.ScoreSort(date);
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
-
-            query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
 
             if (request.ForumId != null)
             {
@@ -70,13 +78,21 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                     .Where(u => u.UserName == request.User)
                     .Select(u => u.Id)
                     .SingleOrDefaultAsync();
-                query = query.Where(p => p.CreatorId == id);
+                if (id != null)
+                {
+                    query = query.Where(p => p.CreatorId == id);
+                }
             }
 
             if (request.Cursor != null)
             {
                 var id = (int)request.Cursor;
                 query = query.Where(p => p.Id > id);
+            }
+
+            if (request.Top != null)
+            {
+                query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
             }
 
             var posts = await query

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MouseOverPopover() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [info, setInfo] = React.useState(null);
+  //const [info, setInfo] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);

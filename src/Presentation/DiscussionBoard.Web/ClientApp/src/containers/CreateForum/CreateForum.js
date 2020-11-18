@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
@@ -15,11 +15,7 @@ import {
   TextField,
   Typography,
   Paper,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  CircularProgress
+  
 } from '@material-ui/core';
 import ImageInput from '../../components/FileInput/FileInput';
 
@@ -39,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
 const CreateForum = props => {
   const classes = useStyles();
 const createForumLoading = false;
-  const {
+  //const {
     //createForumSuccess,
     //createForumError,
     //createForumLoading,
     //createForumId,
     //onCreateForum,
-  } = props;
+  //} = props;
   
   // if(createForumSuccess) {
   //   return <Redirect to={`/forums/${createForumId}`} />

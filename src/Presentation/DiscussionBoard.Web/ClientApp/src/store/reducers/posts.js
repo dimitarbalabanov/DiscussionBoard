@@ -28,7 +28,8 @@ const reducer = (state = initialState, action) => {
     case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        posts: [...state.posts, ...action.data.data.posts],
+        //posts: [...state.posts, ...action.data.data.posts],
+        posts: [...action.data.data.posts],
         cursor: action.data.cursor,
         hasNextPage: action.data.cursor !== null,
         loading: false,

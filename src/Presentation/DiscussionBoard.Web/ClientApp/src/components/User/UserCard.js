@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Skeleton from '@material-ui/lab/Skeleton';
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';

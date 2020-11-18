@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import moment from 'moment';
 import {
   Avatar,
@@ -7,8 +7,8 @@ import {
   CardContent,
   Divider,
   Typography,
-  makeStyles,
-  Tooltip
+  //makeStyles,
+  //Tooltip
 } from '@material-ui/core';
 
 const user = {
@@ -20,14 +20,14 @@ const user = {
   timezone: 'GTM-7'
 };
 
-const useStyles = makeStyles(() => ({
-  avatar: {
-    height: 100,
-    width: 100
-  }
-}));
+// const useStyles = makeStyles(() => ({
+//   avatar: {
+//     height: 100,
+//     width: 100
+//   }
+// }));
 
-const Profile = (props, ref) => {
+const Profile = (props, ) => {
   //  Spread the props to the underlying DOM element.
   return (
     <div {...props}>
