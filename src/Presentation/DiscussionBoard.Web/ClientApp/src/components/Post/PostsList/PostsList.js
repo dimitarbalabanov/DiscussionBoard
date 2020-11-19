@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import PostCard from '../PostCard/PostCard';
+import AnotherPostCard from '../PostCard/AnotherPostCard';
 
 const PostsList = props => {
   const {
@@ -13,7 +14,7 @@ const PostsList = props => {
     <React.Fragment>
         {posts && posts.map((post) => (
           <Grid item xs={12} md={10} key={post.id}>
-             <PostCard post={post} loading={loading} />
+             <AnotherPostCard post={post} loading={loading} />
           </Grid>
         ))}
     </React.Fragment>

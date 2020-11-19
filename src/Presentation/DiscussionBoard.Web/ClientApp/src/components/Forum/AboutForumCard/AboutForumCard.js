@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-//import CardHeader from '@material-ui/core/CardHeader';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
@@ -17,7 +17,7 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderColor: theme.palette.primary.main,
+    //borderColor: theme.palette.primary.main,
     border: '1px solid'
   },
   cardDetails: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px"
   },
   title: {
-    marginBottom: theme.spacing(1)
+    //marginBottom: theme.spacing(1)
   },
   header: {
     backgroundColor: theme.palette.primary.main,
@@ -61,13 +61,14 @@ const AboutForumCard = props => {
   } = props;
 
   return (
-    <Card className={classes.card} variant="outlined">
+    forum &&
+    <Card className={classes.card} variant="outlined" style={{borderColor: "#" + forum.color}}>
       <div className={classes.cardDetails}>
-        <CardContent>
-          <Typography className={classes.title} component="h2" variant="h4">
+        {loading || !forum || !forum.color ? null : <CardHeader style={{backgroundColor: "#" + forum.color}} title={<Typography className={classes.title} component="h2" variant="h4">
             {"About forum"}
-            <Divider />
-          </Typography>
+          </Typography>}/>}
+        <CardContent>
+        <Divider />
           <Typography className={classes.title} color="textSecondary" display="inline" variant="body2"> 
             {loading || !forum ? <Skeleton /> : forum.description ? forum.description : "nema description"}
           </Typography>

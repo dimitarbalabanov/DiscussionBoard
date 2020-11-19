@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Header from './components/Header/Header';
-import DrawerBar from './components/DrawerBar/DrawerBar';
 //import Footer from './components/Footer/Footer';
 
 //import { makeStyles } from '@material-ui/core/styles';
@@ -26,20 +25,9 @@ const Layout = props => {
   const { isAuth, username } = props
   //const classes = useStyles();
 
-  const [openDrawerNav, setOpenDrawerNav] = useState(false);
-
-  const handleDrawerNavOpen = () => {
-    setOpenDrawerNav(true);
-  };
-
-  const handleDrawerNavClose = () => {
-    setOpenDrawerNav(false);
-  };
-
   return (
     <React.Fragment>
-      <Header onSidebarOpen={handleDrawerNavOpen} isAuth={isAuth} username={username} />
-      <DrawerBar onClose={handleDrawerNavClose} open={openDrawerNav} isAuth={isAuth} username={username}/>
+      <Header isAuth={isAuth} username={username} />
       <Container maxWidth="lg">
         <main>
             {props.children}

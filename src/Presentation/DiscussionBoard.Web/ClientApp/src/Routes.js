@@ -1,10 +1,8 @@
 import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
-
 import NotFound from './components/NotFound/NotFound';
 import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
-import { InfiniteScroll } from './containers/Home/InfiniteScroll';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
 import CreatePost from './containers/CreatePost/CreatePost';
@@ -27,12 +25,7 @@ const Routes = () => {
       <Route 
         component={CreateForum}
         exact 
-        path="/createForum" 
-      />
-      <Route 
-        component={InfiniteScroll}
-        exact 
-        path="/promising" 
+        path="/create-forum" 
       />
       <Route 
         component={Forum}

@@ -98,7 +98,6 @@ const SortingComponent = props => {
                   <InputLabel>Sort</InputLabel>
                   <Select
                     label="Sort"
-                    //name="sortId"
                     value={sort}
                     onChange={handleSortClick}
                   >
@@ -112,7 +111,6 @@ const SortingComponent = props => {
                   <InputLabel>Top</InputLabel>
                   <Select
                     label="Top"
-                    //name="topId"
                     value={top}
                     onChange={handleTopClick}
                   >

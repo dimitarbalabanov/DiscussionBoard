@@ -4,13 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import Paper from '@material-ui/core/Paper';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import CardActionArea from '@material-ui/core/CardActionArea';
 //import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
 //import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import PostVoting from '../../Voting/PostVoting';
+
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -54,9 +57,9 @@ const PostCard = props => {
     post,
     //loading
   } = props;
-  
+  //component={Link} to={`/posts/${post.id}`}
   return (
-    <Card className={classes.card} variant="outlined" component={Link} to={`/posts/${post.id}`}>
+    <Card className={classes.card} variant="outlined" >
       <PostVoting />
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
@@ -66,7 +69,7 @@ const PostCard = props => {
             <strong className={classes.textColor}>f/{post.forumTitle.substring(0, 10).toLowerCase()}</strong> posted by {post.creatorUserName} {ConvertToRelativeTime(post.createdOn)} 
           </Typography>
         </Grid>
-        
+        <Link to={`/posts/${post.id}`}>
         <Grid className={classes.statsItem} item >
           <Typography component="h2" variant="h4">
           {/* {loading ? <Skeleton /> :  */}
@@ -93,6 +96,7 @@ const PostCard = props => {
             {`${post.commentsCount} Comments`}
             </Typography>
         </Grid>
+        </Link>
         </CardContent>
       </div>
     </Card>

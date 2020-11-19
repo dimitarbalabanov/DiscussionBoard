@@ -17,8 +17,8 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderColor: theme.palette.primary.main,
-    border: '1px solid'
+    //borderColor: theme.palette.primary.secondary,
+    //border: '1px solid'
   },
   cardDetails: {
     flex: 1,
@@ -66,7 +66,8 @@ const AboutForumCard2 = props => {
   } = props;
 
   return (
-    <Card className={classes.card} variant="outlined">
+    forum &&
+    <Card className={classes.card} variant="outlined" style={{ border: `1px solid #${forum.color}` }}>
       <div className={classes.cardDetails}>
         <CardContent>
         <Avatar
