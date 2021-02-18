@@ -8,22 +8,25 @@ import Paper from '@material-ui/core/Paper';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { blue, red,  } from '@material-ui/core/colors';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 //import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     display: 'flex',
-    border: `1px solid ${theme.palette.divider}`,
+    //border: `1px solid ${theme.palette.divider}`,
     flexWrap: 'wrap',
-    marginTop: theme.spacing(2),
-    marginLeft: theme.spacing(1)
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(0.5),
+    //width: '50%'
   },
   divider: {
     margin: theme.spacing(1, 0.5),
   },
   score: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    // paddingTop: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
   },
   blue: {
     color: blue[500],
@@ -31,7 +34,14 @@ const useStyles = makeStyles((theme) => ({
   red: {
     color: red[500]
   },
-
+  icon: {
+    fontSize: '40px',
+    margin: theme.spacing(-2),
+  },
+  button: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(1)
+  },
   // active: {
   //   '&:active': {
   //     color: green[500],
@@ -88,38 +98,36 @@ const PostVoting = props => {
 
   const classes = useStyles();
 
-  let upIcon = <ThumbUpIcon/>;
+  let upIcon = <ArrowDropUpIcon className={classes.icon}/>;
   if (type === 'up') {
-    upIcon = <ThumbUpIcon className={classes.blue}/>
+    upIcon = <ArrowDropUpIcon className={`${classes.blue} ${classes.icon}`}/>
   }
 
-  let downIcon = <ThumbDownIcon />
+  let downIcon = <ArrowDropDownIcon className={classes.icon}/>
   if (type === 'down') {
-    downIcon = <ThumbDownIcon className={classes.red}/>
+    downIcon = <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/>
   }
 
   return (
-    <div>
-      <Paper elevation={0} className={classes.paper}>
-        <StyledToggleButtonGroup
-          size="small"
-          orientation="vertical"
-          value={type}
-          exclusive
-          onChange={handleTypeChange}
-        >
-          <ToggleButton value="up">
-            {upIcon}
-          </ToggleButton>
-          <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
-             0
-          </Typography>
-          <ToggleButton value="down">
-            {downIcon}
-          </ToggleButton>
-        </StyledToggleButtonGroup>
-      </Paper>
-    </div>
+    <Paper elevation={0} className={classes.paper}>
+      <StyledToggleButtonGroup
+        size="small"
+        orientation="vertical"
+        value={type}
+        exclusive
+        onChange={handleTypeChange}
+      >
+        <ToggleButton value="up" className={classes.button}>
+          {upIcon}
+        </ToggleButton>
+        <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
+            0
+        </Typography>
+        <ToggleButton value="down" className={classes.button}>
+          {downIcon}
+        </ToggleButton>
+      </StyledToggleButtonGroup>
+    </Paper>
   );
 }
 

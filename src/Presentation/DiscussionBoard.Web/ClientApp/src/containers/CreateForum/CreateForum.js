@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateForum = props => {
   const classes = useStyles();
-const createForumLoading = false;
+  const createForumLoading = false;
   //const {
     //createForumSuccess,
     //createForumError,

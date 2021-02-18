@@ -41,7 +41,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
             if (request.PostMedia != null)
             {
-                var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia, request.PostMedia.FileName);
+                var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia);
                 post.Media = new PostMedia
                 {
                     Url = uploadResult.AbsoluteUri,

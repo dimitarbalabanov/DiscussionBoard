@@ -3,24 +3,19 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActionArea from '@material-ui/core/CardActionArea';
-//import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
-//import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
-import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import PostVoting from '../../Voting/PostVoting';
-import PostFirstLine from '../PostFirstLine';
-
+import PostFirstLine2 from '../PostFirstLine2';
+import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
+    borderStyle: "solid",
+    borderWidth: "1.5px 1.5px 1.5px 1.5px",
+    borderColor: theme.palette.primary.main,
     '&:hover': {
-      border: '1px solid',
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette.secondary.main,
     }
   },
   cardDetails: {
@@ -30,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     display: 'flex',
     margin: theme.spacing(1)
+  },
+  title: {
+    marginLeft: theme.spacing(1)
   },
   statsIcon: {
     marginRight: theme.spacing(1),
@@ -64,10 +62,12 @@ const AnotherPostCard = props => {
     <Paper className={classes.card}>
       <PostVoting />
       <Grid item>
-        <PostFirstLine forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/>
+        {/* <PostFirstLine1 forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/> */}
+        <PostFirstLine2 forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/>
+        <DeleteAndConfirmButton />
         <Link to={`/posts/${post.id}`}>
-          <Grid className={classes.statsItem} item >
-            <Typography color="textPrimary" component="h2" variant="h4">
+          <Grid item>
+            <Typography className={classes.title} color="textPrimary" component="h2" variant="h4">
             {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
             </Typography>
           </Grid>

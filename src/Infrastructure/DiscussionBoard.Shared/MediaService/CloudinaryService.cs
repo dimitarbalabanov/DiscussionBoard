@@ -21,7 +21,7 @@ namespace DiscussionBoard.Shared.MediaService
             _cloudinary = cloudinary;
         }
 
-        public async Task<UploadResultDto> UploadImageAsync(IFormFile formFile, string name)
+        public async Task<UploadResultDto> UploadImageAsync(IFormFile formFile)
         {
             if (formFile == null)
             {
@@ -33,10 +33,11 @@ namespace DiscussionBoard.Shared.MediaService
             byte[] image = memoryStream.ToArray();
             memoryStream.Dispose();
 
+            var trustedFileName = Path.GetRandomFileName();
             var stream = new MemoryStream(image);
             var uploadParams = new ImageUploadParams()
             {
-                File = new FileDescription(name, stream),
+                File = new FileDescription(trustedFileName, stream),
                 AllowedFormats = new string[] { JpgFormat, PngFormat },
             };
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);

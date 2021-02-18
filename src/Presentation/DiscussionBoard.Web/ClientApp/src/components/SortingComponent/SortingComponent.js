@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     // borderColor: theme.palette.primary.main,
     // border: '3px solid'
+    borderStyle: "solid",
+    borderWidth: "5px",
+    borderRadius: '5px',
+    borderColor: theme.palette.primary.main,
   },
   cardDetails: {
     flex: 1
@@ -26,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
   statsItem: {
     alignItems: 'center',
     display: 'flex',
-    margin: theme.spacing(1)
+    margin: theme.spacing(0)
   },
   statsIcon: {
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(0),
     fontSize: "24px"
   },
   cardcontent: {
@@ -37,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     "&:last-child": {
       paddingBottom: 0
     },
-    margin: theme.spacing(2),
+    margin: theme.spacing(0),
     borderColor: theme.palette.primary.main,
   },
   header: {

@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CommentReports\**" />
+    <Compile Remove="PostReports\**" />
+    <EmbeddedResource Remove="CommentReports\**" />
+    <EmbeddedResource Remove="PostReports\**" />
+    <None Remove="CommentReports\**" />
+    <None Remove="PostReports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="FluentValidation" Version="9.2.0" />
@@ -21,11 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CommentReports\Queries\" />
     <Folder Include="CommentVotes\Queries\" />
     <Folder Include="Forums\Commands\Validator\" />
     <Folder Include="Identity\Queries\GetProfile\" />
-    <Folder Include="PostReports\Queries\" />
     <Folder Include="PostVotes\Queries\" />
   </ItemGroup>
 

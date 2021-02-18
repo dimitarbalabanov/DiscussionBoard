@@ -3,7 +3,7 @@ using DiscussionBoard.Domain.Entities.Enums;
 
 namespace DiscussionBoard.Domain.Common
 {
-    public class BaseVote : BaseModel<int>
+    public abstract class BaseVote : BaseModel<int>
     {
         public VoteType Type { get; set; }
 

@@ -24,8 +24,6 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 
         public bool IsCreator { get; set; }
 
-        public IEnumerable<RuleDto> Rules { get; private set; }
-
         public int PostsCount { get; private set; }
 
         public int CommentsCount { get; private set; }

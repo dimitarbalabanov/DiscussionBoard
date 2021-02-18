@@ -44,7 +44,7 @@ namespace DiscussionBoard.Application.Users.Commands.UpdateUser
 
             if (request.MediaFile != null)
             {
-                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile, request.MediaFile.Name);
+                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile);
                 user.Media = _mapper.Map<UserMedia>(uploadResult);
             }
 

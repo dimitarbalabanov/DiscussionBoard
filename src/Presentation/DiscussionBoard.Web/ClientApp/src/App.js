@@ -9,7 +9,6 @@ import theme from './theme/theme';
 import Routes from './Routes';
 import Layout from './layout/Layout';
 import Snackbar from './components/GlobalSnackbar/GlobalSnackbar';
-import Modal from './components/GlobalModal/GlobalModal';
 
 const App = props => {
   const {
@@ -35,7 +34,6 @@ const App = props => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <CssBaseline />
-      <Modal show={showModal} type={modalType} title={modalTitle} message={modalMessage} handleClose={onCloseModal} />
       <Snackbar show={showSnackbar} type={snackbarType} message={snackbarMessage} handleClose={onCloseSnackbar}/>
       <Router>
         <Layout isAuth={isAuthenticated} username={username}>

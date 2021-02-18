@@ -29,10 +29,6 @@ namespace DiscussionBoard.Persistence.Configurations
                 .WithMany(u => u.ResolvedCommentReports)
                 .HasForeignKey(cr => cr.ResolverId)
                 .OnDelete(DeleteBehavior.Restrict);
-            //commentReport
-            //    .HasOne(cr => cr.Resolver)
-            //    .WithMany(u => u.CommentReports)
-            //    .HasForeignKey(cr => cr.ResolverId);
 
             commentReport
                 .HasOne(cr => cr.Rule)

@@ -1,33 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Container from '@material-ui/core/Container';
 import Header from './components/Header/Header';
-//import Footer from './components/Footer/Footer';
-
-//import { makeStyles } from '@material-ui/core/styles';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     paddingTop: 56,
-//     height: '100%',
-//     [theme.breakpoints.up('sm')]: {
-//       paddingTop: 64
-//     }
-//   },
-//   mainGrid: {
-//     marginTop: theme.spacing(3),
-//   },
-//   background: {
-//     backgroundColor: theme.palette.primary.main,
-//   },
-// }));
+import Navigation from './components/New/Navigation';
+// import Footer from './components/Footer/Footer';
 
 const Layout = props => {
   const { isAuth, username } = props
-  //const classes = useStyles();
 
   return (
     <React.Fragment>
-      <Header isAuth={isAuth} username={username} />
+      <Navigation isAuth={isAuth} username={username} />
       <Container maxWidth="lg">
         <main>
             {props.children}

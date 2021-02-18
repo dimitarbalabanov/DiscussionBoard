@@ -52,9 +52,6 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(pv => pv.PostId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            //post.Property(p => p.Score)
-            //    .HasComputedColumnSql();
-
             //SELECT SUM(CAST([v].[Type] AS int))
             //FROM [PostsVotes] AS [p]
             //INNER JOIN [Votes] AS [v] ON[p].[VoteId] = [v].[Id]

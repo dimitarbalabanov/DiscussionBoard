@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
-import VideoLibraryOutlinedIcon from "@material-ui/icons/VideoLibraryOutlined";
+import ImageIcon from "@material-ui/icons/Image";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
 const ImageInput = props => {
@@ -22,23 +22,23 @@ const ImageInput = props => {
     <FormControl margin="normal">
       <input
         style={{ display: "none" }}
-        id="video-upload"
+        id="image-upload"
         name={props.field.name}
         type="file"
         accept="*"
         onChange={handleChange}
       />
-      <label htmlFor="video-upload">
+      <label htmlFor="image-upload">
         <Button color="primary" margin="normal" component="span">
+          <ImageIcon />
           {props.title}
-          <VideoLibraryOutlinedIcon />
         </Button>
       </label>
       {fileName ? (
-        <FormHelperText id="video-upload-filename">{fileName}</FormHelperText>
+        <FormHelperText id="image-upload-filename">{fileName}</FormHelperText>
       ) : null}
       {props.errorMessage ? (
-        <FormHelperText id="video-upload-helper-text" error={true}>
+        <FormHelperText id="image-upload-helper-text" error={true}>
           {props.errorMessage}
         </FormHelperText>
       ) : null}

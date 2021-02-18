@@ -28,9 +28,11 @@ namespace DiscussionBoard.Web
             services.AddApplication();
             services.AddShared(_configuration);
             services.AddSwaggerExtension();
-            //services.AddSignalR();
-            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddControllersWithViews().AddNewtonsoftJson().ConfigureApiBehaviorOptions(options => {
+                options.SuppressInferBindingSourcesForParameters = true;
+            }); ;
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+            
             //services.AddSpaStaticFiles(configuration =>
             //{
             //    configuration.RootPath = "ClientApp/build";
@@ -62,7 +64,6 @@ namespace DiscussionBoard.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapHub<ChatHub>("/hubs/chat");
             });
             //app.UseSpa(spa =>
             //{

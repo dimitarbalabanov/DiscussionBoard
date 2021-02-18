@@ -12,7 +12,6 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CreatedOnTooltip from '../../CreatedOnTooltip/CreatedOnTooltip';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
@@ -86,7 +85,7 @@ const PostDetailsCard = props => {
           {postsLoading ? <Skeleton /> : 
           <Grid className={classes.statsItem} item >
             <Typography color="textSecondary" display="inline" variant="body2" >
-            <Link component={RouterLink} to={"/forums/" + post.forumId}><strong className={classes.textColor}>{post.forumTitle}</strong></Link> posted <CreatedOnTooltip createdOn={post.createdOn} /> by <Link component={RouterLink} to={"/users/" + post.creatorUserName}><strong className={classes.textColor}>{post.creatorUserName}</strong></Link>
+            <Link component={RouterLink} to={"/forums/" + post.forumId}><strong className={classes.textColor}>{post.forumTitle}</strong></Link> posted by <Link component={RouterLink} to={"/users/" + post.creatorUserName}><strong className={classes.textColor}>{post.creatorUserName}</strong></Link>
             </Typography>
           </Grid>}
           {showUpdateForm ? <EditPost onClose={handleClose} title={post.title} content={post.content}/> : 

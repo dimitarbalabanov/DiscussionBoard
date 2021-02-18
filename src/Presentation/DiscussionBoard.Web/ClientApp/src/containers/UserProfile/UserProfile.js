@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import UserCard from '../../components/User/UserCard';
 import ContentTabs from '../../components/User/ContentTabs';
 
-
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     backgroundColor: theme.palette.common.white,

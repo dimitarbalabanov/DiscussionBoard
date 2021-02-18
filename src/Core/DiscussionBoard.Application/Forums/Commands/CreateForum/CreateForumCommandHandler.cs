@@ -34,7 +34,7 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 
             if (request.MediaFile != null)
             {
-                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile, request.MediaFile.Name);
+                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile);
                 forum.Media = _mapper.Map<ForumMedia>(uploadResult);
             }
 

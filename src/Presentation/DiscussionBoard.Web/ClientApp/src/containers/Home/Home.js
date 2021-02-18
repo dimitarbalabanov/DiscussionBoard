@@ -5,20 +5,14 @@ import {
   fetchPosts,
   clearPosts
 } from '../../store/actions';
-//import useInfiniteScroll from '../../hooks/useInfiniteScroll/useInfiniteScroll';
 import Grid from '@material-ui/core/Grid';
-//import Paper from '@material-ui/core/Paper';
-////import Box from '@material-ui/core/Box';
 import Page from '../../components/Page/Page';
-//import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+import ForumsList from '../../components/Forum/ForumsList/ForumsList2';
 import PostsList from '../../components/Post/PostsList/PostsList';
-//import PostsListSkeleton from '../../components/Post/PostsList/PostsListSkeleton';
-import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
-import PopularForumsCard from '../../components/Forum/PopularForumsCard/PopularForumsCard';
-//import Spinner from '../../components/Spinner/Spinner';
-import SortingComponent from '../../components/SortingComponent/SortingComponent';
+import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
+import SortingComponent from '../../components/SortingComponent/SortingComponent2';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
-
+import RightSide from './RightSide';
 const Home = props => {
   useTraceUpdate(props)
   const { 
@@ -52,9 +46,11 @@ const Home = props => {
   }, [onFetchPosts, sort, top]);
 
   useEffect(() => {
-    console.log("fetching forums")
-    onFetchForums();
-  }, [onFetchForums]);
+    if (forums.length < 1) {
+      console.log("fetching forums")
+      onFetchForums();
+    }
+  }, [onFetchForums, forums.length]);
 
   const observeBorder = useCallback(
     node => {
@@ -67,6 +63,7 @@ const Home = props => {
               console.log(en);
               if (en.intersectionRatio === 1) {
                 console.log("prashtam zaqvka s kursor" + postsCursor)
+                //setTimeout(() => loadMore(), 1000); // 1 sec delay
                 onFetchPosts(postsCursor);
               }
             });
@@ -96,7 +93,7 @@ const Home = props => {
         alignItems="flex-start"
       > 
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-          <CreatePostButton isAuthenticated={isAuthenticated}/>
+          <CreatePostButton2 isAuthenticated={isAuthenticated}/>
           <SortingComponent sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
           {postsLoading && renderLoadingMessage()}
@@ -113,11 +110,11 @@ const Home = props => {
           </Grid> */}
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          <PopularForumsCard forums={forums} loading={forumsLoading}/>
-          {/* <ForumsList forums={forums} loading={forumsLoading}/> */}
+          <ForumsList forums={forums} loading={forumsLoading}/>
         </Grid>
-      </Grid>
+        {/* <RightSide forums={forums} loading={forumsLoading}/> */}
       {/* {postsError ? null : <div ref={loader}></div>} */}
+      </Grid>
     </Page>
   );
 }

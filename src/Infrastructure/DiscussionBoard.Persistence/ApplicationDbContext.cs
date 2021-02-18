@@ -41,27 +41,6 @@ namespace DiscussionBoard.Persistence
 
         public DbSet<UserPostSave> UserPostSaves { get; set; }
 
-        //public DbSet<PostsVotesScores> PostsVotesScores { get; set; }
-        //CREATE VIEW View_PostsVotesScores AS 
-        //SELECT [p0].[Id], (
-        //SELECT SUM(CAST([v].[Type] AS int))
-        //    FROM[PostsVotes] AS[p]
-        //    INNER JOIN[Votes] AS [v] ON[p].[VoteId] = [v].[Id]
-        //    WHERE[p0].[Id] = [p].[PostId]) AS[VotesScore]
-        //FROM[Posts] AS[p0]
-
-        //[Table("View_PostsVotesScores")]
-        //public class PostsVotesScores : IAuditInfo
-        //{
-        //    public int Id { get; set; }
-
-        //    public int? VotesScore { get; set; }
-
-        //    public DateTime CreatedOn { get; set; }
-
-        //    public DateTime? ModifiedOn { get; set; }
-        //}
-
         public override int SaveChanges()
         {
             ApplyAuditInfoRules();

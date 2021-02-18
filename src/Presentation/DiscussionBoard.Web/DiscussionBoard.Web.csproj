@@ -23,12 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hubs\" />
+    <ProjectReference Include="..\..\Infrastructure\DiscussionBoard.Persistence\DiscussionBoard.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\DiscussionBoard.Shared\DiscussionBoard.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\DiscussionBoard.Persistence\DiscussionBoard.Persistence.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\DiscussionBoard.Shared\DiscussionBoard.Shared.csproj" />
+    <Folder Include="Requests\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

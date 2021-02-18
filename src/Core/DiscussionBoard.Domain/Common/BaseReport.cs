@@ -4,9 +4,9 @@ using System;
 
 namespace DiscussionBoard.Domain.Common
 {
-    public class BaseReport : BaseModel<string>
+    public abstract class BaseReport : BaseModel<string>
     {
-        public BaseReport()
+        protected BaseReport()
         {
             Id = Guid.NewGuid().ToString();
         }

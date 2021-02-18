@@ -17,8 +17,9 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    //borderColor: theme.palette.primary.secondary,
-    //border: '1px solid'
+    borderStyle: "solid",
+    borderWidth: "2px 2px 2px 10px",
+    borderColor: theme.palette.primary.main,
   },
   cardDetails: {
     flex: 1,
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+    backgroundColor: theme.palette.primary.main,
   },
   avatar: {
     height: 150,
@@ -67,12 +69,12 @@ const AboutForumCard2 = props => {
 
   return (
     forum &&
-    <Card className={classes.card} variant="outlined" style={{ border: `1px solid #${forum.color}` }}>
+    <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
         <CardContent>
         <Avatar
           className={classes.avatar}
-          src={forum.mediaUrl}
+         // src={forum.mediaUrl}
           />
         <Typography className={classes.title} component="h1" variant="h1" align="center">
           {"f/" + forum.title.substring(0, 10).toLowerCase()}
@@ -95,6 +97,9 @@ const AboutForumCard2 = props => {
                 {loading || !forum ? <Skeleton /> :`${forum.commentsCount} Comments`}
               </Typography>
             </Grid>
+            </Grid>
+            <hr className={classes.margin}/>
+            <Grid className={classes.statsItem} item>
             {loading || !forum ? null : <Button
               component={Link}
               to={'/create'}
@@ -107,7 +112,8 @@ const AboutForumCard2 = props => {
             >
               Post in {loading || !forum ? <Skeleton /> : forum.title}
             </Button>}
-          </Grid>
+            </Grid>
+
         </CardContent>
       </div>
     </Card>

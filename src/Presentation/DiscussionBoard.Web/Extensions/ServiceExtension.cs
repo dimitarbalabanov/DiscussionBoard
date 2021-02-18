@@ -10,7 +10,6 @@ namespace DiscussionBoard.Web.Extensions
         {
             services.AddSwaggerGen(c =>
             {
-                //c.IncludeXmlComments(string.Format(@"{0}\CleanArchitecture.WebApi.xml", System.AppDomain.CurrentDomain.BaseDirectory));
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
@@ -24,7 +23,7 @@ namespace DiscussionBoard.Web.Extensions
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Description = "Input your Bearer token in this format - Bearer {your token here} to access this API",
+                    Description = "Input your Bearer token in this format - 'Bearer {your token here}' to access this API",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {

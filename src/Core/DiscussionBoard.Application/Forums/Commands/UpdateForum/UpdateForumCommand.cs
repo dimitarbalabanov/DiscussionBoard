@@ -2,6 +2,10 @@
 {
     public class UpdateForumCommand
     {
-        public int ForumId { get; set; }
+        public UpdateForumCommand(int forumId)
+        {
+            ForumId = forumId;
+        }
+        public int ForumId { get; private set; }
     }
 }

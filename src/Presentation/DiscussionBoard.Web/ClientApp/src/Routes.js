@@ -8,6 +8,8 @@ import Post from './containers/Post/Post';
 import CreatePost from './containers/CreatePost/CreatePost';
 import UserProfile from './containers/UserProfile/UserProfile';
 import CreateForum from './containers/CreateForum/CreateForum';
+import Login from './containers/Auth/Login/Login';
+import Register from './containers/Auth/Register/Register';
 
 const Routes = () => {
   return (
@@ -16,6 +18,16 @@ const Routes = () => {
         component={Home}
         exact 
         path="/" 
+      />
+      <Route 
+        component={Register}
+        exact 
+        path="/register" 
+      />
+      <Route 
+        component={Login}
+        exact 
+        path="/login" 
       />
       <Route 
         component={UserProfile}

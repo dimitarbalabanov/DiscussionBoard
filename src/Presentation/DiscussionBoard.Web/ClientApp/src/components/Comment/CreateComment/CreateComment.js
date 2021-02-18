@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-//import Spinner from '../../../../components/Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +18,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary
   }
 }));
+
+const initialValues = {
+  content: ''
+};
+
+const validationSchema = Yup.object().shape(
+  { content: Yup.string().max(255).required('Content is required')}
+);
 
 const CreateComment = props => {
 
@@ -58,7 +65,7 @@ const CreateComment = props => {
       }) => (
         <form onSubmit={handleSubmit} >
           <TextField
-            error={Boolean(touched.content && errors.content)}
+            error={Boolean(values.content && errors.content)}
             fullWidth
             helperText={touched.content && errors.content}
             label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}

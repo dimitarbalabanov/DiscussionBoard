@@ -128,7 +128,7 @@ const Navigation = props => {
                   activeClassName={classes.active}
                   className={classes.button}
                   component={CustomRouterLink}
-                  to={'/profile'}
+                  to={'/user'}
                 >
                 <div className={classes.icon}>
                   <PersonIcon />

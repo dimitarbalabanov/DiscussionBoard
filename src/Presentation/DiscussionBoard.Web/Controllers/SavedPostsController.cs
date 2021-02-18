@@ -12,7 +12,7 @@ namespace DiscussionBoard.Web.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserSavedPostCommand command)
-        {
+        {   
             await Mediator.Send(command);
             return NoContent();
         }

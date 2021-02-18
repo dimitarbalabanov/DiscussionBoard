@@ -3,6 +3,7 @@ using DiscussionBoard.Application.Forums.Commands.DeleteForum;
 using DiscussionBoard.Application.Forums.Commands.UpdateForum;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
+using DiscussionBoard.Web.ModelBinders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -34,11 +35,11 @@ namespace DiscussionBoard.Web.Controllers
             var response = await Mediator.Send(command);
             return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
-
+        [AllowAnonymous]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateForumCommand command)
+        public async Task<IActionResult> Update([FromForm] UpdateForumCommand command)
         {
-            command.ForumId = id;
+            //command.ForumId = id;
             await Mediator.Send(command);
             return NoContent();
         }

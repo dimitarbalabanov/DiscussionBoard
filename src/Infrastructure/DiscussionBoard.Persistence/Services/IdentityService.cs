@@ -26,6 +26,7 @@ namespace DiscussionBoard.Persistence.Services
             _emailSender = emailSender;
             _jwtSettings = jwtSettings;
         }
+
         public async Task<IdentityResultDto> LoginAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);

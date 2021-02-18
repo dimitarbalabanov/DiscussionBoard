@@ -6,7 +6,7 @@ namespace DiscussionBoard.Application.Common.Interfaces
 {
     public interface IMediaService
     {
-        Task<UploadResultDto> UploadImageAsync(IFormFile formFile, string name);
+        Task<UploadResultDto> UploadImageAsync(IFormFile formFile);
 
         Task DestroyImageAsync(string publicId);
     }

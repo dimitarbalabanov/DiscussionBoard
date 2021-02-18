@@ -13,6 +13,7 @@ import Voting from '../../Voting/Voting';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import EditComment from '../EditComment/EditComment';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,6 +55,15 @@ const useStyles = makeStyles((theme) => ({
 const CommentCard = props => {
   const classes = useStyles();
   const [showUpdateForm, setUpdateForm] = useState(false);
+  const [showDeleteConfirm, setDeleteConfirm] = useState(false);
+  
+  const handleShow = () => {
+    setDeleteConfirm(true);
+  }
+
+  const handleHide = () => {
+    setDeleteConfirm(false);
+  }
 
   const handleOpen = () => {
     setUpdateForm(true);
@@ -133,14 +143,7 @@ const CommentCard = props => {
                         Edit
                       </Typography>
                     </Button>
-                      <Button onClick={() => onDeleteComment(comment.id)} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
-                        {deleteCommentLoading && comment.id === deleteCommentId 
-                          ? <CircularProgress /> 
-                          : <Typography color="textSecondary" display="inline" variant="body2">
-                              Delete
-                            </Typography> 
-                        }
-                      </Button>
+                    <DeleteAndConfirmButton />
                   </Grid> : null}
                 </React.Fragment>
             }

@@ -36,7 +36,7 @@ namespace DiscussionBoard.Persistence.Seeding
                 {
                     CreatedOn = DateTime.Parse(info[1]),
                     Title = info[2],
-                    Color = info[3],
+                    //Color = info[3],
                     Description = info[4],
                 });
             }

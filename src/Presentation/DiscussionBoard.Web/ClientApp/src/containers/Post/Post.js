@@ -8,7 +8,6 @@ import Spinner from '../../components/Spinner/Spinner';
 import PostSidebar from '../../components/Post/PostSidebar/PostSidebar';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
-import RulesCard from '../../components/Rule/RulesCard';
 import AboutForumCard2 from '../../components/Forum/AboutForumCard/AboutForumCard2';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,15 +62,22 @@ const Post = (props) => {
     deleteVoteError,
     deleteVoteLoading,
     isAuthenticated,
-    onOpenModal
+    onOpenModal,
+    onFetchForum
   } = props;
+  
+  const forumId = post !== null ? post.forumId : null;
 
   useEffect(() => {
-
     onFetchPost(postId);
     onFetchComments(postId);
-
   }, [onFetchPost, onFetchComments, postId]);
+
+  useEffect(() => {
+    if(forumId !== null) {
+      onFetchForum(forumId);
+    } 
+  }, [onFetchForum, forumId]);
 
   let postDiv = <Spinner />;
   let commentsDiv = <Spinner />;
@@ -133,7 +139,6 @@ const Post = (props) => {
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
         { forum ? <Grid item md={10}>
             <AboutForumCard2 forum={forum}  />
-            <RulesCard forum={forum}/> 
           </Grid> : null}
           <PostSidebar />
         </Grid>
@@ -180,6 +185,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
     onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
     onCreateComment: (content, postId) => dispatch(actions.createComment(content, postId)),
