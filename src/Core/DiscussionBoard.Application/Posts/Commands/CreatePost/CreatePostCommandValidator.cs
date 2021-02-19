@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Posts.Commands.Validator;
+﻿using DiscussionBoard.Application.Common.CustomValidators;
+using DiscussionBoard.Application.Posts.Commands.Validator;
 using FluentValidation;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
@@ -15,6 +16,9 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
             RuleFor(p => p.ForumId)
                 .NotEmpty();
+
+            RuleFor(p => p.PostMedia)
+                .IsValidTypeAndSize();
         }
     }
 }

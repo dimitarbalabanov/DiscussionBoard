@@ -2,6 +2,7 @@
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,28 +15,18 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
         private readonly IMapper _mapper;
         public CreateCommentCommandHandler(
             IRepository<Comment> commentsRepository,
-            IRepository<User> userRepository,
             IAuthenticatedUserService authUserService,
             IMapper mapper)
         {   
-            _commentsRepository = commentsRepository;
-            _mapper = mapper;
-            _authUserService = authUserService;
+            _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
+            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-
 
         public async Task<CreateCommentCommandResponse> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
-            //var comment = _mapper.Map<Comment>(request);
-            //var userId = _authUserService.UserId;
-            //comment.CreatorId = userId;
-
-            var comment = new Comment
-            {
-                Content = request.Content,
-                PostId = request.PostId,
-                CreatorId = _authUserService.UserId
-            };
+            var comment = _mapper.Map<Comment>(request);
+            comment.CreatorId = _authUserService.UserId;
 
             await _commentsRepository.AddAsync(comment);
             await _commentsRepository.SaveChangesAsync();

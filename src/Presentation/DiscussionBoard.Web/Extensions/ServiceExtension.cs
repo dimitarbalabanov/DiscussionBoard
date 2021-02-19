@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace DiscussionBoard.Web.Extensions
 {
@@ -13,8 +16,9 @@ namespace DiscussionBoard.Web.Extensions
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Discussion Board - Api",
-                    Description = "This Api will be responsible for overall data distribution and authorization.",
+                    Title = "Discussion Board API",
+                    Description = "Discussion Board API is responsible for data distribution and authorization.",
+
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -41,6 +45,10 @@ namespace DiscussionBoard.Web.Extensions
                         }, new List<string>()
                     },
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
     }

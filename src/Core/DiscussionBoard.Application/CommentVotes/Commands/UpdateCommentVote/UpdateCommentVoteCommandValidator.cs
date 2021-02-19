@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DiscussionBoard.Application.Common.CustomValidators;
+using FluentValidation;
 
 namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
 {
-    class UpdateCommentVoteCommandValidator
+    public class UpdateCommentVoteCommandValidator : AbstractValidator<UpdateCommentVoteCommand>
     {
+        public UpdateCommentVoteCommandValidator()
+        {
+            RuleFor(p => p.Type)
+                .IsValidVoteTypeEnum();
+        }
     }
 }

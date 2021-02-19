@@ -23,7 +23,7 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
         {
             var post = await _postsRepository
                 .All()
-                .SingleOrDefaultAsync(p => p.Id == request.Id);
+                .SingleOrDefaultAsync(p => p.Id == request.PostId);
 
             if (post == null)
             {

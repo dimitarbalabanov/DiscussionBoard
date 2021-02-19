@@ -50,13 +50,16 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                     .Where(cv => commentIds.Contains(cv.CommentId) && cv.CreatorId == userId)
                     .ToListAsync();
 
-                foreach (var comment in comments)
+                if (currentUserVotesInComments.Count > 0)
                 {
-                    var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
-                    if (commentVote != null)
+                    foreach (var comment in comments)
                     {
-                        comment.CurrentUserVoteId = commentVote.Id;
-                        comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
+                        var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
+                        if (commentVote != null)
+                        {
+                            comment.CurrentUserVoteId = commentVote.Id;
+                            comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
+                        }
                     }
                 }
             }

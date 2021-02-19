@@ -7,10 +7,10 @@ namespace DiscussionBoard.Application.Comments.Commands.CreateComment
     {
         public CreateCommentCommandValidator()
         {
-            RuleFor(p => p.Content)
+            RuleFor(c => c.Content)
                .IsContentProperLength();
 
-            RuleFor(p => p.PostId)
+            RuleFor(c => c.PostId)
                 .NotEmpty();
         }
     }

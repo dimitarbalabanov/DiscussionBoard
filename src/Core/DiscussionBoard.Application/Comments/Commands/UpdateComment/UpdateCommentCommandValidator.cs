@@ -7,7 +7,7 @@ namespace DiscussionBoard.Application.Comments.Commands.UpdateComment
     {
         public UpdateCommentCommandValidator()
         {
-            RuleFor(p => p.Content)
+            RuleFor(c => c.Content)
                .IsContentProperLength();
         }
     }

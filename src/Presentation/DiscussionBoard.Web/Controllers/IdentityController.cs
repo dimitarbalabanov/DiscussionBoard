@@ -30,7 +30,7 @@ namespace DiscussionBoard.Web.Controllers
         //}
 
         [HttpGet("confirmEmail")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailCommand command)
+        public async Task<IActionResult> ConfirmEmailAsync([FromQuery] ConfirmEmailCommand command)
         {
             var response = await Mediator.Send(command);
             return Ok(response);

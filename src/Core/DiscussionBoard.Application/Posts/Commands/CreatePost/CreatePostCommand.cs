@@ -1,25 +1,19 @@
-﻿using MediatR;
+﻿using DiscussionBoard.Application.Common.Mappings;
+using DiscussionBoard.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
-    public class CreatePostCommand : IRequest<CreatePostCommandResponse>
+    public class CreatePostCommand : IRequest<CreatePostCommandResponse>, IMapTo<Post>
     {
-        //public CreatePostCommand(string title, string content, int forumId, IFormFile postMedia)
-        //{
-        //    Title = title;
-        //    Content = content;
-        //    ForumId = forumId;
-        //    PostMedia = postMedia;
-        //}
+        public string Title { get; set; }
 
-        public string Title { get; private set; }
+        public string Content { get; set; }
 
-        public string Content { get; private set; }
+        public int ForumId { get; set; }
 
-        public int ForumId { get; private set; }
-
-        public IFormFile PostMedia { get; private set; }
+        public IFormFile PostMedia { get; set; }
     }
 }
 

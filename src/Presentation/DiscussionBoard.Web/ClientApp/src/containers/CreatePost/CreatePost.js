@@ -70,13 +70,13 @@ const CreatePost = props => {
         title: Yup.string().min(3).max(200).required('Title is required'),
         content: Yup.string().min(30).max(2500).required('Content is required'),
         //forumId: Yup.number().required('Selecting a forum is required')
-        image: Yup.mixed()
-          .required("We need an Image!")
-          .test(
-            "fileSize",
-            "Your video is too big :(",
-            value => value && value.size <= 262144000
-        )
+        // image: Yup.mixed()
+        //   .required("We need an Image!")
+        //   .test(
+        //     "fileSize",
+        //     "Your video is too big :(",
+        //     value => value && value.size <= 262144000
+        // )
       })}
       onSubmit={values => {
         console.log(values)
@@ -84,9 +84,9 @@ const CreatePost = props => {
         formData.append('forumId', values.forumId);
         formData.append('title', values.title);
         formData.append('content', values.content);
-        formData.append("postMedia", values.image);
-        //onCreatePost(values.forumId, values.title, values.content);
-        onCreatePost(formData);
+        //formData.append("postMedia", values.image);
+        onCreatePost(values.forumId, values.title, values.content);
+        //onCreatePost(formData);
       }}
     >
       {({
@@ -199,8 +199,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    //onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
-    onCreatePost: (formData) => dispatch(createPost(formData))
+    onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
+    //onCreatePost: (formData) => dispatch(createPost(formData))
   };
 };
 

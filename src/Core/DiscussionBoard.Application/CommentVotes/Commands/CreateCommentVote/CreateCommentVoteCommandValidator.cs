@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DiscussionBoard.Application.Common.CustomValidators;
+using FluentValidation;
 
 namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
 {
-    class CreateCommentVoteCommandValidator
+    public class CreateCommentVoteCommandValidator : AbstractValidator<CreateCommentVoteCommand>
     {
+        public CreateCommentVoteCommandValidator()
+        {
+            RuleFor(p => p.Type)
+                .IsValidVoteTypeEnum();
+
+            RuleFor(p => p.CommentId)
+               .NotEmpty();
+        }
     }
 }

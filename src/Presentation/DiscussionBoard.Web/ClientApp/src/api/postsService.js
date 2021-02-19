@@ -27,13 +27,13 @@ export const getPosts = (sort, top, forumId, cursor) => {
   return axiosInstance.get(POSTS_URL + '?' + queries.join('&'));
 };
 
-// export const createPost = (forumId, title, content) => {
-//   return axiosInstance.post(POSTS_URL, { forumId, title, content });
-// };
-export const createPost = (formData) => {
-  //axiosInstance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-  return axiosInstance.post(POSTS_URL, formData);
+export const createPost = (forumId, title, content) => {
+  return axiosInstance.post(POSTS_URL, { forumId, title, content });
 };
+// export const createPost = (formData) => {
+//   //axiosInstance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
+//   return axiosInstance.post(POSTS_URL, {...formData});
+// };
 
 export const updatePostById = (postId, title, content) => {
   return axiosInstance.put(POSTS_URL + postId, { title, content });

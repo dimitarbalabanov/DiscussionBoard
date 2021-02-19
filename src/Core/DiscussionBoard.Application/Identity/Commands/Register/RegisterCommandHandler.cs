@@ -14,7 +14,6 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _sender;
-        private readonly IIdentityService _identityService;
 
         public RegisterCommandHandler(UserManager<User> userManager, IEmailSender sender)
         {

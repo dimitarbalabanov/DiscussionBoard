@@ -11,14 +11,14 @@ namespace DiscussionBoard.Web.Controllers
     public class PostVotesController : BaseController
     {
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreatePostVoteCommand command)
+        public async Task<IActionResult> CreateAsync([FromBody] CreatePostVoteCommand command)
         {
             var id = await Mediator.Send(command);
             return Ok(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePostVoteCommand command)
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdatePostVoteCommand command)
         {
             command.PostVoteId = id;
             await Mediator.Send(command);
@@ -26,7 +26,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await Mediator.Send(new DeletePostVoteCommand { PostVoteId = id });
             return NoContent();

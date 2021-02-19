@@ -53,6 +53,9 @@ namespace DiscussionBoard.Web.Middlewares
                 case UnauthorizedException _:
                     code = HttpStatusCode.Unauthorized;
                     break;
+                case ForbiddenException _:
+                    code = HttpStatusCode.Forbidden;
+                    break;
             }
 
             context.Response.ContentType = "application/json";

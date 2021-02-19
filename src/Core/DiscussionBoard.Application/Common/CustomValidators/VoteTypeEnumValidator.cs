@@ -11,6 +11,7 @@ namespace DiscussionBoard.Application.Common.CustomValidators
         public static IRuleBuilderOptions<T, string> IsValidVoteTypeEnum<T>(this IRuleBuilder<T, string> rule)
         {
             return rule
+                .NotEmpty()
                 .Must(type => Enum.TryParse(type, true, out VoteType result) && Enum.IsDefined(typeof(VoteType), result))
                 .WithMessage(ErrorMsg);
         }

@@ -7,7 +7,7 @@ namespace DiscussionBoard.Web.Controllers
     public class UsersController : BaseController
     {
         [HttpGet("{username}")]
-        public async Task<IActionResult> Get([FromRoute] string username)
+        public async Task<IActionResult> GetAsync([FromRoute] string username)
         {
             var response = await Mediator.Send(new GetUserByUsernameQuery { UserName = username });
             return Ok(response);

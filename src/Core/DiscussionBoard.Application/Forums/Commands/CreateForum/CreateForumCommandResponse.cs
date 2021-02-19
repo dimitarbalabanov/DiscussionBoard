@@ -5,6 +5,7 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 {
     public class CreateForumCommandResponse : IMapFrom<Forum>
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
+
     }
 }

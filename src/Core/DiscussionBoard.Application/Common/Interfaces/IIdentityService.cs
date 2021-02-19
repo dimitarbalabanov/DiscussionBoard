@@ -10,5 +10,7 @@ namespace DiscussionBoard.Application.Common.Interfaces
         Task<IdentityResultDto> RegisterAsync(string email, string username, string password);
 
         Task<IdentityResultDto> ConfirmEmailAsync(string userId, string code);
+
+        Task<bool> IsAdminAsync(string userId);
     }
 }

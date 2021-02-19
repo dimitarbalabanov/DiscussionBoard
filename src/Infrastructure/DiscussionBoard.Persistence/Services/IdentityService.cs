@@ -27,6 +27,13 @@ namespace DiscussionBoard.Persistence.Services
             _jwtSettings = jwtSettings;
         }
 
+        public async Task<bool> IsAdminAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
+            return isAdmin;
+        }
+
         public async Task<IdentityResultDto> LoginAsync(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);

@@ -1,8 +1,10 @@
 ﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,27 +14,32 @@ namespace DiscussionBoard.Application.Comments.Commands.DeleteComment
     {
         private readonly IRepository<Comment> _commentsRepository;
         private readonly IAuthenticatedUserService _authUserService;
+        private readonly IIdentityService _identityService;
 
-        public DeleteCommentCommandHandler(IRepository<Comment> commentsRepository, IAuthenticatedUserService authUserService)
+        public DeleteCommentCommandHandler(
+            IRepository<Comment> commentsRepository,
+            IAuthenticatedUserService authUserService,
+            IIdentityService identityService)
         {
-            _commentsRepository = commentsRepository;
-            _authUserService = authUserService;
+            _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
+            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<Unit> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
         {
             var comment = await _commentsRepository
                 .All()
-                .SingleOrDefaultAsync(c => c.Id == request.Id);
+                .SingleOrDefaultAsync(c => c.Id == request.CommentId);
 
             if (comment == null)
             {
                 throw new NotFoundException(nameof(Comment));
             }
 
-            if (comment.CreatorId != _authUserService.UserId)
+            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, comment.CreatorId, _identityService))
             {
-                throw new UnauthorizedException();
+                throw new ForbiddenException();
             }
 
             _commentsRepository.Delete(comment);

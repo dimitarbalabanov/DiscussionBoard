@@ -15,7 +15,7 @@ namespace DiscussionBoard.Web.Controllers
     {
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             var response = await Mediator.Send(new GetAllForumsQuery());
             return Ok(response);
@@ -23,21 +23,22 @@ namespace DiscussionBoard.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
             var response = await Mediator.Send(new GetForumByIdQuery(id));
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateForumCommand command)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateForumCommand command)
         {
             var response = await Mediator.Send(command);
-            return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
+            return CreatedAtAction(nameof(GetAsync), new { id = response.Id }, response);
         }
+
         [AllowAnonymous]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromForm] UpdateForumCommand command)
+        public async Task<IActionResult> UpdateAsync([FromForm] UpdateForumCommand command)
         {
             //command.ForumId = id;
             await Mediator.Send(command);
@@ -45,7 +46,7 @@ namespace DiscussionBoard.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             await Mediator.Send(new DeleteForumCommand { ForumId = id });
             return NoContent();
