@@ -50,15 +50,13 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 switch (sorter)
                 {
                     case Sorter.New:
-                        query = query.OrderByDescending(p => p.CreatedOn);
-                        break;
                     case Sorter.Old:
-                        query = query.OrderBy(p => p.CreatedOn);
+                        query = query.CreatedOnSort(sorter);
                         break;
                     case Sorter.Top:
-                        if (Enum.TryParse(request.Top, out TopSorter date))
+                        if (Enum.TryParse(request.Top, out TopSorter topSorter))
                         {
-                            query = query.ScoreSort(date);
+                            query = query.ScoreSort<Post, PostVote>(topSorter);
                         }
                         break;
                     default:
@@ -90,10 +88,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 query = query.Where(p => p.Id > id);
             }
 
-            if (request.Top != null)
-            {
-                query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
-            }
+            //if (request.Top != null)
+            //{
+            //    query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
+            //}
 
             var posts = await query
                 .Take(PageSize)

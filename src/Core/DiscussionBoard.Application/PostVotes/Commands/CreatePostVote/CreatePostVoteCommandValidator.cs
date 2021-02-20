@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DiscussionBoard.Application.Common.CustomValidators;
+using FluentValidation;
 
 namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
 {
-    class CreatePostVoteCommandValidator
+    public class CreatePostVoteCommandValidator : AbstractValidator<CreatePostVoteCommand>
     {
-        
+        public CreatePostVoteCommandValidator()
+        {
+            RuleFor(p => p.Type)
+                .IsValidVoteTypeEnum();
+
+            RuleFor(p => p.PostId)
+               .NotEmpty();
+        }
     }
 }

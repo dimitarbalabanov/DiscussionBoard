@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class Post : BaseModel<int>
+    public class Post : BaseModel<int>, IHaveVotes<PostVote>
     {
         public Post()
         {

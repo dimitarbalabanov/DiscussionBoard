@@ -29,7 +29,7 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.DeleteCommentVote
         {
             var commentVote = await _commentVotesRepository
                 .All()
-                .SingleOrDefaultAsync(v => v.Id == request.CommentVoteId);
+                .SingleOrDefaultAsync(v => v.Id == request.Id);
 
             if (commentVote == null)
             {

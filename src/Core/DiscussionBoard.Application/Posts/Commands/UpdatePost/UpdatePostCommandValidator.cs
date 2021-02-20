@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Posts.Commands.Validator;
+﻿using DiscussionBoard.Application.Common.CustomValidators;
+using DiscussionBoard.Application.Posts.Commands.Validator;
 using FluentValidation;
 
 namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
@@ -12,6 +13,9 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
 
             RuleFor(p => p.Content)
                 .IsContentProperLength();
+
+            RuleFor(p => p.PostMedia)
+               .IsValidTypeAndSize();
         }
     }
 }

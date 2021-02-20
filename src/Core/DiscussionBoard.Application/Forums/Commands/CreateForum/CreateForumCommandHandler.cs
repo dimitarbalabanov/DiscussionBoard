@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
@@ -32,10 +33,14 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
             var forum = _mapper.Map<Forum>(request);
             forum.CreatorId = _authUserService.UserId;
 
-            if (request.MediaFile != null)
+            if (request.ForumMedia != null)
             {
-                var uploadResult = await _mediaService.UploadImageAsync(request.MediaFile);
-                forum.Media = _mapper.Map<ForumMedia>(uploadResult);
+                var uploadResult = await _mediaService.UploadImageAsync(request.ForumMedia);
+                forum.Media = new ForumMedia
+                {
+                    Url = uploadResult.AbsoluteUri,
+                    PublicId = uploadResult.PublicId
+                };
             }
 
             await _forumsRepository.AddAsync(forum);

@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Application.Common.Helpers
 {
-    public class SortInfo
+    public class SortParameters
     {
         public Sorter Sorter { get; set; }
 

@@ -30,7 +30,7 @@ namespace DiscussionBoard.Application.Comments.Commands.DeleteComment
         {
             var comment = await _commentsRepository
                 .All()
-                .SingleOrDefaultAsync(c => c.Id == request.CommentId);
+                .SingleOrDefaultAsync(c => c.Id == request.Id);
 
             if (comment == null)
             {

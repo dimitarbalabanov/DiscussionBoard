@@ -4,6 +4,6 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
 {
     public class DeletePostCommand : IRequest
     {
-        public int PostId { get; set; }
+        public int Id { get; set; }
     }
 }

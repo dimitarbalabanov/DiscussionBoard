@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Common.Exceptions;
+﻿using AutoMapper;
+using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Entities.Enums;
@@ -10,41 +11,41 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
 {
-    public class CreatePostVoteCommandHandler : IRequestHandler<CreatePostVoteCommand, int>
+    public class CreatePostVoteCommandHandler : IRequestHandler<CreatePostVoteCommand, CreatePostVoteCommandResponse>
     {
         private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IAuthenticatedUserService _authUserService;
+        private readonly IMapper _mapper;
 
         public CreatePostVoteCommandHandler(
             IRepository<PostVote> postVotesRepository,
-            IAuthenticatedUserService authUserService)
+            IAuthenticatedUserService authUserService,
+            IMapper mapper)
         {
-            _postVotesRepository = postVotesRepository;
-            _authUserService = authUserService;
+            _postVotesRepository = postVotesRepository ?? throw new ArgumentNullException(nameof(postVotesRepository));
+            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<int> Handle(CreatePostVoteCommand request, CancellationToken cancellationToken)
+        public async Task<CreatePostVoteCommandResponse> Handle(CreatePostVoteCommand request, CancellationToken cancellationToken)
         {
             var userId = _authUserService.UserId;
-
-            if (await _postVotesRepository
+            var hasAlreadyVoted = await _postVotesRepository
                    .AllAsNoTracking()
-                   .AnyAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId))
+                   .AnyAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId);
+
+            if (hasAlreadyVoted)
             {
-                throw new BadRequestException("Already voted");
+                throw new BadRequestException("User has already voted");
             }
 
-            var postVote = new PostVote
-            {
-                Type = Enum.Parse<VoteType>(request.Type, true),
-                PostId = request.PostId,
-                CreatorId = userId
-            };
+            var postVote = _mapper.Map<PostVote>(request);
+            postVote.CreatorId = userId;
 
             await _postVotesRepository.AddAsync(postVote);
             await _postVotesRepository.SaveChangesAsync();
 
-            return postVote.Id;
+            return _mapper.Map<CreatePostVoteCommandResponse>(postVote);
         }
     }
 }

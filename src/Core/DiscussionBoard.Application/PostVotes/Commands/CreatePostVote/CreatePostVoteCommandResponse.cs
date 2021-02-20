@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DiscussionBoard.Application.Common.Mappings;
+using DiscussionBoard.Domain.Entities;
 
 namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
 {
-    class CreatePostVoteCommandResponse
+    public class CreatePostVoteCommandResponse : IMapFrom<PostVote>
     {
+        public int Id { get; set; }
     }
 }

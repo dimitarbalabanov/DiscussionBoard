@@ -2,23 +2,23 @@
 using DiscussionBoard.Application.Forums.Commands.Validator;
 using FluentValidation;
 
-namespace DiscussionBoard.Application.Forums.Commands.UpdateForum
+namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 {
-    public class UpdateForumCommandValidator : AbstractValidator<UpdateForumCommand>
+    public class CreateForumCommandValidator : AbstractValidator<CreateForumCommand>
     {
-        public UpdateForumCommandValidator()
+        public CreateForumCommandValidator()
         {
             RuleFor(f => f.Title)
                 .IsTitleProperLength();
 
             RuleFor(f => f.Subtitle)
-                .IsSubtitleProperLength();
+                    .IsSubtitleProperLength();
 
             RuleFor(f => f.Description)
-                .IsDescriptionProperLength();
+                    .IsDescriptionProperLength();
 
             RuleFor(f => f.ForumMedia)
-                .IsValidTypeAndSize();
+                    .IsValidTypeAndSize();
         }
     }
 }

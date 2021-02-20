@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace DiscussionBoard.Application.Common.Helpers
 {
-    public static class ScoreSortingExtension
+    public static class SortingExtensions
     {
-        public static IQueryable<T> ScoreSort<T>(this IQueryable<T> collection, TopSorter sorter)
-            where T : IAuditInfo
+        public static IQueryable<T> ScoreSort<T, Y>(this IQueryable<T> collection, TopSorter sorter)
+            where T : IAuditInfo, IHaveVotes<Y> 
+            where Y : BaseVote
         {
             var now = DateTime.UtcNow;
-
             switch (sorter)
             {
                 case TopSorter.Today:
@@ -31,9 +31,26 @@ namespace DiscussionBoard.Application.Common.Helpers
                     break;
             }
 
-            //collection = collection.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
+            collection = collection.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
+            return collection;
+        }
+
+        public static IQueryable<T> CreatedOnSort<T>(this IQueryable<T> collection, Sorter sorter)
+            where T : IAuditInfo
+        {
+            switch (sorter)
+            {
+                case Sorter.New:
+                    collection = collection.OrderByDescending(x => x.CreatedOn);
+                    break;
+                case Sorter.Old:
+                    collection = collection.OrderBy(x => x.CreatedOn);
+                    break;
+                default:
+                    break;
+            }
 
             return collection;
-        } 
+        }
     }
 }

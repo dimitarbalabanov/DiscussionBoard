@@ -2,13 +2,13 @@
 using DiscussionBoard.Domain.Entities;
 using System;
 
-namespace DiscussionBoard.Application.Forums.Commands.CreateForum
+namespace DiscussionBoard.Application.Forums.Commands.UpdateForum
 {
-    public class CreateForumCommandResponse : IMapFrom<Forum>
+    public class UpdateForumCommandResponse : IMapFrom<Forum>
     {
         public int Id { get; set; }
 
-        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
 
         public string MediaUrl { get; set; }
     }

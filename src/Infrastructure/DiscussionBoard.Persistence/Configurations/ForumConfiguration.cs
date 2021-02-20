@@ -11,7 +11,12 @@ namespace DiscussionBoard.Persistence.Configurations
             forum
                .Property(f => f.Title)
                .IsRequired()
-               .HasMaxLength(200);
+               .HasMaxLength(40);
+
+            forum
+               .Property(f => f.Subtitle)
+               .IsRequired()
+               .HasMaxLength(80);
 
             forum
                .Property(f => f.Description)

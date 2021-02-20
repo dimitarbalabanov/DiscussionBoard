@@ -30,9 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Forums\Commands\Validator\" />
     <Folder Include="Identity\Queries\GetProfile\" />
-    <Folder Include="PostVotes\Queries\" />
   </ItemGroup>
 
 </Project>

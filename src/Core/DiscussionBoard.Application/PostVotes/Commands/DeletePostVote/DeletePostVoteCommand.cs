@@ -4,6 +4,6 @@ namespace DiscussionBoard.Application.PostVotes.Commands.DeletePostVote
 {
     public class DeletePostVoteCommand : IRequest
     {
-        public int PostVoteId { get; set; }
+        public int Id { get; set; }
     }
 }

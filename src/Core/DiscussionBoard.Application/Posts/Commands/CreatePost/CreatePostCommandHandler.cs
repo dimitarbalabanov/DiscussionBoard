@@ -2,6 +2,7 @@
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,10 +21,10 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             IMediaService mediaService,
             IMapper mapper)
         {
-            _postsRepository = postsRepository;
-            _authUserService = authUserService;
-            _mediaService = mediaService;
-            _mapper = mapper;
+            _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
+            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CreatePostCommandResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -33,12 +34,12 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
             if (request.PostMedia != null)
             {
-                //var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia);
-                //post.Media = new PostMedia
-                //{
-                //    Url = uploadResult.AbsoluteUri,
-                //    PublicId = uploadResult.PublicId
-                //};
+                var uploadResult = await _mediaService.UploadImageAsync(request.PostMedia);
+                post.Media = new PostMedia
+                {
+                    Url = uploadResult.AbsoluteUri,
+                    PublicId = uploadResult.PublicId
+                };
             }
 
             await _postsRepository.AddAsync(post);

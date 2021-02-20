@@ -14,6 +14,6 @@ namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 
         public string Description { get; set; }
 
-        public IFormFile MediaFile { get; set; }
+        public IFormFile ForumMedia { get; set; }
     }
 }
