@@ -1,6 +1,6 @@
 ﻿namespace DiscussionBoard.Application.Common.Helpers.Enums
 {
-    public enum TopSorter
+    public enum Interval
     {
         Today = 1,
         ThisWeek = 2,

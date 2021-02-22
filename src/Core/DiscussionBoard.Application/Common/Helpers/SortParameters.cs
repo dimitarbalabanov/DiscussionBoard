@@ -4,8 +4,8 @@ namespace DiscussionBoard.Application.Common.Helpers
 {
     public class SortParameters
     {
-        public Sorter Sorter { get; set; }
+        public Order Sorter { get; set; }
 
-        public TopSorter TopSorter { get; set; }
+        public Interval TopSorter { get; set; }
     }
 }

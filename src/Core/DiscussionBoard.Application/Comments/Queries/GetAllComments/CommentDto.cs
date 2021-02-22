@@ -14,6 +14,8 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
         public string CreatorUserName { get; set; }
 
+        public bool IsCreator { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
@@ -28,6 +30,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
         {
             profile.CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(cv => (int)cv.Type)));
+                //.ForMember(dest => dest.IsCreator, opt => opt.MapFrom(src => src.CreatorId == ))
         }
     }
 }

@@ -30,7 +30,7 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateCommentVoteCommand command)
         {
-            command.CommentVoteId = id;
+            command.Id = id;
             await Mediator.Send(command);
             return NoContent();
         }
@@ -43,7 +43,7 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            await Mediator.Send(new DeleteCommentVoteCommand { CommentVoteId = id });
+            await Mediator.Send(new DeleteCommentVoteCommand { Id = id });
             return NoContent();
         }
     }

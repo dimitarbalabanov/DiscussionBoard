@@ -48,7 +48,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            await Mediator.Send(new DeleteForumCommand { ForumId = id });
+            await Mediator.Send(new DeleteForumCommand { Id = id });
             return NoContent();
         }
     }

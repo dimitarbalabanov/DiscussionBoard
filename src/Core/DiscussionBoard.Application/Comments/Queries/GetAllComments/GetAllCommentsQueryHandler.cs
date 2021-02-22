@@ -38,31 +38,31 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                 .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            var userId = _authUserService.UserId;
-            if (userId != null)
-            {
-                var commentIds = comments
-                    .Select(c => c.Id)
-                    .ToList();
+            //var userId = _authUserService.UserId;
+            //if (userId != null)
+            //{
+            //    var commentIds = comments
+            //        .Select(c => c.Id)
+            //        .ToList();
 
-                var currentUserVotesInComments = await _commentVotesRepository
-                    .AllAsNoTracking()
-                    .Where(cv => commentIds.Contains(cv.CommentId) && cv.CreatorId == userId)
-                    .ToListAsync();
+            //    var currentUserVotesInComments = await _commentVotesRepository
+            //        .AllAsNoTracking()
+            //        .Where(cv => commentIds.Contains(cv.CommentId) && cv.CreatorId == userId)
+            //        .ToListAsync();
 
-                if (currentUserVotesInComments.Count > 0)
-                {
-                    foreach (var comment in comments)
-                    {
-                        var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
-                        if (commentVote != null)
-                        {
-                            comment.CurrentUserVoteId = commentVote.Id;
-                            comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
-                        }
-                    }
-                }
-            }
+            //    if (currentUserVotesInComments.Count > 0)
+            //    {
+            //        foreach (var comment in comments)
+            //        {
+            //            var commentVote = currentUserVotesInComments.SingleOrDefault(cv => cv.CommentId == comment.Id);
+            //            if (commentVote != null)
+            //            {
+            //                comment.CurrentUserVoteId = commentVote.Id;
+            //                comment.CurrentUserVoteType = commentVote.Type.ToString().ToLower();
+            //            }
+            //        }
+            //    }
+            //}
 
             var response = new GetAllCommentsResponse { Comments = comments };
             return response;

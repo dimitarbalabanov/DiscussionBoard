@@ -1,6 +1,7 @@
 ﻿using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using DiscussionBoard.Domain.Settings;
+using DiscussionBoard.Persistence.Connections;
 using DiscussionBoard.Persistence.Repositories;
 using DiscussionBoard.Persistence.Seeding;
 using DiscussionBoard.Persistence.Services;
@@ -21,6 +22,8 @@ namespace DiscussionBoard.Persistence
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IApplicationReadDbConnection, ApplicationReadDbConnection>();
 
             services.AddSingleton<IDbContextSeeder, ApplicationDbContextSeeder>();
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

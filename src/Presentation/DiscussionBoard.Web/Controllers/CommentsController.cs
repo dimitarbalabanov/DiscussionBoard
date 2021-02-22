@@ -110,7 +110,7 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int commentId)
         {
-            await Mediator.Send(new DeleteCommentCommand { CommentId = commentId });
+            await Mediator.Send(new DeleteCommentCommand { Id = commentId });
             return NoContent();
         }
     }

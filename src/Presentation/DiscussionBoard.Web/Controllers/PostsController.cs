@@ -70,7 +70,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await Mediator.Send(new DeletePostCommand { PostId = id });
+            await Mediator.Send(new DeletePostCommand { Id = id });
             return NoContent();
         }
     }

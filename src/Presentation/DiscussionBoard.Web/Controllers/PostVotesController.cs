@@ -20,7 +20,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdatePostVoteCommand command)
         {
-            command.PostVoteId = id;
+            command.Id = id;
             await Mediator.Send(command);
             return NoContent();
         }
@@ -28,7 +28,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            await Mediator.Send(new DeletePostVoteCommand { PostVoteId = id });
+            await Mediator.Send(new DeletePostVoteCommand { Id = id });
             return NoContent();
         }
     }

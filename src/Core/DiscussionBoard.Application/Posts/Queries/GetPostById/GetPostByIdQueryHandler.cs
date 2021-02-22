@@ -13,6 +13,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
     public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdResponse>
     {
+        private readonly IApplicationReadDbConnection _readDbConnection;
         private readonly IRepository<Post> _postsRepository;
         private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IRepository<UserPostSave> _savesRepository;
@@ -20,6 +21,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
         private readonly IMapper _mapper;
 
         public GetPostByIdQueryHandler(
+            IApplicationReadDbConnection readDbConnection,
             IRepository<Post> postsRepository,
             IRepository<PostVote> postVotesRepository,
             IRepository<UserPostSave> savesRepository,
@@ -31,6 +33,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
             _savesRepository = savesRepository;
             _authUserService = authUserService;
             _mapper = mapper;
+            _readDbConnection = readDbConnection;
         }
 
         public async Task<GetPostByIdResponse> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)

@@ -7,25 +7,25 @@ namespace DiscussionBoard.Application.Common.Helpers
 {
     public static class SortingExtensions
     {
-        public static IQueryable<T> ScoreSort<T, Y>(this IQueryable<T> collection, TopSorter sorter)
+        public static IQueryable<T> ScoreSort<T, Y>(this IQueryable<T> collection, Interval sorter)
             where T : IAuditInfo, IHaveVotes<Y> 
             where Y : BaseVote
         {
             var now = DateTime.UtcNow;
             switch (sorter)
             {
-                case TopSorter.Today:
+                case Interval.Today:
                     collection = collection.Where(x => x.CreatedOn >= now.Date);
                     break;
-                case TopSorter.ThisWeek:
+                case Interval.ThisWeek:
                     var diff = now.DayOfWeek - DayOfWeek.Monday;
                     diff = diff < 0 ? diff += 7 : diff;
                     collection = collection.Where(x => x.CreatedOn >= now.AddDays(-diff).Date);
                     break;
-                case TopSorter.ThisMonth:
+                case Interval.ThisMonth:
                     collection = collection.Where(x => x.CreatedOn >= new DateTime(now.Year, now.Month, 1));
                     break;
-                case TopSorter.AllTime:
+                case Interval.AllTime:
                     break;
                 default:
                     break;
@@ -35,15 +35,15 @@ namespace DiscussionBoard.Application.Common.Helpers
             return collection;
         }
 
-        public static IQueryable<T> CreatedOnSort<T>(this IQueryable<T> collection, Sorter sorter)
+        public static IQueryable<T> CreatedOnSort<T>(this IQueryable<T> collection, Order sorter)
             where T : IAuditInfo
         {
             switch (sorter)
             {
-                case Sorter.New:
+                case Order.New:
                     collection = collection.OrderByDescending(x => x.CreatedOn);
                     break;
-                case Sorter.Old:
+                case Order.Old:
                     collection = collection.OrderBy(x => x.CreatedOn);
                     break;
                 default:

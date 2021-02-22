@@ -28,7 +28,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public int CommentsCount { get; set; }
 
-        public int VotesScore { get; set; }
+        public int Score { get; set; }
 
         public bool IsCreator { get; set; }
 
@@ -40,9 +40,9 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Post, GetPostByIdResponse>()
-                .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
+            //profile.CreateMap<Post, GetPostByIdResponse>()
+            //    .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()));
+                //.ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
         }
     }
 }
