@@ -8,6 +8,7 @@ using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -158,8 +159,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
             var posts = await _readDbConnection.QueryAsync<PostDto>(postsQueryBuilder.ToString());
 
+            Dictionary<int, PostDto> dict = null;
             if (userId != null)
             {
+                dict = posts.ToDictionary(x => x.Id, x => x);
                 var postIds = string.Join(", ", posts.Select(p => p.Id).ToArray());
 
                 var postVotesQuery =
@@ -168,13 +171,25 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                     WHERE p.PostId IN ({postIds}) AND (p.CreatorId = {userId})";
                 var votes = await _readDbConnection.QueryAsync<PostVoteDto>(postVotesQuery);
 
+                foreach (var v in votes)
+                {
+                    dict[v.PostId].VoteId = v.Id;
+                    dict[v.PostId].VoteType = v.Type;
+                }
+
                 var savedPostsQuery =
                     $@"SELECT u.PostId
                     FROM UserPostSaves AS u
                     WHERE u.PostId IN ({postIds}) AND (u.UserId = {userId})";
-                var savedPosts = await _readDbConnection.QueryAsync<int>(postVotesQuery);
+                var savedPostIds = await _readDbConnection.QueryAsync<int>(postVotesQuery);
 
+                foreach (var sp in savedPostIds)
+                {
+                    dict[sp].IsSaved = true;
+                }
             }
+
+            posts = dict != null ? dict.Values.ToList() : posts;  
 
             //var query = _postsRepository
             //    .AllAsNoTracking();

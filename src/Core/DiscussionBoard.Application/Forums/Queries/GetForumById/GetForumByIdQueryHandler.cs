@@ -23,6 +23,32 @@ namespace DiscussionBoard.Application.Forums.Queries.GetForumById
 
         public async Task<GetForumByIdResponse> Handle(GetForumByIdQuery request, CancellationToken cancellationToken)
         {
+
+            var forumQuery = $@"SELECT TOP(1)
+                                           (
+                                               SELECT     Count(*)
+                                               FROM       Posts    AS p
+                                               INNER JOIN Comments AS c
+                                               ON         p.Id = c.PostId
+                                               WHERE      f.Id = p.ForumId) AS CommentsCount,
+                                           u.UserName                       AS CreatorUserName,
+                                           f.Description,
+                                           f.Id,
+                                           fm.Url AS MediaUrl,
+                                           (
+                                               SELECT Count(*)
+                                               FROM   Posts AS p0
+                                               WHERE  f.Id = p0.forumId)    AS PostsCount,
+                                           f.Subtitle,
+                                           f.Title
+                                FROM       Forums      AS f
+                                INNER JOIN AspNetUsers AS u
+                                ON         f.CreatorId = u.Id
+                                LEFT JOIN  ForumMedias AS fm
+                                ON         f.Id = fm.ForumId
+                                WHERE      f.Id = {request.Id}";
+
+
             var result = await _forumsRepository
                 .AllAsNoTracking()
                 .Where(f => f.Id == request.Id)

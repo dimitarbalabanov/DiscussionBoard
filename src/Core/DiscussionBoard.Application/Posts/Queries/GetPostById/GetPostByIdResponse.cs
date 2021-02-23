@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
-    public class GetPostByIdResponse : IMapFrom<Post>
+    public class GetPostByIdResponse : IMapFrom<Post>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -38,11 +38,16 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public string VoteType { get; set; }
 
+        public void CreateMappings(Profile profile)
+        {
+            profile.CreateMap<Post, GetPostByIdResponse>()
+                .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
+                .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
+        }
+
         public void Mapping(Profile profile)
         {
-            //profile.CreateMap<Post, GetPostByIdResponse>()
-            //    .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()));
-                //.ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
+            
         }
     }
 }

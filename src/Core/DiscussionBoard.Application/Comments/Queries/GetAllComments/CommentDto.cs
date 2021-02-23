@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    public class CommentDto : IMapFrom<Comment>
+    public class CommentDto : IMapFrom<Comment>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -26,11 +26,10 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
         public string CurrentUserVoteType { get; set; }
 
-        public void Mapping(Profile profile)
+        public void CreateMappings(Profile profile)
         {
             profile.CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(cv => (int)cv.Type)));
-                //.ForMember(dest => dest.IsCreator, opt => opt.MapFrom(src => src.CreatorId == ))
         }
     }
 }

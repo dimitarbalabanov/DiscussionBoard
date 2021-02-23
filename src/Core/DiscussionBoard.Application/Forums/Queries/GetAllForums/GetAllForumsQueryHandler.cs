@@ -1,34 +1,29 @@
-﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Interfaces;
+﻿using DiscussionBoard.Application.Common.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using DiscussionBoard.Domain.Entities;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 {
     public class GetAllForumsQueryHandler : IRequestHandler<GetAllForumsQuery, GetAllForumsResponse>
     {
-        private readonly IRepository<Forum> _forumsRepository;
-        private readonly IMapper _mapper;
+        private readonly IApplicationReadDbConnection _readDbConnection;
 
-        public GetAllForumsQueryHandler(IRepository<Forum> forumsRepository, IMapper mapper)
+        public GetAllForumsQueryHandler(IApplicationReadDbConnection readDbConnection)
         {
-            _forumsRepository = forumsRepository;
-            _mapper = mapper;
+            _readDbConnection = readDbConnection ?? throw new System.ArgumentNullException(nameof(readDbConnection));
         }
 
         public async Task<GetAllForumsResponse> Handle(GetAllForumsQuery request, CancellationToken cancellationToken)
         {
-            var forums = await _forumsRepository
-                .AllAsNoTracking()
-                .OrderByDescending(f => f.Posts.Count)
-                .ProjectTo<ForumDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-
+            var forumsQuery = @"SELECT 
+                                  f.Id, 
+                                  fm.Url AS MediaUrl, 
+                                  f.Title 
+                                FROM 
+                                  Forums AS f 
+                                  LEFT JOIN ForumMedias AS fm ON f.Id = fm.ForumId";
+            var forums = await _readDbConnection.QueryAsync<ForumDto>(forumsQuery);
             var response = new GetAllForumsResponse { Forums = forums };
             return response;
         }

@@ -25,7 +25,7 @@ namespace DiscussionBoard.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
-            var response = await Mediator.Send(new GetForumByIdQuery(id));
+            var response = await Mediator.Send(new GetForumByIdQuery { Id = id });
             return Ok(response);
         }
 
