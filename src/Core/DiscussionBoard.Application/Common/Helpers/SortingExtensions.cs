@@ -25,8 +25,6 @@ namespace DiscussionBoard.Application.Common.Helpers
                 case Interval.ThisMonth:
                     collection = collection.Where(x => x.CreatedOn >= new DateTime(now.Year, now.Month, 1));
                     break;
-                case Interval.AllTime:
-                    break;
                 default:
                     break;
             }

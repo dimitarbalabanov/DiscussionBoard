@@ -1,6 +1,6 @@
 ﻿namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
-    public class PostVoteDto
+    public class AllPostsPostVoteDto
     {
         public int Id { get; set; }
 

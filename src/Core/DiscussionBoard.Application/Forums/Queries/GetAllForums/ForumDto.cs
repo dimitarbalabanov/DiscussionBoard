@@ -1,24 +1,11 @@
-﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Mappings;
-using DiscussionBoard.Domain.Entities;
-using System.Linq;
-
-namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
+﻿namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 {
-    public class ForumDto : IMapFrom<Forum>
+    public class ForumDto
     {
         public int Id { get; set; }
 
         public string Title { get; set; }
 
         public string MediaUrl { get; set; }
-
-        //public int PostsCount { get; set; }
-
-        //public void CreateMappings(Profile profile)
-        //{
-        //    profile.CreateMap<Forum, ForumDto>()
-        //           .ForMember(dest => dest.PostsCount, opt => opt.MapFrom(src => src.Posts.Count()));
-        //}
     }
 }

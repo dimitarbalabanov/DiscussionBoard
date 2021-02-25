@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using DiscussionBoard.Application.Common.Responses;
+using MediatR;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    public class GetAllCommentsQuery : IRequest<GetAllCommentsResponse>
+    public class GetAllCommentsQuery : IRequest<PagedResponse<GetAllCommentsResponse>>
     {
         public int? PostId { get; set; }
 

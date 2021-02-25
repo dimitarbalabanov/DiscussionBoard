@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using DiscussionBoard.Application.Common.Exceptions;
+﻿using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,56 +11,54 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
     public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, GetPostByIdResponse>
     {
         private readonly IApplicationReadDbConnection _readDbConnection;
-        private readonly IRepository<Post> _postsRepository;
-        private readonly IRepository<PostVote> _postVotesRepository;
-        private readonly IRepository<UserPostSave> _savesRepository;
         private readonly IAuthenticatedUserService _authUserService;
-        private readonly IMapper _mapper;
 
         public GetPostByIdQueryHandler(
             IApplicationReadDbConnection readDbConnection,
-            IRepository<Post> postsRepository,
-            IRepository<PostVote> postVotesRepository,
-            IRepository<UserPostSave> savesRepository,
-            IAuthenticatedUserService authUserService,
-            IMapper mapper)
+            IAuthenticatedUserService authUserService)
         {
-            _postsRepository = postsRepository;
-            _postVotesRepository = postVotesRepository;
-            _savesRepository = savesRepository;
-            _authUserService = authUserService;
-            _mapper = mapper;
             _readDbConnection = readDbConnection;
+            _authUserService = authUserService;
         }
 
         public async Task<GetPostByIdResponse> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
-            var userId = _authUserService.UserId;
-            var postQuery = $@"SELECT TOP(1) (SELECT Count(*)
-                                              FROM   Comments AS c
-                                              WHERE  p0.Id = c.PostId) AS CommentsCount,
-                                             p0.Content,
-                                             p0.CreatedOn,
-                                             a.UserName                AS CreatorUserName,
-                                             p0.ForumId,
-                                             f.Title                   AS ForumTitle,
-                                             p0.Id,
-                                             p1.Url                    AS MediaUrl,
-                                             p0.ModifiedOn,
-                                             (SELECT Sum(Cast(p.Type AS int))
-                                              FROM   PostVotes AS p
-                                              WHERE  p0.Id = p.PostId) AS Score,
-                                             p0.Title
-                             FROM   Posts AS p0
-                                    INNER JOIN AspNetUsers AS a
-                                            ON p0.CreatorId = a.Id
-                                    INNER JOIN Forums AS f
-                                            ON p0.ForumId = f.Id
-                                     LEFT JOIN PostMedias AS p1
-                                            ON p0.Id = p1.PostId
-                             WHERE  p0.Id = {request.PostId}";
+            var postQuery = new StringBuilder();
+            postQuery.AppendLine("SELECT p.Id,");
+            postQuery.AppendLine("       p.Title,");
+            postQuery.AppendLine("       p.Content,");
+            postQuery.AppendLine("       p.CreatedOn,");
+            postQuery.AppendLine("       p.ModifiedOn,");
+            postQuery.AppendLine("       u.UserName                AS CreatorUserName,");
+            postQuery.AppendLine("       p.ForumId,");
+            postQuery.AppendLine("       f.Title                   AS ForumTitle,");
+            postQuery.AppendLine("       pm.Url                    AS MediaUrl,");
 
-            var post = await _readDbConnection.QueryFirstOrDefaultAsync<GetPostByIdResponse>(postQuery);
+            var userId = _authUserService.UserId;
+            if (userId != null)
+            {
+                postQuery.AppendLine("       Cast(CASE");
+                postQuery.AppendLine($"              WHEN p.CreatorId = {userId} THEN 1");
+                postQuery.AppendLine("              ELSE 0");
+                postQuery.AppendLine("            END AS BIT)             AS IsCreator,");
+            }
+
+            postQuery.AppendLine("       (SELECT Count(*)");
+            postQuery.AppendLine("        FROM   Comments AS c");
+            postQuery.AppendLine("        WHERE  p.Id = c.PostId)  AS CommentsCount,");
+            postQuery.AppendLine("       (SELECT Sum(Cast(pv.Type AS int))");
+            postQuery.AppendLine("        FROM   PostVotes AS pv");
+            postQuery.AppendLine("        WHERE  p.Id = pv.PostId) AS VotesScore");
+            postQuery.AppendLine("FROM   Posts AS p");
+            postQuery.AppendLine("       INNER JOIN AspNetUsers AS u");
+            postQuery.AppendLine("               ON p.CreatorId = u.Id");
+            postQuery.AppendLine("       INNER JOIN Forums AS f");
+            postQuery.AppendLine("               ON p.ForumId = f.Id");
+            postQuery.AppendLine("       LEFT JOIN PostMedias AS pm");
+            postQuery.AppendLine("              ON p.Id = pm.PostId");
+            postQuery.AppendLine($"WHERE  p.Id = {request.PostId}");
+
+            var post = await _readDbConnection.QueryFirstOrDefaultAsync<GetPostByIdResponse>(postQuery.ToString());
             if (post == null)
             {
                 throw new NotFoundException(nameof(Post));
@@ -71,63 +66,66 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
             if (userId != null)
             {
-                var postVoteQuery =
-                    $@"SELECT pv.Id,
-                              pv.Type
-                       FROM   PostVotes AS pv
-                       WHERE  pv.PostId = {post.Id}
-                              AND p.CreatorId = {userId}";
-                var vote = await _readDbConnection.QueryFirstOrDefaultAsync<PostVoteDto>(postVoteQuery);
+                var postVoteQuery = new StringBuilder();
+                postVoteQuery.AppendLine("SELECT pv.Id,");
+                postVoteQuery.AppendLine("       pv.Type");
+                postVoteQuery.AppendLine("FROM   PostVotes AS pv");
+                postVoteQuery.AppendLine($"WHERE  pv.PostId = {post.Id}");
+                postVoteQuery.AppendLine($"       AND p.CreatorId = {userId}");
 
-                var savedPostQuery =
-                    $@"SELECT ups.Id,
-                       FROM   UserPostSaves AS ups
-                       WHERE  ups.PostId = {post.Id}
-                              AND ups.CreatorId = {userId}";
-                var savedPost = await _readDbConnection.QueryFirstOrDefaultAsync<int?>(savedPostQuery);
+                var savedPostQuery = new StringBuilder();
+                savedPostQuery.AppendLine("SELECT ups.Id,");
+                savedPostQuery.AppendLine("FROM   UserPostSaves AS ups");
+                savedPostQuery.AppendLine($"WHERE  ups.PostId = {post.Id}");
+                savedPostQuery.AppendLine($"       AND ups.CreatorId = {userId}");
+
+                var postVote = await _readDbConnection.QueryFirstOrDefaultAsync<PostByIdPostVoteDto>(postVoteQuery.ToString());
+                var savedPost = await _readDbConnection.QueryFirstOrDefaultAsync<int?>(savedPostQuery.ToString());
 
                 post.IsSaved = savedPost != null;
-                post.VoteId = vote?.Id;
-                post.VoteType = vote?.Type;
+                post.VoteId = postVote?.Id;
+                post.VoteType = postVote?.Type;
             }
 
             return post;
-
-            //var response = await _postsRepository
-            //    .AllAsNoTracking()
-            //    .Where(p => p.Id == request.PostId)
-            //    .ProjectTo<GetPostByIdResponse>(_mapper.ConfigurationProvider)
-            //    .FirstOrDefaultAsync();
-
-            //if (response == null)
-            //{
-            //    throw new NotFoundException(nameof(Post));
-            //}
-
-            //var userId = _authUserService.UserId;
-            //if (userId != null)
-            //{
-            //    var postVote = await _postVotesRepository
-            //        .AllAsNoTracking()
-            //        .SingleOrDefaultAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId);
-
-            //    if (postVote != null)
-            //    {
-            //        response.VoteId = postVote.Id;
-            //        response.VoteType = postVote.Type.ToString().ToLower();
-            //    }
-
-            //    var save = await _savesRepository
-            //        .AllAsNoTracking()
-            //        .SingleOrDefaultAsync(s => s.PostId == request.PostId && s.UserId == userId);
-
-            //    if (save != null)
-            //    {
-            //        response.IsSaved = true;
-            //    }
-            //}
-
-            //return response;
         }
     }
 }
+
+//SELECT p.Id,
+//       p.Title                   p.Content,
+//       p.CreatedOn,
+//       p.ModifiedOn,
+//       u.UserName                AS CreatorUserName,
+//       p.ForumId,
+//       f.Title                   AS ForumTitle,
+//       pm.Url                    AS MediaUrl,
+//       Cast(CASE
+//              WHEN c.CreatorId = {userId} THEN 1
+//              ELSE 0
+//            END AS BIT)          AS IsCreator,
+//       (SELECT Count(*)
+//        FROM   Comments AS c
+//        WHERE  p.Id = c.PostId)  AS CommentsCount,
+//       (SELECT Sum(Cast(pv.Type AS int))
+//        FROM   PostVotes AS pv
+//        WHERE  p.Id = pv.PostId) AS VotesScore
+//FROM   Posts AS p
+//       INNER JOIN AspNetUsers AS u
+//               ON p.CreatorId = u.Id
+//       INNER JOIN Forums AS f
+//               ON p.ForumId = f.Id
+//       LEFT JOIN PostMedias AS pm
+//              ON p.Id = pm.PostId
+//WHERE  p.Id = {postId} 
+
+//SELECT pv.Id,
+//       pv.Type
+//FROM   PostVotes AS pv
+//WHERE  pv.PostId = {postId}
+//       AND p.CreatorId = {userId} 
+
+//SELECT ups.Id,
+//FROM   UserPostSaves AS ups
+//WHERE  ups.PostId = {post.Id}
+//       AND ups.CreatorId = {userId}

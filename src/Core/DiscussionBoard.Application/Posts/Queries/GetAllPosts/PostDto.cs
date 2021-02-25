@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
-    public class PostDto : IMapFrom<Post>
+    public class PostDto : IMapFrom<Post>, IHaveCustomMappings
     {
         public int Id { get; set; }
 
@@ -14,11 +14,11 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public string Content { get; set; }
 
-        public string CreatorUserName { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
+
+        public string CreatorUserName { get; set; }
 
         public int ForumId { get; set; }
 
@@ -38,7 +38,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public string VoteType { get; set; }
 
-        public void Mapping(Profile profile)
+        public void CreateMappings(Profile profile)
         {
             profile.CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))

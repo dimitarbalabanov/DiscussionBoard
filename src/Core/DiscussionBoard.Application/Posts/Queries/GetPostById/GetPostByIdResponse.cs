@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Mappings;
-using DiscussionBoard.Domain.Entities;
-using System;
-using System.Linq;
+﻿using System;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 {
-    public class GetPostByIdResponse : IMapFrom<Post>, IHaveCustomMappings
+    public class GetPostByIdResponse
     {
         public int Id { get; set; }
 
@@ -14,11 +10,11 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public string Content { get; set; }
 
-        public string CreatorUserName { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
+
+        public string CreatorUserName { get; set; }
 
         public int ForumId { get; set; }
 
@@ -28,7 +24,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
 
         public int CommentsCount { get; set; }
 
-        public int Score { get; set; }
+        public int VotesScore { get; set; }
 
         public bool IsCreator { get; set; }
 
@@ -37,17 +33,5 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
         public int? VoteId { get; set; }
 
         public string VoteType { get; set; }
-
-        public void CreateMappings(Profile profile)
-        {
-            profile.CreateMap<Post, GetPostByIdResponse>()
-                .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count()))
-                .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Votes.Sum(pv => (int)pv.Type)));
-        }
-
-        public void Mapping(Profile profile)
-        {
-            
-        }
     }
 }

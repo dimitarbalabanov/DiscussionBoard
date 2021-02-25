@@ -49,176 +49,154 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         public async Task<PagedResponse<GetAllPostsResponse>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
 
-            //to do params
-            var postsQueryBuilder = new StringBuilder();
-            postsQueryBuilder.Append(
-                @"SELECT (
-                    SELECT COUNT(*)
-                    FROM Comments AS c
-                    WHERE p.Id = c.PostId) AS CommentsCount,");
+            var postsQuery = new StringBuilder();
+            postsQuery.AppendLine("SELECT p.Id,");
+            postsQuery.AppendLine("       p.Title,");
+            postsQuery.AppendLine("       p.Content,");
+            postsQuery.AppendLine("       p.CreatedOn,");
+            postsQuery.AppendLine("       p.ModifiedOn,");
+            postsQuery.AppendLine("       u.UserName               AS CreatorUserName,");
+            postsQuery.AppendLine("       p.ForumId,");
+            postsQuery.AppendLine("       f.Title                  AS ForumTitle,");
+            postsQuery.AppendLine("       pm.Url                   AS MediaUrl,");
+            postsQuery.AppendLine("       (SELECT Count(*)");
+            postsQuery.AppendLine("        FROM   Comments AS c");
+            postsQuery.AppendLine("        WHERE  p.Id = c.PostId) AS CommentsCount,");
 
             var userId = _authUserService.UserId;
             if (userId != null)
             {
-                postsQueryBuilder.Append(
-                    $@"CAST(CASE WHEN p.CreatorId = {userId} THEN 1 ELSE 0 END AS BIT) AS IsCreator,");
+                postsQuery.AppendLine("       Cast(CASE");
+                postsQuery.AppendLine($"              WHEN p.CreatorId = {userId} THEN 1");
+                postsQuery.AppendLine("              ELSE 0");
+                postsQuery.AppendLine("            END AS BIT)             AS IsCreator,");
             }
 
-            postsQueryBuilder.Append(
-                    $@"p.Content,
-	                p.CreatedOn,
-	                p.ForumId, 
-	                p.Id,
-                    p.ModifiedOn,
-	                p.Title,
-	                p.Score,
-	                pm.Url AS MediaUrl,
-	                u.UserName AS CreatorUserName,
-	                f.Title AS ForumTitle
-                FROM (
-                    SELECT TOP({PageSize})
-		                po.Id, 
-		                po.Content, 
-		                po.CreatedOn, 
-		                po.CreatorId, 
-		                po.ForumId, 
-		                po.ModifiedOn, 
-		                po.Title, (
-		                SELECT SUM(CAST(pv.Type AS int))
-		                FROM PostVotes AS pv
-		                WHERE po.Id = pv.PostId) AS VotesScore
-                    FROM Posts AS po");
-
-            
             var order = Enum.Parse<Order>(request.Sort, true);
-            var forumId = request.ForumId;
-
-            if (forumId != null && order != Order.Top)
+            if (order == Order.Top)
             {
-                postsQueryBuilder.Append(
-                    $@"WHERE po.ForumId = {forumId}");
+                postsQuery.AppendLine("       p.VotesScore");
+            }
+            else
+            {
+                postsQuery.AppendLine("       (SELECT Sum(Cast(pv.Type AS INT))");
+                postsQuery.AppendLine("        FROM   PostVotes AS pv");
+                postsQuery.AppendLine("        WHERE  p.Id = pv.CommentId) AS VotesScore");
             }
 
-            switch (order)
+            postsQuery.AppendLine("FROM   (SELECT TOP({pageSize}) sp.Id,");
+            postsQuery.AppendLine("                       sp.Title,");
+            postsQuery.AppendLine("                       sp.Content,");
+            postsQuery.AppendLine("                       sp.CreatedOn,");
+            postsQuery.AppendLine("                       sp.ModifiedOn,");
+            postsQuery.AppendLine("                       sp.CreatorId,");
+            postsQuery.AppendLine("                       sp.ForumId,");
+
+            if (order == Order.Top)
             {
-                case Order.New:
-                    postsQueryBuilder.Append(
-                        $@"ORDER BY po.CreatedOn ASC");
-                    break;
-                case Order.Old:
-                    postsQueryBuilder.Append(
-                        $@"ORDER BY po.CreatedOn DESC");
-                    break;
-                case Order.Top:
-                    if (Enum.TryParse(request.Top, out Interval interval))
-                    {
-                        if (interval != Interval.AllTime)
-                        {
-                            var time = DateTime.UtcNow;
-                            switch (interval)
-                            {
-                                case Interval.Today:
-                                    time = time.Date;
-                                    break;
-                                case Interval.ThisWeek:
-                                    var diff = time.DayOfWeek - DayOfWeek.Monday;
-                                    diff = diff < 0 ? diff += 7 : diff;
-                                    time = time.AddDays(-diff).Date;
-                                    break;
-                                case Interval.ThisMonth:
-                                    var month = new DateTime(time.Year, time.Month, 1);
-                                    break;
-                                default:
-                                    time = DateTime.UnixEpoch;
-                                    break;
-                            }
-
-                            postsQueryBuilder.Append(
-                                        $@"WHERE (po.CreatedOn >= {time:yyyy-MM-dd HH:mm:ss.fff})");
-
-                            if (forumId != null)
-                            {
-                                postsQueryBuilder.Append(
-                                        $@"AND (po.ForumId = {forumId})");
-                            }
-                        }
-                        
-                        postsQueryBuilder.Append(
-                            $@"ORDER BY VotesScore DESC");
-                    }
-                    break;
-                default:
-                    break;
+                postsQuery.Append(",");
+                postsQuery.AppendLine("                       (SELECT Sum(Cast(pv.Type AS int))");
+                postsQuery.AppendLine("                        FROM   PostVotes AS pv");
+                postsQuery.AppendLine("                        WHERE  sp.Id = pv.PostId) AS VotesScore");
             }
 
-            postsQueryBuilder.Append(
-                $@") AS p
-                INNER JOIN AspNetUsers AS u ON p.CreatorId = u.Id
-                INNER JOIN Forums AS f ON p.ForumId = f.Id
-                LEFT JOIN PostMedias AS pm ON p.Id = pm.PostId");
+            postsQuery.AppendLine("        FROM   Posts AS sp");
 
-            var posts = await _readDbConnection.QueryAsync<PostDto>(postsQueryBuilder.ToString());
-
-            Dictionary<int, PostDto> dict = null;
-            if (userId != null)
+            if (request.Cursor != null)
             {
-                dict = posts.ToDictionary(x => x.Id, x => x);
-                var postIds = string.Join(", ", posts.Select(p => p.Id).ToArray());
+                postsQuery.AppendLine("               AND ( sp.Id > {cursor} )");
+            }
 
-                var postVotesQuery =
-                    $@"SELECT p.Id, p.PostId, p.Type
-                    FROM PostVotes AS p
-                    WHERE p.PostId IN ({postIds}) AND (p.CreatorId = {userId})";
-                var votes = await _readDbConnection.QueryAsync<PostVoteDto>(postVotesQuery);
+            if (request.ForumId != null)
+            {
+                postsQuery.AppendLine("                 AND ( sp.ForumId = 2 ) )");
+            }
 
-                foreach (var v in votes)
+            if (order == Order.Top)
+            {
+                if (Enum.TryParse(request.Top, out Interval interval))
                 {
-                    dict[v.PostId].VoteId = v.Id;
-                    dict[v.PostId].VoteType = v.Type;
+                    var time = interval.ToDateTimeString();
+                    postsQuery.AppendLine("                 AND ( sp.CreatedOn >= {time} )");
                 }
 
-                var savedPostsQuery =
-                    $@"SELECT u.PostId
-                    FROM UserPostSaves AS u
-                    WHERE u.PostId IN ({postIds}) AND (u.UserId = {userId})";
-                var savedPostIds = await _readDbConnection.QueryAsync<int>(postVotesQuery);
-
-                foreach (var sp in savedPostIds)
-                {
-                    dict[sp].IsSaved = true;
-                }
+                postsQuery.AppendLine("        ORDER  BY VotesScore DESC) AS p");
+            }
+            else
+            {
+                var ord = order.ToSqlOrderString();
+                postsQuery.AppendLine($"        ORDER BY sp.CreatedOn {ord}) AS p");
             }
 
-            posts = dict != null ? dict.Values.ToList() : posts;  
+            postsQuery.AppendLine("       INNER JOIN AspNetUsers AS u");
+            postsQuery.AppendLine("               ON p.CreatorId = u.Id");
+            postsQuery.AppendLine("       INNER JOIN Forums AS f");
+            postsQuery.AppendLine("               ON p.ForumId = f.Id");
+            postsQuery.AppendLine("       LEFT JOIN PostMedias AS pm");
+            postsQuery.AppendLine("              ON p.Id = pm.PostId");
 
-            //var query = _postsRepository
-            //    .AllAsNoTracking();
+            //var posts = await _readDbConnection.QueryAsync<PostDto>(postsQueryBuilder.ToString());
 
-            //if (Enum.TryParse(request.Sort, out Order sorter))
+            //Dictionary<int, PostDto> dict = null;
+            //if (userId != null)
             //{
-            //    switch (sorter)
+            //    dict = posts.ToDictionary(x => x.Id, x => x);
+            //    var postIds = string.Join(", ", posts.Select(p => p.Id).ToArray());
+
+            //    var postVotesQuery =
+            //        $@"SELECT p.Id, p.PostId, p.Type
+            //        FROM PostVotes AS p
+            //        WHERE p.PostId IN ({postIds}) AND (p.CreatorId = {userId})";
+            //    var votes = await _readDbConnection.QueryAsync<PostVoteDto>(postVotesQuery);
+
+            //    foreach (var v in votes)
             //    {
-            //        case Order.New:
+            //        dict[v.PostId].VoteId = v.Id;
+            //        dict[v.PostId].VoteType = v.Type;
+            //    }
 
-            //        case Order.Old:
+            //    var savedPostsQuery =
+            //        $@"SELECT u.PostId
+            //        FROM UserPostSaves AS u
+            //        WHERE u.PostId IN ({postIds}) AND (u.UserId = {userId})";
+            //    var savedPostIds = await _readDbConnection.QueryAsync<int>(postVotesQuery);
 
-            //            query = query.CreatedOnSort(sorter);
-            //            break;
-            //        case Order.Top:
-            //            if (Enum.TryParse(request.Top, out Interval topSorter))
-            //            {
-            //                query = query.ScoreSort<Post, PostVote>(topSorter);
-            //            }
-            //            break;
-            //        default:
-            //            break;
+            //    foreach (var sp in savedPostIds)
+            //    {
+            //        dict[sp].IsSaved = true;
             //    }
             //}
 
-            //if (request.ForumId != null)
-            //{
-            //    query = query.Where(p => p.ForumId == request.ForumId);
-            //}
+            //posts = dict != null ? dict.Values.ToList() : posts;  
+
+            var query = _postsRepository
+                .AllAsNoTracking();
+
+            if (Enum.TryParse(request.Sort, out Order sorter))
+            {
+                switch (sorter)
+                {
+                    case Order.New:
+
+                    case Order.Old:
+
+                        query = query.CreatedOnSort(sorter);
+                        break;
+                    case Order.Top:
+                        if (Enum.TryParse(request.Top, out Interval topSorter))
+                        {
+                            query = query.ScoreSort<Post, PostVote>(topSorter);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (request.ForumId != null)
+            {
+                query = query.Where(p => p.ForumId == request.ForumId);
+            }
 
             //if (request.User != null)
             //{
@@ -234,21 +212,21 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             //    }
             //}
 
-            //if (request.Cursor != null)
-            //{
-            //    var id = (int)request.Cursor;
-            //    query = query.Where(p => p.Id > id);
-            //}
+            if (request.Cursor != null)
+            {
+                var id = (int)request.Cursor;
+                query = query.Where(p => p.Id > id);
+            }
 
             //if (request.Top != null)
             //{
             //    query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
             //}
 
-            //var posts = await query
-            //    .Take(PageSize)
-            //    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-            //    .ToListAsync();
+            var posts = await query
+                .Take(PageSize)
+                .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             //var userId = _authUserService.UserId;
 
@@ -291,3 +269,71 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 }
 
 
+//SELECT p.Id,
+//       p.Title,
+//       p.Content,
+//       p.CreatedOn,
+//       p.ModifiedOn,
+//       u.UserName               AS CreatorUserName,
+//       f.Title                  AS ForumTitle,
+//       p.ForumId,
+//       pm.Url                   AS MediaUrl,
+//       (SELECT Count(*)
+//        FROM   Comments AS c
+//        WHERE  p.Id = c.PostId) AS CommentsCount,
+//       (SELECT Sum(Cast(p.Type AS int))
+//        FROM   PostVotes AS p
+//        WHERE  p.Id = p.PostId) AS VotesScore
+//FROM   (SELECT TOP(10) ip.Id,
+//                       ip.Title,
+//                       ip.Content,
+//                       ip.CreatedOn,
+//                       ip.ModifiedOn,
+//                       ip.ForumId,
+//                       ip.CreatorId
+//        FROM   Posts AS ip
+//        WHERE  ( ip.ForumId = 2 )
+//               AND ( ip.Id > 20 )
+//        ORDER  BY ip.CreatedOn DESC) AS p
+//       INNER JOIN AspNetUsers AS u
+//               ON p.CreatorId = u.Id
+//       INNER JOIN Forums AS f
+//               ON p.ForumId = f.Id
+//       LEFT JOIN PostMedias AS pm
+//              ON p.Id = pm.PostId 
+
+
+//SELECT p.Id,
+//       p.Title,
+//       p.Content,
+//       p.CreatedOn,
+//       p.ModifiedOn,
+//       u.UserName               AS CreatorUserName,
+//       p.ForumId,
+//       f.Title                  AS ForumTitle,
+//       pm.Url                   AS MediaUrl,
+//       (SELECT Count(*)
+//        FROM   Comments AS c
+//        WHERE  p.Id = c.PostId) AS CommentsCount,
+//       p.VotesScore
+//FROM   (SELECT TOP(10) sp.Id,
+//                       sp.Content,
+//                       sp.CreatedOn,
+//                       sp.CreatorId,
+//                       sp.ForumId,
+//                       sp.ModifiedOn,
+//                       sp.Title,
+//                       (SELECT Sum(Cast(pv.Type AS int))
+//                        FROM   PostVotes AS pv
+//                        WHERE  sp.Id = pv.PostId) AS VotesScore
+//        FROM   Posts AS sp
+//        WHERE  ( ( sp.CreatedOn >= '' )
+//                 AND ( sp.ForumId = 2 ) )
+//               AND ( sp.Id > 20 )
+//        ORDER  BY VotesScore DESC) AS p
+//       INNER JOIN AspNetUsers AS u
+//               ON p.CreatorId = u.Id
+//       INNER JOIN Forums AS f
+//               ON p.ForumId = f.Id
+//       LEFT JOIN PostMedias AS pm
+//              ON p.Id = pm.PostId 

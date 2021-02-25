@@ -1,35 +1,25 @@
-﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Mappings;
-using DiscussionBoard.Domain.Entities;
-using System;
-using System.Linq;
+﻿using System;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    public class CommentDto : IMapFrom<Comment>, IHaveCustomMappings
+    public class CommentDto
     {
         public int Id { get; set; }
 
         public string Content { get; set; }
 
-        public string CreatorUserName { get; set; }
-
-        public bool IsCreator { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 
+        public string CreatorUserName { get; set; }
+
+        public bool IsCreator { get; set; }
+
         public int VotesScore { get; set; }
 
-        public int CurrentUserVoteId { get; set; }
+        public int VoteId { get; set; }
 
-        public string CurrentUserVoteType { get; set; }
-
-        public void CreateMappings(Profile profile)
-        {
-            profile.CreateMap<Comment, CommentDto>()
-                .ForMember(dest => dest.VotesScore, opt => opt.MapFrom(src => src.Votes.Sum(cv => (int)cv.Type)));
-        }
+        public string VoteType { get; set; }
     }
 }

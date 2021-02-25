@@ -4,7 +4,6 @@
     {
         Today = 1,
         ThisWeek = 2,
-        ThisMonth = 3,
-        AllTime = 4
+        ThisMonth = 3
     }
 }
