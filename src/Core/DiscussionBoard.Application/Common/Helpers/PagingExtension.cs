@@ -1,4 +1,6 @@
 ﻿using DiscussionBoard.Application.Common.Queries;
+using DiscussionBoard.Application.Common.Responses;
+using DiscussionBoard.Domain.Common;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,5 +29,16 @@ namespace DiscussionBoard.Application.Common.Helpers
 
             return new Paged<T> { Items = items.ToArray(), Paging = paging };
         }
+
+        //public static PagedResponse<T> CreatePagedResponse<T, Y>(this IList<Y> collection)
+        //    where T : ICanBePaged<Y>, new()
+        //    where Y : BaseModel<int>
+        //{
+        //    return new PagedResponse<T>
+        //    {
+        //        Data = new T { Items = collection },
+        //        Cursor = collection.Count > 0 ? collection[collection.Count - 1].Id : default(int?)
+        //    };
+        //}
     }
 }

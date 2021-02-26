@@ -1,7 +1,9 @@
-﻿using DiscussionBoard.Application.Common.Helpers;
+﻿using DiscussionBoard.Application.Common.Commands;
+using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Application.Common.Responses;
+using DiscussionBoard.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,8 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
     public class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, PagedResponse<GetAllCommentsResponse>>
     {
+        private const string InnerSelectAlias = "ic";
+        private const string SelectAlias = "c";
         private readonly IApplicationReadDbConnection _readDbConnection;
         private readonly IAuthenticatedUserService _authUserService;
         private const int PageSize = 10;
@@ -28,6 +32,47 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
         public async Task<PagedResponse<GetAllCommentsResponse>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
             var commentsQuery = new StringBuilder();
+            commentsQuery.AppendLine(
+                @"SELECT c.Id,
+                         c.Content,
+                         c.CreatedOn,
+                         c.ModifiedOn,
+                         u.UserName AS CreatorUserName,");
+
+            var userId = _authUserService.UserId;
+            if (userId != null)
+            {
+                commentsQuery.AppendLine(SqlQueriesHelper.IsCreator<Comment>(SelectAlias, userId));
+            }
+
+            var order = Enum.Parse<Order>(request.Sort, true);
+            var sumVotesScoreSql = SqlQueriesHelper.SumVotesScore<Comment, CommentVote>(SelectAlias);
+            commentsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
+
+            commentsQuery.AppendLine(
+                @"FROM   (SELECT TOP(10) ic.Id,
+                                         ic.Content,
+                                         ic.CreatedOn,
+                                         ic.ModifiedOn,
+                                         ic.CreatorId,
+                                         ic.PostId");
+
+            if (order == Order.Top)
+            {
+                commentsQuery.AppendLine("," + sumVotesScoreSql);
+            }
+
+            commentsQuery.AppendLine(@"FROM   Comments AS ic");
+
+            FilterAndOrder.ToSql(request, commentsQuery, order, InnerSelectAlias);
+
+            commentsQuery.AppendLine(
+                @") AS c
+                    INNER JOIN AspNetUsers AS u
+                            ON c.CreatorId = u.Id");
+
+
+
             commentsQuery.AppendLine("SELECT c.Id,");
             commentsQuery.AppendLine("       c.Content,");
             commentsQuery.AppendLine("       c.CreatedOn,");
@@ -72,6 +117,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 
             commentsQuery.AppendLine("        FROM   Comments AS ic");
             commentsQuery.AppendLine("        WHERE  ( ic.PostId = {postId} )");
+
 
             if (request.Cursor != null)
             {
@@ -138,7 +184,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
     }
 }
 
-//SELECT c.Id,
+//@"SELECT c.Id,
 //       c.Content,
 //       c.CreatedOn,
 //       c.ModifiedOn,
@@ -161,7 +207,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 //               AND(ic.Id > {cursor})
 //        ORDER BY ic.CreatedOn {ASC/DESC}) AS c
 //       INNER JOIN AspNetUsers AS u
-//               ON c.CreatorId = u.Id
+//               ON c.CreatorId = u.Id"
 
 //SELECT c.Id,
 //       c.Content,

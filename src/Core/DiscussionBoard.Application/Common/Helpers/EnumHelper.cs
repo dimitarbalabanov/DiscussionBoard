@@ -5,6 +5,8 @@ namespace DiscussionBoard.Application.Common.Helpers
 {
     public static class EnumHelper
     {
+        private const string SqlDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
+
         public static string ToDateTimeString(this Interval interval)
         {
             DateTime time = DateTime.UtcNow;
@@ -26,7 +28,7 @@ namespace DiscussionBoard.Application.Common.Helpers
                     break;
             }
 
-            return time.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            return time.ToString(SqlDateTimeFormat);
         }
 
         public static string ToSqlOrderString(this Order enumOrder)
