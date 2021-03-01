@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using DiscussionBoard.Application.Common.Commands;
 using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
@@ -19,243 +20,112 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
     public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, PagedResponse<GetAllPostsResponse>>
     {
         private const int PageSize = 10;
+        private const string SelectAlias = "p";
+        private const string InnerSelectAlias = "pp";
 
         private readonly IApplicationReadDbConnection _readDbConnection;
-        private readonly IRepository<Post> _postsRepository;
-        private readonly IRepository<PostVote> _postVotesRepository;
-        private readonly IRepository<UserPostSave> _savesRepository;
-        private readonly IRepository<User> _usersRepository;
         private readonly IAuthenticatedUserService _authUserService;
-        private readonly IMapper _mapper;
 
         public GetAllPostsQueryHandler(
             IApplicationReadDbConnection readDbConnection,
-            IRepository<Post> postsRepository,
-            IRepository<PostVote> postVotesRepository,
-            IRepository<UserPostSave> savesRepository,
-            IRepository<User> usersRepository,
-            IAuthenticatedUserService authUserService,
-            IMapper mapper)
+            IAuthenticatedUserService authUserService)
         {
-            _postsRepository = postsRepository;
-            _postVotesRepository = postVotesRepository;
-            _savesRepository = savesRepository;
-            _usersRepository = usersRepository;
-            _authUserService = authUserService;
-            _mapper = mapper;
             _readDbConnection = readDbConnection;
+            _authUserService = authUserService;
         }
 
         public async Task<PagedResponse<GetAllPostsResponse>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
 
             var postsQuery = new StringBuilder();
-            postsQuery.AppendLine("SELECT p.Id,");
-            postsQuery.AppendLine("       p.Title,");
-            postsQuery.AppendLine("       p.Content,");
-            postsQuery.AppendLine("       p.CreatedOn,");
-            postsQuery.AppendLine("       p.ModifiedOn,");
-            postsQuery.AppendLine("       u.UserName               AS CreatorUserName,");
-            postsQuery.AppendLine("       p.ForumId,");
-            postsQuery.AppendLine("       f.Title                  AS ForumTitle,");
-            postsQuery.AppendLine("       pm.Url                   AS MediaUrl,");
-            postsQuery.AppendLine("       (SELECT Count(*)");
-            postsQuery.AppendLine("        FROM   Comments AS c");
-            postsQuery.AppendLine("        WHERE  p.Id = c.PostId) AS CommentsCount,");
+            postsQuery.AppendLine(
+                @"SELECT p.Id,
+                         p.Title,
+                         p.Content,
+                         p.CreatedOn,
+                         p.ModifiedOn,
+                         u.UserName AS CreatorUserName,
+                         f.Title    AS ForumTitle,
+                         p.ForumId,
+                         pm.Url     AS MediaUrl,");
 
+            postsQuery.AppendLine(SqlQueriesHelper.SumCommentsCount(SelectAlias) + ",");
+            
             var userId = _authUserService.UserId;
             if (userId != null)
             {
-                postsQuery.AppendLine("       Cast(CASE");
-                postsQuery.AppendLine($"              WHEN p.CreatorId = {userId} THEN 1");
-                postsQuery.AppendLine("              ELSE 0");
-                postsQuery.AppendLine("            END AS BIT)             AS IsCreator,");
+                postsQuery.AppendLine(SqlQueriesHelper.IsCreator<Post>(SelectAlias, userId) + ",");
             }
 
-            var order = Enum.Parse<Order>(request.Sort, true);
+            Enum.TryParse(request.Sort, true, out Order order);
+            var sumVotesScoreSql = SqlQueriesHelper.SumVotesScore<Post, PostVote>(SelectAlias);
+            postsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
+
+            postsQuery.AppendLine(
+                $@"FROM   (SELECT TOP({PageSize}) pp.Id,
+                                                  pp.Title,
+                                                  pp.Content,
+                                                  pp.CreatedOn,
+                                                  pp.ModifiedOn,
+                                                  pp.ForumId,
+                                                  pp.CreatorId");
             if (order == Order.Top)
             {
-                postsQuery.AppendLine("       p.VotesScore");
-            }
-            else
-            {
-                postsQuery.AppendLine("       (SELECT Sum(Cast(pv.Type AS INT))");
-                postsQuery.AppendLine("        FROM   PostVotes AS pv");
-                postsQuery.AppendLine("        WHERE  p.Id = pv.CommentId) AS VotesScore");
+                postsQuery.AppendLine(sumVotesScoreSql);
             }
 
-            postsQuery.AppendLine("FROM   (SELECT TOP({pageSize}) sp.Id,");
-            postsQuery.AppendLine("                       sp.Title,");
-            postsQuery.AppendLine("                       sp.Content,");
-            postsQuery.AppendLine("                       sp.CreatedOn,");
-            postsQuery.AppendLine("                       sp.ModifiedOn,");
-            postsQuery.AppendLine("                       sp.CreatorId,");
-            postsQuery.AppendLine("                       sp.ForumId,");
-
-            if (order == Order.Top)
-            {
-                postsQuery.Append(",");
-                postsQuery.AppendLine("                       (SELECT Sum(Cast(pv.Type AS int))");
-                postsQuery.AppendLine("                        FROM   PostVotes AS pv");
-                postsQuery.AppendLine("                        WHERE  sp.Id = pv.PostId) AS VotesScore");
-            }
-
-            postsQuery.AppendLine("        FROM   Posts AS sp");
-
-            if (request.Cursor != null)
-            {
-                postsQuery.AppendLine("               AND ( sp.Id > {cursor} )");
-            }
+            postsQuery.AppendLine(
+                @"        FROM   Posts AS pp");
 
             if (request.ForumId != null)
             {
-                postsQuery.AppendLine("                 AND ( sp.ForumId = 2 ) )");
+                postsQuery.AppendLine($"WHERE ( pp.ForumId = {(int)request.ForumId} )");
             }
 
-            if (order == Order.Top)
+            FilterAndOrder.ToSql(request.Cursor, request.Top, postsQuery, order, InnerSelectAlias, request.ForumId == null);
+
+            postsQuery.AppendLine(
+                @") AS p
+                         INNER JOIN AspNetUsers AS u
+                                 ON p.CreatorId = u.Id
+                         INNER JOIN Forums AS f
+                                 ON p.ForumId = f.Id
+                          LEFT JOIN PostMedias AS pm
+                                 ON p.Id = pm.PostId ");
+
+            var posts = await _readDbConnection.QueryAsync<PostDto>(postsQuery.ToString());
+
+            Dictionary<int, PostDto> dict = null;
+            if (userId != null)
             {
-                if (Enum.TryParse(request.Top, out Interval interval))
+                dict = posts.ToDictionary(x => x.Id, x => x);
+                var postIds = string.Join(", ", posts.Select(p => p.Id).ToArray());
+
+                var postVotesQuery =
+                    $@"SELECT pv.Id, pv.PostId, pv.Type
+                    FROM PostVotes AS pv
+                    WHERE pv.PostId IN ({postIds}) AND (pv.CreatorId = '{userId}')";
+                var votes = await _readDbConnection.QueryAsync<AllPostsPostVoteDto>(postVotesQuery);
+
+                foreach (var v in votes)
                 {
-                    var time = interval.ToDateTimeString();
-                    postsQuery.AppendLine("                 AND ( sp.CreatedOn >= {time} )");
+                    dict[v.PostId].VoteId = v.Id;
+                    dict[v.PostId].VoteType = v.Type;
                 }
 
-                postsQuery.AppendLine("        ORDER  BY VotesScore DESC) AS p");
-            }
-            else
-            {
-                var ord = order.ToSqlOrderString();
-                postsQuery.AppendLine($"        ORDER BY sp.CreatedOn {ord}) AS p");
-            }
+                var savedPostsQuery =
+                    $@"SELECT ups.PostId
+                    FROM UserPostSaves AS ups
+                    WHERE ups.PostId IN ({postIds}) AND (ups.UserId = '{userId}')";
+                var savedPostIds = await _readDbConnection.QueryAsync<int>(savedPostsQuery);
 
-            postsQuery.AppendLine("       INNER JOIN AspNetUsers AS u");
-            postsQuery.AppendLine("               ON p.CreatorId = u.Id");
-            postsQuery.AppendLine("       INNER JOIN Forums AS f");
-            postsQuery.AppendLine("               ON p.ForumId = f.Id");
-            postsQuery.AppendLine("       LEFT JOIN PostMedias AS pm");
-            postsQuery.AppendLine("              ON p.Id = pm.PostId");
-
-            //var posts = await _readDbConnection.QueryAsync<PostDto>(postsQueryBuilder.ToString());
-
-            //Dictionary<int, PostDto> dict = null;
-            //if (userId != null)
-            //{
-            //    dict = posts.ToDictionary(x => x.Id, x => x);
-            //    var postIds = string.Join(", ", posts.Select(p => p.Id).ToArray());
-
-            //    var postVotesQuery =
-            //        $@"SELECT p.Id, p.PostId, p.Type
-            //        FROM PostVotes AS p
-            //        WHERE p.PostId IN ({postIds}) AND (p.CreatorId = {userId})";
-            //    var votes = await _readDbConnection.QueryAsync<PostVoteDto>(postVotesQuery);
-
-            //    foreach (var v in votes)
-            //    {
-            //        dict[v.PostId].VoteId = v.Id;
-            //        dict[v.PostId].VoteType = v.Type;
-            //    }
-
-            //    var savedPostsQuery =
-            //        $@"SELECT u.PostId
-            //        FROM UserPostSaves AS u
-            //        WHERE u.PostId IN ({postIds}) AND (u.UserId = {userId})";
-            //    var savedPostIds = await _readDbConnection.QueryAsync<int>(postVotesQuery);
-
-            //    foreach (var sp in savedPostIds)
-            //    {
-            //        dict[sp].IsSaved = true;
-            //    }
-            //}
-
-            //posts = dict != null ? dict.Values.ToList() : posts;  
-
-            var query = _postsRepository
-                .AllAsNoTracking();
-
-            if (Enum.TryParse(request.Sort, out Order sorter))
-            {
-                switch (sorter)
+                foreach (var sp in savedPostIds)
                 {
-                    case Order.New:
-
-                    case Order.Old:
-
-                        query = query.CreatedOnSort(sorter);
-                        break;
-                    case Order.Top:
-                        if (Enum.TryParse(request.Top, out Interval topSorter))
-                        {
-                            query = query.ScoreSort<Post, PostVote>(topSorter);
-                        }
-                        break;
-                    default:
-                        break;
+                    dict[sp].IsSaved = true;
                 }
             }
 
-            if (request.ForumId != null)
-            {
-                query = query.Where(p => p.ForumId == request.ForumId);
-            }
-
-            //if (request.User != null)
-            //{
-            //    var id = await _usersRepository
-            //        .AllAsNoTracking()
-            //        .Where(u => u.UserName == request.User)
-            //        .Select(u => u.Id)
-            //        .SingleOrDefaultAsync();
-
-            //    if (id != null)
-            //    {
-            //        query = query.Where(p => p.CreatorId == id);
-            //    }
-            //}
-
-            if (request.Cursor != null)
-            {
-                var id = (int)request.Cursor;
-                query = query.Where(p => p.Id > id);
-            }
-
-            //if (request.Top != null)
-            //{
-            //    query = query.OrderByDescending(x => x.Votes.Sum(v => (int)v.Type));
-            //}
-
-            var posts = await query
-                .Take(PageSize)
-                .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            //var userId = _authUserService.UserId;
-
-            //if (userId != null)
-            //{
-            //    var postIds = posts
-            //        .Select(p => p.Id)
-            //        .ToList();
-
-            //    var votesInPosts = await _postVotesRepository
-            //        .AllAsNoTracking()
-            //        .Where(pv => postIds.Contains(pv.PostId) && pv.CreatorId == userId)
-            //        .Select(pv => new { pv.Id, pv.PostId, pv.Type })
-            //        .ToListAsync();
-
-            //    var savedPosts = await _savesRepository
-            //        .AllAsNoTracking()
-            //        .Where(s => postIds.Contains(s.PostId) && s.UserId == userId)
-            //        .Select(s => s.PostId)
-            //        .ToListAsync();
-
-            //    foreach (var post in posts)
-            //    {
-            //        var postVote = votesInPosts.SingleOrDefault(v => v.PostId == post.Id);
-            //        post.VoteId = postVote?.Id;
-            //        post.VoteType = postVote?.Type.ToString().ToLower();
-            //        post.IsSaved = savedPosts.Contains(post.Id);
-            //    }
-            //}
+            posts = dict != null ? dict.Values.ToList() : posts;
 
             var response = new PagedResponse<GetAllPostsResponse>
             {
@@ -267,8 +137,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
         }
     }
 }
-
-
 //SELECT p.Id,
 //       p.Title,
 //       p.Content,
@@ -301,7 +169,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 //               ON p.ForumId = f.Id
 //       LEFT JOIN PostMedias AS pm
 //              ON p.Id = pm.PostId 
-
 
 //SELECT p.Id,
 //       p.Title,

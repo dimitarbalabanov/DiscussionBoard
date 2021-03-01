@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import ConfirmationNumberIcon from '@material-ui/icons/ConfirmationNumber';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   size: {
@@ -15,17 +16,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DeleteAndConfirmButton = props => {
   const classes = useStyles();
-  const [showDeleteConfirm, setDeleteConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
-  const handleShow = () => {
-    setDeleteConfirm(true);
-  }
-
-  const handleHide = () => {
-    setDeleteConfirm(false);
-  }
-
-
   // const {
   //   id,
   //   title,
@@ -34,7 +26,7 @@ const DeleteAndConfirmButton = props => {
 
   const handleDelete = () => {
     // onDelete(id);
-    setDeleteConfirm(false);
+    setShowDeleteConfirm(false);
   };
 
   const { 
@@ -59,14 +51,14 @@ const DeleteAndConfirmButton = props => {
                 Yes
             </Typography> 
           </Button>
-          <Button onClick={() => handleHide()} size="small" startIcon={<NotInterestedIcon className={classes.iconColor}/>}>
+          <Button onClick={() => setShowDeleteConfirm(false)} size="small" startIcon={<NotInterestedIcon className={classes.iconColor}/>}>
           <Typography color="textSecondary" display="inline" variant="body2">
                 Cancel
             </Typography>
           </Button>
         </React.Fragment>
         :
-        <IconButton onClick={() => handleShow()} aria-label="delete" size="small">
+        <IconButton onClick={() => setShowDeleteConfirm(true)} aria-label="delete" size="small">
           <DeleteIcon fontSize="small"/>
         </IconButton>}
     </React.Fragment>

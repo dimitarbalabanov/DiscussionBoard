@@ -7,14 +7,13 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import Voting from '../../Voting/Voting';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import EditComment from '../EditComment/EditComment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
-
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -55,15 +54,15 @@ const useStyles = makeStyles((theme) => ({
 const CommentCard = props => {
   const classes = useStyles();
   const [showUpdateForm, setUpdateForm] = useState(false);
-  const [showDeleteConfirm, setDeleteConfirm] = useState(false);
+  //const [showDeleteConfirm, setDeleteConfirm] = useState(false);
   
-  const handleShow = () => {
-    setDeleteConfirm(true);
-  }
+  // const handleShow = () => {
+  //   setDeleteConfirm(true);
+  // }
 
-  const handleHide = () => {
-    setDeleteConfirm(false);
-  }
+  // const handleHide = () => {
+  //   setDeleteConfirm(false);
+  // }
 
   const handleOpen = () => {
     setUpdateForm(true);
@@ -75,9 +74,9 @@ const CommentCard = props => {
   const { 
     comment,
     loading,
-    onDeleteComment,
-    deleteCommentLoading,
-    deleteCommentId,
+    // onDeleteComment,
+    // deleteCommentLoading,
+    // deleteCommentId,
     onUpdateComment,
     updateCommentLoading,
     updateCommentId,
@@ -115,6 +114,7 @@ const CommentCard = props => {
           deleteVoteLoading={deleteVoteLoading}
           isAuthenticated={isAuthenticated}
         />
+
         <div className={classes.cardDetails}>
           <CardContent className={classes.cardcontent}>
             <Grid className={classes.statsItem} item >

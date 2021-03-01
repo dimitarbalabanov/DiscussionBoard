@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import PostCard from '../PostCard/PostCard';
+// import PostCard from '../PostCard/PostCard';
 import AnotherPostCard from '../PostCard/AnotherPostCard';
 
 const PostsList = props => {

@@ -12,7 +12,7 @@ import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
 import SortingComponent from '../../components/SortingComponent/SortingComponent2';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
-import RightSide from './RightSide';
+// import RightSide from './RightSide';
 const Home = props => {
   useTraceUpdate(props)
   const { 

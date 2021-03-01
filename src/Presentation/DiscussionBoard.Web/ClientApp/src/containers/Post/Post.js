@@ -38,6 +38,21 @@ const Post = (props) => {
     postLoading,
     //postError,
     onFetchPost,
+    onCreatePostVote,
+    createPostVoteError,
+    createPostVoteLoading,
+    onUpdatePostVote,
+    updatePostVoteError,
+    updatePostVoteLoading,
+    onDeletePostVote,
+    deletePostVoteError,
+    deletePostVoteLoading,
+    onCreateSavedPost,
+    createSavedPostError,
+    createSavedPostLoading,
+    onDeleteSavedPost,
+    deleteSavedPostError,
+    deleteSavedPostLoading,
     comments,
     //commentsError,
     commentsLoading,
@@ -52,17 +67,16 @@ const Post = (props) => {
     //updateCommentError,
     updateCommentId,
     updateCommentLoading,
-    onCreateVote,
-    createVoteError,
-    createVoteLoading,
-    onUpdateVote,
-    updateVoteError,
-    updateVoteLoading,
-    onDeleteVote,
-    deleteVoteError,
-    deleteVoteLoading,
+    onCreateCommentVote,
+    createCommentVoteError,
+    createCommentVoteLoading,
+    onUpdateCommentVote,
+    updateCommentVoteError,
+    updateCommentVoteLoading,
+    onDeleteCommentVote,
+    deleteCommentVoteError,
+    deleteCommentVoteLoading,
     isAuthenticated,
-    onOpenModal,
     onFetchForum
   } = props;
   
@@ -78,14 +92,29 @@ const Post = (props) => {
       onFetchForum(forumId);
     } 
   }, [onFetchForum, forumId]);
-
+  console.log(props)
   let postDiv = <Spinner />;
   let commentsDiv = <Spinner />;
 
-  if (!postLoading && post && !commentsLoading && comments) {
+  if (!postLoading && post && !commentsLoading) {
     postDiv = <PostDetailsCard 
       post={post} 
       postsLoading={postLoading} 
+      onCreatePostVote={onCreatePostVote}
+      createPostVoteError={createPostVoteError}
+      createPostVoteLoading={createPostVoteLoading}
+      onUpdatePostVote={onUpdatePostVote}
+      updatePostVoteError={updatePostVoteError}
+      updatePostVoteLoading={updatePostVoteLoading}
+      onDeletePostVote={onDeletePostVote}
+      deletePostVoteError={deletePostVoteError}
+      deletePostVoteLoading={deletePostVoteLoading}
+      onCreateSavedPost={onCreateSavedPost}
+      createSavedPostError={createSavedPostError}
+      createSavedPostLoading={createSavedPostLoading}
+      onDeleteSavedPost={onDeleteSavedPost}
+      deleteSavedPostError={deleteSavedPostError}
+      deleteSavedPostLoading={deleteSavedPostLoading}
       comments={comments} 
       commentsLoading={commentsLoading}
       onCreateComment={onCreateComment}
@@ -93,7 +122,6 @@ const Post = (props) => {
       createCommentLoading={createCommentLoading}
       onDeleteComment={onDeleteComment}
       isAuthenticated={isAuthenticated}
-      onOpenModal={onOpenModal}
     />
   }
   
@@ -108,15 +136,15 @@ const Post = (props) => {
         onUpdateComment={onUpdateComment}
         updateCommentLoading={updateCommentLoading}
         updateCommentId={updateCommentId}
-        onCreateVote={onCreateVote}
-        createVoteError={createVoteError}
-        createVoteLoading={createVoteLoading}
-        onUpdateVote={onUpdateVote}
-        updateVoteError={updateVoteError}
-        updateVoteLoading={updateVoteLoading}
-        onDeleteVote={onDeleteVote}
-        deleteVoteError={deleteVoteError}
-        deleteVoteLoading={deleteVoteLoading}
+        onCreateCommentVote={onCreateCommentVote}
+        createCommentVoteError={createCommentVoteError}
+        createCommentVoteLoading={createCommentVoteLoading}
+        onUpdateCommentVote={onUpdateCommentVote}
+        updateCommentVoteError={updateCommentVoteError}
+        updateCommentVoteLoading={updateCommentVoteLoading}
+        onDeleteCommentVote={onDeleteCommentVote}
+        deleteCommentVoteError={deleteCommentVoteError}
+        deleteCommentVoteLoading={deleteCommentVoteLoading}
         isAuthenticated={isAuthenticated}
       />)
   }
@@ -155,6 +183,21 @@ const mapStateToProps = state => {
     postLoading: state.post.postLoading,
     postError: state.post.postError,
 
+    createPostVoteLoading: state.post.createPostVoteLoading,
+    createPostVoteError: state.post.createPostVoteError,
+
+    updatePostVoteLoading: state.post.updatePostVoteLoading,
+    updatePostVoteError: state.post.updatePostVoteError,
+
+    deletePostVoteLoading: state.post.deletePostVoteLoading,
+    deletePostVoteError: state.post.deletePostVoteError,
+
+    createSavedPostLoading: state.post.createSavedPostLoading,
+    createSavedPostError: state.post.createSavedPostError,
+
+    deleteSavedPostLoading: state.post.deleteSavedPostLoading,
+    deleteSavedPostError: state.post.deleteSavedPostError,
+
     comments: state.comments.comments,
     commentsLoading: state.comments.commentsLoading,
     commentsError: state.comments.commentsError,
@@ -170,14 +213,14 @@ const mapStateToProps = state => {
     updateCommentError: state.comments.updateCommentError,
     updateCommentId: state.comments.updateCommentId,
 
-    createVoteLoading: state.comments.createVoteLoading,
-    createVoteError: state.comments.createVoteError,
+    createCommentVoteLoading: state.comments.createCommentVoteLoading,
+    createCommentVoteError: state.comments.createCommentVoteError,
 
-    updateVoteLoading: state.comments.updateVoteLoading,
-    updateVoteError: state.comments.updateVoteError,
+    updateCommentVoteLoading: state.comments.updateCommentVoteLoading,
+    updateCommentVoteError: state.comments.updateCommentVoteError,
 
-    deleteVoteLoading: state.comments.deleteVoteLoading,
-    deleteVoteError: state.comments.deleteVoteError,
+    deleteCommentVoteLoading: state.comments.deleteCommentVoteLoading,
+    deleteCommentVoteError: state.comments.deleteCommentVoteError,
 
     isAuthenticated: state.auth.token !== null
   };
@@ -187,14 +230,18 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+    onCreatePostVote: (postId, type) => dispatch(actions.createPostVote(postId, type)),
+    onUpdatePostVote: (postId, voteId, type) => dispatch(actions.updatePostVote(postId, voteId, type)),
+    onDeletePostVote: (postId, voteId, type) => dispatch(actions.deletePostVote(postId, voteId, type)),
+    onCreateSavedPost: (postId) => dispatch(actions.createSavedPost(postId)),
+    onDeleteSavedPost: (postId) => dispatch(actions.deleteSavedPost(postId)),
     onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
     onCreateComment: (content, postId) => dispatch(actions.createComment(content, postId)),
     onUpdateComment: (commentId, content) => dispatch(actions.updateComment(commentId, content)),
     onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
-    onCreateVote: (commentId, type) => dispatch(actions.createVote(commentId, type)),
-    onUpdateVote: (commentId, voteId, type) => dispatch(actions.updateVote(commentId, voteId, type)),
-    onDeleteVote: (commentId, voteId, type) => dispatch(actions.deleteVote(commentId, voteId, type)),
-    onOpenModal: (type, title, message) => dispatch(actions.showModal(type, title, message))
+    onCreateCommentVote: (commentId, type) => dispatch(actions.createCommentVote(commentId, type)),
+    onUpdateCommentVote: (commentId, voteId, type) => dispatch(actions.updateCommentVote(commentId, voteId, type)),
+    onDeleteCommentVote: (commentId, voteId, type) => dispatch(actions.deleteCommentVote(commentId, voteId, type)),
   };
 };
 

@@ -9,5 +9,5 @@ export default function ConvertToRelativeTime(date) {
 }
 
 export function toComplexTime(date) {
-  return moment.utc(date).format('MMMM Do YYYY, h:mm:ss a');
+  return moment.utc(date).local().format('MMMM Do YYYY, h:mm:ss a');
 }

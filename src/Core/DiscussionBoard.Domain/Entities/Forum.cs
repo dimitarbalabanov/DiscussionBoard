@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class Forum : BaseModel<int>
+    public class Forum : BaseModel<int>, IHaveCreator
     {
         public Forum()
         {

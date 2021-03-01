@@ -16,11 +16,12 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
     public class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, PagedResponse<GetAllCommentsResponse>>
     {
-        private const string InnerSelectAlias = "ic";
+        private const int PageSize = 10;
         private const string SelectAlias = "c";
+        private const string InnerSelectAlias = "cc";
+
         private readonly IApplicationReadDbConnection _readDbConnection;
         private readonly IAuthenticatedUserService _authUserService;
-        private const int PageSize = 10;
         public GetAllCommentsQueryHandler(
             IApplicationReadDbConnection readDbConnection,
             IAuthenticatedUserService authUserService)
@@ -42,106 +43,38 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             var userId = _authUserService.UserId;
             if (userId != null)
             {
-                commentsQuery.AppendLine(SqlQueriesHelper.IsCreator<Comment>(SelectAlias, userId));
+                commentsQuery.AppendLine(SqlQueriesHelper.IsCreator<Comment>(SelectAlias, userId) + ",");
             }
 
-            var order = Enum.Parse<Order>(request.Sort, true);
+            Enum.TryParse(request.Sort, true, out Order order);
+
             var sumVotesScoreSql = SqlQueriesHelper.SumVotesScore<Comment, CommentVote>(SelectAlias);
             commentsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
 
             commentsQuery.AppendLine(
-                @"FROM   (SELECT TOP(10) ic.Id,
-                                         ic.Content,
-                                         ic.CreatedOn,
-                                         ic.ModifiedOn,
-                                         ic.CreatorId,
-                                         ic.PostId");
+                $@"FROM   (SELECT TOP({PageSize}) cc.Id,
+                                                  cc.Content,
+                                                  cc.CreatedOn,
+                                                  cc.ModifiedOn,
+                                                  cc.CreatorId,
+                                                  cc.PostId");
 
             if (order == Order.Top)
             {
-                commentsQuery.AppendLine("," + sumVotesScoreSql);
+                commentsQuery.AppendLine(sumVotesScoreSql);
             }
 
-            commentsQuery.AppendLine(@"FROM   Comments AS ic");
+            commentsQuery.AppendLine(
+                            @"FROM   Comments AS cc");
+            commentsQuery.AppendLine(
+                           $@"WHERE   ( cc.PostId = {request.PostId} )");
 
-            FilterAndOrder.ToSql(request, commentsQuery, order, InnerSelectAlias);
+            FilterAndOrder.ToSql(request.Cursor, request.Top, commentsQuery, order, InnerSelectAlias, false);
 
             commentsQuery.AppendLine(
                 @") AS c
                     INNER JOIN AspNetUsers AS u
                             ON c.CreatorId = u.Id");
-
-
-
-            commentsQuery.AppendLine("SELECT c.Id,");
-            commentsQuery.AppendLine("       c.Content,");
-            commentsQuery.AppendLine("       c.CreatedOn,");
-            commentsQuery.AppendLine("       c.ModifiedOn,");
-            commentsQuery.AppendLine("       u.UserName AS CreatorUserName,");
-
-            var userId = _authUserService.UserId;
-            if (userId != null)
-            {
-                commentsQuery.AppendLine("       Cast(CASE");
-                commentsQuery.AppendLine($"              WHEN c.CreatorId = {userId} THEN 1");
-                commentsQuery.AppendLine("              ELSE 0");
-                commentsQuery.AppendLine("            END AS BIT)             AS IsCreator,");
-            }
-
-            var order = Enum.Parse<Order>(request.Sort, true);
-            if (order == Order.Top)
-            {
-                commentsQuery.Append("       c.VotesScore");
-            }
-            else
-            {
-                commentsQuery.AppendLine("       (SELECT Sum(Cast(cv.Type AS INT))");
-                commentsQuery.AppendLine("        FROM   CommentVotes AS cv");
-                commentsQuery.AppendLine("        WHERE  c.Id = cv.CommentId) AS VotesScore");
-            }
-
-            commentsQuery.AppendLine($"FROM   (SELECT TOP({PageSize}) ic.Id,");
-            commentsQuery.AppendLine("                       ic.Content,");
-            commentsQuery.AppendLine("                       ic.CreatedOn,");
-            commentsQuery.AppendLine("                       ic.ModifiedOn,");
-            commentsQuery.AppendLine("                       ic.CreatorId,");
-            commentsQuery.AppendLine("                       ic.PostId");
-
-            if (order == Order.Top)
-            {
-                commentsQuery.Append(",");
-                commentsQuery.AppendLine("       (SELECT Sum(Cast(cv.Type AS INT))");
-                commentsQuery.AppendLine("        FROM   CommentVotes AS cv");
-                commentsQuery.AppendLine("        WHERE  c.Id = cv.CommentId) AS VotesScore");
-            }
-
-            commentsQuery.AppendLine("        FROM   Comments AS ic");
-            commentsQuery.AppendLine("        WHERE  ( ic.PostId = {postId} )");
-
-
-            if (request.Cursor != null)
-            {
-                commentsQuery.AppendLine("               AND(ic.Id > {cursor})");
-            }
-
-            if (order == Order.Top)
-            {
-                if (Enum.TryParse(request.Top, out Interval interval))
-                {
-                    var time = interval.ToDateTimeString();
-                    commentsQuery.AppendLine($"               AND(ic.CreatedOn >= {time})");
-                }
-
-                commentsQuery.Append("        ORDER BY VotesScore) AS c");
-            }
-            else
-            {
-                var ord = order.ToSqlOrderString();
-                commentsQuery.AppendLine($"        ORDER BY ic.CreatedOn {ord}) AS c");
-            }
-
-            commentsQuery.AppendLine("       INNER JOIN AspNetUsers AS u");
-            commentsQuery.AppendLine("               ON c.CreatorId = u.Id");
 
             var comments = await _readDbConnection.QueryAsync<CommentDto>(commentsQuery.ToString());
 
@@ -151,13 +84,13 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                 dict = comments.ToDictionary(x => x.Id, x => x);
                 var commentIds = string.Join(", ", dict.Keys);
 
-                var commentVotesQuery = new StringBuilder();
-                commentVotesQuery.AppendLine("SELECT c.Id,");
-                commentVotesQuery.AppendLine("       c.CommentId,");
-                commentVotesQuery.AppendLine("       c.Type");
-                commentVotesQuery.AppendLine("FROM   CommentVotes AS c");
-                commentVotesQuery.AppendLine($"WHERE  c.CommentId IN ( {commentIds} )");
-                commentVotesQuery.AppendLine($"       AND ( c.CreatorId = {userId} )");
+                var commentVotesQuery =
+                    $@"SELECT c.Id,
+                              c.CommentId,
+                              c.Type
+                       FROM   CommentVotes AS c
+                       WHERE  c.CommentId IN ( {commentIds} )
+                              AND (c.CreatorId = '{userId}')";
 
                 var commentVotes = await _readDbConnection.QueryAsync<CommentVoteDto>(commentVotesQuery.ToString());
 
@@ -183,8 +116,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
         }
     }
 }
-
-//@"SELECT c.Id,
+//SELECT c.Id,
 //       c.Content,
 //       c.CreatedOn,
 //       c.ModifiedOn,
@@ -207,7 +139,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 //               AND(ic.Id > {cursor})
 //        ORDER BY ic.CreatedOn {ASC/DESC}) AS c
 //       INNER JOIN AspNetUsers AS u
-//               ON c.CreatorId = u.Id"
+//               ON c.CreatorId = u.Id
 
 //SELECT c.Id,
 //       c.Content,
@@ -240,5 +172,5 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 //       c.CommentId
 //       c.Type
 //FROM   CommentVotes AS c
-//WHERE  c.CommentId IN ( {commentIds} )
-//       AND ( c.CreatorId = {userId} ) 
+//WHERE  c.CommentId IN ( { commentIds} )
+//       AND(c.CreatorId = { userId} ) 

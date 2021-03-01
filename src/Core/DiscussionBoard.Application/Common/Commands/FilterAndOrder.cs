@@ -9,18 +9,18 @@ namespace DiscussionBoard.Application.Common.Commands
 {
     public static class FilterAndOrder
     {
-        public static void ToSql(GetAllCommentsQuery request, StringBuilder query, Order order, string alias)
+        public static void ToSql(int? cursor, string top, StringBuilder query, Order order, string alias, bool where)
         {
             var conditions = new List<string>();
-            if (request.Cursor != null)
+            if (cursor != null)
             {
-                conditions.Add($"{alias}.Id > {(int)request.Cursor}");
+                conditions.Add($"{alias}.Id > {(int)cursor}");
             }
 
             string sqlOrder;
             if (order == Order.Top)
             {
-                if (Enum.TryParse(request.Top, out Interval interval))
+                if (Enum.TryParse(top, out Interval interval))
                 {
                     conditions.Add($"{alias}.CreatedOn >= {interval.ToDateTimeString()}");
                 }
@@ -34,9 +34,10 @@ namespace DiscussionBoard.Application.Common.Commands
 
             if (conditions.Count > 0)
             {
-                foreach (var condition in conditions)
+                query.AppendLine(where ? $"WHERE ( {conditions[0]} )" : $"AND ( {conditions[0]} )");
+                for (int i = 1; i < conditions.Count; i++)
                 {
-                    query.AppendLine($"AND ( {condition} )");
+                    query.AppendLine($"AND ( {conditions[i]} )");
                 }
             }
 

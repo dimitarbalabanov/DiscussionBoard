@@ -11,15 +11,15 @@ import {
   DELETE_COMMENT_START,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_FAILURE,
-  CREATE_VOTE_START,
-  CREATE_VOTE_SUCCESS,
-  CREATE_VOTE_FAILURE,
-  UPDATE_VOTE_START,
-  UPDATE_VOTE_SUCCESS,
-  UPDATE_VOTE_FAILURE,
-  DELETE_VOTE_START,
-  DELETE_VOTE_SUCCESS,
-  DELETE_VOTE_FAILURE
+  CREATE_COMMENTVOTE_START,
+  CREATE_COMMENTVOTE_SUCCESS,
+  CREATE_COMMENTVOTE_FAILURE,
+  UPDATE_COMMENTVOTE_START,
+  UPDATE_COMMENTVOTE_SUCCESS,
+  UPDATE_COMMENTVOTE_FAILURE,
+  DELETE_COMMENTVOTE_START,
+  DELETE_COMMENTVOTE_SUCCESS,
+  DELETE_COMMENTVOTE_FAILURE
 } from './actionTypes';
 import {
   getComments,
@@ -28,10 +28,10 @@ import {
   deleteCommentById
 } from '../../api/commentsService';
 import {
-  createVote as createVoteApi,
-  updateVoteById,
-  deleteVoteById
-} from '../../api/votesService';
+  createCommentVote as createCommentVoteApi,
+  updateCommentVoteById,
+  deleteCommentVoteById
+} from '../../api/commentVotesService';
 import { showSnackbar } from './snackbar';
 
 export const fetchComments = (postId) => {
@@ -47,7 +47,7 @@ export const fetchComments = (postId) => {
         dispatch(showSnackbar('success', `Successfully fetched the comments.`));
       }
       if (type === REQUEST_COMMENTS_FAILURE) {
-        dispatch(showSnackbar('error', 'Error fetching the forums.'));
+        dispatch(showSnackbar('error', 'Error fetching the comments.'));
       }
     }
   }
@@ -114,20 +114,20 @@ export const deleteComment = (commentId) => {
   }
 };
 
-export const createVote = (commentId, voteType) => {
+export const createCommentVote = (commentId, voteType) => {
   return {
     types: [
-      CREATE_VOTE_START,
-      CREATE_VOTE_SUCCESS,
-      CREATE_VOTE_FAILURE
+      CREATE_COMMENTVOTE_START,
+      CREATE_COMMENTVOTE_SUCCESS,
+      CREATE_COMMENTVOTE_FAILURE
     ],
-    callApi: () => createVoteApi(commentId, voteType),
+    callApi: () => createCommentVoteApi(commentId, voteType),
     effect({ dispatch, state, type}) {
-      if (type === CREATE_VOTE_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully created a vote.`));
+      if (type === CREATE_COMMENTVOTE_SUCCESS) {
+        dispatch(showSnackbar('success', `Successfully created a comment vote.`));
       }
-      if (type === CREATE_VOTE_FAILURE) {
-        dispatch(showSnackbar('error', 'Error creating a vote.'));
+      if (type === CREATE_COMMENTVOTE_FAILURE) {
+        dispatch(showSnackbar('error', 'Error creating a comment vote.'));
       }
     },
     commentId: commentId,
@@ -135,20 +135,20 @@ export const createVote = (commentId, voteType) => {
   }
 };
 
-export const updateVote = (commentId, voteId, voteType) => {
+export const updateCommentVote = (commentId, commentVoteId, voteType) => {
   return {
     types: [
-      UPDATE_VOTE_START,
-      UPDATE_VOTE_SUCCESS,
-      UPDATE_VOTE_FAILURE
+      UPDATE_COMMENTVOTE_START,
+      UPDATE_COMMENTVOTE_SUCCESS,
+      UPDATE_COMMENTVOTE_FAILURE
     ],
-    callApi: () => updateVoteById(voteId, voteType),
+    callApi: () => updateCommentVoteById(commentVoteId, voteType),
     effect({ dispatch, state, type}) {
-      if (type === UPDATE_VOTE_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully updated the vote.`));
+      if (type === UPDATE_COMMENTVOTE_SUCCESS) {
+        dispatch(showSnackbar('success', `Successfully updated the comment vote.`));
       }
-      if (type === UPDATE_VOTE_FAILURE) {
-        dispatch(showSnackbar('error', 'Error updating the vote.'));
+      if (type === UPDATE_COMMENTVOTE_FAILURE) {
+        dispatch(showSnackbar('error', 'Error updating the comment vote.'));
       }
     },
     commentId: commentId,
@@ -156,20 +156,20 @@ export const updateVote = (commentId, voteId, voteType) => {
   }
 };
 
-export const deleteVote = (commentId, voteId, voteType) => {
+export const deleteCommentVote = (commentId, commentVoteId, voteType) => {
   return {
     types: [
-      DELETE_VOTE_START,
-      DELETE_VOTE_SUCCESS,
-      DELETE_VOTE_FAILURE
+      DELETE_COMMENTVOTE_START,
+      DELETE_COMMENTVOTE_SUCCESS,
+      DELETE_COMMENTVOTE_FAILURE
     ],
-    callApi: () => deleteVoteById(voteId),
+    callApi: () => deleteCommentVoteById(commentVoteId),
     effect({ dispatch, state, type}) {
-      if (type === DELETE_VOTE_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully deleted the vote.`));
+      if (type === DELETE_COMMENTVOTE_SUCCESS) {
+        dispatch(showSnackbar('success', `Successfully deleted the comment vote.`));
       }
-      if (type === DELETE_VOTE_FAILURE) {
-        dispatch(showSnackbar('error', 'Error deleting the vote.'));
+      if (type === DELETE_COMMENTVOTE_FAILURE) {
+        dispatch(showSnackbar('error', 'Error deleting the comment vote.'));
       }
     },
     commentId: commentId,

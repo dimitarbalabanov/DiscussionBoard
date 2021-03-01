@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const initialValues = {
-  content: ''
-};
+// const initialValues = {
+//   content: ''
+// };
 
-const validationSchema = Yup.object().shape(
-  { content: Yup.string().max(255).required('Content is required')}
-);
+// const validationSchema = Yup.object().shape(
+//   { content: Yup.string().max(255).required('Content is required')}
+// );
 
 const CreateComment = props => {
 

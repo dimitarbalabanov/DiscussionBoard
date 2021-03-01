@@ -11,7 +11,7 @@ import MobileBar from './MobileBar';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-     borderBottom: `1px solid ${theme.palette.primary.main}`,
+     //borderBottom: `1px solid ${theme.palette.primary.main}`,
     boxShadow: "none",
     backgroundColor: colors.common.white,
     justifyContent: 'space-between',

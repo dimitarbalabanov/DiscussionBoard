@@ -45,13 +45,13 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginRight: theme.spacing(1)
   },
-  active: {
-    color: theme.palette.primary.main,
-    fontWeight: theme.typography.fontWeightMedium,
-    '& $icon': {
-      color: theme.palette.primary.main
-    }
-  }
+  // active: {
+  //   color: theme.palette.primary.main,
+  //   fontWeight: theme.typography.fontWeightMedium,
+  //   '& $icon': {
+  //     color: theme.palette.primary.main
+  //   }
+  // }
 }));
 
 const CustomRouterLink = forwardRef((props, ref) => (
@@ -125,7 +125,7 @@ const Navigation = props => {
         ? <React.Fragment>
             <ListItem className={classes.item} disableGutters>
                 <Button
-                  activeClassName={classes.active}
+                  //activeClassName={classes.active}
                   className={classes.button}
                   component={CustomRouterLink}
                   to={'/user'}

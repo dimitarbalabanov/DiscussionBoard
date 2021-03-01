@@ -7,7 +7,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import PersonIcon from '@material-ui/icons/Person';
-import { ListItem, colors } from '@material-ui/core';
+import {  colors } from '@material-ui/core';
 import { Link as RouterLink} from 'react-router-dom';
 
 const StyledMenu = withStyles({
@@ -92,7 +92,7 @@ const MobileBar = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
-  const { isAuth, username } = props;
+  const { isAuth } = props;
 
   let routes = isAuth ? authRoutes : guestRoutes;
 
@@ -122,10 +122,9 @@ const MobileBar = props => {
         onClose={handleClose}
       >
         {routes.map(route =>
-        <MenuItem>
-          <ListItem className={classes.item} disableGutters key={route.title}>
+        <MenuItem className={classes.item} disableGutters key={route.title}>
             <Button
-              activeClassName={classes.active}
+              //activeClassName={classes.active}
               className={classes.button}
               component={RouterLink}
               to={route.href}
@@ -133,7 +132,6 @@ const MobileBar = props => {
               <div className={classes.icon}>{route.icon}</div>
               {route.title}
             </Button>
-          </ListItem>
         </MenuItem>)}
       </StyledMenu>
     </div>

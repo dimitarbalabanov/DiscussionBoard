@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import Header from './components/Header/Header';
+// import Header from './components/Header/Header';
 import Navigation from './components/New/Navigation';
 // import Footer from './components/Footer/Footer';
 

@@ -10,13 +10,13 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     boxShadow: 'none',
-    borderStyle: "solid",
-    borderWidth: "1.5px",
-    borderRadius: '5px',
-    borderColor: theme.palette.primary.main,
-    '&:hover': {
-      borderColor: theme.palette.secondary.main,
-    },
+    // borderStyle: "solid",
+    // borderWidth: "1.5px",
+    // borderRadius: '5px',
+    // borderColor: theme.palette.primary.main,
+    // '&:hover': {
+    //   borderColor: theme.palette.secondary.main,
+    // },
     alignItems: 'center',
   },
   statsItem: {

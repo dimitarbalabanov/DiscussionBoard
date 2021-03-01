@@ -15,6 +15,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
+import PostVoting from '../../Voting/PostVoting';
+import SavePostButton from '../../AUI/SavePostButton';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     "&:last-child": {
       paddingBottom: 0
     },
-    margin: theme.spacing(2)
+    //margin: theme.spacing(2)
   },
   textColor: {
     color: theme.palette.primary.main
@@ -71,15 +73,46 @@ const PostDetailsCard = props => {
   const { 
     post,
     postsLoading,
+    onCreatePostVote,
+    createPostVoteError,
+    createPostVoteLoading,
+    onUpdatePostVote,
+    updatePostVoteError,
+    updatePostVoteLoading,
+    onDeletePostVote,
+    deletePostVoteError,
+    deletePostVoteLoading,
+    onCreateSavedPost,
+    createSavedPostError,
+    createSavedPostLoading,
+    onDeleteSavedPost,
+    deleteSavedPostError,
+    deleteSavedPostLoading,
     onCreateComment,
     createCommentLoading,
     createCommentError,
-    isAuthenticated,
-    onOpenModal
+    isAuthenticated
   } = props;
 
+  console.log(props)
   return (
     <Card className={classes.card}>
+      <PostVoting 
+        id={post.id}
+        voteType={post.voteType}
+        voteId={post.voteId}
+        votesScore={post.votesScore}
+        onCreateVote={onCreatePostVote}
+        createVoteLoading={createPostVoteLoading}
+        createVoteError={createPostVoteError}
+        onUpdateVote={onUpdatePostVote}
+        updateVoteError={updatePostVoteError}
+        updateVoteLoading={updatePostVoteLoading}
+        onDeleteVote={onDeletePostVote}
+        deleteVoteError={deletePostVoteError}
+        deleteVoteLoading={deletePostVoteLoading}
+        isAuthenticated={isAuthenticated}
+      />
       <div className={classes.cardDetails}>
         <CardContent className={classes.cardcontent}>
           {postsLoading ? <Skeleton /> : 
@@ -120,11 +153,21 @@ const PostDetailsCard = props => {
                 Edit
               </Typography>
             </Button>
-              <Button onClick={() => onOpenModal("nekaf taip", "nekaf title", "nekaf message")} size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
-                {/* <Typography color="textSecondary" display="inline" variant="body2">
+              <Button size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
+                <Typography color="textSecondary" display="inline" variant="body2">
                   Delete
-                </Typography>  */}
+                </Typography> 
               </Button>
+              <SavePostButton 
+                postId={post.id}
+                isSaved={post.isSaved}
+                onCreateSavedPost={onCreateSavedPost}
+                createSavedPostError={createSavedPostError}
+                createSavedPostLoading={createSavedPostLoading}
+                onDeleteSavedPost={onDeleteSavedPost}
+                deleteSavedPostError={deleteSavedPostError}
+                deleteSavedPostLoading={deleteSavedPostLoading}
+              />
               </React.Fragment>}
             </Grid>
           {createCommentLoading 

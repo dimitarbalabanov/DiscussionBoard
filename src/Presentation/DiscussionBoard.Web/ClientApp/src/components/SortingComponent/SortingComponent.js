@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     // borderColor: theme.palette.primary.main,
     // border: '3px solid'
-    borderStyle: "solid",
-    borderWidth: "5px",
-    borderRadius: '5px',
-    borderColor: theme.palette.primary.main,
+    // borderStyle: "solid",
+    // borderWidth: "5px",
+    // borderRadius: '5px',
+    // borderColor: theme.palette.primary.main,
   },
   cardDetails: {
     flex: 1

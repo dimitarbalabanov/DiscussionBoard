@@ -14,11 +14,15 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold'
   },
   avatar: {
-    height: 30,
-    width: 30,
-    marginRight: theme.spacing(1),
+    height: 23,
+    width: 23,
+    marginLeft: theme.spacing(0.5),
+    marginRight: theme.spacing(0.3),
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
+  },
+  dsadsa: {
+    display: 'flex'
   }
 }));
 
@@ -47,6 +51,12 @@ const PostFirstLine = props => {
       </Link>
       {" Posted "}
       {" by "} 
+      </Typography>
+      <Avatar
+      className={classes.avatar}
+      //src={mediaUrl}
+      >{creatorUserName.substring(0, 2).toLowerCase()}</Avatar>
+      <Typography color="textSecondary" variant="body2">
       <Link component={RouterLink} to={"/users/" + creatorUserName}>
           {'u/' + creatorUserName + ' '}
       </Link>

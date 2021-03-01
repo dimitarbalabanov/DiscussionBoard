@@ -15,17 +15,17 @@ import {
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_FAILURE,
 
-  CREATE_VOTE_START,
-  CREATE_VOTE_SUCCESS,
-  CREATE_VOTE_FAILURE,
+  CREATE_COMMENTVOTE_START,
+  CREATE_COMMENTVOTE_SUCCESS,
+  CREATE_COMMENTVOTE_FAILURE,
 
-  UPDATE_VOTE_START,
-  UPDATE_VOTE_SUCCESS,
-  UPDATE_VOTE_FAILURE,
+  UPDATE_COMMENTVOTE_START,
+  UPDATE_COMMENTVOTE_SUCCESS,
+  UPDATE_COMMENTVOTE_FAILURE,
 
-  DELETE_VOTE_START,
-  DELETE_VOTE_SUCCESS,
-  DELETE_VOTE_FAILURE,
+  DELETE_COMMENTVOTE_START,
+  DELETE_COMMENTVOTE_SUCCESS,
+  DELETE_COMMENTVOTE_FAILURE,
 } from '../actions/actionTypes';
 
 const initialCommentsState = {
@@ -54,25 +54,25 @@ const initialDeleteCommentState = {
   deleteCommentId: null
 };
 
-const initialCreateVoteState = {
-  createVoteId: null,
-  createVoteLoading: false,
-  createVoteError: null,
-  createVoteCommentScore: null
+const initialCreateCommentVoteState = {
+  createCommentVoteId: null,
+  createCommentVoteLoading: false,
+  createCommentVoteError: null,
+  createCommentVoteCommentScore: null
 };
 
-const initialUpdateVoteState = {
-  updateVoteId: null,
-  updateVoteLoading: false,
-  updateVoteError: null,
-  updateVoteCommentScore: null
+const initialUpdateCommentVoteState = {
+  updateCommentVoteId: null,
+  updateCommentVoteLoading: false,
+  updateCommentVoteError: null,
+  updateCommentVoteCommentScore: null
 };
 
-const initialDeleteVoteState = {
-  deleteVoteId: null,
-  deleteVoteLoading: false,
-  deleteVoteError: null,
-  deleteVoteCommentScore: null
+const initialDeleteCommentVoteState = {
+  deleteCommentVoteId: null,
+  deleteCommentVoteLoading: false,
+  deleteCommentVoteError: null,
+  deleteCommentVoteCommentScore: null
 };
 
 const initialState = {
@@ -80,9 +80,9 @@ const initialState = {
   ...initialCreateCommentState,
   ...initialUpdateCommentState,
   ...initialDeleteCommentState,
-  ...initialCreateVoteState,
-  ...initialUpdateVoteState,
-  ...initialDeleteVoteState
+  ...initialCreateCommentVoteState,
+  ...initialUpdateCommentVoteState,
+  ...initialDeleteCommentVoteState
 };
 
 const reducer = (state = initialState, action) => {
@@ -97,7 +97,7 @@ const reducer = (state = initialState, action) => {
     case REQUEST_COMMENTS_SUCCESS: 
       return { 
         ...state,
-        comments: action.data.comments,
+        comments: action.data.data.comments,
         commentsLoading: false,
         commentsError: null
       };
@@ -203,14 +203,14 @@ const reducer = (state = initialState, action) => {
         deleteCommentId: null
       };
 
-    case CREATE_VOTE_START:
+    case CREATE_COMMENTVOTE_START:
       return { 
         ...state,
-        createVoteError: null,
-        createVoteLoading: true 
+        createCommentVoteError: null,
+        createCommentVoteLoading: true 
       };
     
-    case CREATE_VOTE_SUCCESS:
+    case CREATE_COMMENTVOTE_SUCCESS:
       return { 
         ...state,
         comments: state.comments.slice()
@@ -227,25 +227,25 @@ const reducer = (state = initialState, action) => {
               return comment
             }
           }),
-        createVoteLoading: false,
-        createVoteError: null
+        createCommentVoteLoading: false,
+        createCommentVoteError: null
       };
 
-    case CREATE_VOTE_FAILURE:
+    case CREATE_COMMENTVOTE_FAILURE:
       return { 
         ...state,
-        createVoteError: action.error,
-        createVoteLoading: false
+        createCommentVoteError: action.error,
+        createCommentVoteLoading: false
       };
 
-    case UPDATE_VOTE_START:
+    case UPDATE_COMMENTVOTE_START:
       return { 
         ...state,
-        updateVoteError: null,
-        updateVoteLoading: true 
+        updateCommentVoteError: null,
+        updateCommentVoteLoading: true 
       };
 
-    case UPDATE_VOTE_SUCCESS:
+    case UPDATE_COMMENTVOTE_SUCCESS:
       return { 
         ...state,
         comments: state.comments.slice()
@@ -261,25 +261,25 @@ const reducer = (state = initialState, action) => {
               return comment
             }
           }),
-        updateVoteLoading: false,
-        updateVoteError: null
+        updateCommentVoteLoading: false,
+        updateCommentVoteError: null
       };
 
-    case UPDATE_VOTE_FAILURE:
+    case UPDATE_COMMENTVOTE_FAILURE:
       return { 
         ...state,
-        updateVoteError: action.error,
-        updateVoteLoading: false
+        updateCommentVoteError: action.error,
+        updateCommentVoteLoading: false
       };
 
-    case DELETE_VOTE_START:
+    case DELETE_COMMENTVOTE_START:
       return { 
         ...state,
-        deleteVoteError: null,
-        deleteVoteLoading: true 
+        deleteCommentVoteError: null,
+        deleteCommentVoteLoading: true 
       };
 
-    case DELETE_VOTE_SUCCESS:
+    case DELETE_COMMENTVOTE_SUCCESS:
       return {
         ...state,
         comments: state.comments.slice()
@@ -296,17 +296,17 @@ const reducer = (state = initialState, action) => {
               return comment
             }
           }),
-        deleteVoteLoading: false,
-        deleteVoteError: null
+        deleteCommentVoteLoading: false,
+        deleteCommentVoteError: null
       };
 
-    case DELETE_VOTE_FAILURE:
+    case DELETE_COMMENTVOTE_FAILURE:
       return { 
         ...state,
-        deleteVoteError: action.error,
-        deleteVoteLoading: false
+        deleteCommentVoteError: action.error,
+        deleteCommentVoteLoading: false
       };
-    
+
     default:
       return state;
   }

@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     // borderColor: theme.palette.primary.main,
     // border: '3px solid'
-    borderStyle: "solid",
-    borderWidth: "1.5px 1.5px 1.5px 1.5px",
-    borderRadius: '5px',
-    borderColor: theme.palette.primary.main,
-    '&:hover': {
-      borderColor: theme.palette.secondary.main,
-    }
+    // borderStyle: "solid",
+    // borderWidth: "1.5px 1.5px 1.5px 1.5px",
+    // borderRadius: '5px',
+    // borderColor: theme.palette.primary.main,
+    // '&:hover': {
+    //   borderColor: theme.palette.secondary.main,
+    // }
   },
   cardDetails: {
     flex: 1

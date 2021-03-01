@@ -5,22 +5,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Skeleton from '@material-ui/lab/Skeleton';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import CommentIcon from '@material-ui/icons/Comment';
 import Avatar from '@material-ui/core/Avatar';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderStyle: "solid",
-    borderWidth: "2px 2px 2px 10px",
-    borderColor: theme.palette.primary.main,
-    '&:hover': {
-      borderColor: theme.palette.secondary.main,
-    },
+    // borderStyle: "solid",
+    // borderWidth: "2px 2px 2px 10px",
+    // borderColor: theme.palette.primary.main,
+    // '&:hover': {
+    //   borderColor: theme.palette.secondary.main,
+    // },
   },
   div: {
     marginLeft: theme.spacing(1),
@@ -54,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
   asdf: {
-    color: theme.palette.primary.main,
-    fontWeight: 'bold',
-    fontSize: '22px'
+    // color: theme.palette.primary.main,
+    // fontWeight: 'bold',
+    // fontSize: '22px'
   }
 }));
 
@@ -65,15 +61,8 @@ const ForumCard = props => {
 
   const { 
     id,
-    title,
-    mediaUrl,
-    postsCount,
-    commentsCount,
+    title
   } = props.forum;
-
-  const {
-    loading
-  } = props;
 
   return (
     <Card className={classes.card} component={Link} to={`/forums/${id}`}>
@@ -90,6 +79,9 @@ const ForumCard = props => {
           <Typography className={classes.title} component="h3" variant="h4" align="center">
             <span className={classes.asdf}>{"f/"}</span>{title.substring(0,10).toLowerCase()}
           </Typography>
+        </Grid>
+        <Grid item>
+          <Divider />
         </Grid>
       </Grid>
     </Card>

@@ -11,12 +11,12 @@ import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderStyle: "solid",
-    borderWidth: "1.5px 1.5px 1.5px 1.5px",
-    borderColor: theme.palette.primary.main,
-    '&:hover': {
-      borderColor: theme.palette.secondary.main,
-    }
+    // borderStyle: "solid",
+    // borderWidth: "1.5px 1.5px 1.5px 1.5px",
+    // borderColor: theme.palette.primary.main,
+    // '&:hover': {
+    //   borderColor: theme.palette.secondary.main,
+    // }
   },
   cardDetails: {
     flex: 1
@@ -64,7 +64,6 @@ const AnotherPostCard = props => {
       <Grid item>
         {/* <PostFirstLine1 forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/> */}
         <PostFirstLine2 forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/>
-        <DeleteAndConfirmButton />
         <Link to={`/posts/${post.id}`}>
           <Grid item>
             <Typography className={classes.title} color="textPrimary" component="h2" variant="h4">
@@ -76,13 +75,14 @@ const AnotherPostCard = props => {
               {`${post.content ? post.content.substring(0,250) + "..." : null} `}
               </Typography>
           </Grid>
+        </Link>
           <Grid className={classes.statsItem} item >
             <CommentIcon className={classes.statsIcon} color="primary"/>
               <Typography color="textSecondary" display="inline" variant="body2" >
               {`${post.commentsCount} Comments`}
               </Typography>
+          <DeleteAndConfirmButton />
           </Grid>
-        </Link>
       </Grid>
     </Paper>
   );

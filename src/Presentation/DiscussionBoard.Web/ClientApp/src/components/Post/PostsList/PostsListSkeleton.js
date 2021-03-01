@@ -17,12 +17,12 @@ const PostsListSkeleton = () => {
       </Grid>
       <Grid item xs={12} md={10}>
         <Box component={Paper}>
-        <PostCardSkeleton />
+         <PostCardSkeleton />
         </Box>
       </Grid>
       <Grid item xs={12} md={10}>
         <Box component={Paper}>
-        <PostCardSkeleton />
+         <PostCardSkeleton />
         </Box>
       </Grid>
     </React.Fragment>

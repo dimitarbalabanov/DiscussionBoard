@@ -2,16 +2,20 @@ export {
     auth,
     logout,
     authCheckState
-} from './auth';
+  } from './auth';
+  
+export {
+    register
+  } from './register';
 
 export {
   fetchComments,
   createComment,
   updateComment,
   deleteComment,
-  createVote,
-  updateVote,
-  deleteVote
+  createCommentVote,
+  updateCommentVote,
+  deleteCommentVote
 } from './comments';
 
 export {
@@ -25,9 +29,14 @@ export {
 export {
   fetchPostById,
   createPost,
+  createPostReset,
   updatePost,
   deletePost,
-  createPostReset
+  createPostVote,
+  updatePostVote,
+  deletePostVote,
+  createSavedPost,
+  deleteSavedPost
 } from './post';
 
 export {
@@ -36,15 +45,6 @@ export {
 } from './posts';
 
 export {
-  register
-} from './register';
-
-export {
   showSnackbar,
   hideSnackbar
 } from './snackbar';
-
-export {
-  showModal,
-  hideModal
-} from './modal';

@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import ForumCard from '../ForumCard/ForumCard';
+import ForumCard from '../ForumCard/ForumCard3';
 
 const ForumsList = props => {
   const { 

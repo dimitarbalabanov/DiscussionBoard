@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    public class GetAllCommentsResponse : ICanBePaged<CommentDto>
+    public class GetAllCommentsResponse
     {
-        public IEnumerable<CommentDto> Items { get; set; }
+        public IEnumerable<CommentDto> Comments { get; set; }
     }
 }

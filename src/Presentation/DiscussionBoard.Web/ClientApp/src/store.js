@@ -10,7 +10,6 @@ import postReducer from './store/reducers/post';
 import postsReducer from './store/reducers/posts';
 import registerReducer from './store/reducers/register';
 import snackbarReducer from './store/reducers/snackbar';
-import modalReducer from './store/reducers/modal';
 
 // const composeEnhancers = process.env.NODE_ENV === 'development' 
 //   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
@@ -24,8 +23,7 @@ const rootReducer = combineReducers({
   post: postReducer,
   posts: postsReducer,
   register: registerReducer,
-  snackbar: snackbarReducer,
-  modal: modalReducer
+  snackbar: snackbarReducer
 });
 
 const store = createStore(rootReducer, 

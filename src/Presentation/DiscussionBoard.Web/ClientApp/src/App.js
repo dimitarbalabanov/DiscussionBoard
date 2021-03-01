@@ -19,11 +19,6 @@ const App = props => {
     snackbarType,
     snackbarMessage,
     onCloseSnackbar,
-    showModal,
-    modalType,
-    modalTitle,
-    modalMessage,
-    onCloseModal
   } = props;
 
   useEffect(() => {
@@ -34,9 +29,15 @@ const App = props => {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <CssBaseline />
-      <Snackbar show={showSnackbar} type={snackbarType} message={snackbarMessage} handleClose={onCloseSnackbar}/>
+      <Snackbar 
+        show={showSnackbar} 
+        type={snackbarType} 
+        message={snackbarMessage}
+        handleClose={onCloseSnackbar}/>
       <Router>
-        <Layout isAuth={isAuthenticated} username={username}>
+        <Layout 
+          isAuth={isAuthenticated} 
+          username={username}>
           <Routes/>
         </Layout>
       </Router>
@@ -50,19 +51,14 @@ const mapStateToProps = state => {
     username: state.auth.username,
     showSnackbar: state.snackbar.show,
     snackbarType: state.snackbar.type,
-    snackbarMessage: state.snackbar.message,
-    showModal: state.modal.show,
-    modalType: state.modal.type,
-    modalTitle: state.modal.title,
-    modalMessage: state.modal.message,
+    snackbarMessage: state.snackbar.message
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch(actions.authCheckState()),
-    onCloseSnackbar: () => dispatch(actions.hideSnackbar()),
-    onCloseModal: () => dispatch(actions.hideModal()),
+    onCloseSnackbar: () => dispatch(actions.hideSnackbar())
   };
 };
 
