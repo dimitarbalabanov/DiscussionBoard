@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-// const initialValues = {
-//   content: ''
-// };
+const initialValues = {
+  content: ''
+};
 
-// const validationSchema = Yup.object().shape(
-//   { content: Yup.string().max(255).required('Content is required')}
-// );
+const validationSchema = Yup.object().shape(
+  { content: Yup.string().max(255).required('Content is required')}
+);
 
 const CreateComment = props => {
 
@@ -38,67 +38,62 @@ const CreateComment = props => {
     isAuthenticated
   } = props;
 
-  let form = ( 
-    <Formik
-      initialValues={{
-        content: ''
-        // content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu'
-      }}
-      validationSchema={Yup.object().shape({
-        content: Yup.string().max(255).required('Content is required')
-      })}
-      onSubmit={values => {
-        onCreateComment(values.content, postId);
-        values = {
-          content: ''
-        };
-      }}
-    >
-      {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values
-      }) => (
-        <form onSubmit={handleSubmit} >
-          <TextField
-            error={Boolean(values.content && errors.content)}
-            fullWidth
-            helperText={touched.content && errors.content}
-            label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}
-            disabled={!isAuthenticated}
-            margin="normal"
-            name="content"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            type="content"
-            value={values.content}
-            variant="outlined"
-            multiline
-            rows={4}
-          />
-            {isAuthenticated ? <Button
-              disabled={isSubmitting}
-              type="submit"
-              variant="outlined"
-              startIcon={<AddBoxIcon className={classes.iconColor} />}
-            >
-              <Typography color="textSecondary" display="inline" variant="body2">
-                Comment
-              </Typography>
-            </Button> : null}
-        </form>
-      )}
-    </Formik>
-  );
-  
   return (
-      <Grid item xs={12} md={12} className={classes.root}>
-        {form}
-      </Grid>
+    <Grid item xs={12} md={12} className={classes.root}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        validateOnBlur={false}
+        onSubmit={values => {
+          onCreateComment(values.content, postId);
+          values = {
+            content: ''
+          };
+        }}
+      >
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values
+        }) => (
+          <form onSubmit={handleSubmit} >
+            
+            <TextField
+              error={Boolean(values.content && errors.content)}
+              fullWidth
+              helperText={touched.content && errors.content}
+              label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}
+              disabled={!isAuthenticated}
+              margin="normal"
+              name="content"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              type="content"
+              value={values.content}
+              variant="outlined"
+              multiline
+              rows={4}
+            />
+              {isAuthenticated ? 
+                <Button
+                  disabled={isSubmitting}
+                  type="submit"
+                  variant="outlined"
+                  startIcon={<AddBoxIcon className={classes.iconColor} />}
+                >
+                  <Typography color="textSecondary" display="inline" variant="body2">
+                    Comment
+                  </Typography>
+                </Button> 
+                : null}
+          </form>
+        )}
+      </Formik>
+    </Grid>
   );
 };
 

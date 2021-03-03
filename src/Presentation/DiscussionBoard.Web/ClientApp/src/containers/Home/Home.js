@@ -27,7 +27,7 @@ const Home = props => {
     onFetchForums,
     onFetchPosts,
     isAuthenticated,
-    //onClearPosts
+    onClearPosts
   } = props;
 
   const [sort, setSort] = React.useState(1);
@@ -42,6 +42,7 @@ const Home = props => {
 
   useEffect(() => {
     console.log("fetching posts")
+    onClearPosts();
     onFetchPosts(sort, top);
   }, [onFetchPosts, sort, top]);
 

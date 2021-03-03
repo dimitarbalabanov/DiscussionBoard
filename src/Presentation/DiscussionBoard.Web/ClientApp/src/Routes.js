@@ -9,6 +9,7 @@ import CreatePost from './containers/CreatePost/CreatePost';
 import UserProfile from './containers/UserProfile/UserProfile';
 import CreateForum from './containers/CreateForum/CreateForum';
 import Login from './containers/Auth/Login/Login';
+import Login2 from './containers/Auth/Login/LoginForm/LoginForm2';
 import Register from './containers/Auth/Register/Register';
 
 const Routes = () => {
@@ -28,6 +29,11 @@ const Routes = () => {
         component={Login}
         exact 
         path="/login" 
+      />
+      <Route 
+        component={Login2}
+        exact 
+        path="/login2" 
       />
       <Route 
         component={UserProfile}

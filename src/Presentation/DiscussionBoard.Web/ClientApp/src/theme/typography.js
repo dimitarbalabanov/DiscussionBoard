@@ -31,5 +31,6 @@ export default {
   },
   overline: {
     fontWeight: 500
-  }
+  },
+  fontSize: 13
 };

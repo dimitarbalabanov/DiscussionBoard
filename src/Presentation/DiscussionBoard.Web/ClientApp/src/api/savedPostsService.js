@@ -5,6 +5,6 @@ export const createSavedPost = (postId) => {
   return axiosInstance.post(SAVEDPOSTS_URL, { postId });
 };
 
-export const deleteSavedPostById = (postId) => {
+export const deleteSavedPostByPostId = (postId) => {
   return axiosInstance.delete(SAVEDPOSTS_URL + postId);
 };

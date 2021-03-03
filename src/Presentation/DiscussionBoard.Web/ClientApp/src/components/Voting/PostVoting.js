@@ -82,6 +82,7 @@ const PostVoting = props => {
     } else if (newType === null) {
       onDeleteVote(id, voteId, type)
     }
+    
     setType(newType);
   };
 

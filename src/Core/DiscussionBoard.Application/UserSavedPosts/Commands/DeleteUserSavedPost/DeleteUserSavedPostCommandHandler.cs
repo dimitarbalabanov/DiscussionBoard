@@ -30,7 +30,7 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.DeleteUserSavedPos
 
             if (savedPost == null)
             {
-                throw new NotFoundException(nameof(PostVote));
+                throw new NotFoundException(nameof(UserPostSave));
             }
 
             _savedRepository.Delete(savedPost);

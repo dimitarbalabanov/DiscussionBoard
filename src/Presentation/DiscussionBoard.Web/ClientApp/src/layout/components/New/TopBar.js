@@ -9,8 +9,8 @@ import PersonIcon from '@material-ui/icons/Person';
 
 const authRoutes = [
   {
-    title: 'Profile',
-    href: '/profile',
+    title: 'Nickname',
+    href: '/user',
     icon: <PersonIcon />
   },
   {
@@ -24,12 +24,15 @@ const guestRoutes = [
   {
     title: 'Login',
     href: '/login',
-    icon: <PeopleIcon />
+    variant: 'outlined',
+    icon: <PeopleIcon />,
+
   },
   {
-    title: 'Register',
+    title: 'Sign Up',
     href: '/register',
-    icon: <LockOpenIcon />
+    variant: 'contained',
+    icon: <LockOpenIcon />,
   }
 ];
 
@@ -41,8 +44,13 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 0,
     paddingLeft: theme.spacing(1)
   },
+  but: {
+    width: '150px',
+    //color: theme.palette.primary.main,
+  },
   button: {
-    color: colors.blueGrey[800],
+    color: theme.palette.primary.main,
+    //color: colors.blueGrey[800],
     padding: '10px 8px',
     justifyContent: 'flex-start',
     textTransform: 'none',
@@ -82,10 +90,14 @@ const TopBar = props => {
       {routes.map(route =>
       <ListItem className={classes.item} disableGutters key={route.title}>
         <Button
-          activeClassName={classes.active}
-          className={classes.button}
+          //activeClassName={classes.active}
+          //className={classes.button}
+          className={classes.but}
+          disableElevation
+          variant={route.variant}
           component={RouterLink}
           to={route.href}
+          color="primary"
         >
           <div className={classes.icon}>{route.icon}</div>
           {route.title}

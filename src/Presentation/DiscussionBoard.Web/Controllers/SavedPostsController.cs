@@ -11,13 +11,13 @@ namespace DiscussionBoard.Web.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] CreateUserSavedPostCommand command)
-        {   
+        {
             await Mediator.Send(command);
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAsync([FromBody] DeleteUserSavedPostCommand command)
+        [HttpDelete("{postId}")]
+        public async Task<IActionResult> DeleteAsync(DeleteUserSavedPostCommand command)
         {
             await Mediator.Send(command);
             return NoContent();

@@ -44,7 +44,7 @@ import {
 } from '../../api/postVotesService';
 import {
   createSavedPost as createSavedPostApi,
-  deleteSavedPostById
+  deleteSavedPostByPostId
 } from '../../api/savedPostsService';
 
 export const fetchPostById = (postId) => {
@@ -214,22 +214,22 @@ export const createSavedPost = (postId) => {
   }
 };
 
-export const deleteSavedPost = (savedPostId) => {
+export const deleteSavedPost = (postId) => {
   return {
     types: [
       DELETE_SAVEDPOST_START,
       DELETE_SAVEDPOST_SUCCESS,
       DELETE_SAVEDPOST_FAILURE
     ],
-    callApi: () => deleteSavedPostById(savedPostId),
+    callApi: () => deleteSavedPostByPostId(postId),
     effect({ dispatch, state, type}) {
       if (type === DELETE_SAVEDPOST_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully deleted the post vote.`));
+        dispatch(showSnackbar('success', `Successfully deleted the saved post.`));
       }
       if (type === DELETE_SAVEDPOST_FAILURE) {
-        dispatch(showSnackbar('error', 'Error deleting the post vote.'));
+        dispatch(showSnackbar('error', 'Error deleting the saved post.'));
       }
     },
-    savedPostId: savedPostId
+    postId: postId
   }
 };

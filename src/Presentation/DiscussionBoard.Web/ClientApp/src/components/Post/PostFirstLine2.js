@@ -40,7 +40,7 @@ const PostFirstLine = props => {
   } = props;
 
   return (
-    <Box display="flex" alignItems="center" mt={0.5} ml={0.5}>
+    <Box display="flex" alignItems="flex-end" mt={1} mb={1} ml={0.5}>
       <Avatar
       className={classes.avatar}
       //src={mediaUrl}
@@ -52,10 +52,10 @@ const PostFirstLine = props => {
       {" Posted "}
       {" by "} 
       </Typography>
-      <Avatar
+      {/* <Avatar
       className={classes.avatar}
       //src={mediaUrl}
-      >{creatorUserName.substring(0, 2).toLowerCase()}</Avatar>
+      >{creatorUserName.substring(0, 2).toLowerCase()}</Avatar> */}
       <Typography color="textSecondary" variant="body2">
       <Link component={RouterLink} to={"/users/" + creatorUserName}>
           {'u/' + creatorUserName + ' '}

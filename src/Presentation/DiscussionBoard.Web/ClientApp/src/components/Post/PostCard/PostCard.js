@@ -75,8 +75,8 @@ const PostCard = props => {
         {post.mediaUrl &&
           <CardMedia
             className={classes.media}
-            //image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
-            image={post.mediaUrl}
+            image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
+            //image={post.mediaUrl}
             title={post.title.substring(0, 10)}
           />}
         <Grid className={classes.statsItem} item >

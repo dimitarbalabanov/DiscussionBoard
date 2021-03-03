@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import pic from '../../../assets/images/file-20170712-14488-19lw3sc.jpg'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import CommentIcon from '@material-ui/icons/Comment';
 import PostVoting from '../../Voting/PostVoting';
 import PostFirstLine2 from '../PostFirstLine2';
@@ -11,12 +14,13 @@ import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    // borderStyle: "solid",
-    // borderWidth: "1.5px 1.5px 1.5px 1.5px",
-    // borderColor: theme.palette.primary.main,
-    // '&:hover': {
-    //   borderColor: theme.palette.secondary.main,
-    // }
+    border: "1px solid",
+    borderColor: "transparent",
+    //borderColor: theme.palette.primary.main,
+    '&:hover': {
+      border: "1px solid",
+      borderColor: theme.palette.primary.main,
+    }
   },
   cardDetails: {
     flex: 1
@@ -47,7 +51,14 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 140,
     paddingTop: '70.25%',
+    // height: 550,
+    // width: '100%',
+    // objectFit: 'cover'
   },
+  imgGrid: {
+    margin: theme.spacing(2),
+    marginLeft: theme.spacing(1)
+  }
 }));
 
 const AnotherPostCard = props => {
@@ -59,7 +70,7 @@ const AnotherPostCard = props => {
   } = props;
 
   return (
-    <Paper className={classes.card}>
+    <Paper elevation={0} className={classes.card}>
       <PostVoting />
       <Grid item>
         {/* <PostFirstLine1 forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/> */}
@@ -75,6 +86,18 @@ const AnotherPostCard = props => {
               {`${post.content ? post.content.substring(0,250) + "..." : null} `}
               </Typography>
           </Grid>
+          
+          {/*{post.mediaUrl && */}
+          {/* <Grid className={classes.imgGrid} item >
+            <CardMedia
+              className={classes.media}
+              title={post.title.substring(0, 10)}
+              //image={post.mediaUrl}
+              //image={pic}
+              image={"https://bellette.com.au/uploads/images/_1250xAUTO_crop_center-center/Viral-Facebook-Memes.jpg"}
+            />
+          </Grid> */}
+            
         </Link>
           <Grid className={classes.statsItem} item >
             <CommentIcon className={classes.statsIcon} color="primary"/>

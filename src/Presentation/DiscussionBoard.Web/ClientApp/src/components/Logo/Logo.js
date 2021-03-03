@@ -1,13 +1,26 @@
 import React from 'react';
-import logo from '../../assets/images/logo.png'; 
+import Box from '@material-ui/core/Box';
+import logo60 from '../../assets/images/logo60.png'; 
+import logoImg from '../../assets/images/logoImg.png'; 
+import logotekst from '../../assets/images/logotekst.png'; 
 
 const Logo = () => {
   return (
-    <img 
-    style={{marginTop: "3px"}}
-    src={logo}
-    width="110"
-    alt="Discussion Board" />
+    <Box>
+      <img 
+        style={{marginTop: "3px"}}
+        src={logoImg}
+        //height="auto"
+        width="50px"
+        alt="Discussion Board" 
+        />
+      <img 
+        style={{marginTop: "3px"}}
+        src={logotekst}
+        //width="150"
+        alt="Discussion Board"
+        />
+    </Box>
   );
 };
 

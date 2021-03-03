@@ -5,9 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Link from '@material-ui/core/Link';
+import Divider from '@material-ui/core/Divider';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import EditIcon from '@material-ui/icons/Edit';
@@ -17,6 +19,9 @@ import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
 import PostVoting from '../../Voting/PostVoting';
 import SavePostButton from '../../AUI/SavePostButton';
+import image from '../../../assets/images/file-20170712-14488-19lw3sc.jpg';
+import CommentsSortingComponent from '../../SortingComponent/CommentsSortingComponent';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -57,6 +62,13 @@ const useStyles = makeStyles((theme) => ({
     height: 140,
     paddingTop: '70.25%',
   },
+  divider: {
+    marginBottom: theme.spacing(2)
+  },
+  icon2: {
+    color: theme.palette.text.secondary,
+    fontSize: '60px'
+  }
 }));
 
 const PostDetailsCard = props => {
@@ -131,7 +143,8 @@ const PostDetailsCard = props => {
             {post.mediaUrl &&
               <CardMedia
                 className={classes.media}
-                image={post.mediaUrl}
+                //image={post.mediaUrl}
+                image={image}
                 title={post.title.substring(0, 10)}
               />}
             <Grid className={classes.statsItem} item>
@@ -173,13 +186,30 @@ const PostDetailsCard = props => {
           {createCommentLoading 
             ? <Spinner /> 
             : <CreateComment 
-                onCreateComment={onCreateComment} 
-                createCommentError={createCommentError} 
-                createCommentLoading={createCommentLoading} 
-                postId={post.id}
-                isAuthenticated={isAuthenticated}
-              /> 
+            onCreateComment={onCreateComment} 
+            createCommentError={createCommentError} 
+            createCommentLoading={createCommentLoading} 
+            postId={post.id}
+            isAuthenticated={isAuthenticated}
+            /> 
           }
+          <CommentsSortingComponent />
+          <Divider className={classes.divider}/>
+          {post.commentsCount === 0 ? 
+         // <Grid className={classes.statsItem} item >
+         <Box my={12}
+          //alignItems="center"
+          //justifyContent="center"
+          //alignSelf="flex-end"
+          textAlign="center"
+          >
+              <QuestionAnswerIcon className={classes.icon2}/>
+              <Typography color="textSecondary">
+                Be the first to comment.
+              </Typography>
+            </Box> 
+            //</Grid>
+            : null}
         </CardContent>
       </div>
     </Card>
