@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link as RouterLink} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
-import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
 import CommentIcon from '@material-ui/icons/Comment';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateComment from '../../Comment/CreateComment/CreateComment';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
-import PostVoting from '../../Voting/PostVoting';
+import Voting from '../../Voting/Voting';
 import SavePostButton from '../../AUI/SavePostButton';
+import PostFirstLine from '../PostFirstLine/PostFirstLine';
 import image from '../../../assets/images/file-20170712-14488-19lw3sc.jpg';
-import CommentsSortingComponent from '../../SortingComponent/CommentsSortingComponent';
+import CommentsSorting from '../../CommentsSorting/CommentsSorting';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 
 const useStyles = makeStyles((theme) => ({
@@ -108,8 +105,8 @@ const PostDetailsCard = props => {
 
   console.log(props)
   return (
-    <Card className={classes.card}>
-      <PostVoting 
+    <Paper elevation={0} className={classes.card}>
+      <Voting 
         id={post.id}
         voteType={post.voteType}
         voteId={post.voteId}
@@ -125,94 +122,110 @@ const PostDetailsCard = props => {
         deleteVoteLoading={deletePostVoteLoading}
         isAuthenticated={isAuthenticated}
       />
-      <div className={classes.cardDetails}>
-        <CardContent className={classes.cardcontent}>
-          {postsLoading ? <Skeleton /> : 
-          <Grid className={classes.statsItem} item >
-            <Typography color="textSecondary" display="inline" variant="body2" >
-            <Link component={RouterLink} to={"/forums/" + post.forumId}><strong className={classes.textColor}>{post.forumTitle}</strong></Link> posted by <Link component={RouterLink} to={"/users/" + post.creatorUserName}><strong className={classes.textColor}>{post.creatorUserName}</strong></Link>
-            </Typography>
-          </Grid>}
-          {showUpdateForm ? <EditPost onClose={handleClose} title={post.title} content={post.content}/> : 
-            <React.Fragment>
-              <Grid className={classes.statsItem} item >
-              <Typography component="h2" variant="h4">
-              {postsLoading ? <Skeleton /> : post.title}
-              </Typography>
-            </Grid>
-            {post.mediaUrl &&
-              <CardMedia
-                className={classes.media}
-                //image={post.mediaUrl}
-                image={image}
-                title={post.title.substring(0, 10)}
-              />}
-            <Grid className={classes.statsItem} item>
-              <Typography>
-                {postsLoading ? <Skeleton /> : post.content}
-              </Typography>
-            </Grid>
-            </React.Fragment>
+         <Grid item>
+         <PostFirstLine 
+            forumId={post.forumId} 
+            forumTitle={post.forumTitle} 
+            creatorUserName={post.creatorUserName} 
+            createdOn={post.createdOn}
+          />
+          {showUpdateForm 
+            ? 
+              <EditPost onClose={handleClose} title={post.title} content={post.content}/> 
+            : 
+              <React.Fragment>
+
+                <Grid className={classes.statsItem} item >
+                  <Typography component="h2" variant="h4">
+                    {post.title}
+                  </Typography>
+                </Grid>
+
+                {post.mediaUrl &&
+                  <CardMedia
+                    className={classes.media}
+                    //image={post.mediaUrl}
+                    image={image}
+                    title={post.title.substring(0, 10)}
+                  />}
+
+                <Grid className={classes.statsItem} item>
+                  <Typography>
+                    {post.content}
+                  </Typography>
+                </Grid>
+
+              </React.Fragment>
           }
           
           <Grid className={classes.statsItem} item >
+
             <CommentIcon className={classes.statsIcon} color="primary"/>
             <Typography className={classes.margin} color="textSecondary" display="inline" variant="body2" >
-              {postsLoading ? <Skeleton /> :`${post.commentsCount} Comments`}
+              {`${post.commentsCount} Comments`}
             </Typography>
-            {showUpdateForm || !isAuthenticated ? null : <React.Fragment>
-            <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
-              <Typography color="textSecondary" display="inline" variant="body2">
-                Edit
-              </Typography>
-            </Button>
-              <Button size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
-                <Typography color="textSecondary" display="inline" variant="body2">
-                  Delete
-                </Typography> 
-              </Button>
-              <SavePostButton 
-                postId={post.id}
-                isSaved={post.isSaved}
-                onCreateSavedPost={onCreateSavedPost}
-                createSavedPostError={createSavedPostError}
-                createSavedPostLoading={createSavedPostLoading}
-                onDeleteSavedPost={onDeleteSavedPost}
-                deleteSavedPostError={deleteSavedPostError}
-                deleteSavedPostLoading={deleteSavedPostLoading}
-              />
-              </React.Fragment>}
+
+              {showUpdateForm || !isAuthenticated 
+                ? 
+                  null 
+                : 
+                  <React.Fragment>
+
+                    <Button onClick={handleOpen} size="small" startIcon={<EditIcon className={classes.iconColor}/>}>
+                      <Typography color="textSecondary" display="inline" variant="body2">
+                        Edit
+                      </Typography>
+                    </Button>
+
+                    <Button size="small" startIcon={<DeleteIcon className={classes.iconColor}/>}>
+                      <Typography color="textSecondary" display="inline" variant="body2">
+                        Delete
+                      </Typography> 
+                    </Button>
+
+                    <SavePostButton 
+                      postId={post.id}
+                      isSaved={post.isSaved}
+                      onCreateSavedPost={onCreateSavedPost}
+                      createSavedPostError={createSavedPostError}
+                      createSavedPostLoading={createSavedPostLoading}
+                      onDeleteSavedPost={onDeleteSavedPost}
+                      deleteSavedPostError={deleteSavedPostError}
+                      deleteSavedPostLoading={deleteSavedPostLoading}
+                    />
+                    
+                  </React.Fragment>
+              }
             </Grid>
           {createCommentLoading 
-            ? <Spinner /> 
-            : <CreateComment 
-            onCreateComment={onCreateComment} 
-            createCommentError={createCommentError} 
-            createCommentLoading={createCommentLoading} 
-            postId={post.id}
-            isAuthenticated={isAuthenticated}
-            /> 
+            ? 
+              <Spinner /> 
+            : 
+              <CreateComment 
+                postId={post.id}
+                onCreateComment={onCreateComment} 
+                createCommentError={createCommentError} 
+                createCommentLoading={createCommentLoading} 
+                isAuthenticated={isAuthenticated}
+              /> 
           }
-          <CommentsSortingComponent />
+          <CommentsSorting />
+
           <Divider className={classes.divider}/>
-          {post.commentsCount === 0 ? 
-         // <Grid className={classes.statsItem} item >
-         <Box my={12}
-          //alignItems="center"
-          //justifyContent="center"
-          //alignSelf="flex-end"
-          textAlign="center"
-          >
-              <QuestionAnswerIcon className={classes.icon2}/>
-              <Typography color="textSecondary">
-                Be the first to comment.
-              </Typography>
-            </Box> 
-            //</Grid>
-            : null}
-        </CardContent>
-      </div>
-    </Card>
+
+          {post.commentsCount === 0 
+            ? 
+              <Box my={12} textAlign="center">
+                <QuestionAnswerIcon className={classes.icon2}/>
+                <Typography color="textSecondary">
+                  Be the first to comment.
+                </Typography>
+              </Box> 
+            : 
+              null
+          }
+      </Grid>
+    </Paper>
   );
 }
 

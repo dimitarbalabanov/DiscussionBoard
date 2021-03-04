@@ -5,10 +5,9 @@ import Page from '../../components/Page/Page';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Spinner from '../../components/Spinner/Spinner';
-import PostSidebar from '../../components/Post/PostSidebar/PostSidebar';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
-import AboutForumCard2 from '../../components/Forum/AboutForumCard/AboutForumCard2';
+import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -165,10 +164,10 @@ const Post = (props) => {
         </Grid>
         
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
-        { forum ? <Grid item md={10}>
-            <AboutForumCard2 forum={forum}  />
+        { forum ? 
+          <Grid item md={10}>
+            <AboutForumCard forum={forum}  />
           </Grid> : null}
-          <PostSidebar />
         </Grid>
       </Grid>
     </Page>

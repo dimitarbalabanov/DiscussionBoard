@@ -5,26 +5,28 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-import { deepOrange, deepPurple } from '@material-ui/core/colors';
-import {toRelativeTime, toComplexTime} from '../../utils/dateConvertor';
-
+import { deepOrange } from '@material-ui/core/colors';
+import AuthorCreationTime from '../../AUI/AuthorCreationTime';
 const useStyles = makeStyles((theme) => ({
   textColor: {
     textColor: theme.palette.primary.main,
     fontWeight: 'bold'
   },
   avatar: {
-    height: 30,
-    width: 30,
-    marginRight: theme.spacing(1),
+    height: 23,
+    width: 23,
+    marginLeft: theme.spacing(0.5),
+    marginRight: theme.spacing(0.3),
     color: theme.palette.getContrastText(deepOrange[500]),
     backgroundColor: deepOrange[500],
+  },
+  dsadsa: {
+    display: 'flex'
   }
 }));
 
-const AuthorAndCreationTime = props => {
+const PostFirstLine = props => {
   const classes = useStyles();
-  const [show, setShow] = React.useState(false);
 
   const {
     forumId,
@@ -36,20 +38,19 @@ const AuthorAndCreationTime = props => {
   } = props;
 
   return (
-    <Box display="flex" alignItems="center" mt={0.5} ml={0.5}>
+    <Box display="flex" alignItems="flex-end" mt={1} mb={1} ml={0.5}>
+      <Avatar
+      className={classes.avatar}
+      //src={mediaUrl}
+      >{forumTitle.substring(0, 2).toLowerCase()}</Avatar>
       <Typography color="textSecondary" variant="body2">
-      {" Posted "}
-      {" by "} 
-      <Link component={RouterLink} to={"/users/" + creatorUserName}>
-          {'u/' + creatorUserName + ' '}
+      <Link component={RouterLink} to={"/forums/" + forumId} className={classes.textColor}>
+          {'f/' + forumTitle}
       </Link>
-      <span onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}>
-          {show ? toComplexTime(createdOn) : toRelativeTime(createdOn)}
-      </span>
       </Typography>
+      <AuthorCreationTime creatorUserName={creatorUserName} createdOn={createdOn} />
     </Box>
   );
 }
-
-export default React.memo(AuthorAndCreationTime);
+  
+export default React.memo(PostFirstLine);

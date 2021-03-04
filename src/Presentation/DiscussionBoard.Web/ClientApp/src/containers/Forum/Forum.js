@@ -5,10 +5,9 @@ import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import { fetchForumById, fetchPosts } from '../../store/actions';
+import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
-import AnotherAboutForum from '../../components/Forum/AboutForumCard/AnotherAboutForum';
-import Title from '../../components/Forum/AboutForumCard/Title';
-import SortingComponent from '../../components/SortingComponent/SortingComponent2';
+import PostsSorting from '../../components/PostsSorting/PostsSorting';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -41,20 +40,15 @@ const Forum = props => {
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
       <Grid container spacing={10} direction="row" alignItems="flex-start">
 
-        {/* <Grid container item xs={12} md={12} spacing={2} justify="center">
-          <ForumTitleCard forum={forum} loading={forumLoading} />
-        </Grid> */}
-
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-          <Title />
-          {/* <ForumTitleCard forum={forum} loading={forumLoading} /> */}
-          <SortingComponent />
+          <ForumTitleCard />
+          <PostsSorting />
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
         </Grid>
 
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
           <Grid item md={10}>
-            <AnotherAboutForum forum={forum} loading={forumLoading} />
+            <AboutForumCard forum={forum} loading={forumLoading} />
           </Grid>
         </Grid>
 

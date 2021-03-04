@@ -13,27 +13,27 @@ import { register } from '../../../store/actions';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Spinner from '../../../components/Spinner/AnotherSpinner'
+import MainForm from '../../../components/Forms/MainForm/MainForm';
+import FormikTextField from '../../../components/Forms/FormikTextField/FormikTextField';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
-    marginTop: theme.spacing(3),
-  },
-  form: {
     padding: theme.spacing(2)
-  },
-  formControl: {
-    marginTop: theme.spacing(1),
-    minWidth: 180,
   }
 }));
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     backgroundColor: theme.palette.background.dark,
-//     height: '100%',
-//     paddingBottom: theme.spacing(3),
-//     paddingTop: theme.spacing(3)
-//   }
-// }));
+
+const initialValues = {
+  email: '',
+  username: '',
+  password: '',
+  confirmPassword: ''
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  username: Yup.string().max(255).required('First name is required'),
+  password: Yup.string().max(255).required('password is required'),
+});
 
 const Register = props => {
   const classes = useStyles();
@@ -44,12 +44,16 @@ const Register = props => {
     onRegister,
     isAuthenticated
   } = props;
-  console.log(registerError)
+  
+  const onSubmit = values => {
+    onRegister(values.email, values.password, values.confirmPassword, values.username);
+  }
+
   if (isAuthenticated) {
     return <Redirect to='/' />;
   }
 
-let form = 
+  let form = 
     <Formik
         initialValues={{
           email: '',
@@ -154,11 +158,67 @@ let form =
       </Formik>;
 
     return (
-      <Page className={classes.root} title={"Sign up"}>
+      <Page title={"Sign up"}>
           <Grid container justify="center">
-            <Grid item component={Paper} xs={12} md={6} className={classes.form}>
-            {registerLoading ? <Spinner /> : form}
+            <Grid item component={Paper} xs={12} md={6} className={classes.mainGrid}>
+            <Box mb={3}>
+              <Typography color="textPrimary" variant="h2" >
+                Create your new account
+              </Typography>
+              <Typography color="textSecondary" gutterBottom variant="body2">
+                Use your email to create a new account
+              </Typography>
+            </Box>
+            {registerLoading 
+            ? 
+              <Spinner /> 
+            :
+              <MainForm 
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+                buttonText={"sign up"}
+              >
+                <FormikTextField
+                  formikKey="username"
+                  valError={null}
+                  type="text"
+                  label="Username"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+                <FormikTextField
+                  formikKey="email"
+                  valError={null}
+                  type="email"
+                  label="Email"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+                <FormikTextField
+                  formikKey="password"
+                  valError={null}
+                  type="password"
+                  label="Password"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+                <FormikTextField
+                  formikKey="confirmPassword"
+                  valError={null}
+                  type="password"
+                  label="Confirm password"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+              </MainForm>
+          }
             {registerError ?? <div><Typography>{register.Error}</Typography></div>}
+            
             </Grid>
           </Grid>
       </Page>

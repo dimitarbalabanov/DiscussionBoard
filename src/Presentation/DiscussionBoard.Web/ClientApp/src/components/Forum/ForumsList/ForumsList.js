@@ -1,6 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import ForumCard from '../ForumCard/ForumCard3';
+import ForumCard from '../ForumCard/ForumCard';
+import SmallForumCard from '../ForumCard/SmallForumCard';
+import Spinner from '../../Spinner/AnotherSpinner';
 
 const ForumsList = props => {
   const { 
@@ -8,17 +10,15 @@ const ForumsList = props => {
     loading
    } = props;
 
-   let output = loading ? [...Array(5)].map((u, i) => {
-    let obj = {}
-    obj["id"] = i
-    return obj
-  }) : forums;
 
   return (
+    loading 
+    ? <Spinner></Spinner>
+    :
     <React.Fragment>
-      {output.map((forum) => (
+      {forums.map((forum) => (
         <Grid item md={10} key={forum.id}>
-          <ForumCard forum={forum} loading={loading}/>
+          <SmallForumCard forum={forum}/>
         </Grid>
       ))}
     </React.Fragment>

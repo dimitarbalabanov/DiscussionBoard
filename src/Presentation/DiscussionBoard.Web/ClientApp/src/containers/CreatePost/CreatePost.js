@@ -21,7 +21,8 @@ import {
   FormControl,
   CircularProgress
 } from '@material-ui/core';
-import ImageInput from '../../components/FileInput/FileInput';
+import ImageInput from '../../components/Forms/FileInput/FileInput';
+
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {

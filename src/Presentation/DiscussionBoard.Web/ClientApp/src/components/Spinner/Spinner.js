@@ -15,7 +15,7 @@ const Spinner = () => {
 
   return (
     <Grid container
-    className={classes.padding}
+      className={classes.padding}
       spacing={0}
       direction="column"
       alignItems="center"

@@ -7,11 +7,13 @@ import {
 } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
 import Page from '../../components/Page/Page';
-import ForumsList from '../../components/Forum/ForumsList/ForumsList2';
 import PostsList from '../../components/Post/PostsList/PostsList';
-import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
-import SortingComponent from '../../components/SortingComponent/SortingComponent2';
+import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
+import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
+import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/TrendingForumsCard';
+import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+
 // import RightSide from './RightSide';
 const Home = props => {
   useTraceUpdate(props)
@@ -83,8 +85,7 @@ const Home = props => {
   function renderLoadingMessage() {
     return <p>Loading...</p>;
   }
-
-
+  
   return (
     <Page title="Discussion Board">
       <Grid 
@@ -94,16 +95,11 @@ const Home = props => {
         alignItems="flex-start"
       > 
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-          <CreatePostButton2 isAuthenticated={isAuthenticated}/>
-          <SortingComponent sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
+          <CreatePostButton isAuthenticated={isAuthenticated}/>
+          <PostsSorting sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
           {postsLoading && renderLoadingMessage()}
           {postsCursor && <div data-testid="bottom-border" ref={observeBorder} />}
-          {/* {posts.length < 1 &&
-            <PostsListSkeleton />
-          } */}
-
-
           {/* <Grid item xs={12} md={10}>
               <Box component={Paper}>
                 <Spinner/>
@@ -111,9 +107,9 @@ const Home = props => {
           </Grid> */}
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          <ForumsList forums={forums} loading={forumsLoading}/>
+          {/* <ForumsList forums={forums} loading={forumsLoading}/> */}
+          <TrendingForumsCard forums={forums} loading={forumsLoading}/>
         </Grid>
-        {/* <RightSide forums={forums} loading={forumsLoading}/> */}
       {/* {postsError ? null : <div ref={loader}></div>} */}
       </Grid>
     </Page>

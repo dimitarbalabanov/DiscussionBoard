@@ -1,38 +1,37 @@
 import React  from 'react';
 import { connect } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
-import Page from '../../../components/Page/Page';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../../../store/actions';
-import Spinner from '../../../components/Spinner/AnotherSpinner'
-
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Paper
-} from '@material-ui/core';
+import * as Yup from 'yup';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core';
+import Page from '../../../components/Page/Page';
+import MainForm from '../../../components/Forms/MainForm/MainForm';
+import FormikTextField from '../../../components/Forms/FormikTextField/FormikTextField';
+import Spinner from '../../../components/Spinner/AnotherSpinner';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
-    marginTop: theme.spacing(3),
-  },
-  form: {
     padding: theme.spacing(2)
-  },
-  formControl: {
-    marginTop: theme.spacing(1),
-    minWidth: 180,
   }
 }));
 
+const initialValues = {
+  email: 'admin@admin.admin',
+  password: 'Administrator'
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  password: Yup.string().max(255).required('Password is required')
+})
+
 const Login = props => {
   const classes = useStyles();
-
+  
   const {
     loginError,
     loginLoading,
@@ -40,94 +39,59 @@ const Login = props => {
     onAuth
   } = props;
   
+  const onSubmit = values => {
+    onAuth(values.email, values.password);
+  }
+
   if (isAuthenticated) {
     return <Redirect to='/' />;
   }
 
-  let form = ( 
-    <Formik
-        initialValues={{
-          email: 'admin@admin.admin',
-          password: 'Administrator'
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
-        })}
-        onSubmit={values => {
-          onAuth(values.email, values.password);
-        }}
-      >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values
-          }) => (
-            <form onSubmit={handleSubmit} className={classes.root}>
-              <Box mb={3}>
-                <Typography color="textPrimary" variant="h2">
-                  Login
-                </Typography>
-                {/* <Typography color="textSecondary" gutterBottom variant="body2">
-                  Sign in on the internal platform
-                </Typography> */}
-              </Box>
-              <TextField
-                error={Boolean(touched.email && errors.email)}
-                fullWidth
-                helperText={touched.email && errors.email}
-                label="Email Address"
-                margin="normal"
-                name="email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                type="email"
-                value={values.email}
-                variant="outlined"
-              />
-              <TextField
-                error={Boolean(touched.password && errors.password)}
-                fullWidth
-                helperText={touched.password && errors.password}
-                label="Password"
-                margin="normal"
-                name="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                type="password"
-                value={values.password}
-                variant="outlined"
-              />
-              <Box mt={2} mb={2}>
-                <Button
-                  color="primary"
-                  disabled={isSubmitting}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Login now
-                </Button>
-              </Box>
-            </form>
-          )
-        }
-      </Formik>
-  );
-
   return (
-    <Page className={classes.root} title={"Create Post"}>
-        <Grid container justify="center">
-          <Grid item component={Paper} xs={12} md={6} className={classes.form}>
-          {loginLoading ? <Spinner /> : form}
-          {loginError ?? <div><Typography>{loginError}</Typography></div>}
-          </Grid>
+    <Page title={"Login"}>
+      <Grid container justify="center">
+        <Grid item component={Paper} xs={12} md={6} className={classes.mainGrid}>
+          <Box mb={3}>
+            <Typography color="textPrimary" variant="h2">
+              Login
+            </Typography>
+            <Typography color="textSecondary" gutterBottom variant="body2">
+              Sign in on the internal platform
+            </Typography>
+          </Box>
+          {loginLoading 
+            ? 
+              <Spinner /> 
+            :
+              <MainForm 
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+                buttonText={"login"}
+              >
+                <FormikTextField
+                  formikKey="email"
+                  valError={null}
+                  type="email"
+                  label="Email Address"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+                <FormikTextField
+                  formikKey="password"
+                  valError={null}
+                  type="password"
+                  label="Password"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                />
+              </MainForm>
+          }
+          {loginError ?? <Typography>{loginError}</Typography>}
         </Grid>
+      </Grid>
     </Page>
   );
 }

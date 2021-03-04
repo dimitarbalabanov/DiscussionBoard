@@ -9,11 +9,12 @@ import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';
 // import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Voting from '../../Voting/Voting';
 import ConvertToRelativeTime from '../../../utils/dateConvertor';
 import EditComment from '../EditComment/EditComment';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import DeleteAndConfirmButton from '../../AUI/DeleteAndConfirmButton';
+import DeleteButton from '../../AUI/DeleteButton';
+import AuthorCreationTime from '../../AUI/AuthorCreationTime';
+import Voting from '../../Voting/Voting';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -95,9 +96,9 @@ const CommentCard = props => {
   console.log(props)
   return (
     <React.Fragment>
-      <Divider />
+      {/* <Divider /> */}
       <Card className={classes.card}>
-        <Voting 
+        {/* <Voting 
           className={classes.voting}
           commentId={comment.id}
           currentUserVoteType={comment.currentUserVoteType}
@@ -113,15 +114,16 @@ const CommentCard = props => {
           deleteVoteError={deleteVoteError}
           deleteVoteLoading={deleteVoteLoading}
           isAuthenticated={isAuthenticated}
-        />
-
+        /> */}
+        <Voting />
         <div className={classes.cardDetails}>
           <CardContent className={classes.cardcontent}>
-            <Grid className={classes.statsItem} item >
+            {/* <Grid className={classes.statsItem} item >
               <Typography color="textSecondary" display="inline" variant="body2" >
                 {loading ? <Skeleton /> : <span> by <strong className={classes.textColor}>{comment.creatorUserName}</strong> posted {ConvertToRelativeTime(comment.createdOn)}</span>} 
               </Typography>
-            </Grid>
+            </Grid> */}
+            <AuthorCreationTime creatorUserNaname={comment.creatorUserName} createdOn={comment.createdOn} />
             {showUpdateForm 
               ? <EditComment 
                   onClose={handleClose}
@@ -143,13 +145,14 @@ const CommentCard = props => {
                         Edit
                       </Typography>
                     </Button>
-                    <DeleteAndConfirmButton />
+                    <DeleteButton />
                   </Grid> : null}
                 </React.Fragment>
             }
           </CardContent>
         </div>
       </Card>
+          <Divider />
     </React.Fragment>
   );
 }
