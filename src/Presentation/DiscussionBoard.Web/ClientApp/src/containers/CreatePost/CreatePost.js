@@ -70,7 +70,7 @@ const CreatePost = props => {
       validationSchema={Yup.object().shape({
         title: Yup.string().min(3).max(200).required('Title is required'),
         content: Yup.string().min(30).max(2500).required('Content is required'),
-        //forumId: Yup.number().required('Selecting a forum is required')
+        forumId: Yup.number().required('Selecting a forum is required')
         // image: Yup.mixed()
         //   .required("We need an Image!")
         //   .test(
@@ -105,9 +105,8 @@ const CreatePost = props => {
           <Typography component="h1" variant="h4" color="inherit" gutterBottom>
             Create Post
           </Typography>
-          <FormControl variant="outlined" size="small" className={classes.formControl}>
             {forumsLoading ? <CircularProgress /> :
-            <React.Fragment>
+            <FormControl variant="outlined" size="small" className={classes.formControl}>
               <InputLabel id="forum">Forum</InputLabel>
               <Select
                 labelId="forum"
@@ -120,9 +119,8 @@ const CreatePost = props => {
               >
                 {forums.map(forum => <MenuItem key={forum.id} value={forum.id}>{forum.title}</MenuItem>)}
               </Select>
-            </React.Fragment>
+            </FormControl>
             }
-          </FormControl>
           <TextField
             error={Boolean(touched.title && errors.title)}
             fullWidth

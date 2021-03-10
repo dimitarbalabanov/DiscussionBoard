@@ -2,8 +2,10 @@ import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import {
   fetchForums,
-  fetchPosts,
-  clearPosts
+  fetchHomePosts,
+  clearHomePosts,
+  setHomeSort,
+  setHomeTop
 } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -18,49 +20,43 @@ import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/Trendi
 import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 
 const Home = props => {
-  useTraceUpdate(props)
+
   const { 
     forums,
     forumsLoading,
-    //forumsError,
+    forumsError,
     posts,
-    postsCursor,
-    //postsHasNextPage,
     postsLoading,
     postsError,
+    sort,
+    top,
+    cursor,
+    hasNextPage,
     onFetchForums,
     onFetchPosts,
+    onClearPosts,
+    onSetSort,
+    onSetTop,
     isAuthenticated,
-    onClearPosts
   } = props;
 
-  const [sort, setSort] = React.useState(1);
-  const [top, setTop] = React.useState('');
-
-  const onSetSort = useCallback(newSort => setSort(newSort), [setSort]);
-  const onSetTop = useCallback(newTop => setTop(newTop), [setTop]);
-  
-  useEffect(() => {
-    console.log("home rendering")
-  });
-
+  console.log(posts);
 
   useEffect(() => {
-    onClearPosts();
-    onFetchPosts(sort, top);
+    if(posts.length < 1) {
+      onFetchPosts(sort, top);
+    }
   }, [onFetchPosts, sort, top]);
-
 
   useEffect(() => {
     if (forums.length < 1) {
-      console.log("fetching forums")
+      console.log("inside forums use effect")
       onFetchForums();
     }
   }, [onFetchForums, forums.length]);
-
+  
   const observeBorder = useCallback(
     node => {
-      console.log("viknaha me")
       if (node !== null) {
         console.log("created");
         new IntersectionObserver(
@@ -68,9 +64,8 @@ const Home = props => {
             entries.forEach(en => {
               console.log(en);
               if (en.intersectionRatio === 1) {
-                console.log("prashtam zaqvka s kursor" + postsCursor)
-                //setTimeout(() => loadMore(), 1000); // 1 sec delay
-                onFetchPosts(sort, top, postsCursor);
+                console.log("prashtam zaqvka s kursor" + cursor)
+                setTimeout(() => onFetchPosts(sort, top, cursor), 500);
               }
             });
           },
@@ -78,7 +73,7 @@ const Home = props => {
         ).observe(node);
       }
     },
-    [onFetchPosts, sort, top, postsCursor]
+    [onFetchPosts, sort, top, cursor]
   );
   
   // function renderBottomBorder() {
@@ -93,23 +88,35 @@ const Home = props => {
         direction="row"
         alignItems="flex-start"
       > 
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+        <Grid 
+          container
+          item xs={12}
+          md={8} 
+          spacing={2} 
+          justify="flex-end"
+        >
           <CreatePostButton isAuthenticated={isAuthenticated}/>
-          <PostsSorting sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
-          <PostsList posts={posts} loading={postsLoading} error={postsError}/>
+          <PostsSorting 
+            sort={sort}
+            top={top} 
+            onSetSort={onSetSort} 
+            onSetTop={onSetTop}
+          />
+          <PostsList 
+            posts={posts} 
+            loading={postsLoading} 
+            error={postsError}/>
           {postsLoading && 
-          <Grid item xs={12} md={10}>
-            <Box component={Paper}>
-              <Spinner />
-            </Box>
-          </Grid>}
-          {postsCursor && <div data-testid="bottom-border" ref={observeBorder} />}
+            <Grid item xs={12} md={10}>
+              <Box component={Paper}>
+                <Spinner />
+              </Box>
+            </Grid>}
+          {cursor && <div data-testid="bottom-border" ref={observeBorder} />}
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          {/* <ForumsList forums={forums} loading={forumsLoading}/> */}
           <TrendingForumsCard forums={forums} loading={forumsLoading}/>
         </Grid>
-      {/* {postsError ? null : <div ref={loader}></div>} */}
       </Grid>
     </Page>
   );
@@ -120,11 +127,13 @@ const mapStateToProps = state => {
     forums: state.forums.forums,
     forumsLoading: state.forums.loading,
     forumsError: state.forums.error,
-    posts: state.posts.posts,
-    postsCursor: state.posts.cursor,
-    postsHasNextPage: state.posts.hasNextPage,
-    postsLoading: state.posts.loading,
-    postsError: state.posts.error,
+    posts: state.home.posts,
+    postsLoading: state.home.loading,
+    postsError: state.home.error,
+    sort: state.home.sort,
+    top: state.home.top,
+    cursor: state.home.cursor,
+    hasNextPage: state.home.hasNextPage,
     isAuthenticated: state.auth.token !== null
   };
 };
@@ -132,8 +141,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    onClearPosts: () => dispatch(clearPosts()),
-    onFetchPosts: (sort, top, cursor) => dispatch(fetchPosts(sort, top, null, cursor))
+    onClearPosts: () => dispatch(clearHomePosts()),
+    onSetSort: (sort) => dispatch(setHomeSort(sort)),
+    onSetTop: (top) => dispatch(setHomeTop(top)),
+    onFetchPosts: (sort, top, cursor) => dispatch(fetchHomePosts(sort, top, cursor))
   };
 };
 

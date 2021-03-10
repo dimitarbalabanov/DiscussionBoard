@@ -3,19 +3,23 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import NotFound from './components/NotFound/NotFound';
 import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
+import Home2 from './containers/Home/Home2';
+import Home3 from './containers/Home/Home3';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
-import CreatePost from './containers/CreatePost/CreatePost';
+import CreatePost from './containers/CreatePost/CreatePost2';
 import UserProfile from './containers/UserProfile/UserProfile';
 import CreateForum from './containers/CreateForum/CreateForum';
-import Login from './containers/Auth/Login/Login';
+import Login2 from './containers/Auth/Login/Login2';
 import Register from './containers/Auth/Register/Register';
 
-const Routes = () => {
+const Routes = props => {
+  const { isAuth } = props;
+  
   return (
     <Switch>
       <Route 
-        component={Home}
+        component={Home2}
         exact 
         path="/" 
       />
@@ -25,7 +29,7 @@ const Routes = () => {
         path="/register" 
       />
       <Route 
-        component={Login}
+        component={Login2}
         exact 
         path="/login" 
       />

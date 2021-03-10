@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +6,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import pic from '../../../assets/images/file-20170712-14488-19lw3sc.jpg'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import CommentIcon from '@material-ui/icons/Comment';
 import Voting from '../../Voting/Voting';
 import PostFirstLine from '../PostFirstLine/PostFirstLine';
@@ -21,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.primary.main,
     }
   },
-  cardDetails: {
-    flex: 1
-  },
   statsItem: {
     alignItems: 'center',
     display: 'flex',
@@ -35,17 +31,6 @@ const useStyles = makeStyles((theme) => ({
   statsIcon: {
     marginRight: theme.spacing(1),
     fontSize: "18px"
-  },
-  cardcontent: {
-    padding: 0,
-    "&:last-child": {
-      paddingBottom: 0
-    },
-    margin: theme.spacing(2),
-    marginLeft: theme.spacing(1)
-  },
-  textColor: {
-    color: theme.palette.primary.main
   },
   media: {
     height: 140,
@@ -60,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AnotherPostCard = props => {
+const PostCard = props => {
   const classes = useStyles();
-  useEffect(() => console.log("post card rendering"))
+  
   const { 
     post,
     //loading
@@ -72,11 +57,15 @@ const AnotherPostCard = props => {
     <Paper elevation={0} className={classes.card}>
       <Voting />
       <Grid item>
-        <PostFirstLine forumId={post.forumId} forumTitle={post.forumTitle} creatorUserName={post.creatorUserName} createdOn={post.createdOn}/>
+        <PostFirstLine 
+          forumId={post.forumId} 
+          forumTitle={post.forumTitle} 
+          creatorUserName={post.creatorUserName} 
+          createdOn={post.createdOn}/>
         <Link to={`/posts/${post.id}`}>
           <Grid item>
-            <Typography className={classes.title} color="textPrimary" component="h2" variant="h4">
-            {post.title.length > 65 ? post.title.substring(0, 120) + '...' : post.title}
+            <Typography className={classes.title} color="primary" component="h2" variant="h4">
+            { post.title }
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item >
@@ -108,4 +97,4 @@ const AnotherPostCard = props => {
   );
 }
 
-export default React.memo(AnotherPostCard);
+export default React.memo(PostCard);

@@ -12,25 +12,10 @@ const useStyles = makeStyles((theme) => ({
   card: {
     border: "1px solid",
     borderColor: theme.palette.primary.main,
-    //paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     display: "flex",
     alignItems: "flex-end",
-    justifyContent: "center"
-  },
-  cardDetails: {
-    flex: 1
-  },
-  statsItem: {
-    alignItems: 'center',
-    display: 'flex',
-    margin: theme.spacing(1)
-  },
-  title: {
-    marginLeft: theme.spacing(1)
-  },
-  statsIcon: {
-    marginRight: theme.spacing(1),
+    //justifyContent: "center"
   },
   margin: {
     marginTop: theme.spacing(0.5),
@@ -39,18 +24,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 120,
     width: 120,
-    margin: 'auto',
-  },
-  asd: {
-    marginLeft: theme.spacing(-5),
-    marginRight: theme.spacing(-5),
+    margin: 'auto'
   }
-    
 }));
 
 const ForumTitleCard = props => {
   const classes = useStyles();
-  useEffect(() => console.log("post card rendering"))
   const { 
     post,
     //loading
@@ -59,18 +38,18 @@ const ForumTitleCard = props => {
   return (
     <Grid item xs={12} md={10}>
        <Paper elevation={0} className={classes.card}>
-          <Grid md={4} item className={classes.asd}>
+          <Grid md={4} item>
             <Avatar
               className={classes.avatar}
               src={avatar}
               />
           </Grid>
-          <Grid md={6} item>
-            <Typography color="primary" component="h1" variant="h1" >
+          <Grid md={6} item >
+            <Typography color="primary" component="h1" variant="h1">
                 {"Sharable"}
             </Typography>
             <Divider className={classes.margin}/>
-            <Typography color="textSecondary" variant="body2" > 
+            <Typography color="primary" component="h4" variant="h4"> 
               {"Optional didactic product"}
             </Typography>
           </Grid>

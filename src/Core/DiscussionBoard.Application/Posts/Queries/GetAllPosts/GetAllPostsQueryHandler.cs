@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using DiscussionBoard.Application.Common.Commands;
-using DiscussionBoard.Application.Common.Helpers;
+﻿using DiscussionBoard.Application.Common.Commands;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Application.Common.Responses;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,8 +54,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             }
 
             Enum.TryParse(request.Sort, true, out Order order);
-            var sumVotesScoreSql = SqlQueriesHelper.SumVotesScore<Post, PostVote>(SelectAlias);
-            postsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
+            postsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : SqlQueriesHelper.SumVotesScore<Post, PostVote>(SelectAlias));
 
             postsQuery.AppendLine(
                 $@"FROM   (SELECT TOP({PageSize}) pp.Id,
@@ -71,7 +66,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                                                   pp.CreatorId");
             if (order == Order.Top)
             {
-                postsQuery.AppendLine(sumVotesScoreSql);
+                postsQuery.Append(",");
+                postsQuery.AppendLine(SqlQueriesHelper.SumVotesScore<Post, PostVote>(InnerSelectAlias));
             }
 
             postsQuery.AppendLine(

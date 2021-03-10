@@ -37,8 +37,9 @@ const App = props => {
       <Router>
         <Layout 
           isAuth={isAuthenticated} 
-          username={username}>
-          <Routes/>
+          username={username}
+        >
+          <Routes isAuth={isAuthenticated}/>
         </Layout>
       </Router>
     </ThemeProvider>

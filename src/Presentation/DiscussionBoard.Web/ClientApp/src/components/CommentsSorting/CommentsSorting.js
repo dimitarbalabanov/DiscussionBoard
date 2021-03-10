@@ -4,11 +4,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    //margin: theme.spacing(1),
     minWidth: 60,
   },
   text: {
@@ -19,32 +18,34 @@ const useStyles = makeStyles((theme) => ({
 
 const CommentsSorting = props  => {
   const classes = useStyles();
-  const [age, setAge] = React.useState(10); 
+  const [sort, setSort] = React.useState(10); 
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSort(event.target.value);
   };
 
   return (
-    <Box display="flex"
-    alignContent="center"
-     ml={2} mb={1} 
+    <Box 
+      display="flex"
+      alignContent="center"
+      ml={2} 
+      mb={1} 
      >
-      <Typography className={classes.text} color="textSecondary" display="inline" variant="body2">SORT BY </Typography>
+      <Typography className={classes.text} color="textSecondary" display="inline" variant="body2">
+        SORT BY 
+      </Typography>
       <FormControl size="small" className={classes.formControl}>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
+          value={sort}
           onChange={handleChange}
         >
-          <MenuItem value={10}>
+          <MenuItem value={1}>
               <Typography color="textSecondary" display="inline" variant="body2">NEW</Typography>
             </MenuItem>
-          <MenuItem value={20}>
+          <MenuItem value={2}>
               <Typography color="textSecondary" display="inline" variant="body2">OLD</Typography>
             </MenuItem>
-          <MenuItem value={30}>
+          <MenuItem value={3}>
                <Typography color="textSecondary" display="inline" variant="body2">TOP</Typography>
             </MenuItem>
         </Select>

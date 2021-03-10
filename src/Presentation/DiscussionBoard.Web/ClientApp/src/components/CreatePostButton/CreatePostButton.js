@@ -9,15 +9,8 @@ import NoteAddIcon from '@material-ui/icons/NoteAdd';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    boxShadow: 'none',
-    // borderStyle: "solid",
-    // borderWidth: "1.5px",
-    // borderRadius: '5px',
-    // borderColor: theme.palette.primary.main,
-    // '&:hover': {
-    //   borderColor: theme.palette.secondary.main,
-    // },
     alignItems: 'center',
+    boxShadow: 'none',
   },
   statsItem: {
     alignItems: 'center',
@@ -33,38 +26,33 @@ const useStyles = makeStyles((theme) => ({
 
 const CreatePostButton = props => {
   const classes = useStyles();
-  React.useEffect(() => console.log("create post button rendering"))
   const { isAuthenticated } = props;
-
-  const field = isAuthenticated ? 
-    <TextField
-      component={Link}
-      to={'/create'}
-      className={classes.textField}
-      placeholder={"Create post"}
-      fullWidth
-      color="primary"
-      size="small"
-      variant="outlined"
-      margin="none"
-    /> 
-  : <TextField
-      className={classes.textField}
-      placeholder={"Please, login to create a post."}
-      fullWidth
-      color="primary"
-      size="small"
-      variant="outlined"
-      margin="none"
-      disabled
-    />;
 
   return (
     <Grid item xs={12} md={10}>
       <Paper className={classes.card}>
         <div className={classes.statsItem}>
-          <NoteAddIcon  color="primary"/>
-          {field}
+          <NoteAddIcon color="primary"/>
+          {isAuthenticated ? 
+            <TextField
+              component={Link}
+              to={'/create'}
+              placeholder={"Create post"}
+              fullWidth
+              color="primary"
+              size="small"
+              variant="outlined"
+              margin="none"
+            /> 
+          : <TextField
+              placeholder={"Please, login to create a post."}
+              fullWidth
+              color="primary"
+              size="small"
+              variant="outlined"
+              margin="none"
+              disabled
+            />}
         </div>
       </Paper>
     </Grid>

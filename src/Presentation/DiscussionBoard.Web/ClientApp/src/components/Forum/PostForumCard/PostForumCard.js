@@ -17,8 +17,9 @@ import avatar from '../../../assets/images/consequatureaqueaut.png'
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
+    borderStyle: "solid",
+    borderWidth: "1px 1px 1px 1px",
     borderColor: theme.palette.primary.main,
-    border: '1px solid'
   },
   cardDetails: {
     flex: 1,
@@ -35,13 +36,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px"
   },
   title: {
-    marginBottom: theme.spacing(1)
-  },
-  header: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  button: {
-    //marginTop: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
   text: {
     color: theme.palette.background.default
@@ -64,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AboutForumCard = props => {
+const PostForumCard = props => {
   const classes = useStyles();
 
   const { 
@@ -77,10 +73,22 @@ const AboutForumCard = props => {
     <Card className={classes.card} variant="outlined">
       <div className={classes.cardDetails}>
       <Typography className={classes.header} component="h3" variant="h5">
-              {"About forum"}
+              {"Forum"}
           </Typography>
         <CardContent>
-          <Typography className={classes.title} color="primary" variant="body2" align="center"> 
+        <Avatar
+          className={classes.avatar}
+          src={avatar}
+          />
+        <Typography className={classes.title} color="primary" component="h3" variant="h3" align="center">
+          {forum.title}
+        </Typography>
+          <Divider className={classes.margin}/>
+          <Typography className={classes.title} color="primary" variant="h6" align="center"> 
+            {forum.subtitle}
+          </Typography>
+          <Divider className={classes.margin}/>
+          <Typography className={classes.title} color="textSecondary" variant="body2" align="center"> 
             {forum.description}
           </Typography>
           <Divider className={classes.margin}/>
@@ -115,4 +123,4 @@ const AboutForumCard = props => {
   );
 }
 
-export default AboutForumCard;
+export default PostForumCard;

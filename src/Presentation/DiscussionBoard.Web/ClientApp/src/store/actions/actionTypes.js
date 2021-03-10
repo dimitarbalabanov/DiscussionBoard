@@ -2,6 +2,10 @@
 export const SHOW_SNACKBAR = 'SHOW_SNACKBAR';
 export const HIDE_SNACKBAR = 'HIDE_SNACKBAR';
 
+//sort
+export const SET_SORT = 'SET_SORT';
+export const SET_TOP = 'SET_TOP';
+
 //auth
 export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';

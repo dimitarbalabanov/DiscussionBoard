@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
     //border: 'none',
     boxShadow: 'none'
   },
-  cardDetails: {
-    flex: 1
-  },
   statsItem: {
     alignItems: 'center',
     display: 'flex',
@@ -38,16 +35,6 @@ const useStyles = makeStyles((theme) => ({
   statsIcon: {
     marginRight: theme.spacing(1),
     fontSize: "18px"
-  },
-  cardcontent: {
-    padding: 0,
-    "&:last-child": {
-      paddingBottom: 0
-    },
-    //margin: theme.spacing(2)
-  },
-  textColor: {
-    color: theme.palette.primary.main
   },
   iconColor: {
     color: theme.palette.text.secondary,
@@ -103,7 +90,6 @@ const PostDetailsCard = props => {
     isAuthenticated
   } = props;
 
-  console.log(props)
   return (
     <Paper elevation={0} className={classes.card}>
       <Voting 
@@ -209,11 +195,12 @@ const PostDetailsCard = props => {
                 isAuthenticated={isAuthenticated}
               /> 
           }
+          
           <CommentsSorting />
 
           <Divider className={classes.divider}/>
 
-          {post.commentsCount === 0 
+          {post.commentsCount < 1 
             ? 
               <Box my={12} textAlign="center">
                 <QuestionAnswerIcon className={classes.icon2}/>

@@ -16,9 +16,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginLeft: theme.spacing(0.5),
   },
-  divider: {
-    margin: theme.spacing(1, 0.5),
-  },
   blue: {
     color: blue[500],
   },
@@ -67,9 +64,6 @@ const Voting = props => {
     isAuthenticated
   } = props;
 
-  console.log("__________________________________________");
-  console.log(props);
-  console.log("_____________________________________________");
 
   let currentType = voteType ? voteType : null;
   const [type, setType] = useState(currentType);

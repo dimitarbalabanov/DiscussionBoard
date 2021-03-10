@@ -40,7 +40,12 @@ const Snackbar = props => {
         </IconButton>
       }
     >
-      <MuiAlert elevation={6} variant="filled" onClose={handleClose} severity={type}>
+      <MuiAlert 
+        elevation={6} 
+        variant="filled" 
+        onClose={handleClose} 
+        severity={type}
+      >
         {message}
       </MuiAlert>
     </MaterialSnackbar>

@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Spinner from '../../components/Spinner/Spinner';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
-import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
+import PostForumCard from '../../components/Forum/PostForumCard/PostForumCard';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -91,7 +91,7 @@ const Post = (props) => {
       onFetchForum(forumId);
     } 
   }, [onFetchForum, forumId]);
-  console.log(props)
+  
   let postDiv = <Spinner />;
   let commentsDiv = <Spinner />;
 
@@ -166,7 +166,7 @@ const Post = (props) => {
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
         { forum ? 
           <Grid item md={10}>
-            <AboutForumCard forum={forum}  />
+            <PostForumCard forum={forum}  />
           </Grid> : null}
         </Grid>
       </Grid>

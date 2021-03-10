@@ -27,6 +27,13 @@ export {
 } from './forums';
 
 export {
+  fetchPosts as fetchHomePosts,
+  clearPosts as clearHomePosts,
+  setSort as setHomeSort,
+  setTop as setHomeTop
+} from './home';
+
+export {
   fetchPostById,
   createPost,
   createPostReset,

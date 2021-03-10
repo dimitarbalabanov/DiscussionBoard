@@ -2,17 +2,20 @@ import {
   REQUEST_POSTS_START,
   REQUEST_POSTS_SUCCESS,
   REQUEST_POSTS_FAILURE,
-  CLEAR_POSTS
+  CLEAR_POSTS,
+  SET_SORT,
+  SET_TOP,
+  AUTH_START
 } from '../actions/actionTypes';
 
 const initialState = {
-  posts: [],
+  postIds: [],
   cursor: null,
   sort: 1,
-  top: null,
-  hasNextPage: null,
+  top: '',
   loading: false,
-  error: null
+  error: null,
+  kurva: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,37 +26,54 @@ const reducer = (state = initialState, action) => {
         ...state,
         error: null,
         loading: true,
-        cursor: null,
-        hasNextPage: null
       };
-
+      
     case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        //posts: [...state.posts, ...action.data.data.posts],
-        posts: [...action.data.data.posts],
+        posts: [...state.posts, ...action.data.data.posts],
         cursor: action.data.cursor,
-        hasNextPage: action.data.cursor !== null,
         loading: false,
         error: null
       };
-
+    
     case REQUEST_POSTS_FAILURE:
       return { 
         ...state,
         cursor: null,
-        hasNextPage: null,
         error: action.error,
         loading: false
       }; 
-
+      
     case CLEAR_POSTS:
       return { 
         ...state,
         posts: [],
         cursor: null
       };
+      
+    case SET_SORT:
+      return {
+        ...state,
+        posts: [],
+        cursor: null,
+        sort: action.sort
+      };
 
+    case SET_TOP:
+      return {
+        ...state,
+        posts: [],
+        cursor: null,
+        top: action.top
+      };
+        
+    case AUTH_START: 
+      return {
+        ...state,
+        kurva: true
+      }
+    
     default:
       return state;
   }

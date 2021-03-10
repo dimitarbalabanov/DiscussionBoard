@@ -23,6 +23,7 @@ export const getPosts = (sort, top, forumId, cursor) => {
   if (cursor) {
     queries.push(`cursor=${cursor}`);
   }
+  
   // const queryString = queries.length > 0 ? '?' + queries.join('&') : '';
   return axiosInstance.get(POSTS_URL + '?' + queries.join('&'));
 };

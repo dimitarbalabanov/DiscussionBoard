@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-import { deepOrange } from '@material-ui/core/colors';
-import AuthorCreationTime from '../../AUI/AuthorCreationTime';
+import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
+
 const useStyles = makeStyles((theme) => ({
   textColor: {
     textColor: theme.palette.primary.main,
@@ -17,11 +17,8 @@ const useStyles = makeStyles((theme) => ({
     width: 23,
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.3),
-    color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500],
-  },
-  dsadsa: {
-    display: 'flex'
+    //color: theme.palette.getContrastText(deepOrange[500]),
+    //backgroundColor: deepOrange[500],
   }
 }));
 
@@ -48,7 +45,7 @@ const PostFirstLine = props => {
           {'f/' + forumTitle}
       </Link>
       </Typography>
-      <AuthorCreationTime creatorUserName={creatorUserName} createdOn={createdOn} />
+      <CreatorAndCreatedOn creatorUserName={creatorUserName} createdOn={createdOn} />
     </Box>
   );
 }

@@ -22,7 +22,7 @@ namespace DiscussionBoard.Application.Common.Commands
             {
                 if (Enum.TryParse(top, out Interval interval))
                 {
-                    conditions.Add($"{alias}.CreatedOn >= {interval.ToDateTimeString()}");
+                    conditions.Add($"{alias}.CreatedOn >= '{interval.ToDateTimeString()}'");
                 }
 
                 sqlOrder = $"VotesScore";

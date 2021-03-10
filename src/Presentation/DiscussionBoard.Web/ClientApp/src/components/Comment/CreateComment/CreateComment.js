@@ -1,21 +1,18 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import MainForm from '../../Forms/MainForm/MainForm';
+import FormikTextField from '../../Forms/FormikTextField/FormikTextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
     marginBottom: theme.spacing(3),
-  },
-  iconColor: {
-    color: theme.palette.text.secondary
   }
 }));
 
@@ -28,8 +25,8 @@ const validationSchema = Yup.object().shape(
 );
 
 const CreateComment = props => {
-
   const classes = useStyles();
+  
   const {
     postId,
     //createCommentLoading,
@@ -38,61 +35,47 @@ const CreateComment = props => {
     isAuthenticated
   } = props;
 
+  const onSubmit = values => {
+    onCreateComment(values.content, postId);
+    values = {
+      content: ''
+    };
+  }
+
   return (
     <Grid item xs={12} md={12} className={classes.root}>
-      <Formik
+      <MainForm
         initialValues={initialValues}
         validationSchema={validationSchema}
-        validateOnBlur={false}
-        onSubmit={values => {
-          onCreateComment(values.content, postId);
-          values = {
-            content: ''
-          };
-        }}
+        onSubmit={onSubmit}
+        buttonText={<Typography color="textSecondary" display="inline" variant="body2">
+        Comment
+      </Typography>}
       >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values
-        }) => (
-          <form onSubmit={handleSubmit} >
-            
-            <TextField
-              error={Boolean(values.content && errors.content)}
-              fullWidth
-              helperText={touched.content && errors.content}
-              label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}
-              disabled={!isAuthenticated}
-              margin="normal"
-              name="content"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="content"
-              value={values.content}
-              variant="outlined"
-              multiline
-              rows={4}
-            />
-              {isAuthenticated ? 
-                <Button
-                  disabled={isSubmitting}
-                  type="submit"
-                  variant="outlined"
-                  startIcon={<AddBoxIcon className={classes.iconColor} />}
-                >
-                  <Typography color="textSecondary" display="inline" variant="body2">
-                    Comment
-                  </Typography>
-                </Button> 
-                : null}
-          </form>
-        )}
-      </Formik>
+        <FormikTextField
+          formikKey="content"
+          label={!isAuthenticated ? "Please, login to comment..." : "What are your thoughts?"}
+          disabled={!isAuthenticated}
+          type="text"
+          margin="normal"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+        />
+        {isAuthenticated ? 
+          <Button
+            // disabled={isSubmitting}
+            type="submit"
+            variant="outlined"
+            startIcon={<AddBoxIcon  />}
+          >
+            <Typography color="textSecondary" display="inline" variant="body2">
+              Comment
+            </Typography>
+          </Button> 
+          : null}
+      </MainForm>
     </Grid>
   );
 };

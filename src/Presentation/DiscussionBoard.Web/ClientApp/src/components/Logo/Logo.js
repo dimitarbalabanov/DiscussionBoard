@@ -1,6 +1,5 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
-import logo60 from '../../assets/images/logo60.png'; 
 import logoImg from '../../assets/images/logoImg.png'; 
 import logotekst from '../../assets/images/logotekst.png'; 
 

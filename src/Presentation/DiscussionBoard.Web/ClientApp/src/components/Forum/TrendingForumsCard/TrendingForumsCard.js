@@ -65,6 +65,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     //marginRight: theme.spacing(-1),
   },
+  div : {
+    borderBottom: "1px solid",
+    borderColor: theme.palette.primary.main,
+    marginBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
+  }
 }));
 
 const TredingForumsCard = props => {
@@ -85,10 +91,9 @@ const TredingForumsCard = props => {
               <span className={classes.asdf}>{"Treding forums"}</span>
           </Typography>
           <CardContent>
-          {
-          forums.map(forum => 
-            <React.Fragment >
-              <Grid container  alignItems="center"  className={classes.div} component={Link} to={`/forums/${forums.id}`}>
+          {forums.map(forum => 
+            <div  className={classes.div}>
+              <Grid container  alignItems="center"  component={Link} to={`/forums/${forum.id}`}>
                 <Grid item > 
                   <Avatar
                   className={classes.avatar}
@@ -97,14 +102,13 @@ const TredingForumsCard = props => {
                   {forum.title.substring(0, 2).toLowerCase()}
                   </Avatar>
                 </Grid>
-                <Grid item >
+                <Grid item>
                   <Typography className={classes.title} component="h3" variant="h5">
                     <span className={classes.asdf}>{"f/"}</span>{forum.title}
                   </Typography>
                 </Grid>
               </Grid> 
-              <Divider className={classes.margin}/>
-            </React.Fragment>
+            </div>
           )}
             <Grid container justify="center" spacing={2} >
               <Grid className={classes.statsItem} item>

@@ -1,10 +1,6 @@
 import moment from 'moment';
 
 export function toRelativeTime(date) {
-    return moment.utc(date).local().fromNow();
-}
-
-export default function ConvertToRelativeTime(date) {
   return moment.utc(date).local().fromNow();
 }
 

@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { useField, useFormikContext } from "formik";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import ImageIcon from "@material-ui/icons/Image";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
-const ImageInput = props => {
+const FormikImageInput = ({ formikKey, valError, ...props }) => {
+  const [field, meta, helpers] = useField(formikKey);
+  const { setFieldValue } = useFormikContext();
   const [fileName, setFileName] = useState("");
   
   const handleChange = e => {
@@ -15,7 +17,7 @@ const ImageInput = props => {
     if (file) {
       reader.onloadend = () => setFileName(file.name);
       reader.readAsDataURL(file);
-      props.setFieldValue(props.field.name, file);
+      setFieldValue(field.name, file);
     }
   };
 
@@ -24,7 +26,7 @@ const ImageInput = props => {
       <input
         style={{ display: "none" }}
         id="image-upload"
-        name={props.field.name}
+        name={field.name}
         type="file"
         accept="*"
         onChange={handleChange}
@@ -32,19 +34,19 @@ const ImageInput = props => {
       <label htmlFor="image-upload">
         <Button color="primary" margin="normal" component="span">
           <ImageIcon />
-          {props.title}
+          {"Upload"}
         </Button>
       </label>
-      {fileName ? (
+      {fileName ?
         <FormHelperText id="image-upload-filename">{fileName}</FormHelperText>
-      ) : null}
-      {props.errorMessage ? (
+       : null}
+      {meta.touched && Boolean(meta.error) || valError ?
         <FormHelperText id="image-upload-helper-text" error={true}>
-          {props.errorMessage}
+          {meta.error ? meta.error : valError ? valError : ""}
         </FormHelperText>
-      ) : null}
+       : null}
     </FormControl>
   );
-};
+}
 
-export default ImageInput;
+export default FormikImageInput;

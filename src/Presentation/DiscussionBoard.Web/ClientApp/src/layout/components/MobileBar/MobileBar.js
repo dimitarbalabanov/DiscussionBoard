@@ -1,60 +1,12 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import PeopleIcon from '@material-ui/icons/People';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import PersonIcon from '@material-ui/icons/Person';
-import {  colors } from '@material-ui/core';
 import { Link as RouterLink} from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuIcon from '@material-ui/icons/Menu';
+import { colors } from '@material-ui/core';
+import StyledMenu from './StyledMenu';
 
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
-
-const authRoutes = [
-  {
-    title: 'Profile',
-    href: '/profile',
-    icon: <PersonIcon />
-  },
-  {
-    title: 'Logout',
-    href: '/logout',
-    icon: <TextFieldsIcon />
-  }
-];
-
-const guestRoutes = [
-  {
-    title: 'Login',
-    href: '/login',
-    icon: <PeopleIcon />
-  },
-  {
-    title: 'Register',
-    href: '/register',
-    icon: <LockOpenIcon />
-  }
-];
 const useStyles = makeStyles(theme => ({
   root: {},
   item: {
@@ -93,9 +45,7 @@ const MobileBar = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
-  const { isAuth } = props;
-
-  let routes = isAuth ? authRoutes : guestRoutes;
+  const { routes } = props;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -106,37 +56,30 @@ const MobileBar = props => {
   };
 
   return (
-    <div>
-      <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        
-        onClick={handleClick}
-      >
-        <PersonIcon />
+    <React.Fragment>
+      <Button onClick={handleClick}>
+        <MenuIcon />
       </Button>
       <StyledMenu
-        id="customized-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
         {routes.map(route =>
-        <MenuItem className={classes.item} disableGutters key={route.title}>
-            <Button
-            onClick={handleClose}
-              //activeClassName={classes.active}
-              className={classes.button}
-              component={RouterLink}
-              to={route.href}
-            >
-              <div className={classes.icon}>{route.icon}</div>
-              {route.title}
-            </Button>
-        </MenuItem>)}
+          <MenuItem className={classes.item} disableGutters key={route.title}>
+              <Button
+                onClick={handleClose}
+                className={classes.button}
+                component={RouterLink}
+                to={route.href}
+              >
+                <div className={classes.icon}>{route.icon}</div>
+                {route.title}
+              </Button>
+          </MenuItem>)}
       </StyledMenu>
-    </div>
+    </React.Fragment>
   );
 }
 
