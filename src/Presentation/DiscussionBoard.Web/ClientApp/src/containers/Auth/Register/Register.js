@@ -53,176 +53,72 @@ const Register = props => {
     return <Redirect to='/' />;
   }
 
-  let form = 
-    <Formik
-        initialValues={{
-          email: '',
-          username: '',
-          password: '',
-          confirmPassword: ''
-        }}
-        validationSchema={
-          Yup.object().shape({
-            email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-            username: Yup.string().max(255).required('First name is required'),
-            password: Yup.string().max(255).required('password is required'),
-          })
-        }
-        onSubmit={values => {
-          onRegister(values.email, values.password, values.confirmPassword, values.username);
-        }}
-      >
-        {({
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          touched,
-          values
-        }) => (
-          <form onSubmit={handleSubmit}>
-            <Box mb={3}>
-              <Typography color="textPrimary" variant="h2" >
-                Create new account
-              </Typography>
-              <Typography color="textSecondary" gutterBottom variant="body2">
-                Use your email to create new account
-              </Typography>
-            </Box>
-            <TextField
-              error={Boolean(touched.username && errors.username)}
-              fullWidth
-              helperText={touched.username && errors.username}
-              label="Username"
-              margin="normal"
-              name="username"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.username}
-              variant="outlined"
-            />
-            <TextField
-              error={Boolean(touched.email && errors.email)}
-              fullWidth
-              helperText={touched.email && errors.email}
-              label="Email Address"
-              margin="normal"
-              name="email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="email"
-              value={values.email}
-              variant="outlined"
-            />
-            <TextField
-              error={Boolean(touched.password && errors.password)}
-              fullWidth
-              helperText={touched.password && errors.password}
-              label="Password"
-              margin="normal"
-              name="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="password"
-              value={values.password}
-              variant="outlined"
-            />
-            <TextField
-              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-              fullWidth
-              helperText={touched.confirmPassword && errors.confirmPassword}
-              label="Confirm Password"
-              margin="normal"
-              name="confirmPassword"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="confirmPassword"
-              value={values.confirmPassword}
-              variant="outlined"
-            />
-            <Box my={2}>
-              <Button
-                color="primary"
-                disabled={isSubmitting}
+  return (
+    <Page title={"Sign up"}>
+        <Grid container justify="center">
+          <Grid item component={Paper} xs={12} md={6} className={classes.mainGrid}>
+          <Box mb={3}>
+            <Typography color="textPrimary" variant="h2" >
+              Create your new account
+            </Typography>
+            <Typography color="textSecondary" gutterBottom variant="body2">
+              Use your email to create a new account
+            </Typography>
+          </Box>
+          {registerLoading 
+          ? 
+            <Spinner /> 
+          :
+            <MainForm 
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+              btnText={"sign up"}
+            >
+              <FormikTextField
+                formikKey="username"
+                valError={null}
+                type="text"
+                label="Username"
+                margin="normal"
+                variant="outlined"
                 fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                Register now
-              </Button>
-            </Box>
-          </form>
-        )}
-      </Formik>;
-
-    return (
-      <Page title={"Sign up"}>
-          <Grid container justify="center">
-            <Grid item component={Paper} xs={12} md={6} className={classes.mainGrid}>
-            <Box mb={3}>
-              <Typography color="textPrimary" variant="h2" >
-                Create your new account
-              </Typography>
-              <Typography color="textSecondary" gutterBottom variant="body2">
-                Use your email to create a new account
-              </Typography>
-            </Box>
-            {registerLoading 
-            ? 
-              <Spinner /> 
-            :
-              <MainForm 
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-                buttonText={"sign up"}
-              >
-                <FormikTextField
-                  formikKey="username"
-                  valError={null}
-                  type="text"
-                  label="Username"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                />
-                <FormikTextField
-                  formikKey="email"
-                  valError={null}
-                  type="email"
-                  label="Email"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                />
-                <FormikTextField
-                  formikKey="password"
-                  valError={null}
-                  type="password"
-                  label="Password"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                />
-                <FormikTextField
-                  formikKey="confirmPassword"
-                  valError={null}
-                  type="password"
-                  label="Confirm password"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                />
-              </MainForm>
-          }
-            {registerError ?? <div><Typography>{register.Error}</Typography></div>}
-            
-            </Grid>
+              />
+              <FormikTextField
+                formikKey="email"
+                valError={null}
+                type="email"
+                label="Email"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+              />
+              <FormikTextField
+                formikKey="password"
+                valError={null}
+                type="password"
+                label="Password"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+              />
+              <FormikTextField
+                formikKey="confirmPassword"
+                valError={null}
+                type="password"
+                label="Confirm password"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+              />
+            </MainForm>
+        }
+          {registerError ?? <div><Typography>{register.Error}</Typography></div>}
+          
           </Grid>
-      </Page>
-    );
+        </Grid>
+    </Page>
+  );
 };
 
 const mapStateToProps = state => {

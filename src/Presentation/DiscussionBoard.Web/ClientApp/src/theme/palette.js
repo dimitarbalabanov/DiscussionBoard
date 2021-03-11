@@ -4,7 +4,7 @@ export default {
   action: {
     disabledBackground: colors.blue[300],
     disabled: colors.blueGrey[700],
-    active: colors.red[500],
+    active: colors.blue[500],
     hover: colors.orange[500],
     selected: colors.orange[500],
     activatedOpacity: colors.orange[500],
@@ -18,10 +18,11 @@ export default {
     paper: colors.common.white
   },
   primary: {
-    main: colors.common.black
-    //main: colors.blue[700]
-    //main: colors.blueGrey[900]
-    //main: '#0079D3'
+    // main: colors.common.black
+      // main: '#FF4500'
+      //main: colors.blue[500]
+    // main: colors.blueGrey[900]
+    main: '#0079D3'
   },
   secondary: {
     //main: colors.grey[900]

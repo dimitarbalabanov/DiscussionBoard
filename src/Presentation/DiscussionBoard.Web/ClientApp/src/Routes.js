@@ -48,6 +48,11 @@ const Routes = props => {
         exact 
         path="/forums/:forumId" 
       />
+        <Route 
+          component={CreatePost}
+          exact 
+          path="/posts/create" 
+        />
       <Route 
         component={Post}
         exact 
@@ -62,11 +67,6 @@ const Routes = props => {
         component={NotFound}
         exact 
         path="/not-found" 
-      />
-      <Route 
-        component={CreatePost}
-        exact 
-        path="/create" 
       />
       <Redirect to="/not-found" />
     </Switch>

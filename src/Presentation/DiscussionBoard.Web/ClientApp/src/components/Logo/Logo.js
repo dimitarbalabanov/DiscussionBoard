@@ -3,19 +3,22 @@ import Box from '@material-ui/core/Box';
 import logoImg from '../../assets/images/logoImg.png'; 
 import logotekst from '../../assets/images/logotekst.png'; 
 
+import pic from '../../assets/images/pic.png'; 
+import tekst from '../../assets/images/tekst.png'; 
+
 const Logo = () => {
   return (
     <Box>
       <img 
         style={{marginTop: "3px"}}
-        src={logoImg}
+        src={pic}
         //height="auto"
         width="50px"
         alt="Discussion Board" 
         />
       <img 
         style={{marginTop: "3px"}}
-        src={logotekst}
+        src={tekst}
         //width="150"
         alt="Discussion Board"
         />

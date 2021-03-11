@@ -9,7 +9,7 @@ import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
 
 const useStyles = makeStyles((theme) => ({
   textColor: {
-    textColor: theme.palette.primary.main,
+    color: theme.palette.common.black,
     fontWeight: 'bold'
   },
   avatar: {

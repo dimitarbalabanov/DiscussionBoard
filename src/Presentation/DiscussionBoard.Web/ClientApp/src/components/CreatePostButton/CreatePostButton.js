@@ -36,7 +36,7 @@ const CreatePostButton = props => {
           {isAuthenticated ? 
             <TextField
               component={Link}
-              to={'/create'}
+              to={'/posts/create'}
               placeholder={"Create post"}
               fullWidth
               color="primary"

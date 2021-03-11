@@ -1,6 +1,5 @@
 import React from 'react';
 import * as Yup from 'yup';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
@@ -48,9 +47,17 @@ const CreateComment = props => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        buttonText={<Typography color="textSecondary" display="inline" variant="body2">
-        Comment
-      </Typography>}
+        btnText={
+          <Typography color="textSecondary" display="inline" variant="body2">
+            Comment
+          </Typography>
+        }
+        btnVariant={"outlined"}
+        btnIcon={<AddBoxIcon  />}
+        mt={0}
+        mb={0}
+        align="left"
+        hideBtn={!isAuthenticated}
       >
         <FormikTextField
           formikKey="content"
@@ -63,18 +70,6 @@ const CreateComment = props => {
           multiline
           rows={4}
         />
-        {isAuthenticated ? 
-          <Button
-            // disabled={isSubmitting}
-            type="submit"
-            variant="outlined"
-            startIcon={<AddBoxIcon  />}
-          >
-            <Typography color="textSecondary" display="inline" variant="body2">
-              Comment
-            </Typography>
-          </Button> 
-          : null}
       </MainForm>
     </Grid>
   );

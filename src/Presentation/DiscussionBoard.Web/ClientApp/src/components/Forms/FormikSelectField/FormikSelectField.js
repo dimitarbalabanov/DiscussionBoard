@@ -29,7 +29,6 @@ const FormikSelectField = ({ formikKey, valError, forums, ...props }) => {
         value={field.value}
         onBlur={field.onBlur}
         onChange={field.onChange}
-        //helperText={meta.touched ? meta.error || valError : ""}
         error={meta.touched && (Boolean(meta.error) || valError)}
         {...props}
       >

@@ -45,8 +45,7 @@ const DeleteButton = props => {
             </Typography>
           </Button>
         </React.Fragment>
-        :
-        <Button onClick={() => setShowDeleteConfirm(true)} size="small" startIcon={<DeleteIcon />}>
+      : <Button onClick={() => setShowDeleteConfirm(true)} size="small" startIcon={<DeleteIcon />}>
           <Typography color="textSecondary" display="inline" variant="body2">
             Delete
           </Typography> 

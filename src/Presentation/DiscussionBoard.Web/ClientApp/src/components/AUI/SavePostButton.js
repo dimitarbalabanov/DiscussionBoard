@@ -20,23 +20,19 @@ const SavePostButton = props => {
 
   console.log(props)
   return (
-    createSavedPostLoading || deleteSavedPostLoading 
-      ? 
-        <CircularProgress size={10} /> 
-      :
-        isSaved 
-          ? 
-            <Button onClick={() => onDeleteSavedPost(postId)} size="small" startIcon={<CheckBoxIcon />}>
-              <Typography color="textSecondary" display="inline" variant="body2">
-                  Saved
-              </Typography>
-            </Button>
-          :
-            <Button size="small" startIcon={<AddIcon />}>
-              <Typography onClick={() => onCreateSavedPost(postId)} color="textSecondary" display="inline" variant="body2">
-                  Save
-              </Typography> 
-            </Button>
+    createSavedPostLoading || deleteSavedPostLoading ? 
+      <CircularProgress size={10} /> 
+    : isSaved ? 
+        <Button onClick={() => onDeleteSavedPost(postId)} size="small" startIcon={<CheckBoxIcon />}>
+          <Typography color="textSecondary" display="inline" variant="body2">
+              Saved
+          </Typography>
+        </Button>
+      : <Button size="small" startIcon={<AddIcon />}>
+          <Typography onClick={() => onCreateSavedPost(postId)} color="textSecondary" display="inline" variant="body2">
+              Save
+          </Typography> 
+        </Button>
   );
 }
 

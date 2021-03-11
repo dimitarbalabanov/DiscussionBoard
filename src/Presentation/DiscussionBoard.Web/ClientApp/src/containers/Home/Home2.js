@@ -14,6 +14,7 @@ import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
+import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
 import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/TrendingForumsCard';
@@ -116,6 +117,7 @@ const Home = props => {
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
           <TrendingForumsCard forums={forums} loading={forumsLoading}/>
+          <CreatePostButton2 />
         </Grid>
       </Grid>
     </Page>

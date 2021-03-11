@@ -8,7 +8,14 @@ const MainForm = props => {
     initialValues,
     validationSchema,
     onSubmit,
-    buttonText,
+    mt = 3,
+    mb = 1,
+    align = "center",
+    hideBtn,
+    btnColor = "primary",
+    btnVariant = "contained",
+    btnText,
+    btnIcon,
     children
   } = props;
 
@@ -26,18 +33,19 @@ const MainForm = props => {
           }) => (
             <form onSubmit={handleSubmit}>
               { children }
-              <Box mt={3} mb={1}>
-                <Button
-                  color="primary"
-                  disabled={isSubmitting || !isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  {buttonText}
-                </Button>
-              </Box>
+              {!hideBtn ? 
+                <Box mt={mt} mb={mb} textAlign={align}>
+                  <Button
+                    type="submit"
+                    color={btnColor}
+                    size="large"
+                    variant={btnVariant}
+                    startIcon={btnIcon}
+                    disabled={isSubmitting || !isValid}
+                  >
+                    {btnText}
+                  </Button>
+                </Box> : null}
             </form>
           )
         }

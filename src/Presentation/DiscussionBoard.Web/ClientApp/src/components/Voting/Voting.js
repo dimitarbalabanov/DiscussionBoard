@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { blue, red,  } from '@material-ui/core/colors';
+import { blue, red, green  } from '@material-ui/core/colors';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(0.5),
   },
   blue: {
-    color: blue[500],
+    color: green[500],
   },
   red: {
     color: red[500]
