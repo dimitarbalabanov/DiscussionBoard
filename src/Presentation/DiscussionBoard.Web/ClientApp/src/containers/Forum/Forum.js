@@ -39,21 +39,17 @@ const Forum = props => {
   return (
     <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
       <Grid container spacing={10} direction="row" alignItems="flex-start">
-
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
           <ForumTitleCard />
           <PostsSorting />
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
         </Grid>
-
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
           <Grid item md={10}>
             <AboutForumCard forum={forum} loading={forumLoading} />
           </Grid>
         </Grid>
-
       </Grid>
-
     </Page>
   );
 }

@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
-import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
 
 const useStyles = makeStyles((theme) => ({
   textColor: {
@@ -22,35 +21,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const PostFirstLine = props => {
+const ForumLink = props => {
   const classes = useStyles();
 
   const {
     forumId,
     forumTitle,
-    creatorUserName,
-    createdOn,
-    mediaUrl,
-    forum
-    //loading
+    mediaUrl
   } = props;
 
   return (
     <Box display="flex" alignItems="flex-end" mt={1} mb={1} ml={0.5}>
-      {forum && <React.Fragment><Avatar
+      <Avatar
         className={classes.avatar}
-        //src={forum.mediaUrl} 
-        />
-        {/* >{forumTitle.substring(0, 2).toLowerCase()}</Avatar> */}
+        src={mediaUrl}
+        >{forumTitle.substring(0, 2).toLowerCase()}</Avatar>
         <Typography color="textSecondary" variant="body2">
-        <Link component={RouterLink} to={"/forums/" + forum.id} className={classes.textColor}>
-            {'f/' + forum.title}
+        <Link component={RouterLink} to={"/forums/" + forumId} className={classes.textColor}>
+            {'f/' + forumTitle}
         </Link>
-        </Typography></React.Fragment>}
-      
-      <CreatorAndCreatedOn creatorUserName={creatorUserName} createdOn={createdOn} />
+        </Typography>
     </Box>
   );
 }
   
-export default React.memo(PostFirstLine);
+export default React.memo(ForumLink);

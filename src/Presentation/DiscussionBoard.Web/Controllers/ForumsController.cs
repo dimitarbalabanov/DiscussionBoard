@@ -3,6 +3,7 @@ using DiscussionBoard.Application.Forums.Commands.DeleteForum;
 using DiscussionBoard.Application.Forums.Commands.UpdateForum;
 using DiscussionBoard.Application.Forums.Queries.GetAllForums;
 using DiscussionBoard.Application.Forums.Queries.GetForumById;
+using DiscussionBoard.Application.Posts.Queries.GetAllPosts;
 using DiscussionBoard.Web.ModelBinders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

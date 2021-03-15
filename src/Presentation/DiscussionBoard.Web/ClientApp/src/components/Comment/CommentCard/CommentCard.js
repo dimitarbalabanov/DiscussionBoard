@@ -16,7 +16,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1)
   },
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+  },
+  circ: {
+    //margin: 'auto'
   }
 }));
 
@@ -34,32 +39,38 @@ const CommentCard = props => {
 
   const { 
     comment,
-    loading,
-    // onDeleteComment,
-    // deleteCommentLoading,
-    // deleteCommentId,
+    post,
+    onDeleteComment,
+    deleteCommentLoading,
+    deleteCommentId,
+
     onUpdateComment,
     updateCommentLoading,
     updateCommentId,
+
     onCreateVote,
     createVoteLoading,
     createVoteError,
+
     onUpdateVote,
     updateVoteError,
     updateVoteLoading,
+
     onDeleteVote,
     deleteVoteError,
     deleteVoteLoading,
+
     isAuthenticated
   } = props;
 
   return (
+    comment !== undefined &&
     <div className={classes.card}>
       <Voting 
         className={classes.voting}
-        commentId={comment.id}
-        currentUserVoteType={comment.currentUserVoteType}
-        currentUserVoteId={comment.currentUserVoteId}
+        id={comment.id}
+        voteType={comment.voteType}
+        voteId={comment.voteId}
         votesScore={comment.votesScore}
         onCreateVote={onCreateVote}
         createVoteLoading={createVoteLoading}
@@ -73,7 +84,7 @@ const CommentCard = props => {
         isAuthenticated={isAuthenticated}
       />
       <div>
-        <CreatorAndCreatedOn creatorUserNaname={comment.creatorUserName} createdOn={comment.createdOn} />
+        <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
         {showUpdateForm 
           ? <EditComment 
               onClose={handleClose}
@@ -85,7 +96,7 @@ const CommentCard = props => {
           : 
             <Grid className={classes.margin} item >
               <Typography>
-                {loading || (updateCommentLoading && updateCommentId) === comment.id 
+                {updateCommentLoading && updateCommentId === comment.id 
                   ? <CircularProgress /> : comment.content}
               </Typography>
             </Grid>}
@@ -93,7 +104,8 @@ const CommentCard = props => {
           ? 
             <Grid className={classes.margin} item >
               <EditButton show={showUpdateForm} onOpen={handleOpen} onClose={handleClose}/>
-              <DeleteButton />
+              {deleteCommentLoading && deleteCommentId === comment.id 
+                  ? <CircularProgress size={20} className={classes.circ}/> :  <DeleteButton id={comment.id} parentId={post.id} onDelete={onDeleteComment} />}
             </Grid> 
           : 
             null}

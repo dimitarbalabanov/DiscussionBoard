@@ -8,13 +8,14 @@ import Spinner from '../../components/Spinner/Spinner';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
 import PostForumCard from '../../components/Forum/PostForumCard/PostForumCard';
+import { Button, Box } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
     backgroundColor: theme.palette.common.white,
-    borderColor: theme.palette.primary.main,
-    border: '1px solid',
-    borderRadius: '5px'
+    // borderColor: theme.palette.primary.main,
+    // border: '1px solid',
+    // borderRadius: '5px'
   },
   mainFeaturedPost: {
     position: 'relative',
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(3)
+  },
+  spinner: {
+    marginTop: theme.spacing(10)
   }
 }));
 
@@ -76,10 +80,23 @@ const Post = (props) => {
     deleteCommentVoteError,
     deleteCommentVoteLoading,
     isAuthenticated,
-    onFetchForum
+    onFetchForum,
+    postsById,
+    commentsById,
+    forumsById,
+    username,
+    onSetCommentsSort
   } = props;
   
-  const forumId = post !== null ? post.forumId : null;
+  console.log(commentsById)
+
+  const normPost = postsById[postId];
+  if (normPost !== undefined) {
+    console.log(normPost.comments)
+  }
+
+  console.log(forumsById)
+  const normForum = normPost !== undefined && forumsById[normPost.forumId] !== undefined ? forumsById[normPost.forumId] : null; 
 
   useEffect(() => {
     onFetchPost(postId);
@@ -87,18 +104,20 @@ const Post = (props) => {
   }, [onFetchPost, onFetchComments, postId]);
 
   useEffect(() => {
-    if(forumId !== null) {
-      onFetchForum(forumId);
+    if(normPost !== undefined) {
+      onFetchForum(normPost.forumId);
     } 
-  }, [onFetchForum, forumId]);
+  }, [onFetchForum, normPost]);
   
-  let postDiv = <Spinner />;
-  let commentsDiv = <Spinner />;
+  // let postDiv = <Box m={20}><Spinner /></Box>;
+  let postDiv = null;
+  let commentsDiv = null;
 
-  if (!postLoading && post && !commentsLoading) {
+  // if (!postLoading && normPost !== undefined && !commentsLoading) {
     postDiv = <PostDetailsCard 
-      post={post} 
-      postsLoading={postLoading} 
+      post={normPost} 
+      forum={normForum}
+      postLoading={postLoading} 
       onCreatePostVote={onCreatePostVote}
       createPostVoteError={createPostVoteError}
       createPostVoteLoading={createPostVoteLoading}
@@ -121,23 +140,25 @@ const Post = (props) => {
       createCommentLoading={createCommentLoading}
       onDeleteComment={onDeleteComment}
       isAuthenticated={isAuthenticated}
+      username={username}
     />
-  }
+  // }
   
-  if (!commentsLoading && comments) {
-    commentsDiv = comments.map(comment => 
+  if (!commentsLoading && normPost !== undefined && normPost.comments !== undefined) {
+    commentsDiv = normPost.comments.map(id => 
       <CommentCard 
-        key={comment.id}
-        comment={comment}
+        key={id}
+        post={normPost}
+        comment={commentsById[id]}
         onDeleteComment={onDeleteComment}
         deleteCommentLoading={deleteCommentLoading}
         deleteCommentId={deleteCommentId}
         onUpdateComment={onUpdateComment}
         updateCommentLoading={updateCommentLoading}
         updateCommentId={updateCommentId}
-        onCreateCommentVote={onCreateCommentVote}
-        createCommentVoteError={createCommentVoteError}
-        createCommentVoteLoading={createCommentVoteLoading}
+        onCreateVote={onCreateCommentVote}
+        createVoteError={createCommentVoteError}
+        createVoteLoading={createCommentVoteLoading}
         onUpdateCommentVote={onUpdateCommentVote}
         updateCommentVoteError={updateCommentVoteError}
         updateCommentVoteLoading={updateCommentVoteLoading}
@@ -158,16 +179,16 @@ const Post = (props) => {
       >  
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end" >
           <Grid item xs={12} md={10} className={classes.mainGrid}>
+            {/* {normPost !== undefined && normPost.comments !== undefined ? <Button onClick={() => onSetCommentsSort(normPost.id, normPost.comments, "smqtai")}>click</Button> : null} */}
             {postDiv}
             {commentsDiv}
           </Grid>
         </Grid>
         
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
-        { forum ? 
           <Grid item md={10}>
-            <PostForumCard forum={forum}  />
-          </Grid> : null}
+            <PostForumCard forum={normForum}  />
+          </Grid>
         </Grid>
       </Grid>
     </Page>
@@ -176,6 +197,10 @@ const Post = (props) => {
 
 const mapStateToProps = state => {
   return {
+    postsById: state.posts2.byId,
+    commentsById: state.comments2.byId,
+    forumsById: state.forums2.byId,
+
     forum: state.forum.forum,
 
     post: state.post.post,
@@ -221,12 +246,14 @@ const mapStateToProps = state => {
     deleteCommentVoteLoading: state.comments.deleteCommentVoteLoading,
     deleteCommentVoteError: state.comments.deleteCommentVoteError,
 
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    username: state.auth.username
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    onSetCommentsSort: (postId, sort) => dispatch(actions.setCommentsSort(postId, sort)),
     onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
     onCreatePostVote: (postId, type) => dispatch(actions.createPostVote(postId, type)),
@@ -235,9 +262,9 @@ const mapDispatchToProps = dispatch => {
     onCreateSavedPost: (postId) => dispatch(actions.createSavedPost(postId)),
     onDeleteSavedPost: (postId) => dispatch(actions.deleteSavedPost(postId)),
     onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
-    onCreateComment: (content, postId) => dispatch(actions.createComment(content, postId)),
+    onCreateComment: (content, postId, username) => dispatch(actions.createComment(content, postId, username)),
     onUpdateComment: (commentId, content) => dispatch(actions.updateComment(commentId, content)),
-    onDeleteComment: (commentId) => dispatch(actions.deleteComment(commentId)),
+    onDeleteComment: (commentId, postId) => dispatch(actions.deleteComment(commentId, postId)),
     onCreateCommentVote: (commentId, type) => dispatch(actions.createCommentVote(commentId, type)),
     onUpdateCommentVote: (commentId, voteId, type) => dispatch(actions.updateCommentVote(commentId, voteId, type)),
     onDeleteCommentVote: (commentId, voteId, type) => dispatch(actions.deleteCommentVote(commentId, voteId, type)),

@@ -52,7 +52,7 @@ namespace DiscussionBoard.Web
             }
 
             //app.UseCustomExceptionHandler();
-            //app.UseMiddleware<TestSpinnerMiddleware>();
+            app.UseMiddleware<TestSpinnerMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();

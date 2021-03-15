@@ -109,19 +109,6 @@ const TredingForumsCard = props => {
               </Grid> 
             </div>
           )}
-            <Grid container justify="center" spacing={2} >
-              <Grid className={classes.statsItem} item>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  startIcon={<NoteAddIcon />}
-                >
-                  Browse all
-                </Button>
-              </Grid>
-            </Grid>
         </CardContent>
       </div>
     </Card>

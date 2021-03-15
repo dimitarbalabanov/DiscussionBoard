@@ -29,8 +29,15 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
         public async Task<CreatePostCommandResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
-            var post = _mapper.Map<Post>(request);
-            post.CreatorId = _authUserService.UserId;
+            //var post = _mapper.Map<Post>(request);
+            //post.CreatorId = _authUserService.UserId;
+            var post = new Post
+            {
+                Title = request.Title,
+                Content = request.Content,
+                ForumId = request.ForumId,
+                CreatorId = _authUserService.UserId,
+            };
 
             if (request.PostMedia != null)
             {

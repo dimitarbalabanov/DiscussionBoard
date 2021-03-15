@@ -21,13 +21,14 @@ import CommentsSorting from '../../CommentsSorting/CommentsSorting';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import EditButton from '../../AUI/EditButton';
 import DeleteButton from '../../AUI/DeleteButton';
+import { reach } from 'yup';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     //borderColor: theme.palette.primary.main,
     //border: 'none',
-    boxShadow: 'none'
+    //boxShadow: 'none'
   },
   statsItem: {
     alignItems: 'center',
@@ -54,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   icon2: {
     color: theme.palette.text.secondary,
     fontSize: '60px'
+  },
+  voting: {
+    backgroundColor: theme.palette.primary.main 
   }
 }));
 
@@ -70,7 +74,8 @@ const PostDetailsCard = props => {
 
   const { 
     post,
-    postsLoading,
+    forum,
+    postLoading,
     onCreatePostVote,
     createPostVoteError,
     createPostVoteLoading,
@@ -89,12 +94,16 @@ const PostDetailsCard = props => {
     onCreateComment,
     createCommentLoading,
     createCommentError,
-    isAuthenticated
+    isAuthenticated,
+    username
   } = props;
 
   return (
-  <Paper elevation={0} className={classes.card}>
+  <Box elevation={0} className={classes.card}>
+    {!postLoading && post !== undefined ?
+    <React.Fragment>
     <Voting 
+      className={classes.voting}
       id={post.id}
       voteType={post.voteType}
       voteId={post.voteId}
@@ -110,10 +119,10 @@ const PostDetailsCard = props => {
       deleteVoteLoading={deletePostVoteLoading}
       isAuthenticated={isAuthenticated}
     />
+    <Box>
     <Grid item>
       <PostFirstLine 
-        forumId={post.forumId} 
-        forumTitle={post.forumTitle} 
+        forum={forum}
         creatorUserName={post.creatorUserName} 
         createdOn={post.createdOn}
       />
@@ -165,14 +174,14 @@ const PostDetailsCard = props => {
       {createCommentLoading ? 
         <Spinner /> 
       : <CreateComment 
-        postId={post.id}
-        onCreateComment={onCreateComment} 
-        createCommentError={createCommentError} 
-        createCommentLoading={createCommentLoading} 
-        isAuthenticated={isAuthenticated}
+          postId={post.id}
+          username={username}
+          onCreateComment={onCreateComment} 
+          createCommentError={createCommentError} 
+          createCommentLoading={createCommentLoading} 
+          isAuthenticated={isAuthenticated}
         />}
       <CommentsSorting />
-      <Divider className={classes.divider}/>
       {post.commentsCount < 1 ? 
         <Box my={12} textAlign="center">
           <QuestionAnswerIcon className={classes.icon2}/>
@@ -181,8 +190,12 @@ const PostDetailsCard = props => {
           </Typography>
         </Box> : null} 
       </Grid>
-    </Paper>
+    </Box>
+      </React.Fragment>
+      : <Box m={20}><Spinner /></Box>}
+    </Box>
   );
 }
 
-export default PostDetailsCard;
+export default React.memo(PostDetailsCard);
+//export default PostDetailsCard;

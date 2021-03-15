@@ -56,13 +56,11 @@ const validationSchema =
     title: Yup.string().min(3).max(200).required('Title is required'),
     content: Yup.string().min(30).max(2500).required('Content is required'),
     forumId: Yup.number().required('Selecting a forum is required'),
-    image: Yup.mixed()
-      .required("We need an Image!")
-      .test(
-        "fileSize",
-        "Your image is too big",
-        value => value && value.size <= 262144000
-    )
+    // image: Yup.mixed().required("We need an Image!")
+    //   .test(
+    //     "fileSize",
+    //     "Your image is too big",
+    //     value => value && value.size <= 262144000)
   });
 
 const CreatePost = props => {
@@ -85,8 +83,8 @@ const CreatePost = props => {
     formData.append('forumId', values.forumId);
     formData.append('title', values.title);
     formData.append('content', values.content);
-    formData.append("postMedia", values.image);
-    //onCreatePost(values.forumId, values.title, values.content);
+    //formData.append("postMedia", values.image);
+    onCreatePost(values.forumId, values.title, values.content);
     //onCreatePost(formData);
   }
 

@@ -64,31 +64,25 @@ const Voting = props => {
     isAuthenticated
   } = props;
 
-
-  let currentType = voteType ? voteType : null;
-  const [type, setType] = useState(currentType);
-  
   const handleTypeChange = (event, newType) => {
-    if (!type) {
+    if (!voteType) {
       onCreateVote(id, newType)
-    } else if (type && newType && newType !== type) {
+    } else if (voteType && newType && newType !== voteType) {
       onUpdateVote(id, voteId, newType)
     } else if (newType === null) {
-      onDeleteVote(id, voteId, type)
+      onDeleteVote(id, voteId, voteType)
     }
-    
-    setType(newType);
   };
 
   const classes = useStyles();
 
   let upIcon = <ArrowDropUpIcon className={classes.icon}/>;
-  if (type === '1') {
+  if (voteType === '1') {
     upIcon = <ArrowDropUpIcon className={`${classes.blue} ${classes.icon}`}/>
   }
 
   let downIcon = <ArrowDropDownIcon className={classes.icon}/>
-  if (type === '-1') {
+  if (voteType === '-1') {
     downIcon = <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/>
   }
 
@@ -97,15 +91,15 @@ const Voting = props => {
       <StyledToggleButtonGroup
         size="small"
         orientation="vertical"
-        value={type}
+        value={voteType}
         exclusive
         onChange={handleTypeChange}
       >
         <ToggleButton value="1" disabled={!isAuthenticated} className={classes.button}>
-          {upIcon}
+          {voteType === '1' ? <ArrowDropUpIcon className={`${classes.blue} ${classes.icon}`}/> : <ArrowDropUpIcon className={classes.icon}/>}
         </ToggleButton>
         <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
-        {createVoteLoading || updateVoteLoading || deleteVoteLoading ? <CircularProgress /> : votesScore}
+        {createVoteLoading || updateVoteLoading || deleteVoteLoading ? <CircularProgress size={15}/> : votesScore}
         </Typography>
         <ToggleButton value="-1" disabled={!isAuthenticated} className={classes.button}>
           {downIcon}

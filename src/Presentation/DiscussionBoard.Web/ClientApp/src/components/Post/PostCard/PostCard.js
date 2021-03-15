@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
+import EcoIcon from '@material-ui/icons/Eco';
 import CardMedia from '@material-ui/core/CardMedia';
 import pic from '../../../assets/images/file-20170712-14488-19lw3sc.jpg'
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +14,7 @@ import Voting from '../../Voting/Voting';
 import PostFirstLine from '../PostFirstLine/PostFirstLine';
 import DeleteButton from '../../AUI/DeleteButton';
 import SavePostButton from '../../AUI/SavePostButton';
+import GreyButton from '../../AUI/GreyButton';
 
 const useStyles = makeStyles((theme) => ({
   card: {

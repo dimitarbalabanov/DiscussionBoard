@@ -8,16 +8,14 @@ import tekst from '../../assets/images/tekst.png';
 
 const Logo = () => {
   return (
-    <Box>
+    <Box display="flex" alignItems="center" pb={0}>
       <img 
-        style={{marginTop: "3px"}}
         src={pic}
         //height="auto"
-        width="50px"
+        width="40px"
         alt="Discussion Board" 
         />
       <img 
-        style={{marginTop: "3px"}}
         src={tekst}
         //width="150"
         alt="Discussion Board"

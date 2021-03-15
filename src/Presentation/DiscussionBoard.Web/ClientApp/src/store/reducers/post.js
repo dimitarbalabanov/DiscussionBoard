@@ -24,7 +24,6 @@ import {
   DELETE_SAVEDPOST_SUCCESS,
   DELETE_SAVEDPOST_FAILURE,
 
-  
   CREATE_POSTVOTE_START,
   CREATE_POSTVOTE_SUCCESS,
   CREATE_POSTVOTE_FAILURE,
@@ -116,6 +115,7 @@ const reducer = (state = initialState, action) => {
       };
 
     case REQUEST_POST_SUCCESS:
+      console.log(action)
       return { 
         ...state,
         post: action.data,

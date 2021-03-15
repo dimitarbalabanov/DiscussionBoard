@@ -7,7 +7,7 @@ import Home2 from './containers/Home/Home2';
 import Home3 from './containers/Home/Home3';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
-import CreatePost from './containers/CreatePost/CreatePost2';
+import CreatePost from './containers/CreatePost/CreatePost';
 import UserProfile from './containers/UserProfile/UserProfile';
 import CreateForum from './containers/CreateForum/CreateForum';
 import Login2 from './containers/Auth/Login/Login2';

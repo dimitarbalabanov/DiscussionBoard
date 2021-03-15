@@ -16,7 +16,10 @@ export {
   deleteComment,
   createCommentVote,
   updateCommentVote,
-  deleteCommentVote
+  deleteCommentVote,
+  setCommentsSort,
+  setCommentsTop,
+  clearComments
 } from './comments';
 
 export {

@@ -1,4 +1,7 @@
 import {
+  CLEAR_COMMENTS,
+  SET_COMMENTS_SORT,
+  SET_COMMENTS_TOP,
   REQUEST_COMMENTS_START,
   REQUEST_COMMENTS_SUCCESS,
   REQUEST_COMMENTS_FAILURE,
@@ -34,6 +37,29 @@ import {
 } from '../../api/commentVotesService';
 import { showSnackbar } from './snackbar';
 
+export const setCommentsSort = (postId, commentIds, sort) => {
+  
+  return {
+    type: SET_COMMENTS_SORT,
+    sort: sort,
+    postId: postId,
+    commentIds: commentIds
+  };
+};
+
+export const setCommentsTop = (top) => {
+  return {
+    type: SET_COMMENTS_TOP,
+    top: top
+  };
+};
+
+export const clearComments = () => {
+  return {
+    type: CLEAR_COMMENTS
+  }
+}
+
 export const fetchComments = (postId) => {
   return {
     types: [
@@ -42,18 +68,12 @@ export const fetchComments = (postId) => {
       REQUEST_COMMENTS_FAILURE
     ],
     callApi: () => getComments(postId),
-    effect({ dispatch, state, type}) {
-      if (type === REQUEST_COMMENTS_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully fetched the comments.`));
-      }
-      if (type === REQUEST_COMMENTS_FAILURE) {
-        dispatch(showSnackbar('error', 'Error fetching the comments.'));
-      }
-    }
+    effect() { },
+    postId: postId
   }
 };
 
-export const createComment = (content, postId) => {
+export const createComment = (content, postId, username) => {
   return {
     types: [
       CREATE_COMMENT_START,
@@ -69,7 +89,9 @@ export const createComment = (content, postId) => {
         dispatch(showSnackbar('error', 'Error creating a comment.'));
       }
     },
-    content: content
+    content: content,
+    postId: postId,
+    username: username
   }
 };
 
@@ -94,7 +116,7 @@ export const updateComment = (commentId, content) => {
   }
 };
 
-export const deleteComment = (commentId) => {
+export const deleteComment = (commentId, postId) => {
   return {
     types: [
       DELETE_COMMENT_START,
@@ -110,7 +132,8 @@ export const deleteComment = (commentId) => {
         dispatch(showSnackbar('error', 'Error deleting the comment.'));
       }
     },
-    commentId: commentId
+    commentId: commentId,
+    postId: postId
   }
 };
 

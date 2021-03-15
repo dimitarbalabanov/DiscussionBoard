@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
   nav: {
     display: 'flex',
     flexDirection: 'row',
+    padding: theme.spacing(0)
   }
 }));
 

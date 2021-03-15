@@ -78,7 +78,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 postsQuery.AppendLine($"WHERE ( pp.ForumId = {(int)request.ForumId} )");
             }
 
-            FilterAndOrder.ToSql(request.Cursor, request.Top, postsQuery, order, InnerSelectAlias, request.ForumId == null);
+            FilterAndOrder.ToSql(null, request.Top, postsQuery, order, InnerSelectAlias, request.ForumId == null);
 
             postsQuery.AppendLine(
                 @") AS p

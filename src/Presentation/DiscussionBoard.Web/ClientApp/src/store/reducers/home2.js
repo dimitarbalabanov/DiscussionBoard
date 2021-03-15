@@ -4,8 +4,7 @@ import {
   REQUEST_POSTS_FAILURE,
   CLEAR_POSTS,
   SET_SORT,
-  SET_TOP,
-  AUTH_START
+  SET_TOP
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -15,7 +14,7 @@ const initialState = {
   top: '',
   loading: false,
   error: null,
-  kurva: false
+  something: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -71,7 +70,7 @@ const reducer = (state = initialState, action) => {
     case AUTH_START: 
       return {
         ...state,
-        kurva: true
+        something: true
       }
     
     default:

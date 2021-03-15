@@ -55,14 +55,7 @@ export const fetchPostById = (postId) => {
       REQUEST_POST_FAILURE
     ],
     callApi: () => getPostById(postId),
-    effect({ dispatch, state, type}) {
-      if (type === REQUEST_POST_SUCCESS) {
-        dispatch(showSnackbar('success', `Successfully fetched the post with id: ${postId}.`));
-      }
-      if (type === REQUEST_POST_FAILURE) {
-        dispatch(showSnackbar('error', `Error fetching the post with id: ${postId}.`));
-      }
-    }
+    effect() { }
   }
 };
 

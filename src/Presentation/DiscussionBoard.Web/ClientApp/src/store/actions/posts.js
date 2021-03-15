@@ -1,8 +1,8 @@
 import {
-  REQUEST_POSTS_SUCCESS,
-  REQUEST_POSTS_START,
-  REQUEST_POSTS_FAILURE,
-  CLEAR_POSTS
+    REQUEST_POSTS_SUCCESS,
+    REQUEST_POSTS_START,
+    REQUEST_POSTS_FAILURE,
+    CLEAR_POSTS
 } from './actionTypes';
 //import { showSnackbar } from './snackbar';
 import { getPosts } from '../../api/postsService';

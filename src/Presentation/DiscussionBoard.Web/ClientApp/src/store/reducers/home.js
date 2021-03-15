@@ -16,7 +16,6 @@ const initialState = {
   hasNextPage: null,
   loading: false,
   error: null,
-  kurva: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -30,6 +29,14 @@ const reducer = (state = initialState, action) => {
       };
       
     case REQUEST_POSTS_SUCCESS: 
+    console.log(action.data)
+    console.log(action.data.data.posts)
+    let asdf = {};
+    action.data.data.posts.forEach(element => {
+      asdf[element.id] = element
+    });
+    console.log(asdf)
+    console.log(action.data.data.posts.map(x => x.id))
       return { 
         ...state,
         posts: [...state.posts, ...action.data.data.posts],
@@ -71,6 +78,7 @@ const reducer = (state = initialState, action) => {
         top: action.top
       };
         
+    
     
     default:
       return state;

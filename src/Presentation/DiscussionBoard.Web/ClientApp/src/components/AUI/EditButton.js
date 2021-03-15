@@ -1,8 +1,7 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import GreyButton from './GreyButton';
 
 const EditButton = props => {
 
@@ -13,19 +12,11 @@ const EditButton = props => {
   } = props;
 
   return (
-       show ? 
-          <Button onClick={onClose} size="small" startIcon={<NotInterestedIcon />}>
-            <Typography color="textSecondary" display="inline" variant="body2">
-                Cancel
-            </Typography>
-          </Button>
-        :
-        <Button onClick={onOpen} size="small" startIcon={<EditIcon />}>
-          <Typography color="textSecondary" display="inline" variant="body2">
-            Edit
-          </Typography>
-        </Button>
-    );
-  }
+    show ? 
+      <GreyButton title="cancel" onClick={onClose} icon={<NotInterestedIcon />} />
+      :
+      <GreyButton title="edit" onClick={onOpen} icon={<EditIcon />} />
+  );
+}
 
 export default React.memo(EditButton);

@@ -3,7 +3,7 @@ using DiscussionBoard.Domain.Entities;
 
 namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
 {
-    public class CreateCommentVoteCommandResponse : IMapFrom<Comment>
+    public class CreateCommentVoteCommandResponse : IMapFrom<CommentVote>
     {
         public int Id { get; set; }
     }

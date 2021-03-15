@@ -1,4 +1,8 @@
 import {
+  SET_COMMENTS_SORT,
+  SET_COMMENTS_TOP,
+  CLEAR_COMMENTS,
+
   REQUEST_COMMENTS_START,
   REQUEST_COMMENTS_SUCCESS,
   REQUEST_COMMENTS_FAILURE,
@@ -29,7 +33,11 @@ import {
 } from '../actions/actionTypes';
 
 const initialCommentsState = {
-  comments: null,
+  comments: [],
+  sort: 1,
+  top: '',
+  cursor: null,
+  postId: null,
   commentsLoading: false,
   commentsError: null,
 };
@@ -108,6 +116,27 @@ const reducer = (state = initialState, action) => {
         commentsLoading: false,
         commentsError: action.error
       };
+
+    //   case CLEAR_COMMENTS:
+    //     return { 
+    //       ...state,
+    //       comments: []
+    //     };
+      
+    //   case SET_COMMENTS_SORT:
+    //     return {
+    //       ...state,
+    //       comments: [],
+    //       sort: action.sort
+    //     };
+
+    // case SET_COMMENTS_TOP:
+    //   return {
+    //     ...state,
+    //     comments: [],
+    //     top: action.top
+    //   };
+
 
     case CREATE_COMMENT_START:
       return { 
@@ -313,3 +342,4 @@ const reducer = (state = initialState, action) => {
 };
 
 export default reducer;
+

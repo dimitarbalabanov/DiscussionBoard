@@ -31,11 +31,12 @@ const CreateComment = props => {
     //createCommentLoading,
     //createCommentError,
     onCreateComment,
+    username,
     isAuthenticated
   } = props;
 
   const onSubmit = values => {
-    onCreateComment(values.content, postId);
+    onCreateComment(values.content, postId, username);
     values = {
       content: ''
     };

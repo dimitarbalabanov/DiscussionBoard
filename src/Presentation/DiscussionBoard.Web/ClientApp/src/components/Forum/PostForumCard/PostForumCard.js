@@ -17,9 +17,9 @@ import avatar from '../../../assets/images/consequatureaqueaut.png'
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderStyle: "solid",
-    borderWidth: "1px 1px 1px 1px",
-    borderColor: theme.palette.primary.main,
+    // borderStyle: "solid",
+    // borderWidth: "1px 1px 1px 1px",
+    // borderColor: theme.palette.primary.main,
   },
   cardDetails: {
     flex: 1,
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
+    fontWeight: 'bold'
   },
   text: {
     color: theme.palette.background.default
@@ -58,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(1),
   },
+  button: {
+    color: theme.palette.background.default,
+  },
 }));
 
 const PostForumCard = props => {
@@ -69,22 +73,22 @@ const PostForumCard = props => {
   } = props;
   
   return (
-    loading || !forum ? <AnotherSpinner /> : 
-    <Card className={classes.card} variant="outlined">
+    <Card className={classes.card}>
       <div className={classes.cardDetails}>
       <Typography className={classes.header} component="h3" variant="h5">
               {"Forum"}
           </Typography>
+          { loading || !forum ? <AnotherSpinner /> :
         <CardContent>
         <Avatar
           className={classes.avatar}
           src={avatar}
           />
-        <Typography className={classes.title} color="primary" component="h3" variant="h3" align="center">
+        <Typography className={classes.title} color="textSecondary" component="h3" variant="h2" align="center">
           {forum.title}
         </Typography>
           <Divider className={classes.margin}/>
-          <Typography className={classes.title} color="primary" variant="h6" align="center"> 
+          <Typography className={classes.title} color="textSecondary" variant="h5" align="center"> 
             {forum.subtitle}
           </Typography>
           <Divider className={classes.margin}/>
@@ -94,13 +98,13 @@ const PostForumCard = props => {
           <Divider className={classes.margin}/>
           <Grid  container justify="center" spacing={2} >
             <Grid className={classes.statsItem} item>
-              <ChatBubbleIcon className={classes.statsIcon} color="action" />
+              <ChatBubbleIcon className={classes.statsIcon} color="primary" />
               <Typography color="textSecondary" display="inline" variant="body2" align="center">
                 {`${forum.postsCount} Posts`}
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
-              <CommentIcon className={classes.statsIcon} color="action" />
+              <CommentIcon className={classes.statsIcon} color="primary" />
               <Typography color="textSecondary" display="inline" variant="body2" >
                 {`120 Comments`}
               </Typography>
@@ -118,6 +122,7 @@ const PostForumCard = props => {
             </Grid>
           </Grid>
         </CardContent>
+        }
       </div>
     </Card>
   );

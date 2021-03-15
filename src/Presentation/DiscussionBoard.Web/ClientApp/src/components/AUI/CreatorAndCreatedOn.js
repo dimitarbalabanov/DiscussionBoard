@@ -8,9 +8,10 @@ import {toRelativeTime, toComplexTime} from '../../utils/dateConvertor';
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    color: theme.palette.common.black
+    color: theme.palette.text.primary
   }
 }));
+
 const CreatorAndCreatedOn = props => {
   const classes = useStyles();
   const [show, setShow] = React.useState(false);
@@ -23,15 +24,17 @@ const CreatorAndCreatedOn = props => {
   return (
     <Box display="flex" alignItems="center" mt={0.5} ml={0.5}>
       <Typography color="textSecondary" variant="body2">
-      {" Posted "}
-      {" by "} 
-      <Link component={RouterLink} to={"/users/" + creatorUserName} className={classes.title}>
-          {'u/' + creatorUserName + ' '}
-      </Link>
-      <span onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}>
+        {" Posted "}
+        {" by "} 
+        <Link component={RouterLink} className={classes.title}>
+            {'u/' + creatorUserName + ' '}
+        </Link>
+        <span 
+          onMouseEnter={() => setShow(true)}
+          onMouseLeave={() => setShow(false)}
+        >
           {show ? toComplexTime(createdOn) : toRelativeTime(createdOn)}
-      </span>
+        </span>
       </Typography>
     </Box>
   );
