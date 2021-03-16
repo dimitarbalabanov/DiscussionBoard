@@ -14,7 +14,7 @@ import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
-import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/TrendingForumsCard';
+import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
 import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 
 const Home = props => {
@@ -107,7 +107,7 @@ const Home = props => {
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
           {/* <ForumsList forums={forums} loading={forumsLoading}/> */}
-          <TrendingForumsCard forums={forums} loading={forumsLoading}/>
+          <AllForumsCard forums={forums} loading={forumsLoading}/>
         </Grid>
       {/* {postsError ? null : <div ref={loader}></div>} */}
       </Grid>

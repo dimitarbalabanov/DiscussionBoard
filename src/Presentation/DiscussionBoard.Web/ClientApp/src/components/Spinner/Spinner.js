@@ -22,7 +22,7 @@ const Spinner = () => {
       //justify="center"
       //style={{ paddingBottom: "50px", paddingTop: "50px" }}
     >
-      <CircularProgress size={100}/>
+      <CircularProgress size={80}/>
     </Grid>
   );
 };

@@ -8,6 +8,7 @@ import {
   setHomeTop
 } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Page from '../../components/Page/Page';
@@ -16,12 +17,16 @@ import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
-import useTraceUpdate from '../../hooks/useTraceUpdate';
-import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/TrendingForumsCard';
-import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
+
+const useStyles = makeStyles((theme) => ({
+  forumGrid: {
+    marginLeft: theme.spacing(2),
+  }
+}));
 
 const Home = props => {
-
+  const classes = useStyles();
   const { 
     forums,
     forumsLoading,
@@ -39,31 +44,41 @@ const Home = props => {
     onSetSort,
     onSetTop,
     isAuthenticated,
+    postsById,
+    allPostIds,
+    forumsById,
+    allForumIds
   } = props;
 
-  console.log(posts);
-
-  useEffect(() => {
-    if(posts.length < 1) {
-      onFetchPosts(sort, top);
-    }
-  }, [onFetchPosts, sort, top]);
-
-  useEffect(() => {
-    if (forums.length < 1) {
-      console.log("inside forums use effect")
-      onFetchForums();
-    }
-  }, [onFetchForums, forums.length]);
   
+  useEffect(() => {
+    // if(posts.length < 1) {
+      onFetchPosts(sort, top);
+      // }
+    }, [onFetchPosts]);
+    
+    useEffect(() => {
+      // if (forums.length < 1) {
+        onFetchForums();
+        // }
+      }, [onFetchForums]);
+      
+      function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
+      // console.log(postsById);
+      // console.log(forumsById);
+  
+
   const observeBorder = useCallback(
     node => {
       if (node !== null) {
-        console.log("created");
+        // console.log("created");
         new IntersectionObserver(
           entries => {
             entries.forEach(en => {
-              console.log(en);
+              //console.log(en);
               if (en.intersectionRatio === 1) {
                 console.log("prashtam zaqvka s kursor" + cursor)
                 setTimeout(() => onFetchPosts(sort, top, cursor), 500);
@@ -77,17 +92,13 @@ const Home = props => {
     [onFetchPosts, sort, top, cursor]
   );
   
-  // function renderBottomBorder() {
-  //   return <div data-testid="bottom-border" ref={observeBorder} />;
-  // }
-  
   return (
     <Page title="Discussion Board">
       <Grid 
         container
-        spacing={10}
+        // spacing={10}
         direction="row"
-        alignItems="flex-start"
+        // alignItems="flex-start"
       > 
         <Grid 
           container
@@ -104,7 +115,8 @@ const Home = props => {
             onSetTop={onSetTop}
           />
           <PostsList 
-            posts={posts} 
+            posts={postsById} 
+            allIds={allPostIds} 
             loading={postsLoading} 
             error={postsError}/>
           {postsLoading && 
@@ -113,11 +125,11 @@ const Home = props => {
                 <Spinner />
               </Box>
             </Grid>}
-          {cursor && <div data-testid="bottom-border" ref={observeBorder} />}
+          {/* {cursor && <div data-testid="bottom-border" ref={observeBorder} />} */}
         </Grid>
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          <TrendingForumsCard forums={forums} loading={forumsLoading}/>
-          <CreatePostButton2 />
+        <Grid className={classes.forumGrid} container item xs={12} md={4} spacing={2} justify="flex-start">
+          <AllForumsCard forums={forumsById} allIds={allForumIds} loading={forumsLoading}/>
+          {/* <CreatePostButton2 /> */}
         </Grid>
       </Grid>
     </Page>
@@ -126,6 +138,11 @@ const Home = props => {
 
 const mapStateToProps = state => {
   return {
+    postsById: state.posts2.byId,
+    allPostIds: state.posts2.allIds,
+    forumsById: state.forums2.byId,
+    allForumIds: state.forums2.allIds,
+
     forums: state.forums.forums,
     forumsLoading: state.forums.loading,
     forumsError: state.forums.error,

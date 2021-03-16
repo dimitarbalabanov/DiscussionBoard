@@ -16,7 +16,7 @@ import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import useTraceUpdate from '../../hooks/useTraceUpdate';
-import TrendingForumsCard from '../../components/Forum/TrendingForumsCard/TrendingForumsCard';
+import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
 import ForumsList from '../../components/Forum/ForumsList/ForumsList';
 
 const Home = props => {

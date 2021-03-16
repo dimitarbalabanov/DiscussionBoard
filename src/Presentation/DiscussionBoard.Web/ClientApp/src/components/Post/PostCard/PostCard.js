@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
-import EcoIcon from '@material-ui/icons/Eco';
 import CardMedia from '@material-ui/core/CardMedia';
 import pic from '../../../assets/images/file-20170712-14488-19lw3sc.jpg'
 import Grid from '@material-ui/core/Grid';
@@ -32,14 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginLeft: theme.spacing(1),
-    color: theme.palette.common.black
+    color: '#222222',
   },
   asdf: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#878A8C'
   },
   statsIcon: {
     marginRight: theme.spacing(1),
-    color: theme.palette.text,
+    color: '#878A8C',
     fontSize: "18px"
   },
   media: {
@@ -74,13 +74,13 @@ const PostCard = props => {
           createdOn={post.createdOn}/>
         <Link to={`/posts/${post.id}`}>
           <Grid item>
-            <Typography className={classes.title} component="h2" variant="h4">
+            <Typography className={classes.title} variant="h4">
             { post.title }
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item >
-            <Typography color="textSecondary" display="inline" variant="body2" >
-            {`${post.content ? post.content.substring(0,250) + "..." : null} `}
+            <Typography color="textSecondary">
+            {`${post.content ? post.content.length > 250 ? post.content.substring(0,250) + "..." : post.content : ""}`}
             </Typography>
           </Grid>
           {/*{post.mediaUrl && */}
@@ -95,14 +95,14 @@ const PostCard = props => {
           </Grid> */}
         </Link>
           <Grid className={classes.statsItem} item >
-            <CommentIcon className={classes.statsIcon} color="textSecondary"/>
-            <Typography  className={classes.asdf} color="textSecondary" display="inline" variant="body2" >
+            <CommentIcon className={classes.statsIcon}/>
+            <Typography  className={classes.asdf}  display="inline" variant="body2" >
               {`${post.commentsCount} Comments`}
             </Typography>
             <Button 
               component={Link}
-              to={`/posts/${post.id}`} size="small" startIcon={<EditIcon />}>
-              <Typography  className={classes.asdf} color="textSecondary" display="inline" variant="body2">
+              to={`/posts/${post.id}`} size="small" startIcon={<EditIcon className={classes.asdf}/>}>
+              <Typography  className={classes.asdf}  display="inline" variant="body2">
                 Edit
               </Typography>
             </Button>

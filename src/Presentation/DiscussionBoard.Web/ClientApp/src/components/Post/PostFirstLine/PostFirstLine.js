@@ -9,7 +9,7 @@ import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
 
 const useStyles = makeStyles((theme) => ({
   textColor: {
-    color: theme.palette.common.black,
+    color: '#1C1C1C',
     fontWeight: 'bold'
   },
   avatar: {
@@ -17,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
     width: 23,
     marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.3),
-    //color: theme.palette.getContrastText(deepOrange[500]),
-    //backgroundColor: deepOrange[500],
   }
 }));
 
@@ -26,11 +24,8 @@ const PostFirstLine = props => {
   const classes = useStyles();
 
   const {
-    forumId,
-    forumTitle,
     creatorUserName,
     createdOn,
-    mediaUrl,
     forum
     //loading
   } = props;
@@ -42,7 +37,7 @@ const PostFirstLine = props => {
         //src={forum.mediaUrl} 
         />
         {/* >{forumTitle.substring(0, 2).toLowerCase()}</Avatar> */}
-        <Typography color="textSecondary" variant="body2">
+        <Typography className={classes.textColor} variant="body2">
         <Link component={RouterLink} to={"/forums/" + forum.id} className={classes.textColor}>
             {'f/' + forum.title}
         </Link>

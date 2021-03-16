@@ -10,8 +10,8 @@ import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 
 const useStyles = makeStyles((theme) => ({
-  mainGrid: {
-    marginTop: theme.spacing(3),
+  forumGrid: {
+    marginLeft: theme.spacing(2),
   }
 }));
 
@@ -21,7 +21,7 @@ const Forum = props => {
   const { forumId } = props.match.params;
 
   const { 
-    forum, 
+    //forum, 
     forumLoading, 
     //forumError,
     posts,
@@ -29,23 +29,28 @@ const Forum = props => {
     postsError,
     onFetchPosts,
     onFetchForum,
+    postsById,
+    allPostIds,
+    forumsById,
+    allForumIds
   } = props;
   
+  const forum = forumsById[forumId] !== undefined ? forumsById[forumId]: null;
   useEffect(() => {
     onFetchPosts(forumId);
     onFetchForum(forumId);
   }, [onFetchForum, onFetchPosts, forumId]);
 
   return (
-    <Page className={classes.root} title={forum ? forum.title : "Discussion Board"}>
-      <Grid container spacing={10} direction="row" alignItems="flex-start">
+    <Page title={forum ? forum.title : "Discussion Board"}>
+      <Grid container direction="row" alignItems="flex-start">
+        <ForumTitleCard forum={forum}/>
         <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
-          <ForumTitleCard />
           <PostsSorting />
           <PostsList posts={posts} loading={postsLoading} error={postsError}/>
         </Grid>
         <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          <Grid item md={10}>
+          <Grid item md={10} className={classes.forumGrid}>
             <AboutForumCard forum={forum} loading={forumLoading} />
           </Grid>
         </Grid>
@@ -56,6 +61,11 @@ const Forum = props => {
 
 const mapStateToProps = state => {
   return {
+    postsById: state.posts2.byId,
+    allPostIds: state.posts2.allIds,
+    forumsById: state.forums2.byId,
+    allForumIds: state.forums2.allIds,
+
     posts: state.posts.posts,
     postsLoading: state.posts.loading,
     postsError: state.posts.error,

@@ -14,13 +14,6 @@ export const fetchForums = () => {
       REQUEST_FORUMS_FAILURE
     ],
     callApi: () => getForums(),
-    effect({ dispatch, state, type}) {
-      if (type === REQUEST_FORUMS_SUCCESS) {
-        dispatch(showSnackbar('success', 'Successfully fetched the forums.'))
-      }
-      if (type === REQUEST_FORUMS_FAILURE) {
-        dispatch(showSnackbar('error', " Error fetching the forums."))
-      }
-    }
+    effect() { }
   }
 };

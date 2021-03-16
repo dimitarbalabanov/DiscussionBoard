@@ -86,14 +86,14 @@ export const createPostReset = () => {
   };
 };
 
-export const updatePost = (postId, newPost) => {
+export const updatePost = (postId, title, content) => {
   return {
     types: [
       UPDATE_POST_START,
       UPDATE_POST_SUCCESS,
       UPDATE_POST_FAILURE
     ],
-    callApi: () => updatePostById(postId, newPost),
+    callApi: () => updatePostById(postId, title, content),
     effect({ dispatch, state, type}) {
       if (type === UPDATE_POST_SUCCESS) {
         dispatch(showSnackbar('success', `Successfully updated the post with ${postId}.`))
@@ -101,7 +101,10 @@ export const updatePost = (postId, newPost) => {
       if (type === UPDATE_POST_FAILURE) {
         dispatch(showSnackbar('error', `Error updating the post with ${postId}.`))
       }
-    }
+    },
+    postId: postId,
+    title: title,
+    content: content
   }
 };
 
@@ -120,7 +123,8 @@ export const deletePost = (postId) => {
       if (type === DELETE_POST_FAILURE) {
         dispatch(showSnackbar('error', `Error deleting the post with ${postId}.`))
       }
-    }
+    },
+    postId: postId
   }
 };
 

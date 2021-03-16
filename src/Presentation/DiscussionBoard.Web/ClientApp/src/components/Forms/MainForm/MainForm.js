@@ -16,6 +16,7 @@ const MainForm = props => {
     btnVariant = "contained",
     btnText,
     btnIcon,
+    btnSize = "large",
     children
   } = props;
 
@@ -29,7 +30,8 @@ const MainForm = props => {
         {({
           handleSubmit,
           isSubmitting,
-          isValid
+          isValid,
+          resetForm
           }) => (
             <form onSubmit={handleSubmit}>
               { children }
@@ -38,7 +40,6 @@ const MainForm = props => {
                   <Button
                     type="submit"
                     color={btnColor}
-                    size="large"
                     variant={btnVariant}
                     startIcon={btnIcon}
                     disabled={isSubmitting || !isValid}

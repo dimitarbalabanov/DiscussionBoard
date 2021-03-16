@@ -12,6 +12,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     width: '150px',
+    borderRadius: '50px',
+    textTransform: 'none'
   },
   icon: {
     color: theme.palette.icon,

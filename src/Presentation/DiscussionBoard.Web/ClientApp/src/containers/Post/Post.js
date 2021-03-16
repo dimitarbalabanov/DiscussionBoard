@@ -9,6 +9,7 @@ import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCa
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
 import PostForumCard from '../../components/Forum/PostForumCard/PostForumCard';
 import { Button, Box } from '@material-ui/core';
+import { Redirect } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -85,39 +86,65 @@ const Post = (props) => {
     commentsById,
     forumsById,
     username,
-    onSetCommentsSort
+    onUpdatePost,
+    onDeletePost,
+    onSetCommentsSort,
+    deletePostSuccess
   } = props;
   
-  console.log(commentsById)
 
   const normPost = postsById[postId];
-  if (normPost !== undefined) {
-    console.log(normPost.comments)
-  }
+  // if (normPost !== undefined) {
+  //   console.log(normPost.comments)
+  // }
 
-  console.log(forumsById)
+  // console.log(forumsById)
   const normForum = normPost !== undefined && forumsById[normPost.forumId] !== undefined ? forumsById[normPost.forumId] : null; 
 
-  useEffect(() => {
-    onFetchPost(postId);
-    onFetchComments(postId);
-  }, [onFetchPost, onFetchComments, postId]);
+  // useEffect(() => {
+  //   onFetchPost(postId);
+  //   onFetchComments(postId);
+  // }, [onFetchPost, onFetchComments, postId]);
+
+  // useEffect(() => {
+  //   if(normPost !== undefined) {
+  //     onFetchForum(normPost.forumId);
+  //   } 
+  // }, [onFetchForum, normPost]);
 
   useEffect(() => {
-    if(normPost !== undefined) {
+    if (normPost === undefined) {
+      onFetchPost(postId);
+    }
+  }, [onFetchPost, normPost, postId]);
+
+  useEffect(() => {
+    if (normPost !== undefined && normPost.comments === undefined) {
+      onFetchComments(postId);
+    }
+  }, [onFetchComments, normPost, postId]);
+
+  useEffect(() => {
+    if (normPost !== undefined && forumsById[normPost.forumId] === undefined) {
       onFetchForum(normPost.forumId);
-    } 
+    }
   }, [onFetchForum, normPost]);
+
   
+  if (deletePostSuccess) {
+    return <Redirect to="/" />;
+  }
   // let postDiv = <Box m={20}><Spinner /></Box>;
   let postDiv = null;
-  let commentsDiv = null;
+  let commentsDiv = normPost !== undefined ? <Box m={5}><Spinner /></Box> : null;
 
   // if (!postLoading && normPost !== undefined && !commentsLoading) {
     postDiv = <PostDetailsCard 
       post={normPost} 
       forum={normForum}
       postLoading={postLoading} 
+      onUpdatePost={onUpdatePost}
+      onDeletePost={onDeletePost}
       onCreatePostVote={onCreatePostVote}
       createPostVoteError={createPostVoteError}
       createPostVoteLoading={createPostVoteLoading}
@@ -159,10 +186,10 @@ const Post = (props) => {
         onCreateVote={onCreateCommentVote}
         createVoteError={createCommentVoteError}
         createVoteLoading={createCommentVoteLoading}
-        onUpdateCommentVote={onUpdateCommentVote}
+        onUpdateVote={onUpdateCommentVote}
         updateCommentVoteError={updateCommentVoteError}
         updateCommentVoteLoading={updateCommentVoteLoading}
-        onDeleteCommentVote={onDeleteCommentVote}
+        onDeleteVote={onDeleteCommentVote}
         deleteCommentVoteError={deleteCommentVoteError}
         deleteCommentVoteLoading={deleteCommentVoteLoading}
         isAuthenticated={isAuthenticated}
@@ -207,6 +234,8 @@ const mapStateToProps = state => {
     postLoading: state.post.postLoading,
     postError: state.post.postError,
 
+    deletePostSuccess: state.post.deletePostSuccess,
+    
     createPostVoteLoading: state.post.createPostVoteLoading,
     createPostVoteError: state.post.createPostVoteError,
 
@@ -256,6 +285,8 @@ const mapDispatchToProps = dispatch => {
     onSetCommentsSort: (postId, sort) => dispatch(actions.setCommentsSort(postId, sort)),
     onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+    onUpdatePost: (postId, title, content) => dispatch(actions.updatePost(postId, title, content)),
+    onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
     onCreatePostVote: (postId, type) => dispatch(actions.createPostVote(postId, type)),
     onUpdatePostVote: (postId, voteId, type) => dispatch(actions.updatePostVote(postId, voteId, type)),
     onDeletePostVote: (postId, voteId, type) => dispatch(actions.deletePostVote(postId, voteId, type)),

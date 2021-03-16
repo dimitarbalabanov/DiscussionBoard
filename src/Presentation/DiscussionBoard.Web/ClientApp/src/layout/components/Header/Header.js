@@ -12,7 +12,7 @@ import TopBar from '../TopBar/TopBar';
 import MobileBar from '../MobileBar/MobileBar';
 
 const logoutRoute = {
-  title: 'Logout',
+  title: 'LOGOUT',
   href: '/logout',
   variant: 'contained',
   icon: <PowerSettingsNewIcon />
@@ -20,13 +20,13 @@ const logoutRoute = {
 
 const guestRoutes = [
   {
-    title: 'Login',
+    title: 'LOGIN',
     href: '/login',
     variant: 'outlined',
     icon: <VpnKeyIcon />,
   },
   {
-    title: 'Sign Up',
+    title: 'SIGN UP',
     href: '/register',
     variant: 'contained',
     icon: <PeopleIcon />,

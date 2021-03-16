@@ -183,6 +183,7 @@ const reducer = (state = initialState, action) => {
       };
 
     case UPDATE_POST_FAILURE: 
+    console.log(action)
       return {
         ...state, 
         updatePostSuccess: false,

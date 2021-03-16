@@ -20,9 +20,13 @@ export default {
   primary: {
     // main: colors.common.black
       // main: '#FF4500'
-      //main: colors.blue[500]
-      main: colors.grey[500]
+      main: colors.blue[600],
+      secondary: colors.blue[400],
+      another: '#878A8C'
    // main: '#0079D3'
+  },
+  another : {
+    main: '#878A8C'
   },
   secondary: {
     //main: colors.grey[900]

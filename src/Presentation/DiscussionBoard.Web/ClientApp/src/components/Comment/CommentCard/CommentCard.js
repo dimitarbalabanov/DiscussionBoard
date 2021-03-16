@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import EditComment from '../EditComment/EditComment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteButton from '../../AUI/DeleteButton';
 import EditButton from '../../AUI/EditButton';
 import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
 import Voting from '../../Voting/Voting';
-
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -64,25 +64,32 @@ const CommentCard = props => {
   } = props;
 
   return (
-    comment !== undefined &&
+    comment !== undefined ? 
     <div className={classes.card}>
-      <Voting 
-        className={classes.voting}
-        id={comment.id}
-        voteType={comment.voteType}
-        voteId={comment.voteId}
-        votesScore={comment.votesScore}
-        onCreateVote={onCreateVote}
-        createVoteLoading={createVoteLoading}
-        createVoteError={createVoteError}
-        onUpdateVote={onUpdateVote}
-        updateVoteError={updateVoteError}
-        updateVoteLoading={updateVoteLoading}
-        onDeleteVote={onDeleteVote}
-        deleteVoteError={deleteVoteError}
-        deleteVoteLoading={deleteVoteLoading}
-        isAuthenticated={isAuthenticated}
-      />
+      {deleteCommentLoading && deleteCommentId === comment.id ?
+      <Box ml={10} mt={2} mb={2}><CircularProgress size={50}/></Box> :
+      <React.Fragment>
+        {createVoteLoading || updateVoteLoading || deleteVoteLoading ? 
+          <Box ml={1} mr={0.5} mt={4} mb={2}><CircularProgress size={15}/></Box> 
+        : 
+        <Voting 
+            className={classes.voting}
+            id={comment.id}
+            voteType={comment.voteType}
+            voteId={comment.voteId}
+            votesScore={comment.votesScore}
+            onCreateVote={onCreateVote}
+            createVoteLoading={createVoteLoading}
+            createVoteError={createVoteError}
+            onUpdateVote={onUpdateVote}
+            updateVoteError={updateVoteError}
+            updateVoteLoading={updateVoteLoading}
+            onDeleteVote={onDeleteVote}
+            deleteVoteError={deleteVoteError}
+            deleteVoteLoading={deleteVoteLoading}
+            isAuthenticated={isAuthenticated}
+          />
+          }
       <div>
         <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
         {showUpdateForm 
@@ -110,7 +117,10 @@ const CommentCard = props => {
           : 
             null}
       </div>
+            </React.Fragment>
+}
     </div>
+    : null
   );
 }
 

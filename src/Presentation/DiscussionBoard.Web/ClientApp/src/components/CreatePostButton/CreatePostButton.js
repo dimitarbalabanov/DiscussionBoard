@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField'
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import pic from '../../assets/images/pic.png'; 
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -18,9 +19,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     flexGrow: 1
   },
-  statsIcon: {
-    marginRight: theme.spacing(1),
-    fontSize: "24px"
+  img: {
+    marginRight: theme.spacing(0.6),
   },
 }));
 
@@ -32,7 +32,13 @@ const CreatePostButton = props => {
     <Grid item xs={12} md={10}>
       <Paper className={classes.card}>
         <div className={classes.statsItem}>
-          <NoteAddIcon color="primary"/>
+          <img 
+            className={classes.img}
+            src={pic}
+            //height="auto"
+            width="35px"
+            alt="Discussion Board" 
+            />
           {isAuthenticated ? 
             <TextField
               component={Link}
@@ -46,12 +52,13 @@ const CreatePostButton = props => {
             /> 
           : <TextField
               placeholder={"Please, login to create a post."}
+              component={Link}
+              to={'/login'}
               fullWidth
               color="primary"
               size="small"
               variant="outlined"
               margin="none"
-              disabled
             />}
         </div>
       </Paper>

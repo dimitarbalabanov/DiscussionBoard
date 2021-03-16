@@ -6,16 +6,28 @@ const PostsList = props => {
   const {
     posts,
     loading,
+    allIds
     //error
    } = props;
 
+   function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+  console.log(posts);
+  console.log(allIds);
+
   return (
     <React.Fragment>
-        {posts && posts.map((post) => (
-          <Grid item xs={12} md={10} key={post.id}>
-             <PostCard post={post} loading={loading} />
-          </Grid>
-        ))}
+        {
+          allIds !== undefined &&
+        // posts !== undefined && !isEmpty(posts) && allIds.lenght > 0 ?
+          allIds.map((id) => (
+            <Grid item xs={12} md={10} key={id}>
+              <PostCard post={posts[id]} loading={loading} />
+            </Grid>
+          )) 
+          // : console.log(posts)
+        }
     </React.Fragment>
   );
 }

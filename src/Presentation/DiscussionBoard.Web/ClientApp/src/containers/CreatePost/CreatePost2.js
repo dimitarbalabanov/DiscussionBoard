@@ -1,32 +1,18 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import * as Yup from 'yup';
+import { createPost, fetchForums } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
-import { createPost, fetchForums } from '../../store/actions';
-import * as Yup from 'yup';
-import { Formik, Field } from 'formik';
-
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Paper,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  CircularProgress
-} from '@material-ui/core';
-import ImageInput from '../../components/Forms/FileInput/FileInput';
 import FormikSelectField from '../../components/Forms/FormikSelectField/FormikSelectField';
 import FormikTextField from '../../components/Forms/FormikTextField/FormikTextField';
 import FormikImageInput from '../../components/Forms/FormikImageInput/FormikImageInput';
 import MainForm from '../../components/Forms/MainForm/MainForm';
-
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -44,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   title: '',
   content: '',
-  
   // title: 'Neque porro quisquam est qui dolorem',
   // content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus venenatis mauris, at efficitur dolor accumsan eget. Quisque quis elit sit amet lectus porttitor convallis. Maecenas maximus nibh non sapien consectetur, a blandit arcu interdum. Aliquam in massa dui. Etiam sed sodales mi, eget iaculis erat. Etiam luctus id purus quis euismod. In porta a ex eget tristique.',
   forumId: '',
@@ -56,11 +41,11 @@ const validationSchema =
     title: Yup.string().min(3).max(200).required('Title is required'),
     content: Yup.string().min(30).max(2500).required('Content is required'),
     forumId: Yup.number().required('Selecting a forum is required'),
-    // image: Yup.mixed().required("We need an Image!")
-    //   .test(
-    //     "fileSize",
-    //     "Your image is too big",
-    //     value => value && value.size <= 262144000)
+  // image: Yup.mixed().required("We need an Image!")
+  //   .test(
+  //     "fileSize",
+  //     "Your image is too big",
+  //     value => value && value.size <= 262144000)
   });
 
 const CreatePost = props => {

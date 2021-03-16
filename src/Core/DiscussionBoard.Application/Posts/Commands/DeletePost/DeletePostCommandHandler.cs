@@ -46,7 +46,7 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
                 throw new ForbiddenException();
             }
 
-            var mediaPublicId = post.Media.PublicId;
+            var mediaPublicId = post.Media?.PublicId;
             if (mediaPublicId != null)
             {
                 await _mediaService.DestroyImageAsync(mediaPublicId);

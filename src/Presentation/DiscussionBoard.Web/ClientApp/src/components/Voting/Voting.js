@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -7,7 +7,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { blue, red, green  } from '@material-ui/core/colors';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,18 +45,13 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
 }))(ToggleButtonGroup);
 
 const Voting = props => {
+  const classes = useStyles();
   
   const {
     id,
     votesScore,
     voteType,
     voteId,
-    createVoteLoading,
-    //createVoteError,
-    updateVoteLoading,
-    //updateVoteError,
-    deleteVoteLoading,
-    //deleteVoteError,
     onCreateVote,
     onUpdateVote,
     onDeleteVote,
@@ -74,18 +68,6 @@ const Voting = props => {
     }
   };
 
-  const classes = useStyles();
-
-  let upIcon = <ArrowDropUpIcon className={classes.icon}/>;
-  if (voteType === '1') {
-    upIcon = <ArrowDropUpIcon className={`${classes.blue} ${classes.icon}`}/>
-  }
-
-  let downIcon = <ArrowDropDownIcon className={classes.icon}/>
-  if (voteType === '-1') {
-    downIcon = <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/>
-  }
-
   return (
     <Paper elevation={0} className={classes.paper}>
       <StyledToggleButtonGroup
@@ -99,10 +81,10 @@ const Voting = props => {
           {voteType === '1' ? <ArrowDropUpIcon className={`${classes.blue} ${classes.icon}`}/> : <ArrowDropUpIcon className={classes.icon}/>}
         </ToggleButton>
         <Typography color="textSecondary" display="inline" variant="body2" align="center" className={classes.score}>
-        {createVoteLoading || updateVoteLoading || deleteVoteLoading ? <CircularProgress size={15}/> : votesScore}
+          {votesScore}
         </Typography>
         <ToggleButton value="-1" disabled={!isAuthenticated} className={classes.button}>
-          {downIcon}
+          {voteType === '-1' ? <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/> : <ArrowDropDownIcon className={classes.icon}/>}
         </ToggleButton>
       </StyledToggleButtonGroup>
     </Paper>

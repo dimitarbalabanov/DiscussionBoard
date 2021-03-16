@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -10,7 +11,7 @@ import FormikTextField from '../../Forms/FormikTextField/FormikTextField';
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
+    paddingRight: theme.spacing(5),
     marginBottom: theme.spacing(3),
   }
 }));
@@ -43,7 +44,7 @@ const CreateComment = props => {
   }
 
   return (
-    <Grid item xs={12} md={12} className={classes.root}>
+    <Box className={classes.root}>
       <MainForm
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -72,7 +73,7 @@ const CreateComment = props => {
           rows={4}
         />
       </MainForm>
-    </Grid>
+    </Box>
   );
 };
 

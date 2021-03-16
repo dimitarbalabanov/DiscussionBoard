@@ -3,22 +3,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import AnotherSpinner from '../../Spinner/AnotherSpinner';
-import avatar from '../../../assets/images/consequatureaqueaut.png'
+import Spinner from '../../Spinner/Spinner';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    borderColor: theme.palette.primary.main,
-    border: '1px solid'
+    // borderColor: theme.palette.primary.main,
+    // border: '1px solid'
   },
   cardDetails: {
     flex: 1,
@@ -73,14 +70,17 @@ const AboutForumCard = props => {
   } = props;
   
   return (
-    loading || !forum ? <AnotherSpinner /> : 
-    <Card className={classes.card} variant="outlined">
+    <Card className={classes.card}>
       <div className={classes.cardDetails}>
       <Typography className={classes.header} component="h3" variant="h5">
               {"About forum"}
           </Typography>
+      {loading || !forum ? <Spinner /> : 
         <CardContent>
-          <Typography className={classes.title} color="primary" variant="body2" align="center"> 
+        <Typography className={classes.title} color="textSecondary" variant="h5" align="center"> 
+            {forum.subtitle}
+          </Typography>
+          <Typography className={classes.title} color="textSecondary" variant="body2"> 
             {forum.description}
           </Typography>
           <Divider className={classes.margin}/>
@@ -109,7 +109,7 @@ const AboutForumCard = props => {
               </Button>
             </Grid>
           </Grid>
-        </CardContent>
+        </CardContent>}
       </div>
     </Card>
   );

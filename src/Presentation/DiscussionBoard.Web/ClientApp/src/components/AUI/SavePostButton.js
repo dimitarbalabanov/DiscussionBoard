@@ -21,9 +21,9 @@ const SavePostButton = props => {
     createSavedPostLoading || deleteSavedPostLoading ? 
       <CircularProgress size={10} /> 
     : isSaved ? 
-      <GreyButton title="saved" onClick={() => onDeleteSavedPost(postId)} icon={<CheckBoxIcon />}/>
+      <GreyButton title="Saved" onClick={() => onDeleteSavedPost(postId)} icon={<CheckBoxIcon />}/>
       : 
-      <GreyButton title="save" onClick={() => onCreateSavedPost(postId)} icon={<AddIcon />}/>
+      <GreyButton title="Save" onClick={() => onCreateSavedPost(postId)} icon={<AddIcon />}/>
   );
 }
 

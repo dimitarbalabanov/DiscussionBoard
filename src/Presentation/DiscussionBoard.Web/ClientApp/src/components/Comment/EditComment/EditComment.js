@@ -1,11 +1,9 @@
 import React from 'react';
 import * as Yup from 'yup';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-//import Spinner from '../../Spinner/Spinner';
 import MainForm from '../../Forms/MainForm/MainForm';
 import FormikTextField from '../../Forms/FormikTextField/FormikTextField';
 
@@ -47,6 +45,16 @@ const EditComment = props => {
           onUpdateComment(commentId, values.content);
           onClose();
         }}
+        btnText={
+          <Typography color="textSecondary" display="inline" variant="body2">
+            Save
+          </Typography>
+        }
+        btnVariant={"text"}
+        btnIcon={<AddBoxIcon color="textSecondary" />}
+        mt={0}
+        mb={0}
+        align="left"
       >
         <FormikTextField
           formikKey="content"
@@ -58,15 +66,6 @@ const EditComment = props => {
           multiline
           rows={4}
         />
-        <Button
-          type="submit"
-          variant="outlined"
-          startIcon={<AddBoxIcon className={classes.iconColor} />}
-        >
-          <Typography color="textSecondary" display="inline" variant="body2">
-            Save
-          </Typography>
-        </Button>
       </MainForm>
     </Grid>
   );

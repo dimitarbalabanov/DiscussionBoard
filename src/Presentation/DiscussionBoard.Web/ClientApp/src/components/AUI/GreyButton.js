@@ -4,8 +4,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
-  bold: {
-    fontWeight: '600'
+  title: {
+    fontWeight: 'bold',
+    color: '#878A8C'
+  },
+  button: {
+    textTransform: 'none'
+  },
+  icon: {
+    color: '#878A8C',
   }
 }));
 
@@ -19,8 +26,9 @@ const GreyButton = props => {
   } = props;
 
   return (
-    <Button onClick={onClick} size="small" startIcon={icon}>
-      <Typography className={classes.bold} color="textSecondary" variant="body2">
+    <Button className={classes.button} onClick={onClick} size="small" startIcon={icon}>
+      {/* <div className={classes.icon}>{icon}</div> */}
+      <Typography className={classes.title} color="textSecondary" variant="body2">
         {title}
       </Typography>
     </Button>

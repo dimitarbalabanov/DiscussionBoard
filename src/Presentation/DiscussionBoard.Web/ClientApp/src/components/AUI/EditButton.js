@@ -13,9 +13,8 @@ const EditButton = props => {
 
   return (
     show ? 
-      <GreyButton title="cancel" onClick={onClose} icon={<NotInterestedIcon />} />
-      :
-      <GreyButton title="edit" onClick={onOpen} icon={<EditIcon />} />
+    <GreyButton title="Cancel" onClick={onClose} icon={<NotInterestedIcon />} />
+    : <GreyButton title="Edit" onClick={onOpen} icon={<EditIcon />} />
   );
 }
 

@@ -24,11 +24,11 @@ const DeleteButton = props => {
         <Typography color="textSecondary" display="inline" variant="body2">
           DELETE?
         </Typography>
-        <GreyButton title="no" icon={<NotInterestedIcon />} onClick={() => setShowDeleteConfirm(false)}/> 
-        <GreyButton title="yes" icon={<DeleteIcon />} onClick={() => handleDelete()}/> 
+        <GreyButton title="No" icon={<NotInterestedIcon />} onClick={() => setShowDeleteConfirm(false)}/> 
+        <GreyButton title="Yes" icon={<DeleteIcon />} onClick={() => handleDelete()}/> 
       </React.Fragment>
     :
-      <GreyButton title="delete" icon={<DeleteIcon />} onClick={() => setShowDeleteConfirm(true)}/> 
+      <GreyButton title="Delete" icon={<DeleteIcon color="another"/>} onClick={() => setShowDeleteConfirm(true)}/> 
   );
 }
 
