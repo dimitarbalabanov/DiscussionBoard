@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid",
     borderColor: "transparent",
     '&:hover': {
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette.common.black,
     }
   },
   statsItem: {
@@ -68,8 +68,7 @@ const PostCard = props => {
       <Voting />
       <Grid item>
         <PostFirstLine 
-          forumId={post.forumId} 
-          forumTitle={post.forumTitle} 
+          forum={ { id : post.forumId, title : post.forumTitle } }
           creatorUserName={post.creatorUserName} 
           createdOn={post.createdOn}/>
         <Link to={`/posts/${post.id}`}>

@@ -8,7 +8,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import PostDetailsCard from '../../components/Post/PostDetailsCard/PostDetailsCard';
 import CommentCard from '../../components/Comment/CommentCard/CommentCard';
 import PostForumCard from '../../components/Forum/PostForumCard/PostForumCard';
-import { Button, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Redirect } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -125,7 +125,8 @@ const Post = (props) => {
   }, [onFetchComments, normPost, postId]);
 
   useEffect(() => {
-    if (normPost !== undefined && forumsById[normPost.forumId] === undefined) {
+    if (normPost !== undefined && forumsById[normPost.forumId] === undefined
+      || normPost !== undefined && forumsById[normPost.forumId] !== undefined && !forumsById[normPost.forumId].description) {
       onFetchForum(normPost.forumId);
     }
   }, [onFetchForum, normPost]);
@@ -135,41 +136,13 @@ const Post = (props) => {
     return <Redirect to="/" />;
   }
   // let postDiv = <Box m={20}><Spinner /></Box>;
-  let postDiv = null;
   let commentsDiv = normPost !== undefined ? <Box m={5}><Spinner /></Box> : null;
 
   // if (!postLoading && normPost !== undefined && !commentsLoading) {
-    postDiv = <PostDetailsCard 
-      post={normPost} 
-      forum={normForum}
-      postLoading={postLoading} 
-      onUpdatePost={onUpdatePost}
-      onDeletePost={onDeletePost}
-      onCreatePostVote={onCreatePostVote}
-      createPostVoteError={createPostVoteError}
-      createPostVoteLoading={createPostVoteLoading}
-      onUpdatePostVote={onUpdatePostVote}
-      updatePostVoteError={updatePostVoteError}
-      updatePostVoteLoading={updatePostVoteLoading}
-      onDeletePostVote={onDeletePostVote}
-      deletePostVoteError={deletePostVoteError}
-      deletePostVoteLoading={deletePostVoteLoading}
-      onCreateSavedPost={onCreateSavedPost}
-      createSavedPostError={createSavedPostError}
-      createSavedPostLoading={createSavedPostLoading}
-      onDeleteSavedPost={onDeleteSavedPost}
-      deleteSavedPostError={deleteSavedPostError}
-      deleteSavedPostLoading={deleteSavedPostLoading}
-      comments={comments} 
-      commentsLoading={commentsLoading}
-      onCreateComment={onCreateComment}
-      createCommentError={createCommentError}
-      createCommentLoading={createCommentLoading}
-      onDeleteComment={onDeleteComment}
-      isAuthenticated={isAuthenticated}
-      username={username}
-    />
   // }
+
+//  {normPost !== undefined && normPost.comments !== undefined ? <Button onClick={() => onSetCommentsSort(normPost.id, normPost.comments, "smqtai")}>click</Button> : null}
+
   
   if (!commentsLoading && normPost !== undefined && normPost.comments !== undefined) {
     commentsDiv = normPost.comments.map(id => 
@@ -197,25 +170,71 @@ const Post = (props) => {
   }
 
   return (
-    <Page className={classes.root} title={post ? post.title : "Discussion Board"}>
+    <Page title={post ? post.title : "Discussion Board"}>
       <Grid 
         container
-        spacing={10}
         direction="row"
-        alignItems="flex-start"
+        justify="center"
       >  
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end" >
-          <Grid item xs={12} md={10} className={classes.mainGrid}>
-            {/* {normPost !== undefined && normPost.comments !== undefined ? <Button onClick={() => onSetCommentsSort(normPost.id, normPost.comments, "smqtai")}>click</Button> : null} */}
-            {postDiv}
+        <Grid 
+          container 
+          item 
+          xs={11} 
+          md={6} 
+          spacing={2}
+          justify="flex-end"
+        >
+          <Grid 
+            item 
+            xs={12} 
+            md={10} 
+            
+          >
+            <PostDetailsCard 
+              post={normPost} 
+              forum={normForum}
+              postLoading={postLoading} 
+              onUpdatePost={onUpdatePost}
+              onDeletePost={onDeletePost}
+              onCreatePostVote={onCreatePostVote}
+              createPostVoteError={createPostVoteError}
+              createPostVoteLoading={createPostVoteLoading}
+              onUpdatePostVote={onUpdatePostVote}
+              updatePostVoteError={updatePostVoteError}
+              updatePostVoteLoading={updatePostVoteLoading}
+              onDeletePostVote={onDeletePostVote}
+              deletePostVoteError={deletePostVoteError}
+              deletePostVoteLoading={deletePostVoteLoading}
+              onCreateSavedPost={onCreateSavedPost}
+              createSavedPostError={createSavedPostError}
+              createSavedPostLoading={createSavedPostLoading}
+              onDeleteSavedPost={onDeleteSavedPost}
+              deleteSavedPostError={deleteSavedPostError}
+              deleteSavedPostLoading={deleteSavedPostLoading}
+              comments={comments} 
+              commentsLoading={commentsLoading}
+              onCreateComment={onCreateComment}
+              createCommentError={createCommentError}
+              createCommentLoading={createCommentLoading}
+              onDeleteComment={onDeleteComment}
+              isAuthenticated={isAuthenticated}
+              username={username}
+            />
+            <div className={classes.mainGrid}>
+
             {commentsDiv}
+            </div>
           </Grid>
         </Grid>
-        
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start" >
-          <Grid item md={10}>
-            <PostForumCard forum={normForum}  />
-          </Grid>
+        <Grid 
+          container 
+          item 
+          xs={12} 
+          md={3} 
+          spacing={2} 
+          justify="center" 
+        >
+          <PostForumCard forum={normForum}  />
         </Grid>
       </Grid>
     </Page>

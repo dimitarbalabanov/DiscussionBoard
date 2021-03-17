@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-export function toRelativeTime(date) {
+export const toRelativeTime = date => {
   return moment.utc(date).local().fromNow();
 }
 
-export function toComplexTime(date) {
+export const toComplexTime = date => {
   return moment.utc(date).local().format('MMMM Do YYYY, h:mm:ss a');
 }

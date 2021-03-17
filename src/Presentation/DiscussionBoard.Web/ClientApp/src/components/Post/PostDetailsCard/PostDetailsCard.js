@@ -21,18 +21,12 @@ import { CircularProgress } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-  },
-  statsItem: {
-    alignItems: 'center',
-    display: 'flex',
-    margin: theme.spacing(1)
+    backgroundColor: theme.palette.common.white,
+
   },
   statsIcon: {
     marginRight: theme.spacing(1),
     fontSize: "18px"
-  },
-  iconColor: {
-    color: theme.palette.text.secondary,
   },
   margin: {
     marginRight: theme.spacing(1)
@@ -41,15 +35,12 @@ const useStyles = makeStyles((theme) => ({
     height: 140,
     paddingTop: '70.25%',
   },
-  divider: {
-    marginBottom: theme.spacing(2)
-  },
   icon2: {
     color: theme.palette.text.secondary,
     fontSize: '60px'
   },
   voting: {
-    backgroundColor: theme.palette.primary.main 
+    backgroundColor: '#F8F8F8'
   }
 }));
 
@@ -93,26 +84,28 @@ const PostDetailsCard = props => {
   } = props;
 
   return (
-  <Box elevation={0} className={classes.card}>
+  <Box className={classes.card}>
     {!postLoading && post !== undefined ?
     <React.Fragment>
-      <Voting 
-        className={classes.voting}
-        id={post.id}
-        voteType={post.voteType}
-        voteId={post.voteId}
-        votesScore={post.votesScore}
-        onCreateVote={onCreatePostVote}
-        createVoteLoading={createPostVoteLoading}
-        createVoteError={createPostVoteError}
-        onUpdateVote={onUpdatePostVote}
-        updateVoteError={updatePostVoteError}
-        updateVoteLoading={updatePostVoteLoading}
-        onDeleteVote={onDeletePostVote}
-        deleteVoteError={deletePostVoteError}
-        deleteVoteLoading={deletePostVoteLoading}
-        isAuthenticated={isAuthenticated}
-      />
+      <Box className={classes.voting}>
+        <Voting 
+          className={classes.voting}
+          id={post.id}
+          voteType={post.voteType}
+          voteId={post.voteId}
+          votesScore={post.votesScore}
+          onCreateVote={onCreatePostVote}
+          createVoteLoading={createPostVoteLoading}
+          createVoteError={createPostVoteError}
+          onUpdateVote={onUpdatePostVote}
+          updateVoteError={updatePostVoteError}
+          updateVoteLoading={updatePostVoteLoading}
+          onDeleteVote={onDeletePostVote}
+          deleteVoteError={deletePostVoteError}
+          deleteVoteLoading={deletePostVoteLoading}
+          isAuthenticated={isAuthenticated}
+        />
+      </Box>
       <Box>
       <Grid item>
         <PostFirstLine 
@@ -123,11 +116,9 @@ const PostDetailsCard = props => {
         {showUpdateForm ? 
           <EditPost onClose={handleClose} id={post.id} title={post.title} content={post.content} onUpdatePost={onUpdatePost} /> 
         : <React.Fragment>
-            <Grid className={classes.statsItem} item >
               <Typography component="h2" variant="h4">
                 {post.title}
               </Typography>
-            </Grid>
             {post.mediaUrl &&
               <CardMedia
                 className={classes.media}
@@ -135,14 +126,12 @@ const PostDetailsCard = props => {
                 image={image}
                 title={post.title.substring(0, 10)}
               />}
-            <Grid className={classes.statsItem} item>
               <Typography>
                 {post.content}
               </Typography>
-            </Grid>
           </React.Fragment>
         }
-
+        
         <Grid className={classes.statsItem} item >
           <CommentIcon className={classes.statsIcon} color="primary"/>
           <Typography className={classes.margin} color="textSecondary" display="inline" variant="body2" >

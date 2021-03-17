@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField'
-import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import pic from '../../assets/images/pic.png'; 
 
 const useStyles = makeStyles((theme) => ({

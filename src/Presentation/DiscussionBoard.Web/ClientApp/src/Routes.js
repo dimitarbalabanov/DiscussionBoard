@@ -4,7 +4,6 @@ import NotFound from './components/NotFound/NotFound';
 import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
 import Home2 from './containers/Home/Home2';
-import Home3 from './containers/Home/Home3';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
 import CreatePost from './containers/CreatePost/CreatePost';

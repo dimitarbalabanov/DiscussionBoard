@@ -27,7 +27,6 @@ const GreyButton = props => {
 
   return (
     <Button className={classes.button} onClick={onClick} size="small" startIcon={icon}>
-      {/* <div className={classes.icon}>{icon}</div> */}
       <Typography className={classes.title} color="textSecondary" variant="body2">
         {title}
       </Typography>

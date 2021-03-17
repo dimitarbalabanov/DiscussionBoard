@@ -37,19 +37,41 @@ const Forum = props => {
   
   const forum = forumsById[forumId] !== undefined ? forumsById[forumId]: null;
   useEffect(() => {
-    onFetchPosts(forumId);
     onFetchForum(forumId);
-  }, [onFetchForum, onFetchPosts, forumId]);
+  }, [onFetchForum, forumId]);
+  
+  useEffect(() => {
+    if(allPostIds.length < 10) {
+      onFetchPosts(forumId);
+      }
+    }, [onFetchPosts]);
 
   return (
     <Page title={forum ? forum.title : "Discussion Board"}>
-      <Grid container direction="row" alignItems="flex-start">
-        <ForumTitleCard forum={forum}/>
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+      <ForumTitleCard forum={forum}/>
+      <Grid 
+        container 
+        direction="row" 
+        justify="center"
+      >
+        <Grid 
+          container 
+          item 
+          xs={12} 
+          md={6} 
+          spacing={2} 
+          justify="flex-end"
+        >
           <PostsSorting />
-          <PostsList posts={posts} loading={postsLoading} error={postsError}/>
+          <PostsList posts={postsById} allIds={allPostIds} loading={postsLoading} error={postsError}/>
         </Grid>
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
+        <Grid 
+          container 
+          item 
+          xs={12} 
+          md={3} 
+          spacing={2}
+          justify="flex-start">
           <Grid item md={10} className={classes.forumGrid}>
             <AboutForumCard forum={forum} loading={forumLoading} />
           </Grid>

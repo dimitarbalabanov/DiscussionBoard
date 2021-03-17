@@ -2,30 +2,22 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
-import AnotherSpinner from '../../Spinner/AnotherSpinner';
-import avatar from '../../../assets/images/consequatureaqueaut.png'
+import Spinner from '../../Spinner/Spinner';
+import avatar from '../../../assets/images/leaves.jpg'
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    display: 'flex',
+    backgroundColor: theme.palette.common.white
     // borderStyle: "solid",
     // borderWidth: "1px 1px 1px 1px",
     // borderColor: theme.palette.primary.main,
-  },
-  cardDetails: {
-    flex: 1,
-  },
-  cardMedia: {
-    width: 160,
   },
   statsItem: {
     alignItems: 'center',
@@ -40,17 +32,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     fontWeight: 'bold'
   },
-  text: {
-    color: theme.palette.background.default
-  },
   margin: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
   avatar: {
-    height: 150,
-    width: 150,
-    margin: 'auto'
+    height: 100,
+    width: 100,
+    margin: 'auto',
+    marginTop: theme.spacing(2)
   },
   header: {
     backgroundColor: theme.palette.primary.main,
@@ -60,7 +50,13 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(1),
   },
   button: {
+    //textTransform: 'none',
+    borderRadius: '50px',
     color: theme.palette.background.default,
+
+    '&:hover': {
+      backgroundColor: theme.palette.primary.secondary,
+    },
   },
 }));
 
@@ -73,58 +69,59 @@ const PostForumCard = props => {
   } = props;
   
   return (
-    <Card className={classes.card}>
-      <div className={classes.cardDetails}>
-      <Typography className={classes.header} component="h3" variant="h5">
-              {"Forum"}
-          </Typography>
-          { loading || !forum ? <AnotherSpinner /> :
-        <CardContent>
-        <Avatar
-          className={classes.avatar}
-          src={avatar}
-          />
-        <Typography className={classes.title} color="textSecondary" component="h3" variant="h2" align="center">
-          {forum.title}
+    <Grid item md={10}>
+      <div className={classes.card}>
+        <Typography className={classes.header} component="h3" variant="h5">
+          {"Forum"}
         </Typography>
-          <Divider className={classes.margin}/>
-          <Typography className={classes.title} color="textSecondary" variant="h5" align="center"> 
-            {forum.subtitle}
-          </Typography>
-          <Divider className={classes.margin}/>
-          <Typography className={classes.title} color="textSecondary" variant="body2" align="center"> 
-            {forum.description}
-          </Typography>
-          <Divider className={classes.margin}/>
-          <Grid  container justify="center" spacing={2} >
-            <Grid className={classes.statsItem} item>
-              <ChatBubbleIcon className={classes.statsIcon} color="primary" />
-              <Typography color="textSecondary" display="inline" variant="body2" align="center">
-                {`${forum.postsCount} Posts`}
-              </Typography>
+        {loading || !forum ? 
+          <Spinner />
+        :
+          <React.Fragment>
+            <Avatar
+              className={classes.avatar}
+              src={avatar}
+            />
+            <Typography className={classes.title} color="textSecondary" component="h3" variant="h2" align="center">
+              {forum.title}
+            </Typography>
+            <Divider className={classes.margin}/>
+            <Typography className={classes.title} color="textSecondary" variant="h5" align="center"> 
+              {forum.subtitle}
+            </Typography>
+            <Divider className={classes.margin}/>
+            <Typography className={classes.title} color="textSecondary" variant="body2" align="center"> 
+              {forum.description}
+            </Typography>
+            <Divider className={classes.margin}/>
+            <Grid  container justify="center" spacing={2} >
+              <Grid className={classes.statsItem} item>
+                <ChatBubbleIcon className={classes.statsIcon} color="primary" />
+                <Typography color="textSecondary"  variant="body2" align="center">
+                  {`${forum.postsCount} Posts`}
+                </Typography>
+              </Grid>
+              <Grid className={classes.statsItem} item>
+                <CommentIcon className={classes.statsIcon} color="primary" />
+                <Typography color="textSecondary"  variant="body2" >
+                  {`120 Comments`}
+                </Typography>
+              </Grid>
+              <Grid className={classes.statsItem} item>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  startIcon={<NoteAddIcon />}
+                >
+                  Post in {forum.title}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid className={classes.statsItem} item>
-              <CommentIcon className={classes.statsIcon} color="primary" />
-              <Typography color="textSecondary" display="inline" variant="body2" >
-                {`120 Comments`}
-              </Typography>
-            </Grid>
-            <Grid className={classes.statsItem} item>
-              <Button
-                size="small"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<NoteAddIcon />}
-              >
-                Post in {forum.title}
-              </Button>
-            </Grid>
-          </Grid>
-        </CardContent>
-        }
+          </React.Fragment>}
       </div>
-    </Card>
+    </Grid>
   );
 }
 

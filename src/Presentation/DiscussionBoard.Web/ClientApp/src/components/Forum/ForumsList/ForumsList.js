@@ -1,6 +1,5 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import ForumCard from '../ForumCard/ForumCard';
 import SmallForumCard from '../ForumCard/SmallForumCard';
 import Spinner from '../../Spinner/AnotherSpinner';
 

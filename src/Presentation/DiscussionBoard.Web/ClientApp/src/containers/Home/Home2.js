@@ -15,7 +15,6 @@ import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
-import CreatePostButton2 from '../../components/CreatePostButton/CreatePostButton2';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
 
@@ -52,33 +51,23 @@ const Home = props => {
 
   
   useEffect(() => {
-    // if(posts.length < 1) {
+    if(allPostIds.length < 10) {
       onFetchPosts(sort, top);
-      // }
+      }
     }, [onFetchPosts]);
     
-    useEffect(() => {
-      // if (forums.length < 1) {
-        onFetchForums();
-        // }
-      }, [onFetchForums]);
+  useEffect(() => {
+     if (allForumIds.length < 10) {
+      onFetchForums();
+       }
+    }, [onFetchForums]);
       
-      function isEmpty(obj) {
-        return Object.keys(obj).length === 0;
-    }
-
-      // console.log(postsById);
-      // console.log(forumsById);
-  
-
   const observeBorder = useCallback(
     node => {
       if (node !== null) {
-        // console.log("created");
         new IntersectionObserver(
           entries => {
             entries.forEach(en => {
-              //console.log(en);
               if (en.intersectionRatio === 1) {
                 console.log("prashtam zaqvka s kursor" + cursor)
                 setTimeout(() => onFetchPosts(sort, top, cursor), 500);
@@ -96,14 +85,14 @@ const Home = props => {
     <Page title="Discussion Board">
       <Grid 
         container
-        // spacing={10}
         direction="row"
-        // alignItems="flex-start"
+        justify="center"
       > 
         <Grid 
           container
-          item xs={12}
-          md={8} 
+          item 
+          xs={12}
+          md={6} 
           spacing={2} 
           justify="flex-end"
         >
@@ -127,9 +116,16 @@ const Home = props => {
             </Grid>}
           {/* {cursor && <div data-testid="bottom-border" ref={observeBorder} />} */}
         </Grid>
-        <Grid className={classes.forumGrid} container item xs={12} md={4} spacing={2} justify="flex-start">
+        <Grid 
+          className={classes.forumGrid} 
+          container 
+          item 
+          xs={12} 
+          md={3} 
+          spacing={2} 
+          justify="flex-start"
+        >
           <AllForumsCard forums={forumsById} allIds={allForumIds} loading={forumsLoading}/>
-          {/* <CreatePostButton2 /> */}
         </Grid>
       </Grid>
     </Page>

@@ -10,6 +10,7 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import Logo from '../../../components/Logo/Logo';
 import TopBar from '../TopBar/TopBar';
 import MobileBar from '../MobileBar/MobileBar';
+import { AppBar } from '@material-ui/core';
 
 const logoutRoute = {
   title: 'LOGOUT',
@@ -38,7 +39,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     backgroundColor: theme.palette.common.white,
     justifyContent: 'space-between',
-    marginBottom: theme.spacing(3)
+  },
+  appbar: {
+    marginBottom: theme.spacing(3),
+    boxShadow: 'none'
+    //height: '50px'
   }
 }));
 
@@ -61,7 +66,8 @@ const Header = (props) => {
   
   return (
     <React.Fragment>
-      <Toolbar className={classes.toolbar}>
+      <AppBar className={classes.appbar} position="sticky" color="primary">
+      <Toolbar className={classes.toolbar} variant="dense">
         <RouterLink to="/">
           <Logo />
         </RouterLink>
@@ -72,6 +78,7 @@ const Header = (props) => {
           <MobileBar routes={routes} />
         </Hidden>
       </Toolbar>
+      </AppBar>
     </React.Fragment>
   );
 }

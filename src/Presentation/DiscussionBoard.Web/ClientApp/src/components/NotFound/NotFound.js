@@ -1,12 +1,9 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import HomeIcon from '@material-ui/icons/Home';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import Page from '../Page/Page';
 
@@ -41,20 +38,6 @@ const NotFound = () => {
           <SentimentVeryDissatisfiedIcon className={classes.icon}/>
           <Typography  className={classes.text} align="center" color="primary" variant="h2" >
             Sorry, the page you are looking for isn’t here
-          </Typography>
-          <Typography align="center" color="textPrimary" variant="subtitle2" >
-            Try using the navigation or go to 
-          <Button
-            className={classes.button}
-            component={RouterLink}
-            to='/'
-            color="textPrimary"
-            type="submit" 
-            size="small"
-            startIcon={<HomeIcon />}
-          >
-            Home
-          </Button>
           </Typography>
         </Box>
       </Container>

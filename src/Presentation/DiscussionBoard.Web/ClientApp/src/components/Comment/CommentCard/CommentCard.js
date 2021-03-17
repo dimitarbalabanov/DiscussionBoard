@@ -8,7 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteButton from '../../AUI/DeleteButton';
 import EditButton from '../../AUI/EditButton';
 import CreatorAndCreatedOn from '../../AUI/CreatorAndCreatedOn';
-import Voting from '../../Voting/Voting';
+import Voting from '../../Voting/Voting'; 
+
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -64,15 +65,19 @@ const CommentCard = props => {
   } = props;
 
   return (
-    comment !== undefined ? 
+    comment === undefined ? null : 
     <div className={classes.card}>
       {deleteCommentLoading && deleteCommentId === comment.id ?
-      <Box ml={10} mt={2} mb={2}><CircularProgress size={50}/></Box> :
-      <React.Fragment>
-        {createVoteLoading || updateVoteLoading || deleteVoteLoading ? 
-          <Box ml={1} mr={0.5} mt={4} mb={2}><CircularProgress size={15}/></Box> 
-        : 
-        <Voting 
+        <Box ml={10} mt={2} mb={2}>
+          <CircularProgress size={50}/>
+        </Box> 
+      : <React.Fragment>
+          {createVoteLoading || updateVoteLoading || deleteVoteLoading ? 
+            <Box ml={1} mr={0.5} mt={4} mb={2}>
+              <CircularProgress size={15}/>
+            </Box> 
+            
+          : <Voting 
             className={classes.voting}
             id={comment.id}
             voteType={comment.voteType}
@@ -88,39 +93,34 @@ const CommentCard = props => {
             deleteVoteError={deleteVoteError}
             deleteVoteLoading={deleteVoteLoading}
             isAuthenticated={isAuthenticated}
-          />
-          }
-      <div>
-        <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
-        {showUpdateForm 
-          ? <EditComment 
-              onClose={handleClose}
-              commentId={comment.id}
-              content={comment.content}
-              onUpdateComment={onUpdateComment}
-              updateCommentLoading={updateCommentLoading}
-            /> 
-          : 
-            <Grid className={classes.margin} item >
-              <Typography>
-                {updateCommentLoading && updateCommentId === comment.id 
-                  ? <CircularProgress /> : comment.content}
-              </Typography>
-            </Grid>}
-        {isAuthenticated 
-          ? 
-            <Grid className={classes.margin} item >
-              <EditButton show={showUpdateForm} onOpen={handleOpen} onClose={handleClose}/>
-              {deleteCommentLoading && deleteCommentId === comment.id 
-                  ? <CircularProgress size={20} className={classes.circ}/> :  <DeleteButton id={comment.id} parentId={post.id} onDelete={onDeleteComment} />}
-            </Grid> 
-          : 
-            null}
-      </div>
-            </React.Fragment>
-}
+            />}
+          <div>
+            <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
+            {showUpdateForm ? 
+              <EditComment 
+                onClose={handleClose}
+                commentId={comment.id}
+                content={comment.content}
+                onUpdateComment={onUpdateComment}
+                updateCommentLoading={updateCommentLoading}
+              /> 
+            : <Grid className={classes.margin} item >
+                <Typography>
+                  {updateCommentLoading && updateCommentId === comment.id 
+                    ? <CircularProgress /> : comment.content}
+                </Typography>
+              </Grid>}
+            {isAuthenticated ? 
+              <Grid className={classes.margin} item >
+                <EditButton show={showUpdateForm} onOpen={handleOpen} onClose={handleClose}/>
+                {deleteCommentLoading && deleteCommentId === comment.id ? 
+                  <CircularProgress size={20} className={classes.circ}/>
+                : <DeleteButton id={comment.id} parentId={post.id} onDelete={onDeleteComment} />}
+              </Grid> 
+              : null}
+          </div>
+        </React.Fragment>}
     </div>
-    : null
   );
 }
 

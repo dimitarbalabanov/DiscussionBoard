@@ -28,7 +28,7 @@ const DeleteButton = props => {
         <GreyButton title="Yes" icon={<DeleteIcon />} onClick={() => handleDelete()}/> 
       </React.Fragment>
     :
-      <GreyButton title="Delete" icon={<DeleteIcon color="another"/>} onClick={() => setShowDeleteConfirm(true)}/> 
+      <GreyButton title="Delete" icon={<DeleteIcon />} onClick={() => setShowDeleteConfirm(true)}/> 
   );
 }
 

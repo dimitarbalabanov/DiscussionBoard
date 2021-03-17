@@ -10,9 +10,8 @@ const PostsList = props => {
     //error
    } = props;
 
-   function isEmpty(obj) {
-    return Object.keys(obj).length === 0;
-  }
+   
+
   console.log(posts);
   console.log(allIds);
 

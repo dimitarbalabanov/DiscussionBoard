@@ -94,7 +94,7 @@ const AllForumsCard = props => {
           </Typography>
           <CardContent>
           {loading ? <Spinner /> : allIds.map(id => 
-            <Box display='flex' alignItems="center" justifyContent='space-between' mb={1}>
+            <Box display='flex' alignItems="center" justifyContent='space-between' mb={1} key={id}>
               <Box display='flex' alignItems="center">
                 <Box> 
                   <Avatar

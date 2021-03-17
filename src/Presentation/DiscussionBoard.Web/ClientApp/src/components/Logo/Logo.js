@@ -9,7 +9,7 @@ const Logo = () => {
       <img 
         src={pic}
         //height="auto"
-        width="40px"
+        width="35px"
         alt="Discussion Board" 
         />
       <img 
