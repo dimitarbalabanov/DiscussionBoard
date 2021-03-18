@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import PostsList from '../../components/Post/PostsList/PostsList';
-import { fetchForumById, fetchPosts } from '../../store/actions';
+import { fetchForumById, fetchPosts, setForumSort, setForumTop } from '../../store/actions';
 import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
+import PostCard from '../../components/Post/PostCard/PostCard';
 
 const useStyles = makeStyles((theme) => ({
   forumGrid: {
@@ -21,30 +22,52 @@ const Forum = props => {
   const { forumId } = props.match.params;
 
   const { 
-    //forum, 
     forumLoading, 
-    //forumError,
-    posts,
     postsLoading,
-    postsError,
+    postsById,
+    forumsById,
     onFetchPosts,
     onFetchForum,
-    postsById,
-    allPostIds,
-    forumsById,
-    allForumIds
+    onSetForumSort,
+    onSetForumTop
   } = props;
   
-  const forum = forumsById[forumId] !== undefined ? forumsById[forumId]: null;
+  const forum = forumsById[forumId] !== undefined ? forumsById[forumId] : null;
+
   useEffect(() => {
-    onFetchForum(forumId);
+    if (!forum || (forum && forum.description === undefined)) {
+      onFetchForum(forumId);
+    }
   }, [onFetchForum, forumId]);
   
   useEffect(() => {
-    if(allPostIds.length < 10) {
-      onFetchPosts(forumId);
+    if (forum && forum.posts !== undefined && forum.posts.length === 0) {
+      onFetchPosts(forum.sort, forum.top, forum.id, forum.cursor);
+    }
+  }, [onFetchPosts, forum]);
+
+  const observeBorder = useCallback(
+    node => {
+      if (node !== null && forum !== null) {
+        console.log("ima node")
+        new IntersectionObserver(
+          entries => {
+            entries.forEach(en => {
+          console.log(en)
+
+              if (en.intersectionRatio === 1) {
+                console.log("prashtam zaqvka s kursor" + forum.cursor)
+                setTimeout(() => onFetchPosts(forum.sort, forum.top, forum.id, forum.cursor), 500);
+              }
+            });
+          },
+          { threshold: 1 }
+        ).observe(node);
       }
-    }, [onFetchPosts]);
+    },
+    [onFetchPosts, forum]
+  );
+
 
   return (
     <Page title={forum ? forum.title : "Discussion Board"}>
@@ -62,8 +85,25 @@ const Forum = props => {
           spacing={2} 
           justify="flex-end"
         >
-          <PostsSorting />
-          <PostsList posts={postsById} allIds={allPostIds} loading={postsLoading} error={postsError}/>
+          {forum !== null &&
+          <PostsSorting 
+            forumId={forum.id}
+            sort={forum.sort}
+            top={forum.top} 
+            onSetSort={onSetForumSort} 
+            onSetTop={onSetForumTop}
+          />
+          }
+          <React.Fragment>
+          {forum !== null && forum.posts !== undefined && !postsLoading ?
+            forum.posts.map((id) => (
+              <Grid item xs={12} md={10} key={id}>
+                <PostCard post={postsById[id]} loading={postsLoading} />
+              </Grid>
+            )) : null
+          }
+          </React.Fragment>
+          {forum && forum.cursor && <div data-testid="bottom-border" ref={observeBorder} />}
         </Grid>
         <Grid 
           container 
@@ -88,6 +128,7 @@ const mapStateToProps = state => {
     forumsById: state.forums2.byId,
     allForumIds: state.forums2.allIds,
 
+
     posts: state.posts.posts,
     postsLoading: state.posts.loading,
     postsError: state.posts.error,
@@ -100,7 +141,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onFetchPosts: (forumId) => dispatch(fetchPosts(null, null, forumId))
+    onFetchPosts: (sort, top, forumId, cursor) => dispatch(fetchPosts(sort, top, forumId, cursor)),
+    onSetForumSort: (forumId, sort) => dispatch(setForumSort(forumId, sort)),
+    onSetForumTop: (forumId, top) => dispatch(setForumTop(forumId, top)),
   };
 };
 

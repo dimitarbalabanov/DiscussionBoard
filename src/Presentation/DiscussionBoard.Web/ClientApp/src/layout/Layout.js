@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import {makeStyles} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Header from './components/Header/Header';
 
 const useStyles = 

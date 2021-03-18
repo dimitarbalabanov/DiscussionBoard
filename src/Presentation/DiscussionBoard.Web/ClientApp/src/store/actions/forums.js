@@ -1,10 +1,11 @@
 import {
   REQUEST_FORUMS_START,
   REQUEST_FORUMS_SUCCESS,
-  REQUEST_FORUMS_FAILURE
+  REQUEST_FORUMS_FAILURE,
+  SET_FORUM_SORT,
+  SET_FORUM_TOP
 } from './actionTypes';
 import { getForums } from '../../api/forumsService';
-import { showSnackbar } from './snackbar';
 
 export const fetchForums = () => {
   return {
@@ -16,4 +17,20 @@ export const fetchForums = () => {
     callApi: () => getForums(),
     effect() { }
   }
+};
+
+export const setForumSort = (forumId, sort) => {
+  return {
+    type: SET_FORUM_SORT,
+    sort: sort,
+    forumId: forumId
+  };
+};
+
+export const setForumTop = (forumId, top) => {
+  return {
+    type: SET_FORUM_TOP,
+    top: top,
+    forumId: forumId
+  };
 };

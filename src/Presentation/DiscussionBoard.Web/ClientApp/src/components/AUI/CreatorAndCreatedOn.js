@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Tooltip } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import {toRelativeTime, toComplexTime} from '../../utils/dateConvertor';
@@ -10,12 +10,34 @@ const useStyles = makeStyles((theme) => ({
   title: {
     color: "#8F9394",
     // fontWeight: 'bold'
+  },
+  createdOn: {
+    '&:hover': {
+      textDecoration: 'underline',
+      cursor: 'pointer'
+    },
   }
 }));
 
+const useStylesBootstrap = makeStyles((theme) => ({
+  arrow: {
+    color: theme.palette.common.black,
+  },
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+    marginBottom: theme.spacing(0.7)
+  },
+}));
+
+function BootstrapTooltip(props) {
+  const classes = useStylesBootstrap();
+
+  return <Tooltip arrow classes={classes} {...props} />;
+}
+
 const CreatorAndCreatedOn = props => {
   const classes = useStyles();
-  const [show, setShow] = React.useState(false);
+  //const [show, setShow] = React.useState(false);
 
   const {
     creatorUserName,
@@ -33,14 +55,16 @@ const CreatorAndCreatedOn = props => {
         <span className={classes.title}>
             {'u/' + creatorUserName + ' '}
         </span>
-        
-        <span 
+        <BootstrapTooltip title={toComplexTime(createdOn)} arrow placement="top">
+            <span className={classes.createdOn}>{toRelativeTime(createdOn)}</span>
+          </BootstrapTooltip> 
+        </Typography>
+        {/* <span 
           onMouseEnter={() => setShow(true)}
           onMouseLeave={() => setShow(false)}
         >
           {show ? toComplexTime(createdOn) : toRelativeTime(createdOn)}
-        </span>
-      </Typography>
+        </span> */}
     </Box>
   );
 }

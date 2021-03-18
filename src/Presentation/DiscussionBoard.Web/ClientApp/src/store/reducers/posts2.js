@@ -69,7 +69,7 @@ const requestPostsSuccess = (state, action) => {
     ...state, 
     ...transformed
   };
-  }
+}
 
 
 function requestPostSuccess(state, action) {
@@ -177,55 +177,30 @@ const deleteSavedPostSuccess = (state, action) => {
 
 function postsById(state = {}, action) {
   switch (action.type) {
-    case REQUEST_POSTS_SUCCESS:
-      return requestPostsSuccess(state, action);
+    case REQUEST_POSTS_SUCCESS: return requestPostsSuccess(state, action);
+    case REQUEST_POST_SUCCESS: return requestPostSuccess(state, action);
+    case REQUEST_COMMENTS_SUCCESS: return requestCommentsSuccess(state, action);
+    case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
+    case DELETE_COMMENT_SUCCESS: return deleteCommentSuccess(state, action);
+    case UPDATE_POST_SUCCESS: return updatePostSuccess(state, action);
+    case DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
+    case CREATE_POSTVOTE_SUCCESS: return createPostVoteSuccess(state, action);
+    case UPDATE_POSTVOTE_SUCCESS: return updatePostVoteSuccess(state, action);
+    case DELETE_POSTVOTE_SUCCESS: return deletePostVoteSuccess(state, action);
+    case CREATE_SAVEDPOST_SUCCESS: return createSavedPostSuccess(state, action);
+    case DELETE_SAVEDPOST_SUCCESS:  return deleteSavedPostSuccess(state, action);
+    case SET_COMMENTS_SORT:
+      const sortPostId = action.postId;
+      const sort = action.sort;
 
-    case REQUEST_POST_SUCCESS:
-      return requestPostSuccess(state, action);
-
-    case REQUEST_COMMENTS_SUCCESS:
-      return requestCommentsSuccess(state, action);
-
-    case CREATE_COMMENT_SUCCESS:
-      return createCommentSuccess(state, action);
-
-    case DELETE_COMMENT_SUCCESS:
-      return deleteCommentSuccess(state, action);
-        
-    case UPDATE_POST_SUCCESS:
-      return updatePostSuccess(state, action);
-      
-    case DELETE_POST_SUCCESS: 
-      return deletePostSuccess(state, action);
-
-      case CREATE_POSTVOTE_SUCCESS:
-        return createPostVoteSuccess(state, action);
-
-      case UPDATE_POSTVOTE_SUCCESS:
-        return updatePostVoteSuccess(state, action);
-
-      case DELETE_POSTVOTE_SUCCESS:
-        return deletePostVoteSuccess(state, action);
-
-      case CREATE_SAVEDPOST_SUCCESS:
-        return createSavedPostSuccess(state, action);
-
-      case DELETE_SAVEDPOST_SUCCESS: 
-        return deleteSavedPostSuccess(state, action);
-
-      case SET_COMMENTS_SORT:
-        const sortPostId = action.postId;
-        const sort = action.sort;
-
-        return {
-          ...state,
-          [sortPostId]: {
-            ...state[sortPostId],
-            comments: [],
-            sort: sort
-          }
+      return {
+        ...state,
+        [sortPostId]: {
+          ...state[sortPostId],
+          comments: [],
+          sort: sort
         }
-
+      };
     case SET_COMMENTS_TOP:
       const topPostId = action.postId;
         const top = action.sort;
@@ -237,10 +212,9 @@ function postsById(state = {}, action) {
             comments: [],
             top: top
           }
-        }
-
+        };
     default:
-      return state
+      return state;
   }
 }
 

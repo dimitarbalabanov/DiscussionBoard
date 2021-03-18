@@ -66,7 +66,7 @@ const ForumTitleCard = props => {
                 {forum.title}
             </Typography>
           </React.Fragment>
-        : <CircularProgress className={classes.grid} size={90}/>}
+        : <CircularProgress className={classes.grid} size={64}/>}
       </Box> 
     </React.Fragment> 
   );

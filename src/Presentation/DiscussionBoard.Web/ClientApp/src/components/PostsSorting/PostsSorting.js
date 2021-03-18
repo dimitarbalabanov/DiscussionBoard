@@ -5,19 +5,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Paper from '@material-ui/core/Paper';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import useTraceUpdate from '../../hooks/useTraceUpdate';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    display: 'flex'
-  },
   statsItem: {
     alignItems: 'center',
     display: 'flex',
-    margin: theme.spacing(0)
+    margin: theme.spacing(0),
+    backgroundColor: theme.palette.common.white
   },
   formControl: {
     marginTop: theme.spacing(1),
@@ -40,10 +36,10 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
 }))(ToggleButtonGroup);
 
 const PostsSorting = props => {
-  useTraceUpdate(props)
   const classes = useStyles();
 
   const {
+    forumId,
     sort,
     top,
     onSetSort,
@@ -52,58 +48,54 @@ const PostsSorting = props => {
 
   const handleSelected = (event, newSelected) => {
     if (newSelected !== null) {
-      onSetSort(newSelected);
-      if (newSelected === 3) {
-        onSetTop(4);
-      }
-      else {
-        onSetTop('');
-      }
+      onSetSort(forumId, newSelected);
+      // if (newSelected === 3) {
+      //   onSetTop(forumId, 4);
+      // }
+      // else {
+      //   onSetTop(forumId, '');
+      // }
     }
   };
   
   const handleTopClick = (event) => {
-    onSetTop(event.target.value);
+    // onSetTop(forumId, event.target.value);
   }
 
   return (
     <Grid item xs={12} md={10}>
-      <Grid item>
-        <Paper elevation={0}>
-          <Grid className={classes.statsItem} item >
-            <StyledToggleButtonGroup
-              value={sort}
-              exclusive
-              size="small"
-              onChange={handleSelected}
+      <div className={classes.statsItem}>
+        <StyledToggleButtonGroup
+          value={sort}
+          exclusive
+          size="small"
+          onChange={handleSelected}
+        >
+          <ToggleButton value={1}>
+            New
+          </ToggleButton>
+          <ToggleButton value={2}>
+            Old
+          </ToggleButton>
+          <ToggleButton value={3}>
+            Top
+          </ToggleButton>
+        </StyledToggleButtonGroup>
+        {top !== '' ?  
+          <FormControl variant="outlined" size="small" className={classes.formControl}>
+            <InputLabel>Top</InputLabel>
+            <Select
+              label="Top"
+              value={top}
+              onChange={handleTopClick}
             >
-              <ToggleButton value={1} className={classes.asdf}>
-                New
-              </ToggleButton>
-              <ToggleButton value={2}>
-                Old
-              </ToggleButton>
-              <ToggleButton value={3}>
-                Top
-              </ToggleButton>
-            </StyledToggleButtonGroup>
-            {top !== '' ?  
-              <FormControl variant="outlined" size="small" className={classes.formControl}>
-                <InputLabel>Top</InputLabel>
-                <Select
-                  label="Top"
-                  value={top}
-                  onChange={handleTopClick}
-                >
-                  <MenuItem value={4}>All time</MenuItem>
-                  <MenuItem value={1}>Today</MenuItem>
-                  <MenuItem value={2}>This week</MenuItem>
-                  <MenuItem value={3}>This month</MenuItem>
-                </Select>
-              </FormControl> : null}
-          </Grid>
-        </Paper>
-      </Grid>
+              <MenuItem value={4}>All time</MenuItem>
+              <MenuItem value={1}>Today</MenuItem>
+              <MenuItem value={2}>This week</MenuItem>
+              <MenuItem value={3}>This month</MenuItem>
+            </Select>
+          </FormControl> : null}
+      </div>
     </Grid>
   );
 }

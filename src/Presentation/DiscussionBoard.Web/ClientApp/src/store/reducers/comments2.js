@@ -95,19 +95,12 @@ const deleteCommentVoteSuccess = (state, action) => {
 
 function commentsById(state = {}, action) {
   switch (action.type) {
-    case CREATE_COMMENT_SUCCESS:
-      return createCommentSuccess(state, action);
-    case UPDATE_COMMENT_SUCCESS:
-      return updateCommentSuccess(state, action);
-    case DELETE_COMMENT_SUCCESS:
-      return deleteCommentSuccess(state, action);
-    case CREATE_COMMENTVOTE_SUCCESS:
-      return createCommentVoteSuccess(state, action);
-    case UPDATE_COMMENTVOTE_SUCCESS:
-      return updateCommentVoteSuccess(state, action);
-    case DELETE_COMMENTVOTE_SUCCESS:
-      return deleteCommentVoteSuccess(state, action);
-      
+    case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
+    case UPDATE_COMMENT_SUCCESS: return updateCommentSuccess(state, action);
+    case DELETE_COMMENT_SUCCESS: return deleteCommentSuccess(state, action);
+    case CREATE_COMMENTVOTE_SUCCESS: return createCommentVoteSuccess(state, action);
+    case UPDATE_COMMENTVOTE_SUCCESS: return updateCommentVoteSuccess(state, action);
+    case DELETE_COMMENTVOTE_SUCCESS: return deleteCommentVoteSuccess(state, action);
     case REQUEST_COMMENTS_SUCCESS:
       let transformed = {};
       action.data.data.comments.forEach(comment => transformed[comment.id] = comment);

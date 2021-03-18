@@ -37,8 +37,8 @@ const Post = (props) => {
   const { postId } = props.match.params;
 
   const {
-    forum,
-    post,
+    //forum,
+    //post,
     postLoading,
     //postError,
     onFetchPost,
@@ -93,62 +93,39 @@ const Post = (props) => {
   } = props;
   
 
-  const normPost = postsById[postId];
-  // if (normPost !== undefined) {
-  //   console.log(normPost.comments)
-  // }
-
-  // console.log(forumsById)
-  const normForum = normPost !== undefined && forumsById[normPost.forumId] !== undefined ? forumsById[normPost.forumId] : null; 
-
-  // useEffect(() => {
-  //   onFetchPost(postId);
-  //   onFetchComments(postId);
-  // }, [onFetchPost, onFetchComments, postId]);
-
-  // useEffect(() => {
-  //   if(normPost !== undefined) {
-  //     onFetchForum(normPost.forumId);
-  //   } 
-  // }, [onFetchForum, normPost]);
+  const post = postsById[postId];
+  const forum = post !== undefined && forumsById[post.forumId] !== undefined ? forumsById[post.forumId] : null; 
 
   useEffect(() => {
-    if (normPost === undefined) {
+    if (post === undefined) {
       onFetchPost(postId);
     }
-  }, [onFetchPost, normPost, postId]);
+  }, [onFetchPost, post, postId]);
 
   useEffect(() => {
-    if (normPost !== undefined && normPost.comments === undefined) {
+    if (post !== undefined && post.comments === undefined) {
       onFetchComments(postId);
     }
-  }, [onFetchComments, normPost, postId]);
+  }, [onFetchComments, post, postId]);
 
   useEffect(() => {
-    if (normPost !== undefined && forumsById[normPost.forumId] === undefined
-      || normPost !== undefined && forumsById[normPost.forumId] !== undefined && !forumsById[normPost.forumId].description) {
-      onFetchForum(normPost.forumId);
+    if (post !== undefined && forumsById[post.forumId] === undefined
+      || post !== undefined && forumsById[post.forumId] !== undefined && !forumsById[post.forumId].description) {
+      onFetchForum(post.forumId);
     }
-  }, [onFetchForum, normPost]);
+  }, [onFetchForum, post]);
 
   
   if (deletePostSuccess) {
     return <Redirect to="/" />;
   }
-  // let postDiv = <Box m={20}><Spinner /></Box>;
-  let commentsDiv = normPost !== undefined ? <Box m={5}><Spinner /></Box> : null;
 
-  // if (!postLoading && normPost !== undefined && !commentsLoading) {
-  // }
-
-//  {normPost !== undefined && normPost.comments !== undefined ? <Button onClick={() => onSetCommentsSort(normPost.id, normPost.comments, "smqtai")}>click</Button> : null}
-
-  
-  if (!commentsLoading && normPost !== undefined && normPost.comments !== undefined) {
-    commentsDiv = normPost.comments.map(id => 
+  let commentsDiv = post !== undefined ? <Box m={5}><Spinner /></Box> : null;
+  if (!commentsLoading && post !== undefined && post.comments !== undefined) {
+    commentsDiv = post.comments.map(id => 
       <CommentCard 
         key={id}
-        post={normPost}
+        post={post}
         comment={commentsById[id]}
         onDeleteComment={onDeleteComment}
         deleteCommentLoading={deleteCommentLoading}
@@ -191,8 +168,8 @@ const Post = (props) => {
             
           >
             <PostDetailsCard 
-              post={normPost} 
-              forum={normForum}
+              post={post} 
+              forum={forum}
               postLoading={postLoading} 
               onUpdatePost={onUpdatePost}
               onDeletePost={onDeletePost}
@@ -221,8 +198,7 @@ const Post = (props) => {
               username={username}
             />
             <div className={classes.mainGrid}>
-
-            {commentsDiv}
+              {commentsDiv}
             </div>
           </Grid>
         </Grid>
@@ -234,7 +210,7 @@ const Post = (props) => {
           spacing={2} 
           justify="center" 
         >
-          <PostForumCard forum={normForum}  />
+          <PostForumCard forum={forum}  />
         </Grid>
       </Grid>
     </Page>

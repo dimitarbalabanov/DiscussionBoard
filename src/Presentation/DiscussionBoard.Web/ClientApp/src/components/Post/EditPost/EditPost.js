@@ -43,7 +43,7 @@ const EditPost = props => {
   };
 
   return (
-    <Grid item xs={12} md={12} className={classes.root}>
+    <div className={classes.root}>
       <MainForm
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -78,7 +78,7 @@ const EditPost = props => {
           rows={4}
         />
       </MainForm>
-    </Grid>
+    </div>
   );
 };
 

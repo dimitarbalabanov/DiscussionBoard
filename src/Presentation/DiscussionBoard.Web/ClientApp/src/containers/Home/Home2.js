@@ -49,7 +49,6 @@ const Home = props => {
     allForumIds
   } = props;
 
-  
   useEffect(() => {
     if(allPostIds.length < 10) {
       onFetchPosts(sort, top);

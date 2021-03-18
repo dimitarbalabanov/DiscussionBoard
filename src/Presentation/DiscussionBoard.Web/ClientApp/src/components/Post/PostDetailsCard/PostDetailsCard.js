@@ -106,7 +106,6 @@ const PostDetailsCard = props => {
           isAuthenticated={isAuthenticated}
         />
       </Box>
-      <Box>
       <Grid item>
         <PostFirstLine 
           forum={forum}
@@ -177,7 +176,6 @@ const PostDetailsCard = props => {
           <Box ml={10} mt={3} mb={3}><CircularProgress size={50} /></Box> 
         : null}
         </Grid>
-      </Box>
     </React.Fragment>
       : <Box ml={35} mt={20} mb={20} ><Spinner /></Box>}
     </Box>

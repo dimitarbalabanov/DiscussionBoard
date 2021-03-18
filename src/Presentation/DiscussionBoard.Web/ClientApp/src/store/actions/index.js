@@ -27,7 +27,9 @@ export {
 } from './forum';
 
 export {
-  fetchForums
+  fetchForums,
+  setForumSort,
+  setForumTop
 } from './forums';
 
 export {
