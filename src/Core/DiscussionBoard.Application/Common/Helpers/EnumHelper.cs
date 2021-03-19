@@ -31,16 +31,16 @@ namespace DiscussionBoard.Application.Common.Helpers
             return time.ToString(SqlDateTimeFormat);
         }
 
-        public static string ToSqlOrderString(this Order enumOrder)
+        public static string ToSqlSortString(this Sort enumSort)
         {
             var order = string.Empty;
-            switch (enumOrder)
+            switch (enumSort)
             {
-                case Order.Old:
+                case Sort.Old:
                     order = "ASC";
                     break;
-                case Order.New:
-                case Order.Top:
+                case Sort.New:
+                case Sort.Top:
                 default:
                     order = "DESC";
                     break;

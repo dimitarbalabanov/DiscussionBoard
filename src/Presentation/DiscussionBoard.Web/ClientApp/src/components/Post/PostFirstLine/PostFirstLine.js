@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 23,
     width: 23,
-    marginLeft: theme.spacing(0.5),
     marginRight: theme.spacing(0.3),
   }
 }));
@@ -31,19 +30,21 @@ const PostFirstLine = props => {
   } = props;
 
   return (
-    <Box display="flex" alignItems="flex-end" mt={1} mb={1} ml={0.5}>
-      {forum && <React.Fragment><Avatar
-        className={classes.avatar}
-        //src={forum.mediaUrl} 
-        />
+    <Box display="flex" alignItems="flex-end">
+      {forum && 
+        <React.Fragment>
+          <Avatar
+            className={classes.avatar}
+            //src={forum.mediaUrl} 
+          />
         {/* >{forumTitle.substring(0, 2).toLowerCase()}</Avatar> */}
-        <Typography className={classes.textColor} variant="body2">
-        <Link component={RouterLink} to={"/forums/" + forum.id} className={classes.textColor}>
-            {'f/' + forum.title}
-        </Link>
-        </Typography></React.Fragment>}
-      
-      <CreatorAndCreatedOn creatorUserName={creatorUserName} createdOn={createdOn} />
+          <Typography className={classes.textColor} variant="body2">
+            <Link component={RouterLink} to={"/forums/" + forum.id} className={classes.textColor}>
+                {'f/' + forum.title}
+            </Link>
+          </Typography>
+        </React.Fragment>}
+        <CreatorAndCreatedOn creatorUserName={creatorUserName} createdOn={createdOn} />
     </Box>
   );
 }

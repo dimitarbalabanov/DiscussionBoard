@@ -30,9 +30,3 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
         }
     }
 }
-//SELECT f.Id,
-//       fm.Url AS MediaUrl,
-//       f.Title
-//FROM   Forums AS f
-//       LEFT JOIN ForumMedias AS fm
-//              ON f.Id = fm.ForumId; 

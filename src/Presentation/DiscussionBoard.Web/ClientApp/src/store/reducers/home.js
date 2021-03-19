@@ -5,7 +5,6 @@ import {
   CLEAR_POSTS,
   SET_SORT,
   SET_TOP,
-  AUTH_START
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -30,16 +29,13 @@ const reducer = (state = initialState, action) => {
       
     case REQUEST_POSTS_SUCCESS: 
     //console.log(action.data)
-    //console.log(action.data.data.posts)
     let asdf = {};
-    action.data.data.posts.forEach(element => {
+    action.data.posts.forEach(element => {
       asdf[element.id] = element
     });
-    //console.log(asdf)
-    //console.log(action.data.data.posts.map(x => x.id))
       return { 
         ...state,
-        posts: [...state.posts, ...action.data.data.posts],
+        posts: [...state.posts, ...action.data.posts],
         cursor: action.data.cursor,
         hasNextPage: action.data.cursor !== null,
         loading: false,

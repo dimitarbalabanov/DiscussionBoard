@@ -33,15 +33,15 @@ namespace DiscussionBoard.Application.Common.Helpers
             return collection;
         }
 
-        public static IQueryable<T> CreatedOnSort<T>(this IQueryable<T> collection, Order sorter)
+        public static IQueryable<T> CreatedOnSort<T>(this IQueryable<T> collection, Sort sorter)
             where T : IAuditInfo
         {
             switch (sorter)
             {
-                case Order.New:
+                case Sort.New:
                     collection = collection.OrderByDescending(x => x.CreatedOn);
                     break;
-                case Order.Old:
+                case Sort.Old:
                     collection = collection.OrderBy(x => x.CreatedOn);
                     break;
                 default:

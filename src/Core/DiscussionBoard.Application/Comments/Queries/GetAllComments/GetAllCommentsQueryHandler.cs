@@ -1,8 +1,6 @@
 ﻿using DiscussionBoard.Application.Common.Commands;
-using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Application.Common.Responses;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using System;
@@ -14,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {
-    public class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, PagedResponse<GetAllCommentsResponse>>
+    public class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, GetAllCommentsResponse>
     {
         private const int PageSize = 10;
         private const string SelectAlias = "c";
@@ -30,7 +28,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             _authUserService = authUserService;
         }
 
-        public async Task<PagedResponse<GetAllCommentsResponse>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllCommentsResponse> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
             var commentsQuery = new StringBuilder();
             commentsQuery.AppendLine(
@@ -46,10 +44,10 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                 commentsQuery.AppendLine(SqlQueriesHelper.IsCreator<Comment>(SelectAlias, userId) + ",");
             }
 
-            Enum.TryParse(request.Sort, true, out Order order);
+            Enum.TryParse(request.Sort, true, out Sort order);
 
             var sumVotesScoreSql = SqlQueriesHelper.SumVotesScore<Comment, CommentVote>(SelectAlias);
-            commentsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
+            commentsQuery.AppendLine(order == Sort.Top ? $"{SelectAlias}.VotesScore" : sumVotesScoreSql);
 
             commentsQuery.AppendLine(
                 $@"FROM   (SELECT TOP({PageSize}) cc.Id,
@@ -59,7 +57,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
                                                   cc.CreatorId,
                                                   cc.PostId");
 
-            if (order == Order.Top)
+            if (order == Sort.Top)
             {
                 commentsQuery.AppendLine(sumVotesScoreSql);
             }
@@ -69,7 +67,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             commentsQuery.AppendLine(
                            $@"WHERE   ( cc.PostId = {request.PostId} )");
 
-            FilterAndOrder.ToSql(request.Cursor, request.Top, commentsQuery, order, InnerSelectAlias, false);
+            FilterAndSort.ToSql(request.Cursor, request.Top, commentsQuery, order, InnerSelectAlias, false);
 
             commentsQuery.AppendLine(
                 @") AS c
@@ -105,13 +103,7 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
             }
 
             comments = dict != null ? dict.Values.ToList() : comments;
-
-            var response = new PagedResponse<GetAllCommentsResponse>
-            {
-                Data = new GetAllCommentsResponse { Comments = comments },
-                Cursor = comments.Count > 0 ? comments[comments.Count - 1].Id : default(int?)
-            };
-
+            var response =  new GetAllCommentsResponse { Comments = comments };
             return response;
         }
     }

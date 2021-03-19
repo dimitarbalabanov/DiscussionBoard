@@ -48,7 +48,7 @@ const Forum = props => {
 
   const observeBorder = useCallback(
     node => {
-      if (node !== null && forum !== null) {
+      if (node !== null && forum !== null && forum.cursor !== null) {
         console.log("ima node")
         new IntersectionObserver(
           entries => {
@@ -95,7 +95,7 @@ const Forum = props => {
           />
           }
           <React.Fragment>
-          {forum !== null && forum.posts !== undefined && !postsLoading ?
+          {forum !== null && forum.posts !== undefined ?
             forum.posts.map((id) => (
               <Grid item xs={12} md={10} key={id}>
                 <PostCard post={postsById[id]} loading={postsLoading} />

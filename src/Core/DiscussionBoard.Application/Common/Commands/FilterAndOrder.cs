@@ -7,9 +7,9 @@ using System.Text;
 
 namespace DiscussionBoard.Application.Common.Commands
 {
-    public static class FilterAndOrder
+    public static class FilterAndSort
     {
-        public static void ToSql(int? cursor, string top, StringBuilder query, Order order, string alias, bool where)
+        public static void ToSql(int? cursor, string top, StringBuilder query, Sort order, string alias, bool where)
         {
             var conditions = new List<string>();
             if (cursor != null)
@@ -17,19 +17,19 @@ namespace DiscussionBoard.Application.Common.Commands
                 conditions.Add($"{alias}.Id > {(int)cursor}");
             }
 
-            string sqlOrder;
-            if (order == Order.Top)
+            string sqlSort;
+            if (order == Sort.Top)
             {
                 if (Enum.TryParse(top, out Interval interval))
                 {
                     conditions.Add($"{alias}.CreatedOn >= '{interval.ToDateTimeString()}'");
                 }
 
-                sqlOrder = $"VotesScore";
+                sqlSort = $"VotesScore";
             }
             else
             {
-                sqlOrder = $"{alias}.CreatedOn {order.ToSqlOrderString()}";
+                sqlSort = $"{alias}.CreatedOn {order.ToSqlSortString()}";
             }
 
             if (conditions.Count > 0)
@@ -41,7 +41,7 @@ namespace DiscussionBoard.Application.Common.Commands
                 }
             }
 
-            query.AppendLine($"ORDER BY " + sqlOrder);
+            query.AppendLine($"ORDER BY " + sqlSort);
         }
     }
 }

@@ -21,6 +21,7 @@ export const fetchPosts = (sort, top, forumId, cursor) => {
     ],
     callApi: () => getPosts(sort, top, forumId, cursor),
     effect() { },
-    forumId: forumId
+    forumId: forumId,
+    sort: sort
   }
 }

@@ -1,14 +1,34 @@
 import { combineReducers } from 'redux';
 import {
-  REQUEST_FORUM_SUCCESS,
-  REQUEST_FORUMS_SUCCESS,
   REQUEST_POSTS_SUCCESS,
   SET_FORUM_SORT,
-  SET_FORUM_TOP
+  SET_FORUM_TOP,
+  REQUEST_FORUM_START,
+  REQUEST_FORUM_SUCCESS,
+  REQUEST_FORUM_FAILURE,
+  REQUEST_FORUMS_START,
+  REQUEST_FORUMS_SUCCESS,
+  REQUEST_FORUMS_FAILURE
 } from '../actions/actionTypes';
 
+const initialUiState = {
+  forumLoading: false,
+  forumsLoading: false
+};
+
+const forumsUi = (state = initialUiState, action) => {
+  switch (action.type) {
+    case REQUEST_FORUM_START: return { ...state, forumLoading: true };
+    case REQUEST_FORUM_SUCCESS: return { ...state, forumLoading: false };
+    case REQUEST_FORUM_FAILURE: return  { ...state, forumLoading: false, };
+    case REQUEST_FORUMS_START: return { ...state, forumsLoading: true };
+    case REQUEST_FORUMS_SUCCESS: return {  ...state, forumsLoading: false };
+    case REQUEST_FORUMS_FAILURE: return { ...state, forumsLoading: false };
+    default: return state;
+  }
+};
+
 const requestForumSuccess = (state, action) => {
-  console.log(action);
   const forum = action.data;
 
   return {
@@ -61,24 +81,28 @@ const requestForumsSuccess = (state, action) => {
   };
 }
 
-
 const requestPostsSuccess = (state, action) => {
   const forumId = action.forumId;
-  const posts = action.data.data.posts;
+  const forum = state[forumId];
+  const posts = action.data.posts;
   const postIds = posts.map(x => x.id);
-  const forum = state[forumId] !== undefined ? state[forumId] : { };
-  const cursor = btoa(posts[posts.length - 1].id + '#' + posts[posts.length - 1].createdOn);
+  let cursor = null;
+  if (posts.length == 10) {
+    const lastPost = posts[posts.length - 1];
+    cursor = action.sort !== 3 
+    ? btoa(lastPost.id + '#' + lastPost.createdOn)
+    : btoa(lastPost.id + '#' + lastPost.createdOn + '#' + lastPost.votesScore);
+  }
 
   return {
     ...state,
     [forumId]: {
       ...forum,
-      posts: (forum.posts || []).concat(postIds),
+      posts: forum.posts.concat(postIds),
       cursor: cursor
     }
   }
 }
-
 
 function forumsById(state = {}, action) {
   switch (action.type) {
@@ -105,7 +129,8 @@ function allForums(state = [], action) {
 }
 const forumsReducer = combineReducers({
   byId: forumsById,
-  allIds: allForums
+  allIds: allForums,
+  ui: forumsUi
 });
 
 export default forumsReducer;

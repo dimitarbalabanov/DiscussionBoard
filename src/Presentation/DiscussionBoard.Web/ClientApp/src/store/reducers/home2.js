@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
     case REQUEST_POSTS_SUCCESS: 
       return { 
         ...state,
-        posts: [...state.posts, ...action.data.data.posts],
+        posts: [...state.posts, ...action.data.posts],
         cursor: action.data.cursor,
         loading: false,
         error: null
@@ -67,12 +67,6 @@ const reducer = (state = initialState, action) => {
         top: action.top
       };
         
-    case AUTH_START: 
-      return {
-        ...state,
-        something: true
-      }
-    
     default:
       return state;
   }

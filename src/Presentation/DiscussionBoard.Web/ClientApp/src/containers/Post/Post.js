@@ -120,7 +120,7 @@ const Post = (props) => {
     return <Redirect to="/" />;
   }
 
-  let commentsDiv = post !== undefined ? <Box m={5}><Spinner /></Box> : null;
+  let commentsDiv = commentsLoading ? <Box m={5}><Spinner /></Box> : null;
   if (!commentsLoading && post !== undefined && post.comments !== undefined) {
     commentsDiv = post.comments.map(id => 
       <CommentCard 
@@ -196,10 +196,12 @@ const Post = (props) => {
               onDeleteComment={onDeleteComment}
               isAuthenticated={isAuthenticated}
               username={username}
-            />
-            <div className={classes.mainGrid}>
-              {commentsDiv}
-            </div>
+            >
+              <div className={classes.mainGrid}>
+                {commentsDiv}
+              </div>
+            </PostDetailsCard>
+            
           </Grid>
         </Grid>
         <Grid 

@@ -17,11 +17,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1)
   },
   margin: {
-    margin: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
   },
-  circ: {
+  content: {
     //margin: 'auto'
   }
 }));
@@ -71,32 +70,10 @@ const CommentCard = props => {
         <Box ml={10} mt={2} mb={2}>
           <CircularProgress size={50}/>
         </Box> 
-      : <React.Fragment>
-          {createVoteLoading || updateVoteLoading || deleteVoteLoading ? 
-            <Box ml={1} mr={0.5} mt={4} mb={2}>
-              <CircularProgress size={15}/>
-            </Box> 
-            
-          : <Voting 
-            className={classes.voting}
-            id={comment.id}
-            voteType={comment.voteType}
-            voteId={comment.voteId}
-            votesScore={comment.votesScore}
-            onCreateVote={onCreateVote}
-            createVoteLoading={createVoteLoading}
-            createVoteError={createVoteError}
-            onUpdateVote={onUpdateVote}
-            updateVoteError={updateVoteError}
-            updateVoteLoading={updateVoteLoading}
-            onDeleteVote={onDeleteVote}
-            deleteVoteError={deleteVoteError}
-            deleteVoteLoading={deleteVoteLoading}
-            isAuthenticated={isAuthenticated}
-            />}
-          <div>
+      : <Grid container>
             <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
             {showUpdateForm ? 
+            <Grid md={12} item>
               <EditComment 
                 onClose={handleClose}
                 commentId={comment.id}
@@ -104,7 +81,8 @@ const CommentCard = props => {
                 onUpdateComment={onUpdateComment}
                 updateCommentLoading={updateCommentLoading}
               /> 
-            : <Grid className={classes.margin} item >
+              </Grid>
+            : <Grid className={classes.content} item >
                 <Typography>
                   {updateCommentLoading && updateCommentId === comment.id 
                     ? <CircularProgress /> : comment.content}
@@ -112,14 +90,36 @@ const CommentCard = props => {
               </Grid>}
             {isAuthenticated ? 
               <Grid className={classes.margin} item >
+                {createVoteLoading || updateVoteLoading || deleteVoteLoading ? 
+                  <Box ml={3} mr={3}>
+                    <CircularProgress size={10}/>
+                  </Box> 
+                : <Voting 
+                  className={classes.voting}
+                  id={comment.id}
+                  voteType={comment.voteType}
+                  voteId={comment.voteId}
+                  votesScore={comment.votesScore}
+                  onCreateVote={onCreateVote}
+                  createVoteLoading={createVoteLoading}
+                  createVoteError={createVoteError}
+                  onUpdateVote={onUpdateVote}
+                  updateVoteError={updateVoteError}
+                  updateVoteLoading={updateVoteLoading}
+                  onDeleteVote={onDeleteVote}
+                  deleteVoteError={deleteVoteError}
+                  deleteVoteLoading={deleteVoteLoading}
+                  isAuthenticated={isAuthenticated}
+                  orientation={'horizontal'}
+                  backgroundColor={'#FFFFFF'}
+                  />}
                 <EditButton show={showUpdateForm} onOpen={handleOpen} onClose={handleClose}/>
                 {deleteCommentLoading && deleteCommentId === comment.id ? 
-                  <CircularProgress size={20} className={classes.circ}/>
+                  <CircularProgress size={20}/>
                 : <DeleteButton id={comment.id} parentId={post.id} onDelete={onDeleteComment} />}
               </Grid> 
               : null}
-          </div>
-        </React.Fragment>}
+          </Grid>}
     </div>
   );
 }

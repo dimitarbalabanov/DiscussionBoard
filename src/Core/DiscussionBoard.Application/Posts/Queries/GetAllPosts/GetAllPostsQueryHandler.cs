@@ -1,23 +1,19 @@
-﻿using DiscussionBoard.Application.Common.Commands;
+﻿using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Helpers.Enums;
 using DiscussionBoard.Application.Common.Interfaces;
-using DiscussionBoard.Application.Common.Responses;
-using DiscussionBoard.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
-    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, PagedResponse<GetAllPostsResponse>>
+    public class GetAllPostsQueryHandler : IRequestHandler<GetAllPostsQuery, GetAllPostsResponse>
     {
         private const int PageSize = 10;
-        private const string SelectAlias = "p";
-        private const string InnerSelectAlias = "pp";
+        private const string SqlDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
         private readonly IApplicationReadDbConnection _readDbConnection;
         private readonly IAuthenticatedUserService _authUserService;
@@ -30,66 +26,111 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             _authUserService = authUserService;
         }
 
-        public async Task<PagedResponse<GetAllPostsResponse>> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllPostsResponse> Handle(GetAllPostsQuery request, CancellationToken cancellationToken)
         {
-
-            var postsQuery = new StringBuilder();
-            postsQuery.AppendLine(
-                @"SELECT p.Id,
-                         p.Title,
-                         p.Content,
-                         p.CreatedOn,
-                         p.ModifiedOn,
-                         u.UserName AS CreatorUserName,
-                         f.Title    AS ForumTitle,
-                         p.ForumId,
-                         pm.Url     AS MediaUrl,");
-
-            postsQuery.AppendLine(SqlQueriesHelper.SumCommentsCount(SelectAlias) + ",");
-            
             var userId = _authUserService.UserId;
-            if (userId != null)
+            var query = string.Empty;
+            Enum.TryParse(request.Sort, true, out Sort sort);
+            if (sort != Sort.Top)
             {
-                postsQuery.AppendLine(SqlQueriesHelper.IsCreator<Post>(SelectAlias, userId) + ",");
+                var ord = sort == Sort.New ? "DESC" : "ASC";
+                query =
+                   $@"SELECT p.Id,
+                             p.Title,
+                             p.Content,
+                             p.CreatedOn,
+                             p.ModifiedOn,
+                             u.UserName               AS CreatorUserName,
+                             f.Title                  AS ForumTitle,
+                             p.ForumId,
+                             pm.Url                   AS MediaUrl,
+                             (SELECT Count(*)
+                              FROM   Comments AS c
+                              WHERE  p.Id = c.PostId) AS CommentsCount,
+                             (SELECT Sum(Cast(p.Type AS int))
+                              FROM   PostVotes AS p
+                              WHERE  p.Id = p.PostId) AS VotesScore,
+                             Cast(CASE
+                                    WHEN p.CreatorId = '{userId}' THEN 1
+                                    ELSE 0
+                                  END AS BIT)        AS IsCreator
+                      FROM   (SELECT TOP({PageSize}) pp.Id,
+                                                     pp.Title,
+                                                     pp.Content,
+                                                     pp.CreatedOn,
+                                                     pp.ModifiedOn,
+                                                     pp.ForumId,
+                                                     pp.CreatorId
+                              FROM   Posts AS pp
+                              WHERE  ( pp.ForumId = {(int)request.ForumId} )";
+                if (request.Cursor != null)
+                {
+                    var cursor = CursorPagingExtensions.DecodeSortCursor(request.Cursor);
+                    query = query +
+                                        $@"AND ( pp.CreatedOn < '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                                                                OR ( pp.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                                                                     AND pp.Id > {cursor.Item1} ) )";
+                }
+                query = query + 
+                          $@" ORDER  BY pp.CreatedOn {ord},
+                                        pp.Id ASC) AS p
+                             INNER JOIN AspNetUsers AS u
+                                     ON p.CreatorId = u.Id
+                             INNER JOIN Forums AS f
+                                     ON p.ForumId = f.Id
+                              LEFT JOIN PostMedias AS pm
+                                     ON p.Id = pm.PostId ";
+            }
+            else
+            {
+                Enum.TryParse(request.Top, true, out Interval top);
+                var cursor = CursorPagingExtensions.DecodeTopCursor(request.Cursor);
+                query =
+                   $@"SELECT TOP({PageSize}) 
+                                     p.Id,
+                                     p.Title,
+                                     p.Content,
+                                     p.CreatedOn,
+                                     p.ModifiedOn,
+                                     u.UserName               AS CreatorUserName,
+                                     p.ForumId,
+                                     f.Title                  AS ForumTitle,
+                                     pm.Url                   AS MediaUrl,
+                                     (SELECT Count(*)
+                                      FROM   Comments AS c
+                                      WHERE  p.Id = c.PostId) AS CommentsCount,
+                                     p.VotesScore
+                      FROM   (SELECT sp.Id,
+                                     sp.Content,
+                                     sp.CreatedOn,
+                                     sp.CreatorId,
+                                     sp.ForumId,
+                                     sp.ModifiedOn,
+                                     sp.Title,
+                                     (SELECT Sum(Cast(pv.Type AS int))
+                                      FROM   PostVotes AS pv
+                                      WHERE  sp.Id = pv.PostId) AS VotesScore
+                              FROM   Posts AS sp
+                              WHERE  ( sp.ForumId = {(int)request.ForumId} )
+                                     AND ( sp.CreatedOn > '{top.ToDateTimeString()}' )) AS p
+                             INNER JOIN AspNetUsers AS u
+                                     ON p.CreatorId = u.Id
+                             INNER JOIN Forums AS f
+                                     ON p.ForumId = f.Id
+                              LEFT JOIN PostMedias AS pm
+                                     ON p.Id = pm.PostId
+                      WHERE  p.VotesScore > {cursor.Item3}
+                              OR ( p.VotesScore = {cursor.Item3}
+                                   AND p.CreatedOn > '{cursor.Item2.ToString(SqlDateTimeFormat)}' )
+                              OR ( p.VotesScore = {cursor.Item3}
+                                   AND p.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                                   AND p.Id > {cursor.Item1} )
+                      ORDER  BY p.VotesScore DESC,
+                                p.CreatedOn ASC,
+                                p.Id ASC ";
             }
 
-            Enum.TryParse(request.Sort, true, out Order order);
-            postsQuery.AppendLine(order == Order.Top ? $"{SelectAlias}.VotesScore" : SqlQueriesHelper.SumVotesScore<Post, PostVote>(SelectAlias));
-
-            postsQuery.AppendLine(
-                $@"FROM   (SELECT TOP({PageSize}) pp.Id,
-                                                  pp.Title,
-                                                  pp.Content,
-                                                  pp.CreatedOn,
-                                                  pp.ModifiedOn,
-                                                  pp.ForumId,
-                                                  pp.CreatorId");
-            if (order == Order.Top)
-            {
-                postsQuery.Append(",");
-                postsQuery.AppendLine(SqlQueriesHelper.SumVotesScore<Post, PostVote>(InnerSelectAlias));
-            }
-
-            postsQuery.AppendLine(
-                @"        FROM   Posts AS pp");
-
-            if (request.ForumId != null)
-            {
-                postsQuery.AppendLine($"WHERE ( pp.ForumId = {(int)request.ForumId} )");
-            }
-
-            FilterAndOrder.ToSql(null, request.Top, postsQuery, order, InnerSelectAlias, request.ForumId == null);
-
-            postsQuery.AppendLine(
-                @") AS p
-                         INNER JOIN AspNetUsers AS u
-                                 ON p.CreatorId = u.Id
-                         INNER JOIN Forums AS f
-                                 ON p.ForumId = f.Id
-                          LEFT JOIN PostMedias AS pm
-                                 ON p.Id = pm.PostId ");
-
-            var posts = await _readDbConnection.QueryAsync<PostDto>(postsQuery.ToString());
+            var posts = await _readDbConnection.QueryAsync<PostDto>(query);
 
             Dictionary<int, PostDto> dict = null;
             if (userId != null)
@@ -99,8 +140,8 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
                 var postVotesQuery =
                     $@"SELECT pv.Id, pv.PostId, pv.Type
-                    FROM PostVotes AS pv
-                    WHERE pv.PostId IN ({postIds}) AND (pv.CreatorId = '{userId}')";
+                       FROM PostVotes AS pv
+                       WHERE pv.PostId IN ({postIds}) AND (pv.CreatorId = '{userId}')";
                 var votes = await _readDbConnection.QueryAsync<AllPostsPostVoteDto>(postVotesQuery);
 
                 foreach (var v in votes)
@@ -122,13 +163,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             }
 
             posts = dict != null ? dict.Values.ToList() : posts;
-
-            var response = new PagedResponse<GetAllPostsResponse>
-            {
-                Data = new GetAllPostsResponse { Posts = posts },
-                Cursor = posts.Count > 0 ? posts[posts.Count - 1].Id : default(int?)
-            };
-
+            var response = new GetAllPostsResponse { Posts = posts };
             return response;
         }
     }
@@ -138,27 +173,27 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 //       p.Content,
 //       p.CreatedOn,
 //       p.ModifiedOn,
-//       u.UserName               AS CreatorUserName,
-//       f.Title                  AS ForumTitle,
+//       u.UserName AS CreatorUserName,
+//       f.Title AS ForumTitle,
 //       p.ForumId,
-//       pm.Url                   AS MediaUrl,
+//       pm.Url AS MediaUrl,
 //       (SELECT Count(*)
 //        FROM   Comments AS c
 //        WHERE  p.Id = c.PostId) AS CommentsCount,
 //       (SELECT Sum(Cast(p.Type AS int))
 //        FROM   PostVotes AS p
 //        WHERE  p.Id = p.PostId) AS VotesScore
-//FROM   (SELECT TOP(10) ip.Id,
-//                       ip.Title,
-//                       ip.Content,
-//                       ip.CreatedOn,
-//                       ip.ModifiedOn,
-//                       ip.ForumId,
-//                       ip.CreatorId
-//        FROM   Posts AS ip
-//        WHERE  ( ip.ForumId = 2 )
-//               AND ( ip.Id > 20 )
-//        ORDER  BY ip.CreatedOn DESC) AS p
+//FROM   (SELECT TOP(10) pp.Id,
+//                       pp.Title,
+//                       pp.Content,
+//                       pp.CreatedOn,
+//                       pp.ModifiedOn,
+//                       pp.ForumId,
+//                       pp.CreatorId
+//        FROM   Posts AS pp
+//        WHERE  ( pp.ForumId = 2 )
+//               AND(pp.Id > 20)
+//        ORDER BY pp.CreatedOn DESC) AS p
 //       INNER JOIN AspNetUsers AS u
 //               ON p.CreatorId = u.Id
 //       INNER JOIN Forums AS f
@@ -171,10 +206,10 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 //       p.Content,
 //       p.CreatedOn,
 //       p.ModifiedOn,
-//       u.UserName               AS CreatorUserName,
+//       u.UserName AS CreatorUserName,
 //       p.ForumId,
-//       f.Title                  AS ForumTitle,
-//       pm.Url                   AS MediaUrl,
+//       f.Title AS ForumTitle,
+//       pm.Url AS MediaUrl,
 //       (SELECT Count(*)
 //        FROM   Comments AS c
 //        WHERE  p.Id = c.PostId) AS CommentsCount,
@@ -187,13 +222,13 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 //                       sp.ModifiedOn,
 //                       sp.Title,
 //                       (SELECT Sum(Cast(pv.Type AS int))
-//                        FROM   PostVotes AS pv
+//                        FROM PostVotes AS pv
 //                        WHERE  sp.Id = pv.PostId) AS VotesScore
 //        FROM   Posts AS sp
 //        WHERE  ( ( sp.CreatedOn >= '' )
-//                 AND ( sp.ForumId = 2 ) )
-//               AND ( sp.Id > 20 )
-//        ORDER  BY VotesScore DESC) AS p
+//                 AND(sp.ForumId = 2) )
+//               AND(sp.Id > 20)
+//        ORDER BY VotesScore DESC) AS p
 //       INNER JOIN AspNetUsers AS u
 //               ON p.CreatorId = u.Id
 //       INNER JOIN Forums AS f

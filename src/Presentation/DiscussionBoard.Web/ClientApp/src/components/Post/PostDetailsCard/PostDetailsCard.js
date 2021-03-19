@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     marginRight: theme.spacing(1)
   },
+  ml: {
+    marginLeft: theme.spacing(2)
+  },
   media: {
     height: 140,
     paddingTop: '70.25%',
@@ -80,7 +83,8 @@ const PostDetailsCard = props => {
     isAuthenticated,
     username,
     onUpdatePost,
-    onDeletePost
+    onDeletePost,
+    children
   } = props;
 
   return (
@@ -106,18 +110,23 @@ const PostDetailsCard = props => {
           isAuthenticated={isAuthenticated}
         />
       </Box>
-      <Grid item>
+      <Grid item className={classes.ml}>
         <PostFirstLine 
           forum={forum}
           creatorUserName={post.creatorUserName} 
           createdOn={post.createdOn}
         />
         {showUpdateForm ? 
-          <EditPost onClose={handleClose} id={post.id} title={post.title} content={post.content} onUpdatePost={onUpdatePost} /> 
+          <EditPost 
+            onClose={handleClose} 
+            id={post.id} 
+            title={post.title} 
+            content={post.content} 
+            onUpdatePost={onUpdatePost} /> 
         : <React.Fragment>
-              <Typography component="h2" variant="h4">
-                {post.title}
-              </Typography>
+            <Typography component="h2" variant="h4">
+              {post.title}
+            </Typography>
             {post.mediaUrl &&
               <CardMedia
                 className={classes.media}
@@ -125,9 +134,9 @@ const PostDetailsCard = props => {
                 image={image}
                 title={post.title.substring(0, 10)}
               />}
-              <Typography>
+            <Typography>
                 {post.content}
-              </Typography>
+            </Typography>
           </React.Fragment>
         }
         
@@ -175,6 +184,7 @@ const PostDetailsCard = props => {
           {createCommentLoading ? 
           <Box ml={10} mt={3} mb={3}><CircularProgress size={50} /></Box> 
         : null}
+        { children }
         </Grid>
     </React.Fragment>
       : <Box ml={35} mt={20} mb={20} ><Spinner /></Box>}

@@ -10,8 +10,7 @@ import {
   AUTH_START,
   AUTH_SUCCESS,
   AUTH_FAILURE,
-  AUTH_LOGOUT,
-  SET_AUTH_REDIRECT_PATH
+  AUTH_LOGOUT
 } from './actionTypes';
 import { showSnackbar } from "./snackbar";
 
@@ -34,13 +33,6 @@ export const authFail = (error) => {
   return {
     type: AUTH_FAILURE,
     error: error
-  };
-};
-
-export const setAuthRedirectPath = (path) => {
-  return {
-      type: SET_AUTH_REDIRECT_PATH,
-      path: path
   };
 };
 

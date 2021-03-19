@@ -1,9 +1,8 @@
-﻿using DiscussionBoard.Application.Common.Responses;
-using MediatR;
+﻿using MediatR;
 
 namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 {
-    public class GetAllPostsQuery : IRequest<PagedResponse<GetAllPostsResponse>>
+    public class GetAllPostsQuery : IRequest<GetAllPostsResponse>
     {
         public int? ForumId { get; set; }
 
@@ -13,6 +12,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
 
         public string Top { get; set; }
 
-        public int? Cursor { get; set; }
+        public string Cursor { get; set; }
     }
 }

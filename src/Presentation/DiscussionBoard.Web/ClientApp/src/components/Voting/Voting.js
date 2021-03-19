@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     margin: theme.spacing(0.5),
-    backgroundColor: '#F8F8F8'
+    // backgroundColor: '#F8F8F8'
   },
   blue: {
     color: green[500],
@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
     padding: theme.spacing(1),
+  },
+  score: {
+    fontWeight: 'bold'
   }
 }));
 
@@ -58,7 +61,9 @@ const Voting = props => {
     onCreateVote,
     onUpdateVote,
     onDeleteVote,
-    isAuthenticated
+    isAuthenticated,
+    orientation = "vertical",
+    backgroundColor = '#F8F8F8'
   } = props;
 
   const handleTypeChange = (event, newType) => {
@@ -72,10 +77,10 @@ const Voting = props => {
   };
 
   return (
-    <div className={classes.paper}>
+    <div className={classes.paper} style={{backgroundColor: backgroundColor}}>
       <StyledToggleButtonGroup
         size="small"
-        orientation="vertical"
+        orientation={orientation}
         value={voteType}
         exclusive
         onChange={handleTypeChange}

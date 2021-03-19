@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Exceptions;
+﻿using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
@@ -13,13 +12,11 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.DeleteUserSavedPos
     {
         private readonly IRepository<UserPostSave> _savedRepository;
         private readonly IAuthenticatedUserService _authUserService;
-        private readonly IMapper _mapper;
 
-        public DeleteUserSavedPostCommandHandler(IRepository<UserPostSave> savedRepository, IAuthenticatedUserService authUserService, IMapper mapper)
+        public DeleteUserSavedPostCommandHandler(IRepository<UserPostSave> savedRepository, IAuthenticatedUserService authUserService)
         {
             _savedRepository = savedRepository;
             _authUserService = authUserService;
-            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(DeleteUserSavedPostCommand request, CancellationToken cancellationToken)
