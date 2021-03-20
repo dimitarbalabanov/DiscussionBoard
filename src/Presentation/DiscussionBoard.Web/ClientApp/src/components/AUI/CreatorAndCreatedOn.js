@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, Tooltip } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
-import {toRelativeTime, toComplexTime} from '../../utils/dateConvertor';
+import {toRelativeTime, toComplexTime} from '../../utils/dateConverter';
 
 const useStyles = makeStyles((theme) => ({
   title: {

@@ -1,7 +1,4 @@
 import {
-  CLEAR_COMMENTS,
-  SET_COMMENTS_SORT,
-  SET_COMMENTS_TOP,
   REQUEST_COMMENTS_START,
   REQUEST_COMMENTS_SUCCESS,
   REQUEST_COMMENTS_FAILURE,
@@ -36,29 +33,6 @@ import {
   deleteCommentVoteById
 } from '../../api/commentVotesService';
 import { showSnackbar } from './snackbar';
-
-export const setCommentsSort = (postId, commentIds, sort) => {
-  
-  return {
-    type: SET_COMMENTS_SORT,
-    sort: sort,
-    postId: postId,
-    commentIds: commentIds
-  };
-};
-
-export const setCommentsTop = (top) => {
-  return {
-    type: SET_COMMENTS_TOP,
-    top: top
-  };
-};
-
-export const clearComments = () => {
-  return {
-    type: CLEAR_COMMENTS
-  }
-}
 
 export const fetchComments = (postId) => {
   return {

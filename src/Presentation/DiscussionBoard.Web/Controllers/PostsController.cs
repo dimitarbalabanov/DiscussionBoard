@@ -53,10 +53,11 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Create(CreatePostCommand command)
+        public async Task<IActionResult> Create([FromForm] CreatePostCommand command)
         {
             var response = await Mediator.Send(command);
-            return CreatedAtAction(nameof(GetAsync), new { response.Id }, response);
+            //return CreatedAtAction(nameof(GetAsync), new { id = response.Id }, response);
+            return Ok(response);
         }
 
         [HttpPut("{id}")]

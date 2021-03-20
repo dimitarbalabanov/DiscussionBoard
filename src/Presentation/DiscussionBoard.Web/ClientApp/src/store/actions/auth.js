@@ -1,4 +1,12 @@
-import { login as loginApi } from "../../api/identityService";
+import {
+  AUTH_START,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
+  AUTH_LOGOUT,
+  REGISTER_START,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE
+} from './actionTypes';
 import {
   getUsername,
   getToken,
@@ -6,13 +14,13 @@ import {
   setAuthorization,
   removeAuthorization
 } from '../../utils/authStorage';
-import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAILURE,
-  AUTH_LOGOUT
-} from './actionTypes';
-import { showSnackbar } from "./snackbar";
+import { 
+  login as loginApi,
+  register as registerApi
+} from "../../api/identityService";
+import { 
+  showSnackbar
+} from "./snackbar";
 
 export const authStart = () => {
   return {
@@ -93,4 +101,24 @@ export const authCheckState = () => {
       }   
     }
   };
+};
+
+export const register = (email, password, confirmPassword, username) => {
+  return {
+    types: [
+      REGISTER_START,
+      REGISTER_SUCCESS,
+      REGISTER_FAILURE
+    ],
+    callApi: () => registerApi({email, password, confirmPassword, username}),
+    effect({ dispatch, state, type}) {
+      if (type === REGISTER_SUCCESS) {
+        dispatch(showSnackbar('success', 'Successfully registered. Go sign in.'));
+        dispatch(auth(email, password));
+      }
+      if (type === REGISTER_FAILURE) {
+        dispatch(showSnackbar('error', "Error registering."))
+      }
+    }
+  }
 };

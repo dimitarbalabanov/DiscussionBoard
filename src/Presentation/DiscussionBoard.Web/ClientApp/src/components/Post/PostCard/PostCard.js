@@ -60,7 +60,8 @@ const PostCard = props => {
   
   const { 
     post,
-    //loading
+    //loading,
+    onOpenModal
   } = props;
 
   return (
@@ -98,9 +99,11 @@ const PostCard = props => {
             <Typography  className={classes.asdf}  display="inline" variant="body2" >
               {`${post.commentsCount} Comments`}
             </Typography>
-            <Button 
-              component={Link}
-              to={`/posts/${post.id}`} size="small" startIcon={<EditIcon className={classes.asdf}/>}>
+            <Button
+              onClick={() => onOpenModal()} 
+              //component={Link}
+              //to={`/posts/${post.id}`} 
+              size="small" startIcon={<EditIcon className={classes.asdf}/>}>
               <Typography  className={classes.asdf}  display="inline" variant="body2">
                 Edit
               </Typography>

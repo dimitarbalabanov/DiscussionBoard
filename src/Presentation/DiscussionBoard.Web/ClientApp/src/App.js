@@ -9,6 +9,7 @@ import theme from './theme/theme';
 import Routes from './Routes';
 import Layout from './layout/Layout';
 import Snackbar from './components/GlobalSnackbar/GlobalSnackbar';
+import DeleteModal from './components/DeleteModal/DeleteModal';
 
 const App = props => {
   const {
@@ -19,6 +20,8 @@ const App = props => {
     snackbarType,
     snackbarMessage,
     onCloseSnackbar,
+    showModal,
+    onCloseModal
   } = props;
 
   useEffect(() => {
@@ -34,6 +37,9 @@ const App = props => {
         type={snackbarType} 
         message={snackbarMessage}
         handleClose={onCloseSnackbar}/>
+        {isAuthenticated ? 
+          <DeleteModal show={showModal} handleClose={onCloseModal} />
+        : null}
       <Router>
         <Layout 
           isAuth={isAuthenticated} 
@@ -50,16 +56,18 @@ const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.token !== null,
     username: state.auth.username,
-    showSnackbar: state.snackbar.show,
-    snackbarType: state.snackbar.type,
-    snackbarMessage: state.snackbar.message
+    showSnackbar: state.ui.snackbar.show,
+    snackbarType: state.ui.snackbar.type,
+    snackbarMessage: state.ui.snackbar.message,
+    showModal: state.ui.modal.show
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onTryAutoSignup: () => dispatch(actions.authCheckState()),
-    onCloseSnackbar: () => dispatch(actions.hideSnackbar())
+    onCloseSnackbar: () => dispatch(actions.hideSnackbar()),
+    onCloseModal: () => dispatch(actions.hideModal())
   };
 };
 

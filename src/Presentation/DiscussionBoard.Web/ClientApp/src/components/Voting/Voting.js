@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   score: {
-    fontWeight: 'bold'
+    //fontWeight: 'bold'
   }
 }));
 

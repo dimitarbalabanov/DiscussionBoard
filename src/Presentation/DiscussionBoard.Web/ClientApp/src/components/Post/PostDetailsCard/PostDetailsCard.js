@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     backgroundColor: theme.palette.common.white,
-
   },
   statsIcon: {
     marginRight: theme.spacing(1),
@@ -86,7 +85,7 @@ const PostDetailsCard = props => {
     onDeletePost,
     children
   } = props;
-
+  
   return (
   <Box className={classes.card}>
     {!postLoading && post !== undefined ?

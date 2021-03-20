@@ -2,10 +2,9 @@ import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import {
   fetchForums,
-  fetchPosts,
-  clearPosts
 } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Page from '../../components/Page/Page';
@@ -13,103 +12,104 @@ import Spinner from '../../components/Spinner/Spinner';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
-import useTraceUpdate from '../../hooks/useTraceUpdate';
 import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
-import ForumsList from '../../components/Forum/ForumsList/ForumsList';
+
+const useStyles = makeStyles((theme) => ({
+  forumGrid: {
+    marginLeft: theme.spacing(2),
+  }
+}));
 
 const Home = props => {
-  useTraceUpdate(props)
+  const classes = useStyles();
   const { 
-    forums,
     forumsLoading,
-    //forumsError,
-    posts,
-    postsCursor,
-    //postsHasNextPage,
     postsLoading,
-    postsError,
     onFetchForums,
-    onFetchPosts,
     isAuthenticated,
-    onClearPosts
+    postsById,
+    allPostIds,
+    forumsById,
+    allForumIds
   } = props;
 
-  const [sort, setSort] = React.useState(1);
-  const [top, setTop] = React.useState('');
-
-  const onSetSort = useCallback(newSort => setSort(newSort), [setSort]);
-  const onSetTop = useCallback(newTop => setTop(newTop), [setTop]);
-  
+  // useEffect(() => {
+  //   if(allPostIds.length < 10) {
+  //     onFetchPosts(sort, top);
+  //     }
+  //   }, [onFetchPosts]);
+    
   useEffect(() => {
-    console.log("home rendering")
-  });
-
-
-  useEffect(() => {
-    onClearPosts();
-    onFetchPosts(sort, top);
-  }, [onFetchPosts, sort, top]);
-
-
-  useEffect(() => {
-    if (forums.length < 1) {
-      console.log("fetching forums")
+     if (allForumIds.length < 10) {
       onFetchForums();
-    }
-  }, [onFetchForums, forums.length]);
-
-  const observeBorder = useCallback(
-    node => {
-      console.log("viknaha me")
-      if (node !== null) {
-        console.log("created");
-        new IntersectionObserver(
-          entries => {
-            entries.forEach(en => {
-              console.log(en);
-              if (en.intersectionRatio === 1) {
-                console.log("prashtam zaqvka s kursor" + postsCursor)
-                //setTimeout(() => loadMore(), 1000); // 1 sec delay
-                onFetchPosts(sort, top, postsCursor);
-              }
-            });
-          },
-          { threshold: 1 }
-        ).observe(node);
-      }
-    },
-    [onFetchPosts, sort, top, postsCursor]
-  );
-  
-  // function renderBottomBorder() {
-  //   return <div data-testid="bottom-border" ref={observeBorder} />;
-  // }
+       }
+    }, [onFetchForums]);
+      
+  // const observeBorder = useCallback(
+  //   node => {
+  //     if (node !== null) {
+  //       new IntersectionObserver(
+  //         entries => {
+  //           entries.forEach(en => {
+  //             if (en.intersectionRatio === 1) {
+  //               console.log("prashtam zaqvka s kursor" + cursor)
+  //               setTimeout(() => onFetchPosts(sort, top, cursor), 500);
+  //             }
+  //           });
+  //         },
+  //         { threshold: 1 }
+  //       ).observe(node);
+  //     }
+  //   },
+  //   [onFetchPosts, sort, top, cursor]
+  // );
   
   return (
     <Page title="Discussion Board">
       <Grid 
         container
-        spacing={10}
         direction="row"
-        alignItems="flex-start"
+        justify="center"
       > 
-        <Grid container item xs={12} md={8} spacing={2} justify="flex-end">
+        <Grid 
+          container
+          item 
+          xs={12}
+          md={6} 
+          spacing={2} 
+          justify="flex-end"
+        >
           <CreatePostButton isAuthenticated={isAuthenticated}/>
-          <PostsSorting sort={sort} top={top} onSetSort={onSetSort} onSetTop={onSetTop}/>
-          <PostsList posts={posts} loading={postsLoading} error={postsError}/>
+          {/* <PostsSorting 
+            sort={sort}
+            top={top} 
+            onSetSort={onSetSort} 
+            onSetTop={onSetTop}
+          />
+          <PostsList 
+            posts={postsById} 
+            allIds={allPostIds} 
+            loading={postsLoading} 
+            error={postsError}/>
           {postsLoading && 
-          <Grid item xs={12} md={10}>
-            <Box component={Paper}>
-              <Spinner />
-            </Box>
-          </Grid>}
-          {postsCursor && <div data-testid="bottom-border" ref={observeBorder} />}
+            <Grid item xs={12} md={10}>
+              <Box component={Paper}>
+                <Spinner />
+              </Box>
+            </Grid>}
+          {cursor && <div data-testid="bottom-border" ref={observeBorder} />} */}
         </Grid>
-        <Grid container item xs={12} md={4} spacing={2} justify="flex-start">
-          {/* <ForumsList forums={forums} loading={forumsLoading}/> */}
-          <AllForumsCard forums={forums} loading={forumsLoading}/>
+        <Grid 
+          className={classes.forumGrid} 
+          container 
+          item 
+          xs={12} 
+          md={3} 
+          spacing={2} 
+          justify="flex-start"
+        >
+          <AllForumsCard forums={forumsById} allIds={allForumIds} loading={forumsLoading}/>
         </Grid>
-      {/* {postsError ? null : <div ref={loader}></div>} */}
       </Grid>
     </Page>
   );
@@ -117,14 +117,14 @@ const Home = props => {
 
 const mapStateToProps = state => {
   return {
-    forums: state.forums.forums,
-    forumsLoading: state.forums.loading,
-    forumsError: state.forums.error,
-    posts: state.posts.posts,
-    postsCursor: state.posts.cursor,
-    postsHasNextPage: state.posts.hasNextPage,
-    postsLoading: state.posts.loading,
-    postsError: state.posts.error,
+    postsById: state.entities.posts.byId,
+    allPostIds: state.entities.posts.allIds,
+    forumsById: state.entities.forums.byId,
+    allForumIds: state.entities.forums.allIds,
+
+    forumsLoading: state.ui.forums.forumsLoading,
+    postsLoading: state.ui.posts.postsLoading,
+
     isAuthenticated: state.auth.token !== null
   };
 };
@@ -132,8 +132,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    onClearPosts: () => dispatch(clearPosts()),
-    onFetchPosts: (sort, top, cursor) => dispatch(fetchPosts(sort, top, null, cursor))
+    // onFetchPosts: (sort, top, cursor) => dispatch(fetchHomePosts(sort, top, cursor))
   };
 };
 

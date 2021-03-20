@@ -3,35 +3,37 @@ import thunk from 'redux-thunk';
 import callApiMiddleware from './store/middlewares/callApiMiddleware';
 import effectsMiddleware from './store/middlewares/effectsMiddleware';
 import authReducer from './store/reducers/auth';
-import commentsReducer from './store/reducers/comments';
-import comments2 from './store/reducers/comments2';
-import forumReducer from './store/reducers/forum';
-import forumsReducer from './store/reducers/forums';
-import forums2 from './store/reducers/forums2';
-import postReducer from './store/reducers/post';
-import postsReducer from './store/reducers/posts';
-import posts2 from './store/reducers/posts2';
-import registerReducer from './store/reducers/register';
-import snackbarReducer from './store/reducers/snackbar';
-import homeReducer from './store/reducers/home';
+import commentsReducer from './store/reducers/entities/comments';
+import postsReducer from './store/reducers/entities/posts';
+import forumsReducer from './store/reducers/entities/forums';
+import commentsUiReducer from './store/reducers/ui/commentsUi';
+import postsUiReducer from './store/reducers/ui/postsUi';
+import forumsUiReducer from './store/reducers/ui/forumsUi';
+import snackbarReducer from './store/reducers/ui/snackbar';
+import modalReducer from './store/reducers/ui/modal';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' 
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
   : null || compose;
+  
+const entitiesReducer = combineReducers({
+  comments: commentsReducer,
+  posts: postsReducer,
+  forums: forumsReducer
+});
+
+const uiReducer = combineReducers({
+  comments: commentsUiReducer,
+  posts: postsUiReducer,
+  forums: forumsUiReducer,
+  snackbar: snackbarReducer,
+  modal: modalReducer
+});
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  comments: commentsReducer,
-  comments2: comments2,
-  posts2: posts2,
-  forums2: forums2,
-  forum: forumReducer,
-  forums: forumsReducer,
-  post: postReducer,
-  posts: postsReducer,
-  register: registerReducer,
-  snackbar: snackbarReducer,
-  home: homeReducer
+  entities: entitiesReducer,
+  ui: uiReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

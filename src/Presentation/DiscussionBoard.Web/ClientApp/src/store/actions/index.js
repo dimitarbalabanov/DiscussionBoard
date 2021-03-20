@@ -2,11 +2,8 @@ export {
     auth,
     logout,
     authCheckState,
-  } from './auth';
-  
-export {
     register
-  } from './register';
+  } from './auth';
 
 export {
   fetchComments,
@@ -15,30 +12,18 @@ export {
   deleteComment,
   createCommentVote,
   updateCommentVote,
-  deleteCommentVote,
-  setCommentsSort,
-  setCommentsTop,
-  clearComments
+  deleteCommentVote
 } from './comments';
 
 export {
-  fetchForumById
-} from './forum';
-
-export {
   fetchForums,
+  fetchForumById,
   setForumSort,
   setForumTop
 } from './forums';
 
 export {
-  fetchPosts as fetchHomePosts,
-  clearPosts as clearHomePosts,
-  setSort as setHomeSort,
-  setTop as setHomeTop
-} from './home';
-
-export {
+  fetchPosts,
   fetchPostById,
   createPost,
   createPostReset,
@@ -49,14 +34,14 @@ export {
   deletePostVote,
   createSavedPost,
   deleteSavedPost
-} from './post';
-
-export {
-  fetchPosts,
-  clearPosts
 } from './posts';
 
 export {
   showSnackbar,
   hideSnackbar
 } from './snackbar';
+
+export {
+  showModal,
+  hideModal
+} from './modal';

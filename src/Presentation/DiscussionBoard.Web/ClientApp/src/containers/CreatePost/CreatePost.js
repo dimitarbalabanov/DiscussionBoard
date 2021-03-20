@@ -42,17 +42,20 @@ const CreatePost = props => {
 
   const {
     createPostSuccess,
-    //createPostError,
+    createPostError,
     createPostLoading,
     createPostId,
     onCreatePost,
-    forums,
+    forumsById,
+    allForumIds,
     onFetchForums,
     forumsLoading
   } = props;
   
   useEffect(() => {
-    onFetchForums();
+    if (allForumIds.length < 10) {
+      onFetchForums();
+       }
   }, [onFetchForums])
   
   if(createPostSuccess) {
@@ -81,13 +84,13 @@ const CreatePost = props => {
       })}
       onSubmit={values => {
         console.log(values)
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('forumId', values.forumId);
         formData.append('title', values.title);
         formData.append('content', values.content);
-        //formData.append("postMedia", values.image);
-        onCreatePost(values.forumId, values.title, values.content);
-        //onCreatePost(formData);
+        // formData.append("postMedia", values.image);
+        //onCreatePost(values.forumId, values.title, values.content);
+        onCreatePost(formData);
       }}
     >
       {({
@@ -117,7 +120,7 @@ const CreatePost = props => {
                 label="Forum"
                 name="forumId"
               >
-                {forums.map(forum => <MenuItem key={forum.id} value={forum.id}>{forum.title}</MenuItem>)}
+                {allForumIds.map(id => <MenuItem key={id} value={id}>{forumsById[id].title}</MenuItem>)}
               </Select>
             </FormControl>
             }
@@ -186,20 +189,21 @@ const CreatePost = props => {
 
 const mapStateToProps = state => {
   return {
-    forums: state.forums.forums,
-    forumsLoading: state.forums.loading,
-    createPostLoading: state.post.createPostLoading,
-    createPostError: state.post.createPostError,
-    createPostSuccess: state.post.createPostSuccess,
-    createPostId: state.post.post ? state.post.post.id : ''
+    forumsById: state.entities.forums.byId,
+    allForumIds: state.entities.forums.allIds,
+
+    forumsLoading: state.ui.forums.forumsLoading,
+    createPostLoading: state.ui.posts.createPostLoading,
+    createPostError: state.ui.posts.createPostError,
+     createPostSuccess: state.ui.posts.createPostSuccess,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
-    //onCreatePost: (formData) => dispatch(createPost(formData))
+    //onCreatePost: (forumId, title, content) => dispatch(createPost(forumId, title, content))
+    onCreatePost: (formData) => dispatch(createPost(formData))
   };
 };
 

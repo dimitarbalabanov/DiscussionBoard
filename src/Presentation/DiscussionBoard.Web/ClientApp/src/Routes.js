@@ -3,7 +3,6 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import NotFound from './components/NotFound/NotFound';
 import Logout from './containers/Auth/Logout/Logout';
 import Home from './containers/Home/Home';
-import Home2 from './containers/Home/Home2';
 import Forum from './containers/Forum/Forum';
 import Post from './containers/Post/Post';
 import CreatePost from './containers/CreatePost/CreatePost';
@@ -18,14 +17,14 @@ const Routes = props => {
   return (
     <Switch>
       <Route 
-        component={Home2}
+        component={Home}
         exact 
         path="/" 
       />
       <Route 
         component={Register}
         exact 
-        path="/register" 
+        path="/signup" 
       />
       <Route 
         component={Login2}
@@ -40,7 +39,7 @@ const Routes = props => {
       <Route 
         component={CreateForum}
         exact 
-        path="/create-forum" 
+        path="/forum/create" 
       />
       <Route 
         component={Forum}

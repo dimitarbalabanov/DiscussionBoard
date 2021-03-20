@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Avatar from '@material-ui/core/Avatar';
 import EditComment from '../EditComment/EditComment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteButton from '../../AUI/DeleteButton';
@@ -13,15 +14,19 @@ import Voting from '../../Voting/Voting';
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
-    marginLeft: theme.spacing(2),
+    //marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1)
   },
   margin: {
     display: 'flex',
     alignItems: 'center',
   },
-  content: {
-    //margin: 'auto'
+  avatar: {
+    height: 30,
+    width: 30,
+  },
+  ml: {
+    marginLeft: theme.spacing(0.6)
   }
 }));
 
@@ -70,7 +75,13 @@ const CommentCard = props => {
         <Box ml={10} mt={2} mb={2}>
           <CircularProgress size={50}/>
         </Box> 
-      : <Grid container>
+      : 
+        <React.Fragment>
+          <Box mt={1}>
+            <Avatar className={classes.avatar}/>
+          </Box>
+        
+      <Grid container>
             <CreatorAndCreatedOn creatorUserName={comment.creatorUserName} createdOn={comment.createdOn} />
             {showUpdateForm ? 
             <Grid md={12} item>
@@ -83,7 +94,7 @@ const CommentCard = props => {
               /> 
               </Grid>
             : <Grid className={classes.content} item >
-                <Typography>
+                <Typography className={classes.ml}>
                   {updateCommentLoading && updateCommentId === comment.id 
                     ? <CircularProgress /> : comment.content}
                 </Typography>
@@ -119,7 +130,7 @@ const CommentCard = props => {
                 : <DeleteButton id={comment.id} parentId={post.id} onDelete={onDeleteComment} />}
               </Grid> 
               : null}
-          </Grid>}
+          </Grid></React.Fragment>}
     </div>
   );
 }

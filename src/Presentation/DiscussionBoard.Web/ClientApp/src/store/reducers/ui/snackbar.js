@@ -1,7 +1,7 @@
 import {
   SHOW_SNACKBAR,
   HIDE_SNACKBAR
-} from '../actions/actionTypes';
+} from '../../actions/actionTypes';
 
 const initialState = {
   show: false,

@@ -57,7 +57,7 @@ const Post = (props) => {
     onDeleteSavedPost,
     deleteSavedPostError,
     deleteSavedPostLoading,
-    comments,
+    //comments,
     //commentsError,
     commentsLoading,
     onFetchComments,
@@ -120,32 +120,6 @@ const Post = (props) => {
     return <Redirect to="/" />;
   }
 
-  let commentsDiv = commentsLoading ? <Box m={5}><Spinner /></Box> : null;
-  if (!commentsLoading && post !== undefined && post.comments !== undefined) {
-    commentsDiv = post.comments.map(id => 
-      <CommentCard 
-        key={id}
-        post={post}
-        comment={commentsById[id]}
-        onDeleteComment={onDeleteComment}
-        deleteCommentLoading={deleteCommentLoading}
-        deleteCommentId={deleteCommentId}
-        onUpdateComment={onUpdateComment}
-        updateCommentLoading={updateCommentLoading}
-        updateCommentId={updateCommentId}
-        onCreateVote={onCreateCommentVote}
-        createVoteError={createCommentVoteError}
-        createVoteLoading={createCommentVoteLoading}
-        onUpdateVote={onUpdateCommentVote}
-        updateCommentVoteError={updateCommentVoteError}
-        updateCommentVoteLoading={updateCommentVoteLoading}
-        onDeleteVote={onDeleteCommentVote}
-        deleteCommentVoteError={deleteCommentVoteError}
-        deleteCommentVoteLoading={deleteCommentVoteLoading}
-        isAuthenticated={isAuthenticated}
-      />)
-  }
-
   return (
     <Page title={post ? post.title : "Discussion Board"}>
       <Grid 
@@ -188,7 +162,6 @@ const Post = (props) => {
               onDeleteSavedPost={onDeleteSavedPost}
               deleteSavedPostError={deleteSavedPostError}
               deleteSavedPostLoading={deleteSavedPostLoading}
-              comments={comments} 
               commentsLoading={commentsLoading}
               onCreateComment={onCreateComment}
               createCommentError={createCommentError}
@@ -198,7 +171,29 @@ const Post = (props) => {
               username={username}
             >
               <div className={classes.mainGrid}>
-                {commentsDiv}
+                {!commentsLoading && post !== undefined && post.comments !== undefined ?
+                   post.comments.map(id => 
+                  <CommentCard 
+                    key={id}
+                    post={post}
+                    comment={commentsById[id]}
+                    onDeleteComment={onDeleteComment}
+                    deleteCommentLoading={deleteCommentLoading}
+                    deleteCommentId={deleteCommentId}
+                    onUpdateComment={onUpdateComment}
+                    updateCommentLoading={updateCommentLoading}
+                    updateCommentId={updateCommentId}
+                    onCreateVote={onCreateCommentVote}
+                    createVoteError={createCommentVoteError}
+                    createVoteLoading={createCommentVoteLoading}
+                    onUpdateVote={onUpdateCommentVote}
+                    updateCommentVoteError={updateCommentVoteError}
+                    updateCommentVoteLoading={updateCommentVoteLoading}
+                    onDeleteVote={onDeleteCommentVote}
+                    deleteCommentVoteError={deleteCommentVoteError}
+                    deleteCommentVoteLoading={deleteCommentVoteLoading}
+                    isAuthenticated={isAuthenticated}
+                  />) : <Box m={5}><Spinner /></Box> }
               </div>
             </PostDetailsCard>
             
@@ -221,57 +216,28 @@ const Post = (props) => {
 
 const mapStateToProps = state => {
   return {
-    postsById: state.posts2.byId,
-    commentsById: state.comments2.byId,
-    forumsById: state.forums2.byId,
+    postsById: state.entities.posts.byId,
+    commentsById: state.entities.comments.byId,
+    forumsById: state.entities.forums.byId,
 
-    forum: state.forum.forum,
-
-    post: state.post.post,
-    postLoading: state.post.postLoading,
-    postError: state.post.postError,
-
-    deletePostSuccess: state.post.deletePostSuccess,
-    
-    createPostVoteLoading: state.post.createPostVoteLoading,
-    createPostVoteError: state.post.createPostVoteError,
-
-    updatePostVoteLoading: state.post.updatePostVoteLoading,
-    updatePostVoteError: state.post.updatePostVoteError,
-
-    deletePostVoteLoading: state.post.deletePostVoteLoading,
-    deletePostVoteError: state.post.deletePostVoteError,
-
-    createSavedPostLoading: state.post.createSavedPostLoading,
-    createSavedPostError: state.post.createSavedPostError,
-
-    deleteSavedPostLoading: state.post.deleteSavedPostLoading,
-    deleteSavedPostError: state.post.deleteSavedPostError,
-
-    comments: state.comments.comments,
-    commentsLoading: state.comments.commentsLoading,
-    commentsError: state.comments.commentsError,
-
-    createCommentLoading: state.comments.createCommentLoading,
-    createCommentError: state.comments.createCommentError,
-
-    deleteCommentLoading: state.comments.deleteCommentLoading,
-    deleteCommentError: state.comments.deleteCommentError,
-    deleteCommentId: state.comments.deleteCommentId,
-
-    updateCommentLoading: state.comments.updateCommentLoading,
-    updateCommentError: state.comments.updateCommentError,
-    updateCommentId: state.comments.updateCommentId,
-
-    createCommentVoteLoading: state.comments.createCommentVoteLoading,
-    createCommentVoteError: state.comments.createCommentVoteError,
-
-    updateCommentVoteLoading: state.comments.updateCommentVoteLoading,
-    updateCommentVoteError: state.comments.updateCommentVoteError,
-
-    deleteCommentVoteLoading: state.comments.deleteCommentVoteLoading,
-    deleteCommentVoteError: state.comments.deleteCommentVoteError,
-
+    // postLoading: state.post.postLoading,
+    // deletePostSuccess: state.post.deletePostSuccess,
+    // createPostVoteLoading: state.post.createPostVoteLoading,
+    // updatePostVoteLoading: state.post.updatePostVoteLoading,
+    // deletePostVoteLoading: state.post.deletePostVoteLoading,
+    // createSavedPostLoading: state.post.createSavedPostLoading,
+    // deleteSavedPostLoading: state.post.deleteSavedPostLoading,
+    // commentsLoading: state.comments.commentsLoading,
+    // createCommentLoading: state.comments.createCommentLoading,
+    // createCommentError: state.comments.createCommentError,
+    // deleteCommentLoading: state.comments.deleteCommentLoading,
+    // deleteCommentId: state.comments.deleteCommentId,
+    // updateCommentLoading: state.comments.updateCommentLoading,
+    // updateCommentError: state.comments.updateCommentError,
+    // updateCommentId: state.comments.updateCommentId,
+    // createCommentVoteLoading: state.comments.createCommentVoteLoading,
+    // updateCommentVoteLoading: state.comments.updateCommentVoteLoading,
+    // deleteCommentVoteLoading: state.comments.deleteCommentVoteLoading,
     isAuthenticated: state.auth.token !== null,
     username: state.auth.username
   };
@@ -279,7 +245,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetCommentsSort: (postId, sort) => dispatch(actions.setCommentsSort(postId, sort)),
     onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
     onUpdatePost: (postId, title, content) => dispatch(actions.updatePost(postId, title, content)),

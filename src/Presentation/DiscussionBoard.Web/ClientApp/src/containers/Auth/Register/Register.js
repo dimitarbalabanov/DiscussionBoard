@@ -1,10 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
 import { connect } from 'react-redux';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -39,8 +36,8 @@ const Register = props => {
   const classes = useStyles();
 
   const {
-    registerLoading,
-    registerError,
+    loading,
+    error,
     onRegister,
     isAuthenticated
   } = props;
@@ -65,7 +62,7 @@ const Register = props => {
               Use your email to create a new account
             </Typography>
           </Box>
-          {registerLoading 
+          {loading 
           ? 
             <Spinner /> 
           :
@@ -113,7 +110,7 @@ const Register = props => {
               />
             </MainForm>
         }
-          {registerError ?? <div><Typography>{register.Error}</Typography></div>}
+          {error ?? <div><Typography>{register.Error}</Typography></div>}
           
           </Grid>
         </Grid>
@@ -123,8 +120,8 @@ const Register = props => {
 
 const mapStateToProps = state => {
   return {
-    registerLoading: state.register.loading,
-    registerError: state.register.error,
+    loading: state.auth.registerLoading,
+    error: state.auth.registerError,
     isAuthenticated: state.auth.token !== null,
   };
 };

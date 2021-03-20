@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import PostsList from '../../components/Post/PostsList/PostsList';
-import { fetchForumById, fetchPosts, setForumSort, setForumTop } from '../../store/actions';
+import { fetchForumById, fetchPosts, setForumSort, setForumTop, showModal } from '../../store/actions';
 import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
@@ -29,7 +29,8 @@ const Forum = props => {
     onFetchPosts,
     onFetchForum,
     onSetForumSort,
-    onSetForumTop
+    onSetForumTop,
+    onOpenModal
   } = props;
   
   const forum = forumsById[forumId] !== undefined ? forumsById[forumId] : null;
@@ -98,7 +99,7 @@ const Forum = props => {
           {forum !== null && forum.posts !== undefined ?
             forum.posts.map((id) => (
               <Grid item xs={12} md={10} key={id}>
-                <PostCard post={postsById[id]} loading={postsLoading} />
+                <PostCard post={postsById[id]} loading={postsLoading} onOpenModal={onOpenModal} />
               </Grid>
             )) : null
           }
@@ -123,18 +124,13 @@ const Forum = props => {
 
 const mapStateToProps = state => {
   return {
-    postsById: state.posts2.byId,
-    allPostIds: state.posts2.allIds,
-    forumsById: state.forums2.byId,
-    allForumIds: state.forums2.allIds,
+    postsById: state.entities.posts.byId,
+    allPostIds: state.entities.posts.allIds,
+    forumsById: state.entities.forums.byId,
+    allForumIds: state.entities.forums.allIds,
 
-
-    posts: state.posts.posts,
-    postsLoading: state.posts.loading,
-    postsError: state.posts.error,
-    forum: state.forum.forum,
-    forumLoading: state.forum.loading,
-    forumError: state.forum.error
+    postsLoading: state.ui.posts.postsLoading,
+    forumLoading: state.ui.forums.forumsLoading,
   };
 };
 
@@ -144,6 +140,7 @@ const mapDispatchToProps = dispatch => {
     onFetchPosts: (sort, top, forumId, cursor) => dispatch(fetchPosts(sort, top, forumId, cursor)),
     onSetForumSort: (forumId, sort) => dispatch(setForumSort(forumId, sort)),
     onSetForumTop: (forumId, top) => dispatch(setForumTop(forumId, top)),
+    onOpenModal: () => dispatch(showModal()),
   };
 };
 
