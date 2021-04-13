@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import callApiMiddleware from './store/middlewares/callApiMiddleware';
 import effectsMiddleware from './store/middlewares/effectsMiddleware';
 import authReducer from './store/reducers/auth';
+import homeReducer from './store/reducers/home';
 import commentsReducer from './store/reducers/entities/comments';
 import postsReducer from './store/reducers/entities/posts';
 import forumsReducer from './store/reducers/entities/forums';
@@ -33,7 +34,8 @@ const uiReducer = combineReducers({
 const rootReducer = combineReducers({
   auth: authReducer,
   entities: entitiesReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  home: homeReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

@@ -4,11 +4,13 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 import Page from '../../components/Page/Page';
 import PostsList from '../../components/Post/PostsList/PostsList';
-import { fetchForumById, fetchPosts, setForumSort, setForumTop, showModal } from '../../store/actions';
+import * as actions from '../../store/actions';
 import AboutForumCard from '../../components/Forum/AboutForumCard/AboutForumCard';
 import ForumTitleCard from '../../components/Forum/ForumTitleCard/ForumTitleCard';
 import PostsSorting from '../../components/PostsSorting/PostsSorting';
 import PostCard from '../../components/Post/PostCard/PostCard';
+import PostCard2 from '../../components/Post/PostCard/PostCard2';
+import PostsListSkeleton from '../../components/Post/PostsListSkeleton';
 
 const useStyles = makeStyles((theme) => ({
   forumGrid: {
@@ -30,7 +32,15 @@ const Forum = props => {
     onFetchForum,
     onSetForumSort,
     onSetForumTop,
-    onOpenModal
+    onOpenModal,
+    onUpdatePost,
+    onDeletePost,
+    onCreateSavedPost,
+    onDeleteSavedPost,
+    onCreatePostVote,
+    onUpdatePostVote,
+    onDeletePostVote,
+    isAuthenticated
   } = props;
   
   const forum = forumsById[forumId] !== undefined ? forumsById[forumId] : null;
@@ -42,14 +52,14 @@ const Forum = props => {
   }, [onFetchForum, forumId]);
   
   useEffect(() => {
-    if (forum && forum.posts !== undefined && forum.posts.length === 0) {
-      onFetchPosts(forum.sort, forum.top, forum.id, forum.cursor);
+    if (forum && forum.posts[forum.sort].ids.length === 0) {
+      onFetchPosts(forum.sort, forum.top, forum.id, forum.posts[forum.sort].cursor);
     }
   }, [onFetchPosts, forum]);
 
   const observeBorder = useCallback(
     node => {
-      if (node !== null && forum !== null && forum.cursor !== null) {
+      if (node !== null && forum !== null && forum.posts[forum.sort].cursor !== null) {
         console.log("ima node")
         new IntersectionObserver(
           entries => {
@@ -58,6 +68,7 @@ const Forum = props => {
 
               if (en.intersectionRatio === 1) {
                 console.log("prashtam zaqvka s kursor" + forum.cursor)
+                /////////////////////////////////////////
                 setTimeout(() => onFetchPosts(forum.sort, forum.top, forum.id, forum.cursor), 500);
               }
             });
@@ -82,29 +93,39 @@ const Forum = props => {
           container 
           item 
           xs={12} 
-          md={6} 
+          sm={8}
+          md={8} 
+          lg={6}
           spacing={2} 
           justify="flex-end"
         >
-          {forum !== null &&
+   
           <PostsSorting 
-            forumId={forum.id}
-            sort={forum.sort}
-            top={forum.top} 
+            forum={forum}
             onSetSort={onSetForumSort} 
             onSetTop={onSetForumTop}
           />
-          }
           <React.Fragment>
-          {forum !== null && forum.posts !== undefined ?
-            forum.posts.map((id) => (
+          {forum !== null ?
+            forum.posts[forum.sort].ids.map((id) => (
               <Grid item xs={12} md={10} key={id}>
-                <PostCard post={postsById[id]} loading={postsLoading} onOpenModal={onOpenModal} />
+                <PostCard2 
+                  post={postsById[id]} 
+                  loading={postsLoading} 
+                  onUpdatePost={onUpdatePost}
+                  onDeletePost={onDeletePost}
+                  onCreatePostVote={onCreatePostVote}
+                  onUpdatePostVote={onUpdatePostVote}
+                  onDeletePostVote={onDeletePostVote}
+                  onCreateSavedPost={onCreateSavedPost}
+                  onDeleteSavedPost={onDeleteSavedPost}
+                  isAuthenticated={isAuthenticated}
+              />
               </Grid>
             )) : null
           }
           </React.Fragment>
-          {forum && forum.cursor && <div data-testid="bottom-border" ref={observeBorder} />}
+          {forum && forum.posts[forum.sort].cursor && <div data-testid="bottom-border" ref={observeBorder} />}
         </Grid>
         <Grid 
           container 
@@ -131,16 +152,24 @@ const mapStateToProps = state => {
 
     postsLoading: state.ui.posts.postsLoading,
     forumLoading: state.ui.forums.forumsLoading,
+    isAuthenticated: state.auth.token !== null,
+    
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchForum: (forumId) => dispatch(fetchForumById(forumId)),
-    onFetchPosts: (sort, top, forumId, cursor) => dispatch(fetchPosts(sort, top, forumId, cursor)),
-    onSetForumSort: (forumId, sort) => dispatch(setForumSort(forumId, sort)),
-    onSetForumTop: (forumId, top) => dispatch(setForumTop(forumId, top)),
-    onOpenModal: () => dispatch(showModal()),
+    onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
+    onFetchPosts: (sort, top, forumId, cursor) => dispatch(actions.fetchPosts(sort, top, forumId, cursor)),
+    onSetForumSort: (forumId, sort) => dispatch(actions.setForumSort(forumId, sort)),
+    onSetForumTop: (forumId, top) => dispatch(actions.setForumTop(forumId, top)),
+    onUpdatePost: (postId, title, content) => dispatch(actions.updatePost(postId, title, content)),
+    onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
+    onCreatePostVote: (postId, type) => dispatch(actions.createPostVote(postId, type)),
+    onUpdatePostVote: (postId, voteId, type) => dispatch(actions.updatePostVote(postId, voteId, type)),
+    onDeletePostVote: (postId, voteId, type) => dispatch(actions.deletePostVote(postId, voteId, type)),
+    onCreateSavedPost: (postId) => dispatch(actions.createSavedPost(postId)),
+    onDeleteSavedPost: (postId) => dispatch(actions.deleteSavedPost(postId)),
   };
 };
 

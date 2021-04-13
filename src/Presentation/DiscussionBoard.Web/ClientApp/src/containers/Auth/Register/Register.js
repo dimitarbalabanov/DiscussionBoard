@@ -110,7 +110,7 @@ const Register = props => {
               />
             </MainForm>
         }
-          {error ?? <div><Typography>{register.Error}</Typography></div>}
+          {error ?? <div><Typography>{error}</Typography></div>}
           
           </Grid>
         </Grid>

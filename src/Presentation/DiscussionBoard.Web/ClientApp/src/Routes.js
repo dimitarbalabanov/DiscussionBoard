@@ -39,7 +39,7 @@ const Routes = props => {
       <Route 
         component={CreateForum}
         exact 
-        path="/forum/create" 
+        path="/forums/create" 
       />
       <Route 
         component={Forum}

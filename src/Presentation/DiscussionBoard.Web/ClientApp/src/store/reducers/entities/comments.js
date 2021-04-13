@@ -1,5 +1,4 @@
 import {
-  SET_POST_SORT,
   REQUEST_COMMENTS_SUCCESS,
   CREATE_COMMENT_SUCCESS,
   UPDATE_COMMENT_SUCCESS,
@@ -102,27 +101,15 @@ const requestCommentsSuccess = (state, action) => {
   };
 }
 
-const setPostSort = (state, action) => {
-  let newState = { ...state };
-  action.commentIds.forEach(
-    x => delete newState[x]
-  );
-
-  return {
-    ...newState
-  };
-}
-
 function commentsById(state = {}, action) {
   switch (action.type) {
+    case REQUEST_COMMENTS_SUCCESS: return requestCommentsSuccess(state, action);
     case CREATE_COMMENT_SUCCESS: return createCommentSuccess(state, action);
     case UPDATE_COMMENT_SUCCESS: return updateCommentSuccess(state, action);
     case DELETE_COMMENT_SUCCESS: return deleteCommentSuccess(state, action);
     case CREATE_COMMENTVOTE_SUCCESS: return createCommentVoteSuccess(state, action);
     case UPDATE_COMMENTVOTE_SUCCESS: return updateCommentVoteSuccess(state, action);
     case DELETE_COMMENTVOTE_SUCCESS: return deleteCommentVoteSuccess(state, action);
-    case REQUEST_COMMENTS_SUCCESS: return requestCommentsSuccess(state, action);
-    case SET_POST_SORT: return setPostSort(state, action);
     default: return state;
   }
 }

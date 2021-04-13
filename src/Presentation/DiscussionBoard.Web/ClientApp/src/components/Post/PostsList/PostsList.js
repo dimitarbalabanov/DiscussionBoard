@@ -11,7 +11,6 @@ const PostsList = props => {
    } = props;
 
    
-
   console.log(posts);
   console.log(allIds);
 

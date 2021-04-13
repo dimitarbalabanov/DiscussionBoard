@@ -99,6 +99,7 @@ const PostCard = props => {
             <Typography  className={classes.asdf}  display="inline" variant="body2" >
               {`${post.commentsCount} Comments`}
             </Typography>
+            <SavePostButton />
             <Button
               onClick={() => onOpenModal()} 
               //component={Link}
@@ -109,7 +110,6 @@ const PostCard = props => {
               </Typography>
             </Button>
             <DeleteButton />
-            <SavePostButton />
           </Grid>
       </Grid>
     </Paper>

@@ -11,14 +11,14 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 60,
   },
   text: {
-    marginTop: theme.spacing(0.3),
+    //marginTop: theme.spacing(0.3),
     marginRight: theme.spacing(1)
   },
 }));
 
 const CommentsSorting = props  => {
   const classes = useStyles();
-  const [sort, setSort] = React.useState(10); 
+  const [sort, setSort] = React.useState(1); 
 
   const handleChange = (event) => {
     setSort(event.target.value);
@@ -29,7 +29,6 @@ const CommentsSorting = props  => {
       display="flex"
       alignContent="center"
       ml={2} 
-      mb={1} 
      >
       <Typography className={classes.text} color="textSecondary" display="inline" variant="body2">
         SORT BY 

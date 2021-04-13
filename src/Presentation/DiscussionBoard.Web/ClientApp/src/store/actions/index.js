@@ -25,6 +25,8 @@ export {
 export {
   fetchPosts,
   fetchPostById,
+  setPostSort,
+  setPostTop,
   createPost,
   createPostReset,
   updatePost,
@@ -35,6 +37,11 @@ export {
   createSavedPost,
   deleteSavedPost
 } from './posts';
+
+export {
+  setHomeSort,
+  setHomeTop
+} from './home';
 
 export {
   showSnackbar,

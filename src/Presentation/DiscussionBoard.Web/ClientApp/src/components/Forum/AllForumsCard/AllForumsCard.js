@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Spinner from '../../Spinner/Spinner';
 import Link from '@material-ui/core/Link';
-
+import leaves from '../../../assets/images/leaves.jpg'
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
@@ -100,6 +100,7 @@ const AllForumsCard = props => {
                   <Avatar
                   className={classes.avatar}
                   //src={forums[id].mediaUrl}
+                  src={leaves}
                   />
                 </Box>
                 <Box>

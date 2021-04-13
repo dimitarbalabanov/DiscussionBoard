@@ -2,6 +2,9 @@ import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import {
   fetchForums,
+  fetchPosts,
+  setHomeSort,
+  setHomeTop
 } from '../../store/actions';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
@@ -11,8 +14,9 @@ import Page from '../../components/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import PostsList from '../../components/Post/PostsList/PostsList';
 import CreatePostButton from '../../components/CreatePostButton/CreatePostButton';
-import PostsSorting from '../../components/PostsSorting/PostsSorting';
+import PostsSorting2 from '../../components/PostsSorting/PostsSorting2';
 import AllForumsCard from '../../components/Forum/AllForumsCard/AllForumsCard';
+import PostsListSkeleton from '../../components/Post/PostsListSkeleton';
 
 const useStyles = makeStyles((theme) => ({
   forumGrid: {
@@ -30,39 +34,43 @@ const Home = props => {
     postsById,
     allPostIds,
     forumsById,
-    allForumIds
+    allForumIds,
+    onFetchPosts,
+    onSetHomeSort,
+    onSetHomeTop,
+    home
   } = props;
 
-  // useEffect(() => {
-  //   if(allPostIds.length < 10) {
-  //     onFetchPosts(sort, top);
-  //     }
-  //   }, [onFetchPosts]);
-    
   useEffect(() => {
-     if (allForumIds.length < 10) {
+    if (allForumIds.length < 10) {
       onFetchForums();
-       }
-    }, [onFetchForums]);
+    }
+  }, [onFetchForums, allForumIds]);
       
-  // const observeBorder = useCallback(
-  //   node => {
-  //     if (node !== null) {
-  //       new IntersectionObserver(
-  //         entries => {
-  //           entries.forEach(en => {
-  //             if (en.intersectionRatio === 1) {
-  //               console.log("prashtam zaqvka s kursor" + cursor)
-  //               setTimeout(() => onFetchPosts(sort, top, cursor), 500);
-  //             }
-  //           });
-  //         },
-  //         { threshold: 1 }
-  //       ).observe(node);
-  //     }
-  //   },
-  //   [onFetchPosts, sort, top, cursor]
-  // );
+  useEffect(() => {
+    if (home.postIds.length === 0) {
+      onFetchPosts(home.sort, home.top);
+    }
+  }, [onFetchPosts, home.postIds, home.sort, home.top]);
+
+  const observeBorder = useCallback(
+    node => {
+      if (node !== null && home.cursor !== null) {
+        new IntersectionObserver(
+          entries => {
+            entries.forEach(en => {
+              if (en.intersectionRatio === 1) {
+                console.log("prashtam zaqvka s kursor" + home.cursor)
+                setTimeout(() => onFetchPosts(home.sort, home.top, home.cursor), 500);
+              }
+            });
+          },
+          { threshold: 1 }
+        ).observe(node);
+      }
+    },
+    [onFetchPosts, home.sort, home.top, home.cursor]
+  );
   
   return (
     <Page title="Discussion Board">
@@ -80,24 +88,19 @@ const Home = props => {
           justify="flex-end"
         >
           <CreatePostButton isAuthenticated={isAuthenticated}/>
-          {/* <PostsSorting 
-            sort={sort}
-            top={top} 
-            onSetSort={onSetSort} 
-            onSetTop={onSetTop}
+          <PostsSorting2
+            home={home}
+            onSetSort={onSetHomeSort} 
+            onSetTop={onSetHomeTop}
           />
+          {home.postIds.length === 0 &&
+          <PostsListSkeleton />}
           <PostsList 
             posts={postsById} 
-            allIds={allPostIds} 
+            allIds={home.postIds} 
             loading={postsLoading} 
-            error={postsError}/>
-          {postsLoading && 
-            <Grid item xs={12} md={10}>
-              <Box component={Paper}>
-                <Spinner />
-              </Box>
-            </Grid>}
-          {cursor && <div data-testid="bottom-border" ref={observeBorder} />} */}
+          />
+          {home.cursor !== null && <div data-testid="bottom-border" ref={observeBorder} />}
         </Grid>
         <Grid 
           className={classes.forumGrid} 
@@ -117,6 +120,7 @@ const Home = props => {
 
 const mapStateToProps = state => {
   return {
+    home: state.home,
     postsById: state.entities.posts.byId,
     allPostIds: state.entities.posts.allIds,
     forumsById: state.entities.forums.byId,
@@ -132,7 +136,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchForums: () => dispatch(fetchForums()),
-    // onFetchPosts: (sort, top, cursor) => dispatch(fetchHomePosts(sort, top, cursor))
+    onFetchPosts: (sort, top, cursor) => dispatch(fetchPosts(sort, top, null, cursor)),
+    onSetHomeSort: (sort) => dispatch(setHomeSort(sort)),
+    onSetHomeTop: (top) => dispatch(setHomeTop(top)),
   };
 };
 

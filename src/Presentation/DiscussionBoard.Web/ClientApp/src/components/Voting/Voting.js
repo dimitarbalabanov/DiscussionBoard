@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: '40px',
-    margin: theme.spacing(-2),
+    margin: theme.spacing(-1.8),
     '$:hover' :{
       color: green[500]
       }
@@ -94,7 +94,9 @@ const Voting = props => {
           {votesScore}
         </Typography>
         <ToggleButton value="-1" disabled={!isAuthenticated} className={classes.button}>
-          {voteType === '-1' ? <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/> : <ArrowDropDownIcon className={classes.icon}/>}
+          {voteType === '-1' ? 
+          <ArrowDropDownIcon className={`${classes.red} ${classes.icon}`}/> 
+          : <ArrowDropDownIcon className={classes.icon}/>}
         </ToggleButton>
       </StyledToggleButtonGroup>
     </div>

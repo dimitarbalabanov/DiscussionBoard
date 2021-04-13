@@ -10,6 +10,7 @@ import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import CommentIcon from '@material-ui/icons/Comment';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import Spinner from '../../Spinner/Spinner';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -75,26 +76,26 @@ const AboutForumCard = props => {
       <Typography className={classes.header} component="h3" variant="h5">
               {"About forum"}
           </Typography>
-      {loading || !forum ? <Spinner /> : 
+      {/* {loading || !forum ? <Spinner /> :  */}
         <CardContent>
         <Typography className={classes.title} color="textSecondary" variant="h5" align="center"> 
-            {forum.subtitle}
+            {loading || !forum ? <Skeleton /> : forum.subtitle}
           </Typography>
           <Typography className={classes.title} color="textSecondary" variant="body2"> 
-            {forum.description}
+            {loading || !forum ? <Skeleton height={35}/> :forum.description}
           </Typography>
           <Divider className={classes.margin}/>
           <Grid  container justify="center" spacing={2} >
             <Grid className={classes.statsItem} item>
               <ChatBubbleIcon className={classes.statsIcon} color="action" />
               <Typography color="textSecondary" display="inline" variant="body2" align="center">
-                {`${forum.postsCount} Posts`}
+                {loading || !forum ? <Skeleton width={50}/> : `${forum.postsCount} Posts`}
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
               <CommentIcon className={classes.statsIcon} color="action" />
               <Typography color="textSecondary" display="inline" variant="body2" >
-                {`120 Comments`}
+                {loading || !forum ? <Skeleton width={50}/> : `120 Comments`}
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
@@ -105,11 +106,12 @@ const AboutForumCard = props => {
                 className={classes.button}
                 startIcon={<NoteAddIcon />}
               >
-                Post in {forum.title}
+                Post in {loading || !forum ? <Skeleton width={50} /> : forum.title}
               </Button>
             </Grid>
           </Grid>
-        </CardContent>}
+        </CardContent>
+        {/* } */}
       </div>
     </Card>
   );

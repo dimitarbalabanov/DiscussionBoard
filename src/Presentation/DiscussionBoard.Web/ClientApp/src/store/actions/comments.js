@@ -34,16 +34,17 @@ import {
 } from '../../api/commentVotesService';
 import { showSnackbar } from './snackbar';
 
-export const fetchComments = (postId) => {
+export const fetchComments = (postId, sort, top, cursor) => {
   return {
     types: [
       REQUEST_COMMENTS_START,
       REQUEST_COMMENTS_SUCCESS,
       REQUEST_COMMENTS_FAILURE
     ],
-    callApi: () => getComments(postId),
+    callApi: () => getComments(postId, sort, top, cursor),
     effect() { },
-    postId: postId
+    postId: postId,
+    sort: sort
   }
 };
 

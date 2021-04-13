@@ -34,6 +34,44 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             if (sort != Sort.Top)
             {
                 var ord = sort == Sort.New ? "DESC" : "ASC";
+                //query =
+                //   $@"SELECT p.Id,
+                //             p.Title,
+                //             p.Content,
+                //             p.CreatedOn,
+                //             p.ModifiedOn,
+                //             u.UserName               AS CreatorUserName,
+                //             f.Title                  AS ForumTitle,
+                //             p.ForumId,
+                //             pm.Url                   AS MediaUrl,
+                //             (SELECT Count(*)
+                //              FROM   Comments AS c
+                //              WHERE  p.Id = c.PostId) AS CommentsCount,
+                //             (SELECT Sum(Cast(p.Type AS int))
+                //              FROM   PostVotes AS p
+                //              WHERE  p.Id = p.PostId) AS VotesScore,
+                //             Cast(CASE
+                //                    WHEN p.CreatorId = '{userId}' THEN 1
+                //                    ELSE 0
+                //                  END AS BIT)        AS IsCreator
+                //      FROM   (SELECT TOP({PageSize}) pp.Id,
+                //                                     pp.Title,
+                //                                     pp.Content,
+                //                                     pp.CreatedOn,
+                //                                     pp.ModifiedOn,
+                //                                     pp.ForumId,
+                //                                     pp.CreatorId
+                //              FROM   Posts AS pp
+                //              WHERE  ( pp.ForumId = {(int)request.ForumId} )";
+                //if (request.Cursor != null)
+                //{
+                //    var cursor = CursorPagingExtensions.DecodeSortCursor(request.Cursor);
+                //    query = query +
+                //                        $@"AND ( pp.CreatedOn < '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                //                                                OR ( pp.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                //                                                     AND pp.Id > {cursor.Item1} ) )";
+                //}
+
                 query =
                    $@"SELECT p.Id,
                              p.Title,
@@ -61,16 +99,36 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                                                      pp.ModifiedOn,
                                                      pp.ForumId,
                                                      pp.CreatorId
-                              FROM   Posts AS pp
-                              WHERE  ( pp.ForumId = {(int)request.ForumId} )";
+                              FROM   Posts AS pp ";
+                var conditions = new List<string>();
+                if (request.ForumId != null)
+                {
+                    conditions.Add($" ( pp.ForumId = {(int)request.ForumId} ) ");
+                }
+
                 if (request.Cursor != null)
                 {
                     var cursor = CursorPagingExtensions.DecodeSortCursor(request.Cursor);
-                    query = query +
-                                        $@"AND ( pp.CreatedOn < '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                                                OR ( pp.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                                                     AND pp.Id > {cursor.Item1} ) )";
+                    conditions.Add($@" ( pp.CreatedOn < '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                                            OR ( pp.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
+                                                    AND pp.Id > {cursor.Item1} ) ) ");
                 }
+
+                var filter = string.Empty;
+                if (conditions.Count == 1)
+                {
+                    filter = "WHERE" + conditions[0];
+                }
+                else if (conditions.Count == 2)
+                {
+                    filter = "WHERE" + conditions[0] + "AND" + conditions[1];
+                }
+
+                if (filter != "")
+                {
+                    query = query + filter;
+                }
+
                 query = query + 
                           $@" ORDER  BY pp.CreatedOn {ord},
                                         pp.Id ASC) AS p
@@ -84,7 +142,6 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
             else
             {
                 Enum.TryParse(request.Top, true, out Interval top);
-                var cursor = CursorPagingExtensions.DecodeTopCursor(request.Cursor);
                 query =
                    $@"SELECT TOP({PageSize}) 
                                      p.Id,
@@ -118,14 +175,20 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                              INNER JOIN Forums AS f
                                      ON p.ForumId = f.Id
                               LEFT JOIN PostMedias AS pm
-                                     ON p.Id = pm.PostId
-                      WHERE  p.VotesScore > {cursor.Item3}
+                                     ON p.Id = pm.PostId";
+                if (request.Cursor != null)
+                {
+                    var cursor = CursorPagingExtensions.DecodeTopCursor(request.Cursor);
+                    query = query +
+                        $@" WHERE  p.VotesScore > {cursor.Item3}
                               OR ( p.VotesScore = {cursor.Item3}
                                    AND p.CreatedOn > '{cursor.Item2.ToString(SqlDateTimeFormat)}' )
                               OR ( p.VotesScore = {cursor.Item3}
                                    AND p.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                   AND p.Id > {cursor.Item1} )
-                      ORDER  BY p.VotesScore DESC,
+                                   AND p.Id > {cursor.Item1} )";
+                }
+                query = query + 
+                   $@" ORDER  BY p.VotesScore DESC,
                                 p.CreatedOn ASC,
                                 p.Id ASC ";
             }
@@ -162,76 +225,13 @@ namespace DiscussionBoard.Application.Posts.Queries.GetAllPosts
                 }
             }
 
-            posts = dict != null ? dict.Values.ToList() : posts;
+            if (dict != null)
+            {
+                posts = dict.Values.ToList();
+            }
+
             var response = new GetAllPostsResponse { Posts = posts };
             return response;
         }
     }
 }
-//SELECT p.Id,
-//       p.Title,
-//       p.Content,
-//       p.CreatedOn,
-//       p.ModifiedOn,
-//       u.UserName AS CreatorUserName,
-//       f.Title AS ForumTitle,
-//       p.ForumId,
-//       pm.Url AS MediaUrl,
-//       (SELECT Count(*)
-//        FROM   Comments AS c
-//        WHERE  p.Id = c.PostId) AS CommentsCount,
-//       (SELECT Sum(Cast(p.Type AS int))
-//        FROM   PostVotes AS p
-//        WHERE  p.Id = p.PostId) AS VotesScore
-//FROM   (SELECT TOP(10) pp.Id,
-//                       pp.Title,
-//                       pp.Content,
-//                       pp.CreatedOn,
-//                       pp.ModifiedOn,
-//                       pp.ForumId,
-//                       pp.CreatorId
-//        FROM   Posts AS pp
-//        WHERE  ( pp.ForumId = 2 )
-//               AND(pp.Id > 20)
-//        ORDER BY pp.CreatedOn DESC) AS p
-//       INNER JOIN AspNetUsers AS u
-//               ON p.CreatorId = u.Id
-//       INNER JOIN Forums AS f
-//               ON p.ForumId = f.Id
-//       LEFT JOIN PostMedias AS pm
-//              ON p.Id = pm.PostId 
-
-//SELECT p.Id,
-//       p.Title,
-//       p.Content,
-//       p.CreatedOn,
-//       p.ModifiedOn,
-//       u.UserName AS CreatorUserName,
-//       p.ForumId,
-//       f.Title AS ForumTitle,
-//       pm.Url AS MediaUrl,
-//       (SELECT Count(*)
-//        FROM   Comments AS c
-//        WHERE  p.Id = c.PostId) AS CommentsCount,
-//       p.VotesScore
-//FROM   (SELECT TOP(10) sp.Id,
-//                       sp.Content,
-//                       sp.CreatedOn,
-//                       sp.CreatorId,
-//                       sp.ForumId,
-//                       sp.ModifiedOn,
-//                       sp.Title,
-//                       (SELECT Sum(Cast(pv.Type AS int))
-//                        FROM PostVotes AS pv
-//                        WHERE  sp.Id = pv.PostId) AS VotesScore
-//        FROM   Posts AS sp
-//        WHERE  ( ( sp.CreatedOn >= '' )
-//                 AND(sp.ForumId = 2) )
-//               AND(sp.Id > 20)
-//        ORDER BY VotesScore DESC) AS p
-//       INNER JOIN AspNetUsers AS u
-//               ON p.CreatorId = u.Id
-//       INNER JOIN Forums AS f
-//               ON p.ForumId = f.Id
-//       LEFT JOIN PostMedias AS pm
-//              ON p.Id = pm.PostId 

@@ -23,6 +23,9 @@ namespace DiscussionBoard.Application.Common.Helpers
                 case Interval.ThisMonth:
                     time = new DateTime(time.Year, time.Month, 1);
                     break;
+                case Interval.AllTime:
+                    time = DateTime.UnixEpoch;
+                    break;
                 default:
                     time = DateTime.UnixEpoch;
                     break;

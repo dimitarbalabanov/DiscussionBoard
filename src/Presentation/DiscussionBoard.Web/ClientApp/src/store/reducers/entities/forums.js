@@ -17,7 +17,20 @@ const requestForumSuccess = (state, action) => {
       ...forum,
       sort: 1,
       top: '',
-      posts: []
+      posts: {
+        1: {
+          ids: [],
+          cursor: null
+        },
+        2: {
+          ids: [],
+          cursor: null
+        },
+        3: {
+          ids: [],
+          cursor: null
+        },
+      }
     }
   }
 }
@@ -29,9 +42,7 @@ const setForumSort = (state, action) => {
     ...state,
     [forumId]: {
       ...state[forumId],
-      sort: sort,
-      posts: [],
-      cursor: null
+      sort: sort
     }
   }
 }
@@ -43,9 +54,7 @@ const setForumTop = (state, action) => {
     ...state,
     [forumId]: {
       ...state[forumId],
-      top: top,
-      posts: [],
-      cursor: null
+      top: top
     }
   }
 }
@@ -62,6 +71,10 @@ const requestForumsSuccess = (state, action) => {
 
 const requestPostsSuccess = (state, action) => {
   const forumId = action.forumId;
+  if (forumId === null) {
+    return state;
+  }
+  
   const forum = state[forumId];
   const posts = action.data.posts;
   const postIds = posts.map(x => x.id);
@@ -77,8 +90,14 @@ const requestPostsSuccess = (state, action) => {
     ...state,
     [forumId]: {
       ...forum,
-      posts: forum.posts.concat(postIds),
-      cursor: cursor
+      posts: {
+        ...forum.posts,
+        [action.sort] : {
+          ...forum.posts[action.sort],
+          ids: forum.posts[action.sort].concat(postIds),
+          cursor: cursor
+        }
+      }
     }
   }
 }

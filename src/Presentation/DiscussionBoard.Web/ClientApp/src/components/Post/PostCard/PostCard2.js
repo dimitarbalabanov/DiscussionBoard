@@ -5,23 +5,26 @@ import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import Box from '@material-ui/core/Box';
 import CommentIcon from '@material-ui/icons/Comment';
-import CreateComment from '../../Comment/CreateComment/CreateComment';
 import Spinner from '../../Spinner/Spinner';
 import EditPost from '../EditPost/EditPost';
 import Voting from '../../Voting/Voting';
 import SavePostButton from '../../AUI/SavePostButton';
 import PostFirstLine from '../PostFirstLine/PostFirstLine';
 import image from '../../../assets/images/file-20170712-14488-19lw3sc.jpg';
-import CommentsSorting from '../../CommentsSorting/CommentsSorting';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import EditButton from '../../AUI/EditButton';
 import DeleteButton from '../../AUI/DeleteButton';
 import { CircularProgress } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: 'flex',
     backgroundColor: theme.palette.common.white,
+    border: "1px solid",
+    borderColor: "transparent",
+    '&:hover': {
+      borderColor: theme.palette.common.black,
+    }
   },
   statsIcon: {
     marginRight: theme.spacing(1),
@@ -43,10 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
   voting: {
     backgroundColor: '#F8F8F8'
+  },
+  textColor: {
+    color: '#222222',
   }
 }));
 
-const PostDetailsCard = props => {
+const PostCard2 = props => {
   const classes = useStyles();
   const [showUpdateForm, setUpdateForm] = useState(false);
 
@@ -61,29 +67,16 @@ const PostDetailsCard = props => {
     post,
     forum,
     postLoading,
+    postVoteLoading,
     onCreatePostVote,
-    createPostVoteError,
-    createPostVoteLoading,
     onUpdatePostVote,
-    updatePostVoteError,
-    updatePostVoteLoading,
     onDeletePostVote,
-    deletePostVoteError,
-    deletePostVoteLoading,
     onCreateSavedPost,
-    createSavedPostError,
-    createSavedPostLoading,
     onDeleteSavedPost,
-    deleteSavedPostError,
-    deleteSavedPostLoading,
-    onCreateComment,
-    createCommentLoading,
-    createCommentError,
+    savedPostLoading,
     isAuthenticated,
-    username,
     onUpdatePost,
     onDeletePost,
-    children
   } = props;
   
   return (
@@ -98,14 +91,9 @@ const PostDetailsCard = props => {
           voteId={post.voteId}
           votesScore={post.votesScore}
           onCreateVote={onCreatePostVote}
-          createVoteLoading={createPostVoteLoading}
-          createVoteError={createPostVoteError}
+          createVoteLoading={postVoteLoading}
           onUpdateVote={onUpdatePostVote}
-          updateVoteError={updatePostVoteError}
-          updateVoteLoading={updatePostVoteLoading}
           onDeleteVote={onDeletePostVote}
-          deleteVoteError={deletePostVoteError}
-          deleteVoteLoading={deletePostVoteLoading}
           isAuthenticated={isAuthenticated}
         />
       </Box>
@@ -121,8 +109,11 @@ const PostDetailsCard = props => {
             id={post.id} 
             title={post.title} 
             content={post.content} 
-            onUpdatePost={onUpdatePost} /> 
-        : <React.Fragment>
+            onUpdatePost={onUpdatePost} 
+          /> 
+        : 
+        <Link to={`/posts/${post.id}`}>
+          <div className={classes.textColor}>
             <Typography component="h2" variant="h4">
               {post.title}
             </Typography>
@@ -136,7 +127,8 @@ const PostDetailsCard = props => {
             <Typography>
                 {post.content}
             </Typography>
-          </React.Fragment>
+          </div>
+        </Link>
         }
         
         <Grid className={classes.statsItem} item >
@@ -153,41 +145,15 @@ const PostDetailsCard = props => {
                 postId={post.id}
                 isSaved={post.isSaved}
                 onCreateSavedPost={onCreateSavedPost}
-                createSavedPostError={createSavedPostError}
-                createSavedPostLoading={createSavedPostLoading}
                 onDeleteSavedPost={onDeleteSavedPost}
-                deleteSavedPostError={deleteSavedPostError}
-                deleteSavedPostLoading={deleteSavedPostLoading}
               />
             </React.Fragment>}
         </Grid>
-        {createCommentLoading ? 
-          <Box mt={6} mb={6}><Spinner /></Box> 
-        :
-         <CreateComment 
-            postId={post.id}
-            username={username}
-            onCreateComment={onCreateComment} 
-            createCommentError={createCommentError} 
-            createCommentLoading={createCommentLoading} 
-            isAuthenticated={isAuthenticated}
-          />}
-        {post.commentsCount < 1 ? 
-          <Box my={12} textAlign="center">
-            <QuestionAnswerIcon className={classes.icon2}/>
-            <Typography color="textSecondary">
-              Be the first to comment.
-            </Typography>
-          </Box> 
-          : <CommentsSorting />} 
-          {createCommentLoading ? 
-          <Box ml={10} mt={3} mb={3}><CircularProgress size={50} /></Box> 
-        : null}
-        </Grid>
+      </Grid>
     </React.Fragment>
       : <Box ml={35} mt={20} mb={20} ><Spinner /></Box>}
     </Box>
   );
 }
 
-export default React.memo(PostDetailsCard);
+export default React.memo(PostCard2);

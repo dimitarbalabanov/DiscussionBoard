@@ -35,36 +35,36 @@ const StyledToggleButtonGroup = withStyles((theme) => ({
   },
 }))(ToggleButtonGroup);
 
-const PostsSorting = props => {
+const PostsSorting2 = props => {
   const classes = useStyles();
 
   const {
-    forum,
+    home,
     onSetSort,
     onSetTop
   } = props;
 
   const handleSelected = (event, newSelected) => {
     if (newSelected !== null) {
-      onSetSort(forum.id, newSelected);
+      onSetSort(newSelected);
       if (newSelected === 3) {
-        onSetTop(forum.id, 4);
+        onSetTop(4);
       }
       else {
-        onSetTop(forum.id, '');
+        onSetTop('');
       }
     }
   };
   
   const handleTopClick = (event) => {
-     onSetTop(forum.id, event.target.value);
+     onSetTop(event.target.value);
   }
 
   return (
     <Grid item xs={12} md={10}>
       <div className={classes.statsItem}>
         <StyledToggleButtonGroup
-          value={forum ? forum.sort : 1}
+          value={home.sort}
           exclusive
           size="small"
           onChange={handleSelected}
@@ -79,12 +79,12 @@ const PostsSorting = props => {
             Top
           </ToggleButton>
         </StyledToggleButtonGroup>
-        {forum && forum.top !== '' ?  
+        {home.top !== '' ?  
           <FormControl variant="outlined" size="small" className={classes.formControl}>
             <InputLabel>Top</InputLabel>
             <Select
               label="Top"
-              value={forum.top}
+              value={home.top}
               onChange={handleTopClick}
             >
               <MenuItem value={4}>All time</MenuItem>
@@ -98,4 +98,4 @@ const PostsSorting = props => {
   );
 }
 
-export default React.memo(PostsSorting);
+export default React.memo(PostsSorting2);

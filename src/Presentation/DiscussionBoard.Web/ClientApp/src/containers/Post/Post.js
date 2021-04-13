@@ -88,8 +88,9 @@ const Post = (props) => {
     username,
     onUpdatePost,
     onDeletePost,
-    onSetCommentsSort,
-    deletePostSuccess
+    deletePostSuccess,
+    onSetPostSort,
+    onSetPostTop
   } = props;
   
 
@@ -103,7 +104,7 @@ const Post = (props) => {
   }, [onFetchPost, post, postId]);
 
   useEffect(() => {
-    if (post !== undefined && post.comments === undefined) {
+    if (post !== undefined && post.comments !== undefined && post.comments.length === 0) {
       onFetchComments(postId);
     }
   }, [onFetchComments, post, postId]);
@@ -131,7 +132,7 @@ const Post = (props) => {
           container 
           item 
           xs={11} 
-          md={6} 
+          md={7} 
           spacing={2}
           justify="flex-end"
         >
@@ -139,7 +140,6 @@ const Post = (props) => {
             item 
             xs={12} 
             md={10} 
-            
           >
             <PostDetailsCard 
               post={post} 
@@ -170,8 +170,9 @@ const Post = (props) => {
               isAuthenticated={isAuthenticated}
               username={username}
             >
-              <div className={classes.mainGrid}>
-                {!commentsLoading && post !== undefined && post.comments !== undefined ?
+            </PostDetailsCard>
+            <div className={classes.mainGrid}>
+                {!commentsLoading && post !== undefined && post.comments !== undefined && post.comments.lenght !== 0?
                    post.comments.map(id => 
                   <CommentCard 
                     key={id}
@@ -195,8 +196,6 @@ const Post = (props) => {
                     isAuthenticated={isAuthenticated}
                   />) : <Box m={5}><Spinner /></Box> }
               </div>
-            </PostDetailsCard>
-            
           </Grid>
         </Grid>
         <Grid 
@@ -219,7 +218,6 @@ const mapStateToProps = state => {
     postsById: state.entities.posts.byId,
     commentsById: state.entities.comments.byId,
     forumsById: state.entities.forums.byId,
-
     // postLoading: state.post.postLoading,
     // deletePostSuccess: state.post.deletePostSuccess,
     // createPostVoteLoading: state.post.createPostVoteLoading,
@@ -247,6 +245,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchForum: (forumId) => dispatch(actions.fetchForumById(forumId)),
     onFetchPost: (postId) => dispatch(actions.fetchPostById(postId)),
+    onSetPostSort: (postId, sort) => dispatch(actions.setPostSort(postId, sort)),
+    onSetPostTop: (postId, top) => dispatch(actions.setPostTop(postId, top)),
     onUpdatePost: (postId, title, content) => dispatch(actions.updatePost(postId, title, content)),
     onDeletePost: (postId) => dispatch(actions.deletePost(postId)),
     onCreatePostVote: (postId, type) => dispatch(actions.createPostVote(postId, type)),
@@ -254,7 +254,7 @@ const mapDispatchToProps = dispatch => {
     onDeletePostVote: (postId, voteId, type) => dispatch(actions.deletePostVote(postId, voteId, type)),
     onCreateSavedPost: (postId) => dispatch(actions.createSavedPost(postId)),
     onDeleteSavedPost: (postId) => dispatch(actions.deleteSavedPost(postId)),
-    onFetchComments: (postId) => dispatch(actions.fetchComments(postId)),
+    onFetchComments: (postId, sort, top, cursor) => dispatch(actions.fetchComments(postId, sort, top, cursor)),
     onCreateComment: (content, postId, username) => dispatch(actions.createComment(content, postId, username)),
     onUpdateComment: (commentId, content) => dispatch(actions.updateComment(commentId, content)),
     onDeleteComment: (commentId, postId) => dispatch(actions.deleteComment(commentId, postId)),

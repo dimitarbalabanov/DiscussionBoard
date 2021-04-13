@@ -2,6 +2,8 @@ import {
   REQUEST_POSTS_SUCCESS,
   REQUEST_POSTS_START,
   REQUEST_POSTS_FAILURE,
+  SET_POST_SORT,
+  SET_POST_TOP,
   REQUEST_POST_START,
   REQUEST_POST_SUCCESS,
   REQUEST_POST_FAILURE,
@@ -59,12 +61,31 @@ export const fetchPosts = (sort, top, forumId, cursor) => {
       REQUEST_POSTS_FAILURE
     ],
     callApi: () => getPosts(sort, top, forumId, cursor),
-    effect() { },
+    effect({ dispatch, state, type}) {
+      if (type === REQUEST_POSTS_FAILURE) {
+        console.log(state)
+      }
+    },
     forumId: forumId,
     sort: sort
   }
-  }
+}
+
+  export const setPostSort = (postId, sort) => {
+    return {
+      type: SET_POST_SORT,
+      sort: sort,
+      postId: postId
+    };
+  };
   
+  export const setPostTop = (postId, top) => {
+    return {
+      type: SET_POST_TOP,
+      top: top,
+      postId: postId
+    };
+  };
 
 export const fetchPostById = (postId) => {
   return {

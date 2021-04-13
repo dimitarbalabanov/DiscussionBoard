@@ -20,15 +20,23 @@ import { combineReducers } from 'redux';
 
 const requestCommentsSuccess = (state, action) => {
   const postId = action.postId;
+  const post = state[postId];
   const comments = action.data.comments;
   const commentIds = comments.map(x => x.id);
-  const post = state[postId] !== undefined ? state[postId] : { };
+  let cursor = null;
+  if (comments.length == 10) {
+    const lastComment = comments[comments.length - 1];
+    cursor = action.sort !== 3 
+    ? btoa(lastComment.id + '#' + lastComment.createdOn)
+    : btoa(lastComment.id + '#' + lastComment.createdOn + '#' + lastComment.votesScore);
+  }
 
   return {
     ...state,
     [postId]: {
       ...post,
-      comments: ([] || post.comments).concat(commentIds)
+      comments: post.comments.concat(commentIds),
+      cursor: cursor
     }
   }
 }
@@ -84,9 +92,40 @@ function requestPostSuccess(state, action) {
       ...state[reqPost.id],
       ...reqPost,
       sort: 1,
-      top: ''
+      top: '',
+      comments: []
     }
   }
+}
+
+const setPostSort = (state, action) => {
+  const postId = action.postId;
+  const sort = action.sort;
+
+  return {
+    ...state,
+    [postId]: {
+      ...state[postId],
+      sort: sort,
+      comments: [],
+      cursor: null
+    }
+  };
+}
+
+const setPostTop = (state, action) => {
+  const postId = action.postId;
+  const top = action.sort;
+
+  return {
+    ...state,
+    [postId]: {
+      ...state.postId,
+      top: top,
+      comments: [],
+      cursor: null
+    }
+  };
 }
 
 const updatePostSuccess = (state, action) => {
@@ -175,34 +214,6 @@ const deleteSavedPostSuccess = (state, action) => {
         isSaved: false
       }
     };
-}
-
-const setPostSort = (state, action) => {
-  const sortPostId = action.postId;
-  const sort = action.sort;
-
-  return {
-    ...state,
-    [sortPostId]: {
-      ...state[sortPostId],
-      comments: [],
-      sort: sort
-    }
-  };
-}
-
-const setPostTop = (state, action) => {
-  const topPostId = action.postId;
-  const top = action.sort;
-
-  return {
-    ...state,
-    [topPostId]: {
-      ...state.topPostId,
-      comments: [],
-      top: top
-    }
-  };
 }
 
 function postsById(state = {}, action) {

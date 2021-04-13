@@ -2,7 +2,7 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core';
 import Header from './components/Header/Header';
-
+import Footer from './components/Footer/Footer';
 const useStyles = 
   makeStyles((theme) => ({
     container: {
@@ -26,6 +26,7 @@ const Layout = props => {
             {props.children}
         </main>
       </Container>
+      {/* <Footer /> */}
     </React.Fragment>
   );
 }
