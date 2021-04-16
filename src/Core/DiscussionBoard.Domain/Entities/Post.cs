@@ -17,6 +17,8 @@ namespace DiscussionBoard.Domain.Entities
 
         public string Content { get; set; }
 
+        public int VotesScore { get; set; }
+
         public string CreatorId { get; set; }
         public virtual User Creator { get; set; }
 

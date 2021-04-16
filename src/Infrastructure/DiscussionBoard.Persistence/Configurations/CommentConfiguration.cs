@@ -35,6 +35,10 @@ namespace DiscussionBoard.Persistence.Configurations
                 .WithOne(cr => cr.Comment)
                 .HasForeignKey(cr => cr.CommentId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+
+            comment.HasIndex(c => c.CreatedOn);
+            comment.HasIndex(c => c.VotesScore);
         }
     }
 }

@@ -52,10 +52,8 @@ namespace DiscussionBoard.Persistence.Configurations
                 .HasForeignKey(pv => pv.PostId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            //SELECT SUM(CAST([v].[Type] AS int))
-            //FROM [PostsVotes] AS [p]
-            //INNER JOIN [Votes] AS [v] ON[p].[VoteId] = [v].[Id]
-            //WHERE [p0].[Id] = [p].[PostId]
+            post.HasIndex(p => p.CreatedOn);
+            post.HasIndex(p => p.VotesScore);
         }
     }
 }
