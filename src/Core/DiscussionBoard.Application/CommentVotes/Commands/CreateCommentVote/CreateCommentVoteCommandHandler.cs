@@ -15,34 +15,24 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
     {
         private readonly IRepository<CommentVote> _commentVotesRepository;
         private readonly IRepository<Comment> _commentsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IMapper _mapper;
 
         public CreateCommentVoteCommandHandler(
             IRepository<CommentVote> commentVotesRepository,
-            IAuthenticatedUserService authUserService,
-            IMapper mapper, IRepository<Comment> commentsRepository)
+            IRepository<Comment> commentsRepository,
+            IAuthenticatedUserService userService,
+            IMapper mapper)
         {
             _commentVotesRepository = commentVotesRepository ?? throw new ArgumentNullException(nameof(commentVotesRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CreateCommentVoteCommandResponse> Handle(CreateCommentVoteCommand request, CancellationToken cancellationToken)
         {
-            var userId = _authUserService.UserId;
-            var hasAlreadyVoted = await _commentVotesRepository
-                   .AllAsNoTracking()
-                   .AnyAsync(cv => cv.CommentId == request.CommentId && cv.CreatorId == userId);
-
-            if (hasAlreadyVoted)
-            {
-                throw new BadRequestException("User has already voted");
-            }
-
-            var comment = await _commentsRepository
-                .All()
+            var comment = await _commentsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == request.CommentId);
 
             if (comment == null)
@@ -50,23 +40,22 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
                 throw new NotFoundException(nameof(Comment));
             }
 
+            var userId = _userService.UserId;
+            var hasAlreadyVoted = await _commentVotesRepository.AllAsNoTracking()
+                   .AnyAsync(cv => cv.CommentId == request.CommentId && cv.CreatorId == userId);
+
+            if (hasAlreadyVoted)
+            {
+                throw new BadRequestException("User has already voted");
+            }
+
             var commentVote = _mapper.Map<CommentVote>(request);
             commentVote.CreatorId = userId;
+
             await _commentVotesRepository.AddAsync(commentVote);
             await _commentVotesRepository.SaveChangesAsync();
 
-            switch (commentVote.Type)
-            {
-                case VoteType.Down:
-                    comment.VotesScore--;
-                    break;
-                case VoteType.Up:
-                    comment.VotesScore++;
-                    break;
-                default:
-                    break;
-            }
-
+            comment.VotesScore += (int)commentVote.Type;
             _commentsRepository.Update(comment);
             await _commentsRepository.SaveChangesAsync();
 

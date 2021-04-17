@@ -1,7 +1,10 @@
-﻿using DiscussionBoard.Application.Common.Helpers;
-using DiscussionBoard.Application.Common.Helpers.Enums;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Interfaces;
+using DiscussionBoard.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,139 +16,67 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
     public class GetAllCommentsQueryHandler : IRequestHandler<GetAllCommentsQuery, GetAllCommentsResponse>
     {
         private const int PageSize = 10;
-        private const string SqlDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        private readonly IApplicationReadDbConnection _readDbConnection;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IRepository<Comment> _commentsRepository;
+        private readonly IRepository<CommentVote> _commentVotesRepository;
+        private readonly IAuthenticatedUserService _userService;
+        private readonly IMapper _mapper;
+
         public GetAllCommentsQueryHandler(
-            IApplicationReadDbConnection readDbConnection,
-            IAuthenticatedUserService authUserService)
+            IRepository<Comment> commentsRepository, 
+            IRepository<CommentVote> commentVotesRepository,
+            IAuthenticatedUserService userService,
+            IMapper mapper)
         {
-            _readDbConnection = readDbConnection;
-            _authUserService = authUserService;
+            _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
+            _commentVotesRepository = commentVotesRepository ?? throw new ArgumentNullException(nameof(commentVotesRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<GetAllCommentsResponse> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
         {
-            var userId = _authUserService.UserId;
-            var query = string.Empty;
-            Enum.TryParse(request.Sort, true, out Sort sort);
-            if (sort != Sort.Top)
+            if (request == null)
             {
-                var ord = sort == Sort.New ? "DESC" : "ASC";
-                query =
-                   $@"SELECT c.Id,
-                               c.Content,
-                               c.CreatedOn,
-                               c.ModifiedOn,
-                               u.UserName                   AS CreatorUserName,
-                               Cast(CASE
-                                      WHEN c.CreatorId = '{userId}' THEN 1
-                                      ELSE 0
-                                    END AS BIT)             AS IsCreator,
-                               (SELECT Sum(Cast(cv.Type AS INT))
-                                FROM   CommentVotes AS cv
-                                WHERE  c.Id = cv.CommentId) AS VotesScore
-                        FROM   (SELECT TOP({PageSize}) cc.Id,
-                                               cc.Content,
-                                               cc.CreatedOn,
-                                               cc.ModifiedOn,
-                                               cc.CreatorId,
-                                               cc.PostId
-                                FROM   Comments AS cc
-                                WHERE  ( cc.PostId = {request.PostId} )";
-                if (request.Cursor != null)
-                {
-                    var cursor = CursorPagingExtensions.DecodeSortCursor(request.Cursor);
-                    query = query +
-                                   $@" AND ( cc.CreatedOn < '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                              OR ( cc.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                                    AND cc.Id > {cursor.Item1} ) )";
-                }
-
-                query = query +
-                          $@" ORDER  BY cc.CreatedOn DESC,
-                                          cc.Id ASC) AS c
-                               INNER JOIN AspNetUsers AS u
-                                       ON c.CreatorId = u.Id ";
-            }
-            else
-            {
-                Enum.TryParse(request.Top, true, out Interval top);
-                query =
-                         $@"SELECT c.Id,
-                                   c.Content,
-                                   c.CreatedOn,
-                                   c.ModifiedOn,
-                                   u.UserName       AS CreatorUserName,
-                                   Cast(CASE
-                                           WHEN c.CreatorId = '{userId}' THEN 1
-                                           ELSE 0
-                                       END AS BIT) AS IsCreator,
-                                   c.VotesScore
-                           FROM   (SELECT TOP({PageSize}) cc.Id,
-                                                   cc.Content,
-                                                   cc.CreatedOn,
-                                                   cc.ModifiedOn,
-                                                   cc.CreatorId,
-                                                   cc.PostId,
-                                                   (SELECT Sum(Cast(cv.Type AS INT))
-                                                   FROM   CommentVotes AS cv
-                                                   WHERE  cc.Id = cv.CommentId) AS VotesScore
-                                   FROM   Comments AS cc
-                                   WHERE  ( cc.PostId = 1 )
-                                           AND ( cc.CreatedOn > '{top.ToDateTimeString()}' )) AS c
-                                   INNER JOIN AspNetUsers AS u
-                                           ON c.CreatorId = u.Id";
-                if (request.Cursor != null)
-                {
-                    var cursor = CursorPagingExtensions.DecodeTopCursor(request.Cursor);
-                    query = query +
-                        $@" WHERE  c.VotesScore > {cursor.Item3}
-                              OR ( c.VotesScore = {cursor.Item3}
-                                   AND c.CreatedOn > '{cursor.Item2.ToString(SqlDateTimeFormat)}' )
-                              OR ( c.VotesScore = {cursor.Item3}
-                                   AND c.CreatedOn = '{cursor.Item2.ToString(SqlDateTimeFormat)}'
-                                   AND c.Id > {cursor.Item1} )";
-                }
-                query = query +
-                        $@" ORDER  BY c.VotesScore DESC,
-                                        c.CreatedOn ASC,
-                                        c.Id ASC ";
+                throw new ArgumentNullException(nameof(request));
             }
 
+            var commentsQuery = _commentsRepository.AllAsNoTracking()
+                .Where(c => c.PostId == request.PostId);
 
-            var comments = await _readDbConnection.QueryAsync<CommentDto>(query.ToString());
+            commentsQuery = commentsQuery.Sort(request.Sort, request.Top, request.Cursor);
+            commentsQuery = commentsQuery.Take(PageSize);
 
+            var comments = await commentsQuery
+                .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
+                .ToArrayAsync();
+
+            var userId = _userService.UserId;
             Dictionary<int, CommentDto> dict = null;
-            if (userId != null && comments.Count > 0)
+            if (userId != null)
             {
                 dict = comments.ToDictionary(x => x.Id, x => x);
-                var commentIds = string.Join(", ", dict.Keys);
+                var ids = dict.Keys.ToArray();
 
-                var commentVotesQuery =
-                    $@"SELECT c.Id,
-                              c.CommentId,
-                              c.Type
-                       FROM   CommentVotes AS c
-                       WHERE  c.CommentId IN ( {commentIds} )
-                              AND (c.CreatorId = '{userId}')";
+                var votes = await _commentVotesRepository
+                    .AllAsNoTracking()
+                    .Where(v => ids.Contains(v.CommentId) && v.CreatorId == userId)
+                    .ProjectTo<CommentVoteDto>(_mapper.ConfigurationProvider)
+                    .ToArrayAsync();
 
-                var commentVotes = await _readDbConnection.QueryAsync<CommentVoteDto>(commentVotesQuery.ToString());
-
-                if (commentVotes.Count > 0)
+                if (votes.Length > 0)
                 {
-                    foreach (var cv in commentVotes)
+                    foreach (var v in votes)
                     {
-                        dict[cv.CommentId].VoteId = cv.Id;
-                        dict[cv.CommentId].VoteType = cv.Type;
+                        dict[v.CommentId].VoteId = v.Id;
+                        dict[v.CommentId].VoteType = v.Type;
                     }
                 }
-            }
 
-            if (dict != null)
-            {
-                comments = dict.Values.ToList();
+                if (dict != null)
+                {
+                    comments = dict.Values.ToArray();
+                }
             }
 
             var response =  new GetAllCommentsResponse { Comments = comments };
@@ -153,63 +84,3 @@ namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
         }
     }
 }
-//SELECT c.Id,
-//       c.Content,
-//       c.CreatedOn,
-//       c.ModifiedOn,
-//       u.UserName AS CreatorUserName,
-//       Cast(CASE
-//              WHEN c.CreatorId = { userId}
-//THEN 1
-//              ELSE 0
-//            END AS BIT)             AS IsCreator,
-//       (SELECT Sum(Cast(cv.Type AS INT))
-//        FROM   CommentVotes AS cv
-//        WHERE  c.Id = cv.CommentId) AS VotesScore
-//FROM   (SELECT TOP(10) ic.Id,
-//                           ic.Content,
-//                           ic.CreatedOn,
-//                           ic.ModifiedOn,
-//                           ic.CreatorId,
-//                           ic.PostId
-//        FROM   Comments AS ic
-//        WHERE  ( ic.PostId = 2 )
-//               AND(ic.Id > { cursor})
-//        ORDER BY ic.CreatedOn {ASC/DESC}) AS c
-//       INNER JOIN AspNetUsers AS u
-//               ON c.CreatorId = u.Id
-
-//SELECT c.Id,
-//       c.Content,
-//       c.CreatedOn,
-//       c.ModifiedOn,
-//       u.UserName AS CreatorUserName,
-//       Cast(CASE
-//              WHEN c.CreatorId = { userId}
-//THEN 1
-//              ELSE 0
-//            END AS BIT) AS IsCreator,
-//       c.VotesScore
-//FROM   (SELECT TOP(10) cc.Id,
-//                       cc.Content,
-//                       cc.CreatedOn,
-//                       cc.ModifiedOn,
-//                       cc.CreatorId,
-//                       cc.PostId,
-//                       (SELECT Sum(Cast(cv.Type AS INT))
-//                        FROM CommentVotes AS cv
-//                        WHERE  cc.Id = cv.CommentId) AS VotesScore
-//        FROM   Comments AS cc
-//        WHERE  ( cc.PostId = 1 )
-//               AND(cc.Id > { cursor})
-//               AND(cc.CreatedOn >= { datetime})
-//        ORDER BY VotesScore) AS c
-//       INNER JOIN AspNetUsers AS u
-//               ON c.CreatorId = u.Id
-
-//SELECT c.Id,
-//       c.CommentId
-//       c.Type
-//FROM   CommentVotes AS c
-//WHERE  c.CommentId IN ( { commentIds} )
-//       AND(c.CreatorId = { userId} ) 

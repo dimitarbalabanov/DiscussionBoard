@@ -15,24 +15,24 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
     {
         private readonly IRepository<CommentVote> _commentVotesRepository;
         private readonly IRepository<Comment> _commentsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IIdentityService _identityService;
 
         public UpdateCommentVoteCommandHandler(
             IRepository<CommentVote> commentVotesRepository,
-            IAuthenticatedUserService authUserService,
-            IIdentityService identityService, IRepository<Comment> commentsRepository)
+            IRepository<Comment> commentsRepository,
+            IAuthenticatedUserService userService,
+            IIdentityService identityService)
         {
             _commentVotesRepository = commentVotesRepository ?? throw new ArgumentNullException(nameof(commentVotesRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
-            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<Unit> Handle(UpdateCommentVoteCommand request, CancellationToken cancellationToken)
         {
-            var commentVote = await _commentVotesRepository
-               .All()
+            var commentVote = await _commentVotesRepository.All()
                .SingleOrDefaultAsync(v => v.Id == request.Id);
 
             if (commentVote == null)
@@ -40,7 +40,7 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
                 throw new NotFoundException(nameof(CommentVote));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, commentVote.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_userService.UserId, commentVote.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }
@@ -48,22 +48,10 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
             commentVote.Type = Enum.Parse<VoteType>(request.Type, true);
             await _commentVotesRepository.SaveChangesAsync();
 
-            var comment = await _commentsRepository
-                .All()
+            var comment = await _commentsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == commentVote.CommentId);
 
-            switch (commentVote.Type)
-            {
-                case VoteType.Down:
-                    comment.VotesScore += 2;
-                    break;
-                case VoteType.Up:
-                    comment.VotesScore -= 2;
-                    break;
-                default:
-                    break;
-            }
-
+            comment.VotesScore -= (int)commentVote.Type * 2;
             _commentsRepository.Update(comment);
             await _commentVotesRepository.SaveChangesAsync();
             return Unit.Value;

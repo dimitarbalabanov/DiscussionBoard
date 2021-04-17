@@ -18,6 +18,7 @@ namespace DiscussionBoard.Application.Common.Helpers
                     Url = uploadResult.AbsoluteUri,
                     PublicId = uploadResult.PublicId
                 };
+
                 return media;
             }
 

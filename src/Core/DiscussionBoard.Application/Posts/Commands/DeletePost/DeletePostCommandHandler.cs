@@ -41,7 +41,7 @@ namespace DiscussionBoard.Application.Posts.Commands.DeletePost
                 throw new NotFoundException(nameof(Post));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, post.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, post.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }

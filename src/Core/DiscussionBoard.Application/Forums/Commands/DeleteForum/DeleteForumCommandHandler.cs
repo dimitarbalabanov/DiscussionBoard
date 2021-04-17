@@ -41,7 +41,7 @@ namespace DiscussionBoard.Application.Forums.Commands.DeleteForum
                 throw new NotFoundException(nameof(Forum));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, forum.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, forum.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }

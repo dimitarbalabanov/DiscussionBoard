@@ -46,7 +46,7 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
                 throw new NotFoundException(nameof(Post));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, post.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, post.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }

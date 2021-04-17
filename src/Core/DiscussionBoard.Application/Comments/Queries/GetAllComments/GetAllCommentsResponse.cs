@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DiscussionBoard.Application.Comments.Queries.GetAllComments
 {

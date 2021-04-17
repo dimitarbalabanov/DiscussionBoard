@@ -62,7 +62,7 @@ namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
 
             switch (postVote.Type)
             {
-                case VoteType.Down:
+                case VoteType.Down: 
                     post.VotesScore--;
                     break;
                 case VoteType.Up:

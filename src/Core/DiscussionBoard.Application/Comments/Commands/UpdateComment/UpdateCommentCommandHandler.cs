@@ -13,31 +13,35 @@ namespace DiscussionBoard.Application.Comments.Commands.UpdateComment
     public class UpdateCommentCommandHandler : IRequestHandler<UpdateCommentCommand>
     {
         private readonly IRepository<Comment> _commentsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IIdentityService _identityService;
 
         public UpdateCommentCommandHandler(
             IRepository<Comment> commentsRepository,
-            IAuthenticatedUserService authUserService,
+            IAuthenticatedUserService userService,
             IIdentityService identityService)
         {
             _commentsRepository = commentsRepository ?? throw new ArgumentNullException(nameof(commentsRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
-            var comment = await _commentsRepository
-                .All()
-                .SingleOrDefaultAsync(c => c.Id == request.CommentId);
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var comment = await _commentsRepository.All()
+                .SingleOrDefaultAsync(c => c.Id == request.Id);
 
             if (comment == null)
             {
                 throw new NotFoundException(nameof(Comment));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, comment.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_userService.UserId, comment.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }

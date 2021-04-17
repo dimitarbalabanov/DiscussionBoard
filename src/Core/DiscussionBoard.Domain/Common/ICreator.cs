@@ -2,7 +2,7 @@
 
 namespace DiscussionBoard.Domain.Common
 {
-    public interface IHaveCreator
+    public interface ICreator
     {
         string CreatorId { get; set; }
 

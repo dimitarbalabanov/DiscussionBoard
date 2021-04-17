@@ -1,9 +1,8 @@
 ﻿namespace DiscussionBoard.Application.Common.Helpers.Enums
 {
-    public enum Sort
+    public enum SortBy
     {
-        New = 1,
-        Old = 2,
+        Creation = 1,
         Top = 3
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiscussionBoard.Domain.Entities
 {
-    public class Post : BaseModel<int>, IHaveVotes<PostVote>, IHaveCreator
+    public class Post : BaseModel<int>, IVotesScore, ICreator
     {
         public Post()
         {
@@ -18,6 +18,8 @@ namespace DiscussionBoard.Domain.Entities
         public string Content { get; set; }
 
         public int VotesScore { get; set; }
+
+        public int CommentsCount { get; set; }
 
         public string CreatorId { get; set; }
         public virtual User Creator { get; set; }

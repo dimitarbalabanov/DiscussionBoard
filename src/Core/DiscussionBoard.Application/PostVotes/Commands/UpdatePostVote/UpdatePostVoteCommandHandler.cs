@@ -40,7 +40,7 @@ namespace DiscussionBoard.Application.PostVotes.Commands.UpdatePostVote
                 throw new NotFoundException(nameof(PostVote));
             }
 
-            if (!await AuthorizationAccessHelper.HasPermissionToAccessAsync(_authUserService.UserId, postVote.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, postVote.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }
