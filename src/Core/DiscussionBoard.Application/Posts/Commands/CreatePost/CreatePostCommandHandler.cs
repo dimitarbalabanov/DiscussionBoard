@@ -11,33 +11,31 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
     public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, CreatePostCommandResponse>
     {
         private readonly IRepository<Post> _postsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IMediaService _mediaService;
         private readonly IMapper _mapper;
 
         public CreatePostCommandHandler(
             IRepository<Post> postsRepository,
-            IAuthenticatedUserService authUserService,
+            IAuthenticatedUserService userService,
             IMediaService mediaService,
             IMapper mapper)
         {
             _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CreatePostCommandResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
-            //var post = _mapper.Map<Post>(request);
-            //post.CreatorId = _authUserService.UserId;
-            var post = new Post
+            if (request == null)
             {
-                Title = request.Title,
-                Content = request.Content,
-                ForumId = request.ForumId,
-                CreatorId = _authUserService.UserId,
-            };
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var post = _mapper.Map<Post>(request);
+            post.CreatorId = _userService.UserId;
 
             if (request.PostMedia != null)
             {
@@ -52,7 +50,8 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
             await _postsRepository.AddAsync(post);
             await _postsRepository.SaveChangesAsync();
 
-            return _mapper.Map<CreatePostCommandResponse>(post);
+            var response = _mapper.Map<CreatePostCommandResponse>(post);
+            return response;
         }
     }
 }

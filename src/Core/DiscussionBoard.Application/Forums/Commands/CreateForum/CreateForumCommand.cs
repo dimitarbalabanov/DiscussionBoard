@@ -2,7 +2,6 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 
 namespace DiscussionBoard.Application.Forums.Commands.CreateForum
 {

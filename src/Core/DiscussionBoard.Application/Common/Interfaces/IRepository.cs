@@ -7,6 +7,8 @@ namespace DiscussionBoard.Application.Common.Interfaces
     public interface IRepository<TEntity> : IDisposable
         where TEntity : class
     {
+        ValueTask<TEntity> FindAsync(int id);
+
         IQueryable<TEntity> All();
 
         IQueryable<TEntity> AllAsNoTracking();

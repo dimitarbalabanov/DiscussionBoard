@@ -19,6 +19,8 @@ namespace DiscussionBoard.Persistence.Repositories
 
         protected ApplicationDbContext Context { get; set; }
 
+        public virtual ValueTask<TEntity> FindAsync(int id) => DbSet.FindAsync(id);
+
         public virtual IQueryable<TEntity> All() => DbSet;
 
         public virtual IQueryable<TEntity> AllAsNoTracking() => DbSet.AsNoTracking();

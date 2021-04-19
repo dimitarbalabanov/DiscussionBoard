@@ -1,6 +1,7 @@
 ﻿using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace DiscussionBoard.Application.Identity.Commands.Login
 
         public LoginCommandHandler(IIdentityService identityService)
         {
-            _identityService = identityService;
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)

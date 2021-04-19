@@ -32,6 +32,11 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
 
         public async Task<Unit> Handle(UpdateCommentVoteCommand request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var commentVote = await _commentVotesRepository.All()
                .SingleOrDefaultAsync(v => v.Id == request.Id);
 
@@ -49,11 +54,12 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.UpdateCommentVote
             await _commentVotesRepository.SaveChangesAsync();
 
             var comment = await _commentsRepository.All()
-                .SingleOrDefaultAsync(p => p.Id == commentVote.CommentId);
-
+                .SingleOrDefaultAsync(c => c.Id == commentVote.CommentId);
             comment.VotesScore -= (int)commentVote.Type * 2;
+
             _commentsRepository.Update(comment);
             await _commentVotesRepository.SaveChangesAsync();
+
             return Unit.Value;
         }
     }

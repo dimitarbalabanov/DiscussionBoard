@@ -23,6 +23,11 @@ namespace DiscussionBoard.Application.Identity.Commands.Register
 
         public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var user = new User
             {
                 Id = Guid.NewGuid().ToString(),

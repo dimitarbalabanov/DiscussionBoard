@@ -97,7 +97,7 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateAsync([FromRoute] int commentId, [FromBody] UpdateCommentCommand command)
         {
-            command.CommentId = commentId;
+            command.Id = commentId;
             await Mediator.Send(command);
             return NoContent();
         }

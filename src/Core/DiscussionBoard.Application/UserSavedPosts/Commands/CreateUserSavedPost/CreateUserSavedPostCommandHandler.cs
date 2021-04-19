@@ -1,4 +1,5 @@
-﻿using DiscussionBoard.Application.Common.Interfaces;
+﻿using DiscussionBoard.Application.Common.Exceptions;
+using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,34 +11,53 @@ namespace DiscussionBoard.Application.UserSavedPosts.Commands.CreateUserSavedPos
 {
     public class CreateUserSavedPostCommandHandler : IRequestHandler<CreateUserSavedPostCommand>
     {
-        private readonly IRepository<UserPostSave> _savedRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IRepository<UserPostSave> _savesRepository;
+        private readonly IRepository<Post> _postsRepository;
+        private readonly IAuthenticatedUserService _userService;
 
-        public CreateUserSavedPostCommandHandler(IRepository<UserPostSave> savedRepository, IAuthenticatedUserService authUserService)
+        public CreateUserSavedPostCommandHandler(
+            IRepository<UserPostSave> savesRepository,
+            IRepository<Post> postsRepository,
+            IAuthenticatedUserService userService)
         {
-            _savedRepository = savedRepository;
-            _authUserService = authUserService;
+            _savesRepository = savesRepository ?? throw new ArgumentNullException(nameof(savesRepository));
+            _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         public async Task<Unit> Handle(CreateUserSavedPostCommand request, CancellationToken cancellationToken)
         {
-            var exists = await _savedRepository
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var post = _postsRepository.All()
+                .SingleOrDefaultAsync(p => p.Id == request.PostId);
+
+            if (post == null)
+            {
+                throw new NotFoundException(nameof(Post));
+            }
+
+            var userId = _userService.UserId;
+            var exists = await _savesRepository
                 .AllAsNoTracking()
-                .AnyAsync(v => v.PostId == request.PostId && v.UserId == _authUserService.UserId);
+                .AnyAsync(v => v.PostId == request.PostId && v.UserId == userId);
 
             if (exists)
             {
-                throw new Exception("Already saved");
+                throw new BadRequestException("Already saved");
             }
 
-            var userSavedPost = new UserPostSave
+            var save = new UserPostSave
             {
                 PostId = request.PostId,
-                UserId = _authUserService.UserId
+                UserId = userId
             };
 
-            await _savedRepository.AddAsync(userSavedPost);
-            await _savedRepository.SaveChangesAsync();
+            await _savesRepository.AddAsync(save);
+            await _savesRepository.SaveChangesAsync();
 
             return Unit.Value;
         }

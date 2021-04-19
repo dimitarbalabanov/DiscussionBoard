@@ -1,5 +1,4 @@
-﻿using DiscussionBoard.Application.Common.Commands;
-using DiscussionBoard.Application.Common.Exceptions;
+﻿using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;
@@ -40,11 +39,7 @@ namespace DiscussionBoard.Application.Posts.Queries.GetPostById
             var userId = _authUserService.UserId;
             if (userId != null)
             {
-                postQuery.AppendLine(SqlQueriesHelper.IsCreator<Post>(SelectAlias, userId) + ",");
             }
-
-            postQuery.AppendLine(SqlQueriesHelper.SumCommentsCount(SelectAlias) + ",");
-            postQuery.AppendLine(SqlQueriesHelper.SumVotesScore<Post, PostVote>(SelectAlias));
 
             postQuery.AppendLine(
                 @$"FROM   Posts AS p

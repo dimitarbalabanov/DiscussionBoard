@@ -53,7 +53,21 @@ namespace DiscussionBoard.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Create([FromForm] CreatePostCommand command)
+        public async Task<IActionResult> Create([FromBody] CreatePostCommand command)
+        {
+            command.PostMedia = null;
+            var response = await Mediator.Send(command);
+            //return CreatedAtAction(nameof(GetAsync), new { id = response.Id }, response);
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("img")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> CreateWithImg([FromForm] CreatePostCommand command)
         {
             var response = await Mediator.Send(command);
             //return CreatedAtAction(nameof(GetAsync), new { id = response.Id }, response);

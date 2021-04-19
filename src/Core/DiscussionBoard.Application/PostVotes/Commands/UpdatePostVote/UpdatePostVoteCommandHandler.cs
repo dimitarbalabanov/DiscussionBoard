@@ -15,24 +15,29 @@ namespace DiscussionBoard.Application.PostVotes.Commands.UpdatePostVote
     {
         private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IRepository<Post> _postsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IIdentityService _identityService;
 
         public UpdatePostVoteCommandHandler(
             IRepository<PostVote> postVotesRepository,
-            IAuthenticatedUserService authUserService,
-            IIdentityService identityService, IRepository<Post> postsRepository)
+            IRepository<Post> postsRepository,
+            IAuthenticatedUserService userService,
+            IIdentityService identityService)
         {
             _postVotesRepository = postVotesRepository ?? throw new ArgumentNullException(nameof(postVotesRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
-            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<Unit> Handle(UpdatePostVoteCommand request, CancellationToken cancellationToken)
         {
-            var postVote = await _postVotesRepository
-               .All()
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var postVote = await _postVotesRepository.All()
                .SingleOrDefaultAsync(v => v.Id == request.Id);
 
             if (postVote == null)
@@ -40,7 +45,7 @@ namespace DiscussionBoard.Application.PostVotes.Commands.UpdatePostVote
                 throw new NotFoundException(nameof(PostVote));
             }
 
-            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, postVote.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_userService.UserId, postVote.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }
@@ -48,21 +53,10 @@ namespace DiscussionBoard.Application.PostVotes.Commands.UpdatePostVote
             postVote.Type = Enum.Parse<VoteType>(request.Type, true);
             await _postVotesRepository.SaveChangesAsync();
 
-            var post = await _postsRepository
-                .All()
+            var post = await _postsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == postVote.PostId);
 
-            switch (postVote.Type)
-            {
-                case VoteType.Down:
-                    post.VotesScore+=2;
-                    break;
-                case VoteType.Up:
-                    post.VotesScore-=2;
-                    break;
-                default:
-                    break;
-            }
+            post.VotesScore -= (int)postVote.Type * 2;
 
             _postsRepository.Update(post);
             await _postsRepository.SaveChangesAsync();

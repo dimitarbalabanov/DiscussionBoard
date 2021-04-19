@@ -1,5 +1,6 @@
 ﻿using DiscussionBoard.Application.Common.Interfaces;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,11 +12,16 @@ namespace DiscussionBoard.Application.Forums.Queries.GetAllForums
 
         public GetAllForumsQueryHandler(IApplicationReadDbConnection readDbConnection)
         {
-            _readDbConnection = readDbConnection ?? throw new System.ArgumentNullException(nameof(readDbConnection));
+            _readDbConnection = readDbConnection ?? throw new ArgumentNullException(nameof(readDbConnection));
         }
 
         public async Task<GetAllForumsResponse> Handle(GetAllForumsQuery request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var forumsQuery =
                 $@"SELECT f.Id,
                           fm.Url AS MediaUrl,

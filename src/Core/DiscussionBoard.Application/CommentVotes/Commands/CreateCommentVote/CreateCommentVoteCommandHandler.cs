@@ -2,7 +2,6 @@
 using DiscussionBoard.Application.Common.Exceptions;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
-using DiscussionBoard.Domain.Entities.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +31,11 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
 
         public async Task<CreateCommentVoteCommandResponse> Handle(CreateCommentVoteCommand request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var comment = await _commentsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == request.CommentId);
 
@@ -41,10 +45,10 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
             }
 
             var userId = _userService.UserId;
-            var hasAlreadyVoted = await _commentVotesRepository.AllAsNoTracking()
+            var hasVoted = await _commentVotesRepository.AllAsNoTracking()
                    .AnyAsync(cv => cv.CommentId == request.CommentId && cv.CreatorId == userId);
 
-            if (hasAlreadyVoted)
+            if (hasVoted)
             {
                 throw new BadRequestException("User has already voted");
             }
@@ -56,6 +60,7 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.CreateCommentVote
             await _commentVotesRepository.SaveChangesAsync();
 
             comment.VotesScore += (int)commentVote.Type;
+
             _commentsRepository.Update(comment);
             await _commentsRepository.SaveChangesAsync();
 

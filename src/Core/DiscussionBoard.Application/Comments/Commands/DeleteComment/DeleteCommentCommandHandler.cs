@@ -57,8 +57,8 @@ namespace DiscussionBoard.Application.Comments.Commands.DeleteComment
 
             var post = await _postsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == comment.PostId);
+            post.CommentsCount--;
 
-            post.CommentsCount++;
             _postsRepository.Update(post);
             await _postsRepository.SaveChangesAsync();
 

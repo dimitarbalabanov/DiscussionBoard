@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DiscussionBoard.Application.Common.Helpers;
 using DiscussionBoard.Application.Common.Interfaces;
 using DiscussionBoard.Domain.Entities;
 using MediatR;

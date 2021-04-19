@@ -15,39 +15,29 @@ namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
     {
         private readonly IRepository<PostVote> _postVotesRepository;
         private readonly IRepository<Post> _postsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IMapper _mapper;
 
         public CreatePostVoteCommandHandler(
-            IRepository<PostVote> postVotesRepository,
-            IAuthenticatedUserService authUserService,
-            IMapper mapper, IRepository<Post> postsRepository)
+            IRepository<PostVote> postVotesRepository, 
+            IRepository<Post> postsRepository,
+            IAuthenticatedUserService userService,
+            IMapper mapper)
         {
             _postVotesRepository = postVotesRepository ?? throw new ArgumentNullException(nameof(postVotesRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<CreatePostVoteCommandResponse> Handle(CreatePostVoteCommand request, CancellationToken cancellationToken)
         {
-            if (request is null)
+            if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var userId = _authUserService.UserId;
-            var hasAlreadyVoted = await _postVotesRepository
-                   .AllAsNoTracking()
-                   .AnyAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId);
-
-            if (hasAlreadyVoted)
-            {
-                throw new BadRequestException("User has already voted");
-            }
-
-            var post = await _postsRepository
-                .All()
+            var post = await _postsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == request.PostId);
 
             if (post == null)
@@ -55,27 +45,28 @@ namespace DiscussionBoard.Application.PostVotes.Commands.CreatePostVote
                 throw new NotFoundException(nameof(Post));
             }
 
+            var userId = _userService.UserId;
+            var hasVoted = await _postVotesRepository.AllAsNoTracking()
+                   .AnyAsync(pv => pv.PostId == request.PostId && pv.CreatorId == userId);
+
+            if (hasVoted)
+            {
+                throw new BadRequestException("User has already voted");
+            }
+
             var postVote = _mapper.Map<PostVote>(request);
             postVote.CreatorId = userId;
+
             await _postVotesRepository.AddAsync(postVote);
             await _postVotesRepository.SaveChangesAsync();
 
-            switch (postVote.Type)
-            {
-                case VoteType.Down: 
-                    post.VotesScore--;
-                    break;
-                case VoteType.Up:
-                    post.VotesScore++;
-                    break;
-                default:
-                    break;
-            }
+            post.VotesScore += (int)postVote.Type;
 
             _postsRepository.Update(post);
             await _postsRepository.SaveChangesAsync();
 
-            return _mapper.Map<CreatePostVoteCommandResponse>(postVote);
+            var response = _mapper.Map<CreatePostVoteCommandResponse>(postVote);
+            return response;
         }
     }
 }

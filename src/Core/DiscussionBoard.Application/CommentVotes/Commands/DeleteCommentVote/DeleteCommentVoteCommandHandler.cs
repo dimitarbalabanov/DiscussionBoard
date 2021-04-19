@@ -49,16 +49,17 @@ namespace DiscussionBoard.Application.CommentVotes.Commands.DeleteCommentVote
                 throw new ForbiddenException();
             }
 
-            var commentType = commentVote.Type;
             _commentVotesRepository.Delete(commentVote);
             await _commentVotesRepository.SaveChangesAsync();
 
             var comment = await _commentsRepository.All()
                 .SingleOrDefaultAsync(p => p.Id == commentVote.CommentId);
 
-            comment.VotesScore -= (int)commentType;
+            comment.VotesScore -= (int)commentVote.Type;
+
             _commentsRepository.Update(comment);
             await _commentsRepository.SaveChangesAsync();
+
             return Unit.Value;
         }
     }

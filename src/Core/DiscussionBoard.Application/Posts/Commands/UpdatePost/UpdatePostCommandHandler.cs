@@ -14,21 +14,20 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
     public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand, UpdatePostCommandResponse>
     {
         private readonly IRepository<Post> _postsRepository;
-        private readonly IAuthenticatedUserService _authUserService;
+        private readonly IAuthenticatedUserService _userService;
         private readonly IIdentityService _identityService;
         private readonly IMediaService _mediaService;
         private readonly IMapper _mapper;
 
-
         public UpdatePostCommandHandler(
             IRepository<Post> postsRepository,
-            IAuthenticatedUserService authUserService,
+            IAuthenticatedUserService userService,
             IIdentityService identityService,
             IMediaService mediaService,
             IMapper mapper)
         {
             _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
-            _authUserService = authUserService ?? throw new ArgumentNullException(nameof(authUserService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _mediaService = mediaService ?? throw new ArgumentNullException(nameof(mediaService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -36,8 +35,12 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
 
         public async Task<UpdatePostCommandResponse> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
         {
-            var post = await _postsRepository
-                .All()
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var post = await _postsRepository.All()
                 .Include(p => p.Media)
                 .SingleOrDefaultAsync(p => p.Id == request.Id);
 
@@ -46,7 +49,7 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
                 throw new NotFoundException(nameof(Post));
             }
 
-            if (!await AuthorizationAccess.HasPermissionAsync(_authUserService.UserId, post.CreatorId, _identityService))
+            if (!await AuthorizationAccess.HasPermissionAsync(_userService.UserId, post.CreatorId, _identityService))
             {
                 throw new ForbiddenException();
             }
@@ -68,7 +71,8 @@ namespace DiscussionBoard.Application.Posts.Commands.UpdatePost
             post.Content = request.Content;
             await _postsRepository.SaveChangesAsync();
 
-            return _mapper.Map<UpdatePostCommandResponse>(post);
+            var response = _mapper.Map<UpdatePostCommandResponse>(post);
+            return response;
         }
     }
 }

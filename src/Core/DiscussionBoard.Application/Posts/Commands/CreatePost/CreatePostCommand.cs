@@ -2,6 +2,7 @@
 using DiscussionBoard.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 {
@@ -13,6 +14,7 @@ namespace DiscussionBoard.Application.Posts.Commands.CreatePost
 
         public int ForumId { get; set; }
 
+        [NotMapped]
         public IFormFile PostMedia { get; set; }
     }
 }
